@@ -3,198 +3,181 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SWEET-BOY-KNDER AI V11</title>
+<title>SWEET-BOY-KNDER — Social Links</title>
 
 <style>
+/* ===== Fonts ===== */
 @font-face{
   font-family:'WelFont';
   src:url('wel.ttf') format('truetype');
 }
+@font-face{
+  font-family:'RealRound';
+  src:url('REALROUND.otf') format('opentype');
+}
 
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;font-family:'WelFont',sans-serif;overflow:hidden;background:#000;color:#fff;cursor:none;}
+/* ===== Reset ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-family:'WelFont',sans-serif;overflow:hidden;background:#000;color:#fff;}
 
 /* ===== Background Video ===== */
 #bg-video{
   position:fixed;
-  top:0;left:0;width:100%;height:100%;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
   object-fit:cover;
-  z-index:-2;
-  filter:brightness(.4) saturate(1.4);
-}
-
-/* ===== Particle Canvas ===== */
-#particle-canvas{
-  position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;
-}
-
-/* ===== AI Card ===== */
-.card{
-  position:relative;
-  width:95%;
-  max-width:650px;
-  padding:50px 40px;
-  border-radius:30px;
-  backdrop-filter:blur(20px);
-  background:rgba(20,20,30,0.6);
-  border:1px solid rgba(255,255,255,0.15);
-  box-shadow:0 0 50px rgba(255,0,200,.4);
-  text-align:center;
-  animation:fadeUp 1.2s ease forwards;
-  opacity:0;
-  transform:translateY(40px);
-}
-
-@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
-
-.card::before{
-  content:"";
-  position:absolute;inset:-2px;border-radius:30px;
-  background:linear-gradient(45deg,#ff00cc,#00ffff,#ff00cc);
-  background-size:400% 400%;
   z-index:-1;
-  filter:blur(15px);
-  animation:neonMove 6s linear infinite;
+  filter:brightness(0.6) saturate(1.2);
 }
 
-@keyframes neonMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+/* ===== Language Buttons ===== */
+.lang-switch{
+  position:absolute;
+  top:14px;
+  right:14px;
+  display:flex;
+  gap:8px;
+  z-index:10;
+}
+.lang-btn{
+  width:38px; height:38px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(145deg,#dda0dd,#ee82ee);
+  border:1px solid #da70d6;
+  cursor:pointer;
+  font-weight:700;
+  color:#fff;
+  transition: transform .18s ease, box-shadow .18s ease, background .2s ease;
+}
+.lang-btn:hover{
+  transform:scale(1.25) rotate(-5deg);
+  background:linear-gradient(145deg,#ff69b4,#ff1493);
+  box-shadow:0 0 15px #ff69b4;
+}
+
+/* ===== Center Container ===== */
+.container{
+  position:relative;
+  width:90%;
+  max-width:600px;
+  padding:40px 30px;
+  border-radius:20px;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(8px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
 
 /* ===== Title ===== */
-.title{
-  font-size:44px;margin-bottom:15px;
-  background:linear-gradient(90deg,#ff00cc,#00ffff);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  letter-spacing:2px;
-  animation:textGlow 2s ease infinite alternate;
+h1.title{
+  font-size:42px;
+  font-weight:900;
+  color:#ff1493;
+  text-shadow:0 0 10px #ff69b4,0 0 20px #ff1493;
+  margin-bottom:15px;
+  letter-spacing:1.5px;
+  transition:0.3s all ease;
+}
+h1.title:hover{
+  text-shadow:0 0 30px #ff69b4,0 0 60px #ff1493;
+  transform:scale(1.05) rotate(-1deg);
 }
 
-@keyframes textGlow{
-  from{text-shadow:0 0 5px #ff00cc,0 0 10px #00ffff;}
-  to{text-shadow:0 0 20px #ff00cc,0 0 30px #00ffff;}
-}
-
-/* ===== Subtitle ===== */
-.subtitle{
-  font-size:18px;color:#aaa;margin-bottom:40px;
-  animation:subtitlePulse 1.5s ease infinite alternate;
-}
-
-@keyframes subtitlePulse{
-  from{color:#aaa;}
-  to{color:#00ffff;}
+/* ===== Welcome Text ===== */
+p.welcome-text{
+  font-family:'RealRound', serif;
+  font-weight:700;
+  font-size:20px;
+  color:#87CEFA;
+  text-shadow:0 0 8px #87CEFA,0 0 15px #B0E0E6;
+  margin-bottom:30px;
+  line-height:1.5;
 }
 
 /* ===== Social Grid ===== */
-.social-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:25px;
-  justify-items:center;
+.circle-grid{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
 }
-
-/* ===== AI Buttons ===== */
 .social-btn{
-  width:85px;height:85px;
-  border-radius:15px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(145deg,#111,#222);
-  border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 0 20px rgba(0,255,255,.3);
-  transition:.3s;position:relative;overflow:hidden;
+  width:80px;
+  height:80px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(145deg,#8B4513,#A0522D);
+  border:2px solid #5C3317;
+  box-shadow:4px 4px 10px rgba(0,0,0,0.5),-4px -4px 10px rgba(255,255,255,0.1);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-
 .social-btn:hover{
-  transform:translateY(-8px) scale(1.1);
-  box-shadow:0 0 40px rgba(0,255,255,.7);
+  transform:translateY(-5px) scale(1.1);
+  box-shadow:6px 6px 15px rgba(0,0,0,0.6),-6px -6px 15px rgba(255,255,255,0.15);
+}
+.social-btn img{
+  width:40px;
+  height:40px;
+  border-radius:6px;
 }
 
-.social-btn::after{
-  content:"";
-  position:absolute;
-  top:-100%;left:-100%;width:200%;height:200%;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
-  transform:rotate(25deg);
-  transition:.6s;
-}
-.social-btn:hover::after{top:100%;left:100%;}
-.social-btn img{width:42px;height:42px;z-index:2;}
-
-/* ===== Mouse Glow ===== */
-#mouse-glow{
-  position:fixed;width:60px;height:60px;border-radius:50%;
-  pointer-events:none;
-  background:radial-gradient(circle,#00ffff88,#0000);
-  mix-blend-mode:screen;
-  z-index:10;
-  transform:translate(-50%,-50%);
-  transition:transform .1s ease;
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  h1.title{font-size:32px;}
+  p.welcome-text{font-size:18px;}
+  .social-btn{width:70px;height:70px;}
 }
 </style>
 </head>
 <body>
 
-<canvas id="particle-canvas"></canvas>
-<div id="mouse-glow"></div>
-
+<!-- Video Background -->
 <video id="bg-video" autoplay muted loop playsinline>
   <source src="V.mp4" type="video/mp4">
 </video>
 
-<div class="card">
-  <h1 class="title">SWEET-BOY-KNDER</h1>
-  <p class="subtitle">AI Powered Interactive Interface ✦</p>
+<!-- Language Switch -->
+<div class="lang-switch">
+  <div class="lang-btn" id="en-btn">EN</div>
+  <div class="lang-btn" id="ar-btn">ع</div>
+</div>
 
-  <div class="social-grid">
-    <a href="https://www.instagram.com/__4if" target="_blank" class="social-btn"><img src="I.svg"></a>
-    <a href="https://www.tiktok.com/@" target="_blank" class="social-btn"><img src="T.svg"></a>
-    <a href="https://www.facebook.com/" target="_blank" class="social-btn"><img src="F.svg"></a>
-    <a href="https://wa.me/" target="_blank" class="social-btn"><img src="W.svg"></a>
+<!-- Center Container -->
+<div class="container">
+  <h1 class="title">SWEET-BOY-KNDER</h1>
+  <p class="welcome-text">أتمنى أن تستمتع بعالمك 🥛🍰🍬</p>
+  <div class="circle-grid">
+    <a href="https://www.instagram.com/__4if" target="_blank" class="social-btn"><img src="I.svg" alt="Instagram"></a>
+    <a href="https://www.tiktok.com/@" target="_blank" class="social-btn"><img src="T.svg" alt="TikTok"></a>
+    <a href="https://www.facebook.com/" target="_blank" class="social-btn"><img src="F.svg" alt="Facebook"></a>
+    <a href="https://wa.me/" target="_blank" class="social-btn"><img src="W.svg" alt="WhatsApp"></a>
   </div>
 </div>
 
 <script>
-// ===== Mouse Glow =====
-const mouseGlow = document.getElementById('mouse-glow');
-document.addEventListener('mousemove',e=>{
-  mouseGlow.style.left=e.clientX+'px';
-  mouseGlow.style.top=e.clientY+'px';
+const enBtn = document.getElementById('en-btn');
+const arBtn = document.getElementById('ar-btn');
+const welcomeText = document.querySelector('.welcome-text');
+const titleText = document.querySelector('.title');
+
+enBtn.addEventListener('click', () => {
+  document.body.setAttribute('lang','en');
+  titleText.textContent = "SWEET-BOY-KNDER";
+  welcomeText.textContent = "I hope you enjoy your world 🥛🍰🍬";
 });
-
-// ===== Particles =====
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-
-const particles=[];
-for(let i=0;i<80;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*2+1,
-    dx:(Math.random()-0.5)*1.5,
-    dy:(Math.random()-0.5)*1.5
-  });
-}
-
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width)p.dx*=-1;
-    if(p.y<0||p.y>canvas.height)p.dy*=-1;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle='rgba(0,255,255,0.4)';
-    ctx.fill();
-  });
-  requestAnimationFrame(animate);
-}
-animate();
-
-// ===== Window Resize =====
-window.addEventListener('resize',()=>{
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+arBtn.addEventListener('click', () => {
+  document.body.setAttribute('lang','ar');
+  titleText.textContent = "SWEET-BOY-KNDER";
+  welcomeText.textContent = "أتمنى أن تستمتع بعالمك 🥛🍰🍬";
 });
 </script>
 
