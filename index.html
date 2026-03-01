@@ -1,94 +1,51 @@
 <!doctype html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SWEET-BOY-KNDER — Social Links</title>
+  <meta name="description" content="Official website of Said El Aiyoud — digital creator skilled in web development, cybersecurity, and Meta advertising.">
+  <meta name="keywords" content="Said El Aiyoud, web developer, ethical hacker, Meta ads, HTML, CSS, JavaScript, Python">
+  <meta name="robots" content="index, follow">
 
+  <title>Social Links — Said El Aiyoud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ---- Fonts ---- */
-    @font-face {
-      font-family: 'WelFont';
-      src: url('wel.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
+    :root{
+      --bg-top:#0f172a;
+      --bg-bottom:#0b1220;
+      --muted: rgba(255,255,255,0.6);
+      --btn-size: 84px;
+      --lang-btn-size:38px;
     }
-    @font-face {
-      font-family: 'RealRound';
-      src: url('REALROUND.otf') format('opentype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%; font-family: 'WelFont', sans-serif; overflow:hidden;}
-
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,'Helvetica Neue',Arial;
+      background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+      color:#e6eef8;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:#000;
-      color:#fff;
-      position:relative;
+      padding:32px;
+      transition:direction .12s;
     }
-
-    video#bg-video{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      z-index:-1;
-      filter: brightness(0.6) saturate(1.2);
-    }
-
     .container{
       width:100%;
       max-width:820px;
-      border-radius:30px;
+      background:rgba(255,255,255,0.05);
+      border-radius:20px;
       padding:36px;
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
       display:flex;
       flex-direction:column;
       align-items:center;
       text-align:center;
+      backdrop-filter: blur(8px);
       position:relative;
-      opacity:0;
-      animation: fadeInContainer 1s forwards;
     }
-    @keyframes fadeInContainer{ to{opacity:1;} }
-
-    h1.title{
-      font-size:48px;
-      font-weight:900;
-      color:#ff1493;
-      text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493, 0 0 30px #ffb6c1;
-      margin-bottom:20px;
-      letter-spacing:2px;
-      transition:0.3s all ease;
-      opacity:0;
-      animation: fadeInTitle 1s forwards 0.3s;
-      font-family: 'WelFont', sans-serif;
-    }
-    h1.title:hover{
-      text-shadow: 0 0 30px #ff69b4, 0 0 60px #ff1493, 0 0 90px #ffb6c1;
-      transform: scale(1.08) rotate(-1deg);
-    }
-    @keyframes fadeInTitle{ to{opacity:1;} }
-
-    .welcome-text {
-      font-family: 'RealRound', serif; 
-      font-weight: 700;
-      font-size: 22px;
-      color: #87CEFA; 
-      text-shadow: 0 0 8px #87CEFA, 0 0 15px #B0E0E6;
-      margin-bottom:25px;
-      line-height:1.5;
-      opacity:0;
-      animation: fadeInText 1s forwards 0.6s;
-    }
-    @keyframes fadeInText{ to{opacity:1;} }
-
+    h1{margin-bottom:10px;font-size:26px}
+    p{color:var(--muted);max-width:700px;}
     .circle-grid{
       display:flex;
       gap:20px;
@@ -96,54 +53,89 @@
       justify-content:center;
       align-items:center;
       margin:25px 0;
-      opacity:0;
-      animation: fadeInGrid 1s forwards 0.9s;
     }
-    @keyframes fadeInGrid{ to{opacity:1;} }
-
-    /* ---- Social buttons 3D ---- */
     .social-btn{
-      width:80px; 
-      height:80px;
-      border-radius:12px;
+      width:var(--btn-size);height:var(--btn-size);
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.1);
+      box-shadow:0 8px 20px rgba(0,0,0,0.5);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .social-btn:hover{
+      transform:translateY(-5px) scale(1.05);
+      box-shadow:0 10px 25px rgba(0,0,0,0.6);
+    }
+    .social-btn img{width:40px;height:40px;border-radius:8px;}
+    .footer{
+      font-size:14px;
+      color:var(--muted);
+      margin-top:10px;
+      line-height:1.6;
+      max-width:700px;
+    }
+    .lang-switch{
+      position:absolute;top:14px;right:14px;
+      display:flex;gap:8px;
+    }
+    .lang-btn{
+      width:var(--lang-btn-size);
+      height:var(--lang-btn-size);
+      border-radius:8px;
       display:flex;
       align-items:center;
       justify-content:center;
-      background: linear-gradient(145deg, #8B4513, #A0522D);
-      border: 2px solid #5C3317;
-      box-shadow: 4px 4px 10px rgba(0,0,0,0.5),
-                  -4px -4px 10px rgba(255,255,255,0.1);
-      transition: transform .2s ease, box-shadow .2s ease;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.1);
+      cursor:pointer;
+      font-weight:600;
+      color:#e6eef8;
+      transition:transform .18s ease, box-shadow .18s ease;
     }
-    .social-btn:hover{
-      transform: translateY(-5px) scale(1.1) rotateX(8deg) rotateY(3deg);
-      box-shadow: 6px 6px 15px rgba(0,0,0,0.6),
-                  -6px -6px 15px rgba(255,255,255,0.15);
-    }
-    .social-btn img{
-      width:40px; 
-      height:40px; 
-      display:block;
+    .lang-btn:hover{
+      transform:scale(1.1);
+      box-shadow:0 4px 15px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
-
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="V.mp4" type="video/mp4">
-  </video>
-
   <div class="container">
-    <h1 class="title">SWEET-BOY-KNDER</h1>
-    <p class="welcome-text">أتمنى أن تستمتع بعالمك 🥛🍰🍬</p>
+    <div class="lang-switch">
+      <div class="lang-btn" id="en-btn">EN</div>
+      <div class="lang-btn" id="ar-btn">ع</div>
+    </div>
+
+    <h1>Said El Aiyoud</h1>
+    <p>Digital creator skilled in web development, cybersecurity, and Meta advertising.</p>
 
     <div class="circle-grid">
-      <a href="https://www.instagram.com/__4if" target="_blank" class="social-btn"><img src="I.png" alt=""></a>
-      <a href="https://www.tiktok.com/@" target="_blank" class="social-btn"><img src="T.png" alt=""></a>
-      <a href="https://www.facebook.com/" target="_blank" class="social-btn"><img src="F.png" alt=""></a>
-      <a href="https://wa.me/" target="_blank" class="social-btn"><img src="W.png" alt=""></a>
+      <a href="https://www.instagram.com/" target="_blank" class="social-btn"><img src="I.jpg" alt="Instagram"></a>
+      <a href="https://www.tiktok.com/@" target="_blank" class="social-btn"><img src="T.jpg" alt="TikTok"></a>
+      <a href="https://www.facebook.com/" target="_blank" class="social-btn"><img src="F.jpg" alt="Facebook"></a>
+      <a href="https://wa.me/" target="_blank" class="social-btn"><img src="W.jpg" alt="WhatsApp"></a>
+    </div>
+
+    <div class="footer">
+      &copy; 2026 Said El Aiyoud. All rights reserved.
     </div>
   </div>
 
+  <script>
+    const enBtn = document.getElementById('en-btn');
+    const arBtn = document.getElementById('ar-btn');
+
+    enBtn.addEventListener('click', () => {
+      alert('Language switched to English!');
+      document.body.setAttribute('lang', 'en');
+      // هنا ممكن تضيف تغيير النصوص فعليًا لاحقًا
+    });
+
+    arBtn.addEventListener('click', () => {
+      alert('تم تحويل اللغة إلى العربية!');
+      document.body.setAttribute('lang', 'ar');
+      // هنا ممكن تضيف تغيير النصوص فعليًا لاحقًا
+    });
+  </script>
 </body>
 </html>
