@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SWEET-BOY-KNDER — Social Links</title>
+<title>SWEET-BOY-KNDER</title>
 
 <style>
-/* ===== Fonts ===== */
 @font-face{
   font-family:'WelFont';
   src:url('wel.ttf') format('truetype');
@@ -16,92 +15,46 @@
   src:url('REALROUND.otf') format('opentype');
 }
 
-/* ===== Reset ===== */
+/* Reset */
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'WelFont',sans-serif;overflow:hidden;background:#000;color:#fff;}
 
-/* ===== Background Video ===== */
-#bg-video{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:-1;
-  filter:brightness(0.6) saturate(1.2);
-}
-
-/* ===== Language Buttons ===== */
-.lang-switch{
-  position:absolute;
-  top:14px;
-  right:14px;
-  display:flex;
-  gap:8px;
-  z-index:10;
-}
-.lang-btn{
-  width:38px; height:38px;
-  border-radius:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(145deg,#dda0dd,#ee82ee);
-  border:1px solid #da70d6;
-  cursor:pointer;
-  font-weight:700;
-  color:#fff;
-  transition: transform .18s ease, box-shadow .18s ease, background .2s ease;
-}
-.lang-btn:hover{
-  transform:scale(1.25) rotate(-5deg);
-  background:linear-gradient(145deg,#ff69b4,#ff1493);
-  box-shadow:0 0 15px #ff69b4;
-}
-
-/* ===== Center Container ===== */
+/* Container في الوسط */
 .container{
-  position:relative;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   width:90%;
   max-width:600px;
   padding:40px 30px;
   border-radius:20px;
   background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(8px);
   display:flex;
   flex-direction:column;
   align-items:center;
   text-align:center;
 }
 
-/* ===== Title ===== */
+/* Title */
 h1.title{
   font-size:42px;
   font-weight:900;
   color:#ff1493;
-  text-shadow:0 0 10px #ff69b4,0 0 20px #ff1493;
-  margin-bottom:15px;
   letter-spacing:1.5px;
-  transition:0.3s all ease;
-}
-h1.title:hover{
-  text-shadow:0 0 30px #ff69b4,0 0 60px #ff1493;
-  transform:scale(1.05) rotate(-1deg);
 }
 
-/* ===== Welcome Text ===== */
+/* Welcome Text */
 p.welcome-text{
   font-family:'RealRound', serif;
   font-weight:700;
   font-size:20px;
-  color:#87CEFA;
-  text-shadow:0 0 8px #87CEFA,0 0 15px #B0E0E6;
+  color:#fff;
   margin-bottom:30px;
   line-height:1.5;
 }
 
-/* ===== Social Grid ===== */
+/* Social Grid */
 .circle-grid{
   display:flex;
   flex-wrap:wrap;
@@ -130,7 +83,7 @@ p.welcome-text{
   border-radius:6px;
 }
 
-/* ===== Responsive ===== */
+/* Responsive */
 @media(max-width:768px){
   h1.title{font-size:32px;}
   p.welcome-text{font-size:18px;}
@@ -140,18 +93,7 @@ p.welcome-text{
 </head>
 <body>
 
-<!-- Video Background -->
-<video id="bg-video" autoplay muted loop playsinline>
-  <source src="V.mp4" type="video/mp4">
-</video>
-
-<!-- Language Switch -->
-<div class="lang-switch">
-  <div class="lang-btn" id="en-btn">EN</div>
-  <div class="lang-btn" id="ar-btn">ع</div>
-</div>
-
-<!-- Center Container -->
+<!-- Container -->
 <div class="container">
   <h1 class="title">SWEET-BOY-KNDER</h1>
   <p class="welcome-text">أتمنى أن تستمتع بعالمك 🥛🍰🍬</p>
@@ -162,24 +104,6 @@ p.welcome-text{
     <a href="https://wa.me/" target="_blank" class="social-btn"><img src="W.svg" alt="WhatsApp"></a>
   </div>
 </div>
-
-<script>
-const enBtn = document.getElementById('en-btn');
-const arBtn = document.getElementById('ar-btn');
-const welcomeText = document.querySelector('.welcome-text');
-const titleText = document.querySelector('.title');
-
-enBtn.addEventListener('click', () => {
-  document.body.setAttribute('lang','en');
-  titleText.textContent = "SWEET-BOY-KNDER";
-  welcomeText.textContent = "I hope you enjoy your world 🥛🍰🍬";
-});
-arBtn.addEventListener('click', () => {
-  document.body.setAttribute('lang','ar');
-  titleText.textContent = "SWEET-BOY-KNDER";
-  welcomeText.textContent = "أتمنى أن تستمتع بعالمك 🥛🍰🍬";
-});
-</script>
 
 </body>
 </html>
