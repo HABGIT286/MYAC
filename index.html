@@ -5,49 +5,86 @@
 <title>لوحة تحكم Admin</title>
 <style>
 @font-face { font-family: 'TitelFont'; src: url('TITEL.ttf'); }
+@font-face { font-family: 'WriteFont'; src: url('WRITE.otf'); }
+
 body{
     margin:0;
-    font-family:'TitelFont',sans-serif;
-    background:#000;
+    font-family:'WriteFont',sans-serif;
+    overflow: hidden;
+    position: relative;
+    background: #000;
     color:white;
     text-align:center;
+}
+
+#bgVideo{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    object-fit: cover;
 }
 
 .container{
     width:500px;
     margin:50px auto;
-    background: rgba(30,58,95,0.85);
+    background: rgba(30,58,95,0.6);
     padding:30px;
     border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.7);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+}
+
+h1{
+    font-family:'TitelFont';
+    font-size:40px;
+    margin-bottom:20px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
 
 button{
     width:80%;
-    padding:12px;
-    margin:10px auto;
+    padding:14px;
+    margin:12px auto;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     font-size:16px;
     cursor:pointer;
     display:block;
     color:white;
-    background: rgba(179,139,0,0.8);
+    background: rgba(40,100,160,0.6);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    transition: all 0.2s ease-in-out;
+    perspective: 1000px;
+    font-family:'WriteFont';
 }
 
 button:hover{
-    transform: scale(1.03);
-    transition: all 0.2s ease-in-out;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+}
+
+button:active{
+    transform: translateY(2px) scale(0.98);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
 }
 
 input{
     width:70%;
-    padding:10px;
+    padding:12px;
     margin:10px auto;
-    border-radius:6px;
-    border:none;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.4);
     display:block;
     text-align:center;
+    background: rgba(255,255,255,0.15);
+    color:white;
+    font-family:'WriteFont';
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
 }
 
 #msg{
@@ -55,12 +92,34 @@ input{
     font-weight:bold;
     color:#ffdd57;
 }
+
+#allTitles{
+    margin-top:20px;
+    max-height:350px;
+    overflow-y:auto;
+    text-align:right;
+    background: rgba(255,255,255,0.1);
+    padding:10px;
+    border-radius:10px;
+    font-family:'WriteFont';
+}
+
+#allTitles ul{list-style:none;padding:0;margin:0;}
+#allTitles li{
+    padding:8px 10px;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+}
 </style>
 </head>
 <body>
 
+<video autoplay muted loop id="bgVideo">
+    <source src="V.mp4" type="video/mp4">
+    متصفحك لا يدعم عرض الفيديو.
+</video>
+
 <div class="container">
-    <h2>لوحة التحكم Admin</h2>
+    <h1>ONYX</h1>
 
     <!-- زر عرض عناوين الطلاب -->
     <button onclick="showAll()">📋 عناوين الطلاب</button>
@@ -70,8 +129,8 @@ input{
     <button onclick="deleteStudent()">🗑️ حذف طالب</button>
     
     <!-- قفل وفتح الموقع -->
-    <button onclick="lockSite()" style="background:rgba(200,0,0,0.8)">🔒 قفل الموقع</button>
-    <button onclick="unlockSite()" style="background:rgba(0,150,0,0.8)">🔓 فتح الموقع</button>
+    <button onclick="lockSite()" style="background:rgba(200,0,0,0.7)">🔒 قفل الموقع</button>
+    <button onclick="unlockSite()" style="background:rgba(0,150,0,0.7)">🔓 فتح الموقع</button>
 
     <div id="msg"></div>
     <div id="allTitles"></div>
@@ -89,7 +148,7 @@ async function showAll(){
     const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
     const container = document.getElementById("allTitles")
     if(error){ container.innerHTML="❌ فشل تحميل البيانات"; console.log(error); return }
-    let html = "<h3>📄 جميع عناوين الطلاب</h3><ul style='list-style:none;padding:0;'>"
+    let html = "<h3>📄 جميع عناوين الطلاب</h3><ul>"
     data.forEach((d)=>{
         html+=`<li>${d.id}. ${d.name} | ${d.title} | ${d.subject}</li>`
     })
@@ -113,7 +172,7 @@ async function deleteStudent(){
 
 // --- قفل الموقع ---
 async function lockSite(){
-    const {error} = await supabase.from("site_control").update({site_enabled:false}).eq("id",1)
+    const {error} = await supabase.from("site_control").update({locked:true}).eq("id",1)
     const msg = document.getElementById("msg")
     if(error){ msg.innerHTML="❌ فشل قفل الموقع"; console.log(error); return }
     msg.innerHTML="🔒 تم قفل الموقع"
@@ -121,7 +180,7 @@ async function lockSite(){
 
 // --- فتح الموقع ---
 async function unlockSite(){
-    const {error} = await supabase.from("site_control").update({site_enabled:true}).eq("id",1)
+    const {error} = await supabase.from("site_control").update({locked:false}).eq("id",1)
     const msg = document.getElementById("msg")
     if(error){ msg.innerHTML="❌ فشل فتح الموقع"; console.log(error); return }
     msg.innerHTML="🔓 تم فتح الموقع"
