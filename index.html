@@ -221,7 +221,8 @@ async function deleteStudent(id){
 
 // ---------------- تحميل وعرض الطلاب ----------------
 async function loadStudents(){
-    const {data,error}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    // تم تعديل الترتيب ليكون حسب sequence_number
+    const {data,error}=await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
     if(error){ console.log(error); msg.innerHTML="فشل تحميل البيانات"; return }
 
     const table=document.getElementById("studentsTable")
@@ -262,7 +263,7 @@ async function setBadge(){
     const symbol=document.getElementById("badgeSymbol").value.trim()
     if(isNaN(idx) || !symbol){ msg.innerHTML="ادخل رقم الطالب والشارة"; return }
 
-    const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
     if(error){ console.log(error); msg.innerHTML="فشل تحميل بيانات الطلاب"; return }
     if(idx<0 || idx>=data.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
 
@@ -281,7 +282,7 @@ async function setColor(){
     if(isNaN(idx)){ msg.innerHTML="ادخل رقم الطالب"; return }
     if(!selectedColor){ msg.innerHTML="اختر لون"; return }
 
-    const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
     if(error){ console.log(error); msg.innerHTML="فشل تحميل بيانات الطلاب"; return }
     if(idx<0 || idx>=data.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
 
