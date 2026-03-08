@@ -189,40 +189,28 @@ async function toggleAddColumn(){
 
 // --- تحديث الزر حسب الحالة ---
 function updateColumnButton(isDisabled){
+    const msg = document.getElementById('msg')
     if(isDisabled){
         toggleColumnBtn.style.background="rgba(180,0,0,0.9)"
         toggleColumnBtn.innerText = "⛔ إيقاف الإضافة"
         toggleColumnBtn.title = "الإضافة متوقفة"
-        document.getElementById('msg').innerText = "⛔ تم ايقاف الإضافة"
+        msg.innerText = "⛔ تم ايقاف الإضافة"
     } else {
         toggleColumnBtn.style.background="rgba(0,160,0,0.9)"
         toggleColumnBtn.innerText = "✔️ السماح بإضافة عمود"
         toggleColumnBtn.title = "الإضافة مسموحة"
-        document.getElementById('msg').innerText = "✔️ تم تشغيل الإضافة"
+        msg.innerText = "✔️ تم تشغيل الإضافة"
     }
 }
 
 // --- تحديث تلقائي كل ثانيتين ---
-async function refreshData(){
-    // تحديث حالة الزر
-    const {data:control,error:controlError} = await supabase.from('site_control').select('add_disabled').eq('id',1).single()
-    if(!controlError) updateColumnButton(controlError ? false : controlError)
-
-    if(!controlError) updateColumnButton(controlError ? false : controlError) // خطأ سابق، يجب تحديث حسب البيانات الصحيحة
-    if(!controlError) updateColumnButton(controlError ? false : controlError) 
-}
-
-// تصحيح: تحديث الطلاب وحالة الزر
 async function refreshAll(){
-    // تحديث الطلاب
-    await showAll()
-    // تحديث زر الإضافة
+    await showAll() // تحديث الطلاب
     const {data,error} = await supabase.from('site_control').select('add_disabled').eq('id',1).single()
     if(!error && data) updateColumnButton(data.add_disabled)
 }
 
-// تحديث تلقائي كل ثانيتين
-setInterval(refreshAll,2000)
+setInterval(refreshAll,2000) // تحديث كل ثانيتين
 
 // --- قفل الموقع ---
 async function lockSite(){
@@ -246,6 +234,7 @@ window.deleteStudent = deleteStudent
 window.toggleAddColumn = toggleAddColumn
 window.lockSite = lockSite
 window.unlockSite = unlockSite
+
 </script>
 
 </body>
