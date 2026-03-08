@@ -127,6 +127,9 @@ input{
     <!-- حذف طالب -->
     <input type="number" id="deleteStudentId" placeholder="ادخل رقم الطالب">
     <button onclick="deleteStudent()">🗑️ حذف طالب</button>
+
+    <!-- ايقاف اضافة عمود -->
+    <button onclick="disableAddColumn()" style="background:rgba(180,80,0,0.7)">⛔ ايقاف اضافة عمود</button>
     
     <!-- قفل وفتح الموقع -->
     <button onclick="lockSite()" style="background:rgba(200,0,0,0.7)">🔒 قفل الموقع</button>
@@ -156,7 +159,7 @@ async function showAll(){
     container.innerHTML = html
 }
 
-// --- حذف طالب برقم ---
+// --- حذف طالب ---
 async function deleteStudent(){
     const id = parseInt(document.getElementById("deleteStudentId").value)
     const msg = document.getElementById("msg")
@@ -168,6 +171,14 @@ async function deleteStudent(){
     await supabase.from("student_reports").delete().eq("id",id)
     msg.innerHTML=`✅ تم حذف بيانات الطالب: ${data[0].name}`
     await showAll()
+}
+
+// --- ايقاف اضافة عمود ---
+async function disableAddColumn(){
+    const {error} = await supabase.from("site_control").update({add_disabled:true}).eq("id",1)
+    const msg = document.getElementById("msg")
+    if(error){ msg.innerHTML="❌ فشل ايقاف اضافة العمود"; console.log(error); return }
+    msg.innerHTML="⛔ تم ايقاف اضافة الاعمدة"
 }
 
 // --- قفل الموقع ---
@@ -186,9 +197,10 @@ async function unlockSite(){
     msg.innerHTML="🔓 تم فتح الموقع"
 }
 
-// --- تصدير الدوال عالمياً ---
+// --- تصدير الدوال ---
 window.showAll = showAll
 window.deleteStudent = deleteStudent
+window.disableAddColumn = disableAddColumn
 window.lockSite = lockSite
 window.unlockSite = unlockSite
 </script>
