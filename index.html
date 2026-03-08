@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
 <title>لوحة تحكم الطلبة</title>
@@ -29,9 +28,9 @@ body{
 }
 
 .container{
-    width:650px;
-    margin:80px auto;
-    background: rgba(255,255,255,0.8);
+    width:700px;
+    margin:60px auto;
+    background: rgba(255,255,255,0.85);
     padding:30px;
     border-radius:15px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.6);
@@ -44,7 +43,7 @@ h2, h3{text-align:center;}
 input{
     width:100%;
     padding:12px;
-    margin-bottom:15px;
+    margin-bottom:10px;
     border-radius:6px;
     border:1px solid rgba(0,0,0,0.3);
     font-family:'WriteFont',sans-serif;
@@ -77,27 +76,23 @@ button:active{
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-#msg{
-    margin-top:10px;
-    font-weight:bold;
-    text-align:center;
-    color:#222;
-    text-shadow: 1px 1px 4px rgba(255,255,255,0.7);
+.color-palette{
+    display:flex;
+    justify-content:space-between;
+    margin-top:5px;
 }
 
-table{
-    width:100%;
-    margin-top:20px;
-    border-collapse:collapse;
+.color-box{
+    width:28px;
+    height:28px;
+    border-radius:4px;
+    cursor:pointer;
+    border:1px solid #000;
 }
 
-td,th{
-    border:1px solid #ccc;
-    padding:8px;
-    text-align:center;
-    background: rgba(255,255,255,0.6);
-}
-
+#msg{margin-top:10px; font-weight:bold; text-align:center; color:#222; text-shadow:1px 1px 4px rgba(255,255,255,0.7);}
+table{width:100%; margin-top:20px; border-collapse:collapse;}
+td,th{border:1px solid #ccc; padding:8px; text-align:center; background: rgba(255,255,255,0.6);}
 </style>
 </head>
 
@@ -114,10 +109,34 @@ td,th{
 <input id="studentName" placeholder="اسم الطالب">
 <input id="reportTitle" placeholder="عنوان التقرير">
 <input id="subjectName" placeholder="المادة الدراسية">
-
 <br>
 <button onclick="addStudent()">➕ حفظ</button>
 <button onclick="updateStudent()">✏ تعديل</button>
+
+<hr>
+
+<h3>تمييز الطالب</h3>
+<input id="badgeIndex" placeholder="رقم الطالب">
+<input id="badgeSymbol" placeholder="⭐ ضع شارة أو نص">
+<button onclick="setBadge()">تمييز</button>
+
+<hr>
+
+<h3>تلوين الطالب</h3>
+<input id="colorIndex" placeholder="رقم الطالب">
+<div class="color-palette">
+    <div class="color-box" style="background:red;" onclick="selectColor('red')"></div>
+    <div class="color-box" style="background:blue;" onclick="selectColor('blue')"></div>
+    <div class="color-box" style="background:green;" onclick="selectColor('green')"></div>
+    <div class="color-box" style="background:orange;" onclick="selectColor('orange')"></div>
+    <div class="color-box" style="background:purple;" onclick="selectColor('purple')"></div>
+    <div class="color-box" style="background:pink;" onclick="selectColor('pink')"></div>
+    <div class="color-box" style="background:yellow;" onclick="selectColor('yellow')"></div>
+    <div class="color-box" style="background:brown;" onclick="selectColor('brown')"></div>
+    <div class="color-box" style="background:cyan;" onclick="selectColor('cyan')"></div>
+    <div class="color-box" style="background:gray;" onclick="selectColor('gray')"></div>
+</div>
+<button onclick="setColor()">تلوين</button>
 
 <div id="msg"></div>
 
@@ -147,68 +166,34 @@ const SUPABASE_KEY="sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
 
 let selectedID=null
+let selectedColor=null
 
-function generateCode(){
-    return Math.floor(1000 + Math.random()*9000).toString();
-}
+function selectColor(color){ selectedColor=color; }
 
 async function addStudent(){
     const name=document.getElementById("studentName").value.trim()
     const title=document.getElementById("reportTitle").value.trim()
     const subject=document.getElementById("subjectName").value.trim()
     const msg=document.getElementById("msg")
-
-    if(!name||!title||!subject){
-        msg.innerHTML="املأ جميع الحقول"
-        return
-    }
-
-    // إنشاء كود فريد للطالب
-    let code = generateCode()
-    let unique = false
-    while(!unique){
-        const {data:existing} = await supabase.from("student_reports").select("*").eq("code",code)
-        if(!existing || existing.length===0) unique=true
-        else code = generateCode()
-    }
+    if(!name||!title||!subject){ msg.innerHTML="املأ جميع الحقول"; return }
 
     const now=new Date().toISOString()
-    const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now,code}])
-
-    if(error){
-        msg.innerHTML="فشل الإضافة"
-        console.log(error)
-        return
-    }
+    const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now}])
+    if(error){ msg.innerHTML="فشل الإضافة"; console.log(error); return }
 
     msg.innerHTML="تم إضافة الطالب"
     clearInputs()
 }
 
 async function updateStudent(){
-    if(!selectedID){
-        alert("اختر طالب للتعديل")
-        return
-    }
-
+    if(!selectedID){ alert("اختر طالب للتعديل"); return }
     const name=document.getElementById("studentName").value.trim()
     const title=document.getElementById("reportTitle").value.trim()
     const subject=document.getElementById("subjectName").value.trim()
-
-    if(!name||!title||!subject){
-        alert("املأ جميع الحقول")
-        return
-    }
-
+    if(!name||!title||!subject){ alert("املأ جميع الحقول"); return }
     const now=new Date().toISOString()
     const {error}=await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
-
-    if(error){
-        alert("فشل التعديل")
-        console.log(error)
-        return
-    }
-
+    if(error){ alert("فشل التعديل"); console.log(error); return }
     alert("تم التعديل")
     clearInputs()
 }
@@ -232,10 +217,12 @@ async function loadStudents(){
     const table=document.getElementById("studentsTable")
     table.innerHTML=""
     data.forEach((s,i)=>{
+        let displayName = s.name
+        if(s.badge) displayName = `${s.badge} ${displayName}`
         table.innerHTML+=`
         <tr>
         <td>${i+1}</td>
-        <td>${s.name}</td>
+        <td style="color:${s.color||'black'}">${displayName}</td>
         <td>${s.title}</td>
         <td>${s.subject}</td>
         <td>${new Date(s.date).toLocaleString()}</td>
@@ -252,10 +239,35 @@ function clearInputs(){
     document.getElementById("studentName").value=""
     document.getElementById("reportTitle").value=""
     document.getElementById("subjectName").value=""
+    document.getElementById("badgeIndex").value=""
+    document.getElementById("badgeSymbol").value=""
+    document.getElementById("colorIndex").value=""
     selectedID=null
 }
 
-// Realtime: التحديث الفوري عند أي تغيير
+// ---------------- تمييز الطلاب ----------------
+async function setBadge(){
+    const idx=parseInt(document.getElementById("badgeIndex").value)-1
+    const symbol=document.getElementById("badgeSymbol").value.trim()
+    if(isNaN(idx) || !symbol){ alert("ادخل رقم الطالب والشارة"); return }
+    const {data}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    if(idx<0 || idx>=data.length){ alert("رقم غير صحيح"); return }
+    const studentID=data[idx].id
+    await supabase.from("student_reports").update({badge:symbol}).eq("id",studentID)
+}
+
+// ---------------- تلوين الطلاب ----------------
+async function setColor(){
+    const idx=parseInt(document.getElementById("colorIndex").value)-1
+    if(idx<0){ alert("رقم الطالب"); return }
+    if(!selectedColor){ alert("اختر لون"); return }
+    const {data}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    if(idx>=data.length){ alert("رقم غير صحيح"); return }
+    const studentID=data[idx].id
+    await supabase.from("student_reports").update({color:selectedColor}).eq("id",studentID)
+}
+
+// ---------------- Realtime ----------------
 supabase.channel("students_channel")
 .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},payload=>{
     loadStudents()
@@ -266,9 +278,11 @@ window.addStudent=addStudent
 window.updateStudent=updateStudent
 window.deleteStudent=deleteStudent
 window.editStudent=editStudent
+window.setBadge=setBadge
+window.selectColor=selectColor
+window.setColor=setColor
 
 loadStudents()
 </script>
-
 </body>
 </html>
