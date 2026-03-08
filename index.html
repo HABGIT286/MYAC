@@ -148,6 +148,10 @@ const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
 
 let selectedID=null
 
+function generateCode(){
+    return Math.floor(1000 + Math.random()*9000).toString();
+}
+
 async function addStudent(){
     const name=document.getElementById("studentName").value.trim()
     const title=document.getElementById("reportTitle").value.trim()
@@ -159,8 +163,17 @@ async function addStudent(){
         return
     }
 
+    // إنشاء كود فريد للطالب
+    let code = generateCode()
+    let unique = false
+    while(!unique){
+        const {data:existing} = await supabase.from("student_reports").select("*").eq("code",code)
+        if(!existing || existing.length===0) unique=true
+        else code = generateCode()
+    }
+
     const now=new Date().toISOString()
-    const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now}])
+    const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now,code}])
 
     if(error){
         msg.innerHTML="فشل الإضافة"
@@ -242,7 +255,7 @@ function clearInputs(){
     selectedID=null
 }
 
-// Realtime: التحديث التلقائي عند أي تغيير
+// Realtime: التحديث الفوري عند أي تغيير
 supabase.channel("students_channel")
 .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},payload=>{
     loadStudents()
