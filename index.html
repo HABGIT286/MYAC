@@ -30,7 +30,7 @@ body{
 }
 
 .container{
-    width:600px;
+    width:700px;
     margin:50px auto;
     background: rgba(30,58,95,0.6);
     padding:30px;
@@ -110,6 +110,8 @@ input{
 #studentTable th{
     background: rgba(40,80,150,0.7);
 }
+
+.editInputs{display:none;margin-top:10px;}
 </style>
 </head>
 <body>
@@ -122,14 +124,18 @@ input{
 <div class="container">
 <h1>ONYX Admin Panel</h1>
 
+<!-- إضافة طالب -->
 <button id="showAddFormBtn" onclick="showAddForm()">➕ إضافة طالب</button>
-
 <div id="addForm" style="display:none">
     <input type="text" id="newName" placeholder="اسم الطالب">
     <input type="text" id="newTitle" placeholder="عنوان التقرير">
     <input type="text" id="newSubject" placeholder="المادة">
     <button onclick="addStudent()">💾 حفظ</button>
 </div>
+
+<!-- حذف طالب -->
+<input type="number" id="deleteStudentId" placeholder="ادخل رقم الطالب">
+<button onclick="deleteStudent()">🗑️ حذف طالب</button>
 
 <div id="msg"></div>
 
@@ -141,6 +147,7 @@ input{
     <th>عنوان التقرير</th>
     <th>المادة</th>
     <th>تاريخ الإضافة</th>
+    <th>تحكم</th>
 </tr>
 </thead>
 <tbody>
@@ -195,6 +202,35 @@ async function addStudent(){
     addForm.style.display='none'
 }
 
+// --- حذف طالب ---
+async function deleteStudent(){
+    const id = parseInt(document.getElementById('deleteStudentId').value)
+    if(!id){ msg.innerText="⚠️ أدخل رقم صحيح"; return }
+
+    const {error} = await supabase.from('student_reports').delete().eq('id',id)
+    if(error){ msg.innerText="❌ خطأ في الحذف"; console.log(error); return }
+
+    msg.innerText = `✅ تم حذف الطالب: ${id}`
+}
+
+// --- تعديل وحفظ بيانات طالب موجود ---
+async function saveEdit(id){
+    const name = document.getElementById(`editName-${id}`).value.trim()
+    const title = document.getElementById(`editTitle-${id}`).value.trim()
+    const subject = document.getElementById(`editSubject-${id}`).value.trim()
+    if(!name || !title || !subject){ msg.innerText="⚠️ املأ كل الحقول"; return }
+
+    const {error} = await supabase.from('student_reports').update({name,title,subject}).eq('id',id)
+    if(error){ msg.innerText="❌ خطأ في التعديل"; console.log(error); return }
+    msg.innerText = `✔️ تم تعديل بيانات الطالب: ${name}`
+}
+
+// --- اظهار/اخفاء نموذج التعديل ---
+function toggleEdit(id){
+    const div = document.getElementById(`edit-${id}`)
+    div.style.display = div.style.display==='none'?'block':'none'
+}
+
 // --- عرض جميع الطلاب مباشرة ---
 async function showAll(){
     const {data,error} = await supabase.from('student_reports').select("*").order('id',{ascending:true})
@@ -209,6 +245,15 @@ async function showAll(){
             <td>${d.title}</td>
             <td>${d.subject}</td>
             <td>${new Date(d.created_at).toLocaleString()}</td>
+            <td>
+                <button onclick="toggleEdit(${d.id})">✏️ تعديل</button>
+                <div class="editInputs" id="edit-${d.id}">
+                    <input id="editName-${d.id}" value="${d.name}" placeholder="الاسم">
+                    <input id="editTitle-${d.id}" value="${d.title}" placeholder="عنوان التقرير">
+                    <input id="editSubject-${d.id}" value="${d.subject}" placeholder="المادة">
+                    <button onclick="saveEdit(${d.id})">💾 حفظ</button>
+                </div>
+            </td>
         `
         tbody.appendChild(tr)
     })
