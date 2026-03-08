@@ -109,39 +109,35 @@ input{
     padding:8px 10px;
     border-bottom:1px solid rgba(255,255,255,0.2);
 }
-.editInputs{display:none;margin-top:10px;}
+.editInputs, #addForm{ display:none; margin-top:10px; }
 </style>
 </head>
 <body>
-
 <video autoplay muted loop id="bgVideo">
     <source src="V.mp4" type="video/mp4">
     متصفحك لا يدعم عرض الفيديو.
 </video>
 
 <div class="container">
-    <h1>ONYX Admin Panel</h1>
+<h1>ONYX Admin Panel</h1>
 
-    <!-- عرض وحذف -->
-    <button onclick="showAll()">📋 عرض جميع الطلاب</button>
-    <input type="number" id="deleteStudentId" placeholder="ادخل رقم الطالب">
-    <button onclick="deleteStudent()">🗑️ حذف طالب</button>
+<button onclick="showAll()">📋 عرض جميع الطلاب</button>
+<input type="number" id="deleteStudentId" placeholder="ادخل رقم الطالب">
+<button onclick="deleteStudent()">🗑️ حذف طالب</button>
 
-    <!-- أزرار التحكم -->
-    <button id="toggleLockBtn" onclick="toggleLock()">🔒 قفل الموقع</button>
-    <button id="toggleAddBtn" onclick="toggleAddColumn()">✔️ السماح بإضافة عمود</button>
+<button id="toggleLockBtn" onclick="toggleLock()">🔒 قفل الموقع</button>
+<button id="toggleAddBtn" onclick="toggleAddColumn()">✔️ السماح/إيقاف الإضافة</button>
 
-    <!-- إضافة طالب -->
-    <button id="showAddFormBtn" onclick="showAddForm()" style="background:rgba(0,160,0,0.7)">➕ إضافة طالب</button>
-    <div id="addForm">
-        <input type="text" id="newName" placeholder="اسم الطالب">
-        <input type="text" id="newTitle" placeholder="عنوان التقرير">
-        <input type="text" id="newSubject" placeholder="المادة">
-        <button onclick="addStudent()">💾 حفظ</button>
-    </div>
+<button id="showAddFormBtn" onclick="showAddForm()" style="background:rgba(0,160,0,0.7)">➕ إضافة طالب</button>
+<div id="addForm">
+    <input type="text" id="newName" placeholder="اسم الطالب">
+    <input type="text" id="newTitle" placeholder="عنوان التقرير">
+    <input type="text" id="newSubject" placeholder="المادة">
+    <button onclick="addStudent()">💾 حفظ</button>
+</div>
 
-    <div id="msg"></div>
-    <div id="allTitles"></div>
+<div id="msg"></div>
+<div id="allTitles"></div>
 </div>
 
 <script type="module">
@@ -158,9 +154,9 @@ const addForm = document.getElementById('addForm')
 const msg = document.getElementById('msg')
 const allTitles = document.getElementById('allTitles')
 
-// --- عرض جميع الطلاب مع زر تعديل ---
+// --- عرض الطلاب مع زر تعديل ---
 async function showAll(){
-    const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    const {data,error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
     if(error){ console.log(error); return }
     let html = "<h3>📄 جميع عناوين الطلاب</h3><ul>"
     data.forEach(d=>{
@@ -179,13 +175,12 @@ async function showAll(){
     allTitles.innerHTML = html
 }
 
-// --- إظهار/اخفاء نموذج تعديل ---
+// --- تعديل ---
 function showEdit(id){
     const div = document.getElementById(`edit-${id}`)
     div.style.display = div.style.display==='none'?'block':'none'
 }
 
-// --- حفظ التعديل ---
 async function saveEdit(id){
     const name = document.getElementById(`editName-${id}`).value.trim()
     const title = document.getElementById(`editTitle-${id}`).value.trim()
@@ -196,11 +191,11 @@ async function saveEdit(id){
     msg.innerText=`✔️ تم تعديل بيانات الطالب: ${name}`
 }
 
-// --- حذف طالب ---
+// --- حذف ---
 async function deleteStudent(){
-    const id = parseInt(document.getElementById("deleteStudentId").value)
+    const id = parseInt(document.getElementById('deleteStudentId').value)
     if(!id){ msg.innerText="⚠️ أدخل رقم صحيح"; return }
-    const {error} = await supabase.from("student_reports").delete().eq('id',id)
+    const {error} = await supabase.from('student_reports').delete().eq('id',id)
     if(error){ msg.innerText="❌ خطأ في الحذف"; return }
     msg.innerText=`✅ تم حذف الطالب: ${id}`
 }
@@ -211,14 +206,23 @@ async function addStudent(){
     const title = document.getElementById('newTitle').value.trim()
     const subject = document.getElementById('newSubject').value.trim()
     if(!name || !title || !subject){ msg.innerText="⚠️ املأ كل الحقول"; return }
+
+    // تحقق إذا الإضافة موقوفة
+    const {data:control,error:controlError} = await supabase.from('site_control').select('add_disabled').eq('id',1).single()
+    if(controlError || control?.add_disabled){ msg.innerText="⛔ لا يمكنك إضافة طالب الآن"; return }
+
     const {error} = await supabase.from('student_reports').insert([{name,title,subject}])
     if(error){ msg.innerText="❌ فشل إضافة الطالب"; console.log(error); return }
+
     msg.innerText=`✔️ تم إضافة الطالب: ${name}`
     addForm.style.display='none'
+    showAll()
 }
 
-// --- اظهار/اخفاء نموذج الإضافة ---
-function showAddForm(){ addForm.style.display = addForm.style.display==='none'?'block':'none' }
+// --- إظهار/إخفاء نموذج الإضافة ---
+function showAddForm(){
+    addForm.style.display = addForm.style.display==='none'?'block':'none'
+}
 
 // --- تبديل حالة القفل ---
 async function toggleLock(){
@@ -229,7 +233,7 @@ async function toggleLock(){
     updateLockButton(newStatus)
 }
 
-// --- تبديل حالة إضافة العمود ---
+// --- تبديل حالة الإضافة ---
 async function toggleAddColumn(){
     const {data,error} = await supabase.from('site_control').select('add_disabled').eq('id',1).single()
     if(error){ console.log(error); return }
@@ -240,48 +244,31 @@ async function toggleAddColumn(){
 
 // --- تحديث الأزرار ---
 function updateLockButton(isLocked){
-    if(isLocked){
-        toggleLockBtn.innerText = "🔒 الموقع مغلق"
-        toggleLockBtn.style.background = "rgba(200,0,0,0.9)"
-        msg.innerText = "🔒 تم قفل الموقع"
-    } else {
-        toggleLockBtn.innerText = "🔓 فتح الموقع"
-        toggleLockBtn.style.background = "rgba(0,150,0,0.9)"
-        msg.innerText = "🔓 تم فتح الموقع"
-    }
+    toggleLockBtn.innerText = isLocked?"🔒 الموقع مغلق":"🔓 فتح الموقع"
+    toggleLockBtn.style.background = isLocked?"rgba(200,0,0,0.9)":"rgba(0,150,0,0.9)"
+    msg.innerText = isLocked?"🔒 تم قفل الموقع":"🔓 تم فتح الموقع"
 }
 function updateAddButton(isDisabled){
-    if(isDisabled){
-        toggleAddBtn.innerText = "⛔ إيقاف الإضافة"
-        toggleAddBtn.style.background = "rgba(180,0,0,0.9)"
-        showAddFormBtn.style.display = 'none'
-        msg.innerText = "⛔ تم ايقاف الإضافة"
-    } else {
-        toggleAddBtn.innerText = "✔️ السماح بإضافة عمود"
-        toggleAddBtn.style.background = "rgba(0,160,0,0.9)"
-        showAddFormBtn.style.display = 'block'
-        msg.innerText = "✔️ تم تشغيل الإضافة"
-    }
+    toggleAddBtn.innerText = isDisabled?"⛔ إيقاف الإضافة":"✔️ السماح بإضافة عمود"
+    toggleAddBtn.style.background = isDisabled?"rgba(180,0,0,0.9)":"rgba(0,160,0,0.9)"
+    showAddFormBtn.style.display = isDisabled?'none':'block'
+    msg.innerText = isDisabled?"⛔ تم ايقاف الإضافة":"✔️ تم تشغيل الإضافة"
 }
 
-// --- Realtime لجميع التغييرات ---
+// --- Realtime ---
 supabase
   .channel('public:student_reports')
-  .on('postgres_changes', { event: '*', schema: 'public', table: 'student_reports' }, payload=>{
-      showAll()
-  })
+  .on('postgres_changes',{event:'*',schema:'public',table:'student_reports'},()=>showAll())
   .subscribe()
 
 supabase
   .channel('public:site_control')
-  .on('postgres_changes', { event: '*', schema: 'public', table: 'site_control' }, payload=>{
-      fetchControlRealtime()
-  })
+  .on('postgres_changes',{event:'*',schema:'public',table:'site_control'},()=>fetchControlRealtime())
   .subscribe()
 
 async function fetchControlRealtime(){
     const {data,error} = await supabase.from('site_control').select('*').eq('id',1).single()
-    if(!error) {
+    if(!error){
         updateLockButton(data.locked)
         updateAddButton(data.add_disabled)
     }
@@ -290,7 +277,6 @@ async function fetchControlRealtime(){
 // --- البداية ---
 showAll()
 fetchControlRealtime()
-
 </script>
 </body>
 </html>
