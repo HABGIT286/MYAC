@@ -4,33 +4,85 @@
 <head>
 <meta charset="UTF-8">
 <title>لوحة تحكم الطلبة</title>
-
 <style>
+@font-face { font-family: 'TitelFont'; src: url('TITEL.ttf'); }
+@font-face { font-family: 'WriteFont'; src: url('WRITE.otf'); }
+
 body{
-    font-family:Arial;
-    background:#f5f5f5;
-    text-align:center;
+    margin:0;
+    font-family:'WriteFont',sans-serif;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+}
+
+#bgVideo{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    object-fit: cover;
 }
 
 .container{
-    width:600px;
-    margin:auto;
-    background:white;
+    width:650px;
+    margin:80px auto;
+    background: rgba(255,255,255,0.8);
     padding:30px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    border-radius:15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    font-family:'WriteFont',sans-serif;
+    backdrop-filter: blur(5px);
 }
 
+h2, h3{text-align:center;}
+
 input{
-    width:90%;
-    padding:10px;
-    margin:8px;
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:6px;
+    border:1px solid rgba(0,0,0,0.3);
+    font-family:'WriteFont',sans-serif;
+    background: rgba(255,255,255,0.6);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
 }
 
 button{
-    padding:10px 20px;
-    margin:5px;
+    width:48%;
+    padding:12px;
+    margin:5px 1%;
+    border:none;
+    border-radius:10px;
     cursor:pointer;
+    font-size:16px;
+    font-family:'WriteFont',sans-serif;
+    color:white;
+    background: rgba(30,58,95,0.7);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover{
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}
+
+button:active{
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+#msg{
+    margin-top:10px;
+    font-weight:bold;
+    text-align:center;
+    color:#222;
+    text-shadow: 1px 1px 4px rgba(255,255,255,0.7);
 }
 
 table{
@@ -42,16 +94,21 @@ table{
 td,th{
     border:1px solid #ccc;
     padding:8px;
+    text-align:center;
+    background: rgba(255,255,255,0.6);
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<video autoplay muted loop id="bgVideo">
+    <source src="V.mp4" type="video/mp4">
+    متصفحك لا يدعم عرض الفيديو.
+</video>
 
+<div class="container">
 <h2>إضافة / تعديل طالب</h2>
 
 <input id="studentName" placeholder="اسم الطالب">
@@ -59,7 +116,6 @@ td,th{
 <input id="subjectName" placeholder="المادة الدراسية">
 
 <br>
-
 <button onclick="addStudent()">➕ حفظ</button>
 <button onclick="updateStudent()">✏ تعديل</button>
 
@@ -78,24 +134,20 @@ td,th{
 <th>تحكم</th>
 </tr>
 </thead>
-
 <tbody id="studentsTable"></tbody>
 </table>
 
 </div>
 
 <script type="module">
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const SUPABASE_URL="https://mcwemgjmqwbgxoyiwant.supabase.co"
 const SUPABASE_KEY="sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
-
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
 
 let selectedID=null
 
-// إضافة طالب جديد
 async function addStudent(){
     const name=document.getElementById("studentName").value.trim()
     const title=document.getElementById("reportTitle").value.trim()
@@ -108,10 +160,7 @@ async function addStudent(){
     }
 
     const now=new Date().toISOString()
-
-    const {error}=await supabase
-        .from("student_reports")
-        .insert([{name,title,subject,date:now}])
+    const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now}])
 
     if(error){
         msg.innerHTML="فشل الإضافة"
@@ -123,7 +172,6 @@ async function addStudent(){
     clearInputs()
 }
 
-// تعديل بيانات الطالب
 async function updateStudent(){
     if(!selectedID){
         alert("اختر طالب للتعديل")
@@ -140,11 +188,7 @@ async function updateStudent(){
     }
 
     const now=new Date().toISOString()
-
-    const {error}=await supabase
-        .from("student_reports")
-        .update({name,title,subject,date:now})
-        .eq("id",selectedID)
+    const {error}=await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
 
     if(error){
         alert("فشل التعديل")
@@ -156,7 +200,6 @@ async function updateStudent(){
     clearInputs()
 }
 
-// تعبئة الحقول عند اختيار طالب للتعديل
 function editStudent(student){
     selectedID=student.id
     document.getElementById("studentName").value=student.name
@@ -164,33 +207,17 @@ function editStudent(student){
     document.getElementById("subjectName").value=student.subject
 }
 
-// حذف طالب
 async function deleteStudent(id){
-    if(!confirm("حذف الطالب؟"))return
-
-    const {error}=await supabase
-        .from("student_reports")
-        .delete()
-        .eq("id",id)
-
-    if(error){
-        alert("فشل الحذف")
-        console.log(error)
-    }
+    if(!confirm("حذف الطالب؟")) return
+    const {error}=await supabase.from("student_reports").delete().eq("id",id)
+    if(error){ console.log(error); alert("فشل الحذف") }
 }
 
-// تحميل وعرض جميع الطلبة
 async function loadStudents(){
-    const {data,error}=await supabase
-        .from("student_reports")
-        .select("*")
-        .order("id",{ascending:true})
-
+    const {data,error}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
     if(error){ console.log(error); return }
-
     const table=document.getElementById("studentsTable")
     table.innerHTML=""
-
     data.forEach((s,i)=>{
         table.innerHTML+=`
         <tr>
@@ -208,7 +235,6 @@ async function loadStudents(){
     })
 }
 
-// مسح الحقول
 function clearInputs(){
     document.getElementById("studentName").value=""
     document.getElementById("reportTitle").value=""
@@ -216,23 +242,19 @@ function clearInputs(){
     selectedID=null
 }
 
-// تفعيل Realtime
-supabase
-.channel("students_channel")
+// Realtime: التحديث التلقائي عند أي تغيير
+supabase.channel("students_channel")
 .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},payload=>{
     loadStudents()
 })
 .subscribe()
 
-// تعيين الدوال للعناصر
 window.addStudent=addStudent
 window.updateStudent=updateStudent
 window.deleteStudent=deleteStudent
 window.editStudent=editStudent
 
-// تحميل الطلبة عند فتح الصفحة
 loadStudents()
-
 </script>
 
 </body>
