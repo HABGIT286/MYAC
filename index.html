@@ -3,153 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <title>عناوين تقارير الطلبة</title>
+
 <style>
 @font-face { font-family: 'TitelFont'; src: url('TITEL.ttf'); }
 @font-face { font-family: 'WriteFont'; src: url('WRITE.otf'); }
 
 body{
-    margin:0;
-    font-family:'WriteFont',sans-serif;
-    overflow: hidden;
-    position: relative;
-    background: #000;
+margin:0;
+font-family:'WriteFont',sans-serif;
+overflow:hidden;
+position:relative;
+background:#000;
 }
 
 #bgVideo{
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -1;
-    object-fit: cover;
+position:fixed;
+right:0;
+bottom:0;
+min-width:100%;
+min-height:100%;
+z-index:-1;
+object-fit:cover;
 }
 
 .header{
-    text-align:center;
-    font-size:32px;
-    font-weight:bold;
-    padding:20px;
-    background:rgba(30,58,95,0.8);
-    color:white;
-    font-family:'TitelFont',sans-serif;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+text-align:center;
+font-size:32px;
+font-weight:bold;
+padding:20px;
+background:rgba(30,58,95,0.8);
+color:white;
+font-family:'TitelFont';
 }
 
 .container{
-    width:650px;
-    margin:80px auto;
-    background: rgba(255,255,255,0.8);
-    padding:30px;
-    border-radius:15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    font-family:'WriteFont',sans-serif;
-    backdrop-filter: blur(5px);
+width:650px;
+margin:80px auto;
+background:rgba(255,255,255,0.8);
+padding:30px;
+border-radius:15px;
+box-shadow:0 8px 25px rgba(0,0,0,0.6);
 }
 
 input{
-    width:100%;
-    padding:12px;
-    margin-bottom:15px;
-    border-radius:6px;
-    border:1px solid rgba(0,0,0,0.3);
-    font-family:'WriteFont',sans-serif;
-    background: rgba(255,255,255,0.6);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid rgba(0,0,0,0.3);
 }
 
 button{
-    width:100%;
-    padding:14px;
-    margin-bottom:12px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-    font-family:'WriteFont',sans-serif;
-    color:white;
-    background: rgba(30,58,95,0.7);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-    transition: all 0.2s ease-in-out;
-    perspective: 1000px;
+width:100%;
+padding:14px;
+margin-bottom:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+color:white;
+background:rgba(30,58,95,0.7);
 }
 
-button:hover{
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-}
+.save{background:rgba(30,58,95,0.8);}
+.change{background:rgba(179,139,0,0.8);}
+.info{background:rgba(0,107,56,0.8);}
+.show{background:rgba(139,0,0,0.8);}
+.delete{background:rgba(170,0,0,0.8);}
 
-button:active{
-    transform: translateY(1px) scale(0.98);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-.save{background: rgba(30,58,95,0.8);}
-.change{background: rgba(179,139,0,0.8);}
-.info{background: rgba(0,107,56,0.8);}
-.show{background: rgba(139,0,0,0.8);}
-.delete{background: rgba(170,0,0,0.8);}
-
-#msg{
-    margin-top:10px;
-    font-weight:bold;
-    text-align:center;
-    color:#222;
-    text-shadow: 1px 1px 4px rgba(255,255,255,0.7);
-}
-
-#infoBox, #allTitles{
-    margin-top:20px;
-    padding:15px;
-    background: rgba(240,240,240,0.7);
-    border-radius:10px;
-    max-height:350px;
-    overflow-y:auto;
-    font-family:'WriteFont',sans-serif;
-    backdrop-filter: blur(5px);
-}
-
-#allTitles ul{list-style:none;padding:0;margin:0;}
-#allTitles li{
-    padding:8px 10px;
-    border-bottom:1px solid rgba(0,0,0,0.2);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-#allTitles li span.time{
-    color:#555;
-    font-size:12px;
-    flex-shrink:0;
-    direction:ltr;
-}
-
-#allTitles li span.info{
-    margin-right:10px;
-    flex-grow:1;
+#infoBox,#allTitles{
+margin-top:20px;
+padding:15px;
+background:rgba(240,240,240,0.7);
+border-radius:10px;
+max-height:350px;
+overflow-y:auto;
 }
 
 .highlight{
-    background: rgba(255,255,0,0.3);
-    border-left:4px solid #ff0;
-    padding-left:4px;
-    border-radius:3px;
+background:rgba(255,255,0,0.3);
 }
 </style>
 </head>
+
 <body>
 
 <video autoplay muted loop id="bgVideo">
-    <source src="V.mp4" type="video/mp4">
-    متصفحك لا يدعم عرض الفيديو.
+<source src="V.mp4" type="video/mp4">
 </video>
 
 <div class="header">عناوين تقارير الطلبة</div>
 
 <div class="container">
+
 <input id="studentName" placeholder="اسم الطالب الثنائي">
 <input id="reportTitle" placeholder="عنوان التقرير">
 <input id="subjectName" placeholder="المادة الدراسية">
@@ -163,121 +109,239 @@ button:active{
 <div id="msg"></div>
 <div id="infoBox"></div>
 <div id="allTitles"></div>
+
 </div>
 
 <script type="module">
+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
-const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+const SUPABASE_URL="https://mcwemgjmqwbgxoyiwant.supabase.co"
+const SUPABASE_KEY="sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
+
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
 
 function formatDate(ts){
-    if(!ts) return ""
-    const d = new Date(ts)
-    const h = String(d.getHours()).padStart(2,'0')
-    const m = String(d.getMinutes()).padStart(2,'0')
-    const s = String(d.getSeconds()).padStart(2,'0')
-    return `${h}:${m}:${s} (${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()})`
+if(!ts)return""
+const d=new Date(ts)
+return d.toLocaleString()
 }
 
 function generateCode(){
-    return Math.floor(1000 + Math.random()*9000).toString()
+return Math.floor(1000+Math.random()*9000).toString()
 }
 
 async function saveData(){
-    const name = document.getElementById("studentName").value.trim()
-    const title = document.getElementById("reportTitle").value.trim()
-    const subject = document.getElementById("subjectName").value.trim()
-    const msg = document.getElementById("msg")
-    if(name.split(/\s+/).length < 2){ msg.innerHTML="الاسم يجب أن يكون ثنائي على الأقل"; return; }
-    if(!name||!title||!subject){ msg.innerHTML="املأ جميع الحقول"; return }
 
-    let code = localStorage.getItem("studentCode")
-    if(!code){
-        let unique = false
-        while(!unique){
-            code = generateCode()
-            const {data:codeCheck} = await supabase.from("student_reports").select("*").eq("code", code)
-            if(!codeCheck || codeCheck.length===0) unique = true
-        }
-        localStorage.setItem("studentCode", code)
-    }
+const name=document.getElementById("studentName").value.trim()
+const title=document.getElementById("reportTitle").value.trim()
+const subject=document.getElementById("subjectName").value.trim()
+const msg=document.getElementById("msg")
 
-    const now = new Date().toISOString()
-    const {error} = await supabase.from("student_reports").insert([{name,title,subject,date:now,code}])
-    if(error){ msg.innerHTML="فشل الحفظ"; console.log(error); return }
-    msg.innerHTML="تم حفظ البيانات بنجاح"
-    await showMyInfo()
-    await showAll()
+if(name.split(/\s+/).length<2){
+msg.innerHTML="الاسم يجب أن يكون ثنائي"
+return
+}
+
+if(!name||!title||!subject){
+msg.innerHTML="املأ جميع الحقول"
+return
+}
+
+let code=localStorage.getItem("studentCode")
+
+if(!code){
+
+let unique=false
+
+while(!unique){
+
+code=generateCode()
+
+const {data}=await supabase
+.from("student_reports")
+.select("*")
+.eq("code",code)
+
+if(!data||data.length===0)unique=true
+
+}
+
+localStorage.setItem("studentCode",code)
+
+}
+
+const now=new Date().toISOString()
+
+const {error}=await supabase
+.from("student_reports")
+.insert([{name,title,subject,data:now,code}])
+
+if(error){
+msg.innerHTML="فشل الحفظ"
+console.log(error)
+return
+}
+
+msg.innerHTML="تم حفظ البيانات"
+
+showMyInfo()
+showAll()
+
 }
 
 async function changeTitle(){
-    const code = localStorage.getItem("studentCode")
-    const msg = document.getElementById("msg")
-    if(!code){ msg.innerHTML="ادخل بياناتك أولاً"; return }
-    const newTitle = prompt("ادخل العنوان الجديد")
-    if(!newTitle) return
-    const now = new Date().toISOString()
-    const {error} = await supabase.from("student_reports").update({title:newTitle,date:now}).eq("code", code)
-    if(error){ msg.innerHTML="فشل التحديث"; console.log(error); return }
-    msg.innerHTML="تم تغيير العنوان"
-    await showMyInfo()
-    await showAll()
+
+const code=localStorage.getItem("studentCode")
+const msg=document.getElementById("msg")
+
+if(!code){
+msg.innerHTML="ادخل بياناتك أولاً"
+return
+}
+
+const newTitle=prompt("ادخل العنوان الجديد")
+
+if(!newTitle)return
+
+const now=new Date().toISOString()
+
+const {error}=await supabase
+.from("student_reports")
+.update({title:newTitle,data:now})
+.eq("code",code)
+
+if(error){
+msg.innerHTML="فشل التحديث"
+console.log(error)
+return
+}
+
+msg.innerHTML="تم تغيير العنوان"
+
+showMyInfo()
+showAll()
+
 }
 
 async function showMyInfo(){
-    const code = localStorage.getItem("studentCode")
-    const infoBox = document.getElementById("infoBox")
-    const msg = document.getElementById("msg")
-    if(!code){ msg.innerHTML="لم يتم إدخال بياناتك بعد"; return }
-    const {data,error} = await supabase.from("student_reports").select("*").eq("code", code).single()
-    if(error || !data){ msg.innerHTML="لا توجد بيانات"; infoBox.innerHTML=""; return }
-    infoBox.innerHTML = `<h4>معلومات الطالب</h4>
-        <p><strong>الاسم:</strong> ${data.name}</p>
-        <p><strong>العنوان:</strong> ${data.title}</p>
-        <p><strong>المادة:</strong> ${data.subject}</p>
-        <p><strong>التاريخ:</strong> ${formatDate(data.date)}</p>`
+
+const code=localStorage.getItem("studentCode")
+const infoBox=document.getElementById("infoBox")
+
+if(!code){
+infoBox.innerHTML=""
+return
+}
+
+const {data}=await supabase
+.from("student_reports")
+.select("*")
+.eq("code",code)
+.single()
+
+if(!data){
+infoBox.innerHTML=""
+return
+}
+
+infoBox.innerHTML=`
+<h4>معلومات الطالب</h4>
+<p><b>الاسم:</b> ${data.name}</p>
+<p><b>العنوان:</b> ${data.title}</p>
+<p><b>المادة:</b> ${data.subject}</p>
+<p><b>التاريخ:</b> ${formatDate(data.data)}</p>
+`
+
 }
 
 async function showAll(){
-    const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-    const container = document.getElementById("allTitles")
-    const code = localStorage.getItem("studentCode")
-    if(error){ container.innerHTML="فشل تحميل البيانات"; return }
-    let html = "<h3>جميع العناوين</h3><ul>"
-    data.forEach((d,i)=>{
-        const highlight = d.code===code ? "highlight" : ""
-        html+=`<li class="${highlight}">
-            <span class="time">${formatDate(d.date)}</span>
-            <span class="info">${i+1}. ${d.name} | ${d.title} | ${d.subject}</span>
-        </li>`
-    })
-    html+="</ul>"
-    container.innerHTML = html
+
+const {data,error}=await supabase
+.from("student_reports")
+.select("*")
+.order("id",{ascending:true})
+
+const container=document.getElementById("allTitles")
+
+if(error){
+container.innerHTML="فشل تحميل البيانات"
+return
+}
+
+let html="<h3>جميع العناوين</h3><ul>"
+
+const code=localStorage.getItem("studentCode")
+
+data.forEach((d,i)=>{
+
+const highlight=d.code===code?"highlight":""
+
+html+=`
+<li class="${highlight}">
+${i+1}. ${d.name} | ${d.title} | ${d.subject} | ${formatDate(d.data)}
+</li>
+`
+
+})
+
+html+="</ul>"
+
+container.innerHTML=html
+
 }
 
 async function deleteMyData(){
-    const code = localStorage.getItem("studentCode")
-    const msg = document.getElementById("msg")
-    const infoBox = document.getElementById("infoBox")
-    if(!code){ msg.innerHTML="لم يتم إدخال بياناتك بعد"; return }
-    const {error} = await supabase.from("student_reports").delete().eq("code",code)
-    if(error){ msg.innerHTML="فشل الحذف"; console.log(error); return }
-    msg.innerHTML="تم حذف بياناتك"
-    infoBox.innerHTML = ""
-    localStorage.removeItem("studentCode")
-    await showAll()
+
+const code=localStorage.getItem("studentCode")
+const msg=document.getElementById("msg")
+
+if(!code){
+msg.innerHTML="لم يتم إدخال بياناتك"
+return
 }
 
-// ربط وظائف الأزرار للنافذة
-window.saveData = saveData
-window.changeTitle = changeTitle
-window.showAll = showAll
-window.showMyInfo = showMyInfo
-window.deleteMyData = deleteMyData
+const {error}=await supabase
+.from("student_reports")
+.delete()
+.eq("code",code)
 
-// تحديث تلقائي عند فتح الصفحة
+if(error){
+msg.innerHTML="فشل الحذف"
+console.log(error)
+return
+}
+
+msg.innerHTML="تم حذف بياناتك"
+
+localStorage.removeItem("studentCode")
+
 showAll()
+
+}
+
+/* 🔴 التحديث الفوري Realtime */
+
+supabase
+.channel("student_reports_channel")
+.on(
+"postgres_changes",
+{event:"*",schema:"public",table:"student_reports"},
+payload=>{
+showAll()
+showMyInfo()
+}
+)
+.subscribe()
+
+window.saveData=saveData
+window.changeTitle=changeTitle
+window.showMyInfo=showMyInfo
+window.showAll=showAll
+window.deleteMyData=deleteMyData
+
+showAll()
+
 </script>
 
 </body>
