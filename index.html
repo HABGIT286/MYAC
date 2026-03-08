@@ -167,37 +167,46 @@ const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
 
 let selectedID=null
 let selectedColor=null
+const msg=document.getElementById("msg")
+let studentsData=[]
 
+// اختيار اللون
 function selectColor(color){ selectedColor=color; }
 
+// ---------------- إضافة طالب ----------------
 async function addStudent(){
     const name=document.getElementById("studentName").value.trim()
     const title=document.getElementById("reportTitle").value.trim()
     const subject=document.getElementById("subjectName").value.trim()
-    const msg=document.getElementById("msg")
     if(!name||!title||!subject){ msg.innerHTML="املأ جميع الحقول"; return }
 
     const now=new Date().toISOString()
     const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now}])
     if(error){ msg.innerHTML="فشل الإضافة"; console.log(error); return }
 
-    msg.innerHTML="تم إضافة الطالب"
+    msg.innerHTML="تم إضافة الطالب 🎉"
+    await loadStudents()
     clearInputs()
 }
 
+// ---------------- تعديل طالب ----------------
 async function updateStudent(){
     if(!selectedID){ alert("اختر طالب للتعديل"); return }
     const name=document.getElementById("studentName").value.trim()
     const title=document.getElementById("reportTitle").value.trim()
     const subject=document.getElementById("subjectName").value.trim()
     if(!name||!title||!subject){ alert("املأ جميع الحقول"); return }
+
     const now=new Date().toISOString()
     const {error}=await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
     if(error){ alert("فشل التعديل"); console.log(error); return }
-    alert("تم التعديل")
+
+    alert("تم التعديل ✏")
+    await loadStudents()
     clearInputs()
 }
 
+// ---------------- تحرير طالب ----------------
 function editStudent(student){
     selectedID=student.id
     document.getElementById("studentName").value=student.name
@@ -205,15 +214,20 @@ function editStudent(student){
     document.getElementById("subjectName").value=student.subject
 }
 
+// ---------------- حذف طالب ----------------
 async function deleteStudent(id){
     if(!confirm("حذف الطالب؟")) return
     const {error}=await supabase.from("student_reports").delete().eq("id",id)
-    if(error){ console.log(error); alert("فشل الحذف") }
+    if(error){ console.log(error); msg.innerHTML="فشل الحذف"; return }
+    msg.innerHTML="تم حذف الطالب 🗑"
+    await loadStudents()
 }
 
+// ---------------- تحميل الطلاب ----------------
 async function loadStudents(){
     const {data,error}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
-    if(error){ console.log(error); return }
+    if(error){ console.log(error); msg.innerHTML="فشل تحميل الطلاب"; return }
+    studentsData = data
     const table=document.getElementById("studentsTable")
     table.innerHTML=""
     data.forEach((s,i)=>{
@@ -235,6 +249,7 @@ async function loadStudents(){
     })
 }
 
+// ---------------- مسح الحقول ----------------
 function clearInputs(){
     document.getElementById("studentName").value=""
     document.getElementById("reportTitle").value=""
@@ -249,22 +264,34 @@ function clearInputs(){
 async function setBadge(){
     const idx=parseInt(document.getElementById("badgeIndex").value)-1
     const symbol=document.getElementById("badgeSymbol").value.trim()
-    if(isNaN(idx) || !symbol){ alert("ادخل رقم الطالب والشارة"); return }
-    const {data}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
-    if(idx<0 || idx>=data.length){ alert("رقم غير صحيح"); return }
-    const studentID=data[idx].id
-    await supabase.from("student_reports").update({badge:symbol}).eq("id",studentID)
+    if(isNaN(idx) || !symbol){ msg.innerHTML="ادخل رقم الطالب والشارة"; return }
+    if(idx<0 || idx>=studentsData.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
+
+    const studentID=studentsData[idx].id
+    const {error}=await supabase.from("student_reports").update({badge:symbol}).eq("id",studentID)
+    if(error){ console.log(error); msg.innerHTML="فشل تمييز الطالب"; return }
+
+    studentsData[idx].badge = symbol
+    await loadStudents()
+    msg.innerHTML="تم تمييز الطالب 🎉"
+    clearInputs()
 }
 
 // ---------------- تلوين الطلاب ----------------
 async function setColor(){
     const idx=parseInt(document.getElementById("colorIndex").value)-1
-    if(idx<0){ alert("رقم الطالب"); return }
-    if(!selectedColor){ alert("اختر لون"); return }
-    const {data}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
-    if(idx>=data.length){ alert("رقم غير صحيح"); return }
-    const studentID=data[idx].id
-    await supabase.from("student_reports").update({color:selectedColor}).eq("id",studentID)
+    if(isNaN(idx)){ msg.innerHTML="ادخل رقم الطالب"; return }
+    if(!selectedColor){ msg.innerHTML="اختر لون"; return }
+    if(idx<0 || idx>=studentsData.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
+
+    const studentID=studentsData[idx].id
+    const {error}=await supabase.from("student_reports").update({color:selectedColor}).eq("id",studentID)
+    if(error){ console.log(error); msg.innerHTML="فشل التلوين"; return }
+
+    studentsData[idx].color = selectedColor
+    await loadStudents()
+    msg.innerHTML="تم تلوين الطالب 🎨"
+    clearInputs()
 }
 
 // ---------------- Realtime ----------------
