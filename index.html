@@ -167,10 +167,8 @@ const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
 
 let selectedID=null
 let selectedColor=null
-const msg=document.getElementById("msg")
-let studentsData=[]
+const msg = document.getElementById("msg")
 
-// اختيار اللون
 function selectColor(color){ selectedColor=color; }
 
 // ---------------- إضافة طالب ----------------
@@ -185,8 +183,8 @@ async function addStudent(){
     if(error){ msg.innerHTML="فشل الإضافة"; console.log(error); return }
 
     msg.innerHTML="تم إضافة الطالب 🎉"
-    await loadStudents()
     clearInputs()
+    await loadStudents()
 }
 
 // ---------------- تعديل طالب ----------------
@@ -196,17 +194,15 @@ async function updateStudent(){
     const title=document.getElementById("reportTitle").value.trim()
     const subject=document.getElementById("subjectName").value.trim()
     if(!name||!title||!subject){ alert("املأ جميع الحقول"); return }
-
     const now=new Date().toISOString()
     const {error}=await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
     if(error){ alert("فشل التعديل"); console.log(error); return }
-
-    alert("تم التعديل ✏")
-    await loadStudents()
+    msg.innerHTML="تم التعديل ✏"
     clearInputs()
+    await loadStudents()
 }
 
-// ---------------- تحرير طالب ----------------
+// ---------------- اختيار طالب للتعديل ----------------
 function editStudent(student){
     selectedID=student.id
     document.getElementById("studentName").value=student.name
@@ -223,11 +219,11 @@ async function deleteStudent(id){
     await loadStudents()
 }
 
-// ---------------- تحميل الطلاب ----------------
+// ---------------- تحميل وعرض الطلاب ----------------
 async function loadStudents(){
     const {data,error}=await supabase.from("student_reports").select("*").order("id",{ascending:true})
-    if(error){ console.log(error); msg.innerHTML="فشل تحميل الطلاب"; return }
-    studentsData = data
+    if(error){ console.log(error); msg.innerHTML="فشل تحميل البيانات"; return }
+
     const table=document.getElementById("studentsTable")
     table.innerHTML=""
     data.forEach((s,i)=>{
@@ -265,15 +261,17 @@ async function setBadge(){
     const idx=parseInt(document.getElementById("badgeIndex").value)-1
     const symbol=document.getElementById("badgeSymbol").value.trim()
     if(isNaN(idx) || !symbol){ msg.innerHTML="ادخل رقم الطالب والشارة"; return }
-    if(idx<0 || idx>=studentsData.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
 
-    const studentID=studentsData[idx].id
-    const {error}=await supabase.from("student_reports").update({badge:symbol}).eq("id",studentID)
-    if(error){ console.log(error); msg.innerHTML="فشل تمييز الطالب"; return }
+    const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    if(error){ console.log(error); msg.innerHTML="فشل تحميل بيانات الطلاب"; return }
+    if(idx<0 || idx>=data.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
 
-    studentsData[idx].badge = symbol
-    await loadStudents()
+    const studentID = data[idx].id
+    const {error:updateError} = await supabase.from("student_reports").update({badge:symbol}).eq("id",studentID)
+    if(updateError){ console.log(updateError); msg.innerHTML="فشل تمييز الطالب"; return }
+
     msg.innerHTML="تم تمييز الطالب 🎉"
+    await loadStudents()
     clearInputs()
 }
 
@@ -282,15 +280,17 @@ async function setColor(){
     const idx=parseInt(document.getElementById("colorIndex").value)-1
     if(isNaN(idx)){ msg.innerHTML="ادخل رقم الطالب"; return }
     if(!selectedColor){ msg.innerHTML="اختر لون"; return }
-    if(idx<0 || idx>=studentsData.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
 
-    const studentID=studentsData[idx].id
-    const {error}=await supabase.from("student_reports").update({color:selectedColor}).eq("id",studentID)
-    if(error){ console.log(error); msg.innerHTML="فشل التلوين"; return }
+    const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+    if(error){ console.log(error); msg.innerHTML="فشل تحميل بيانات الطلاب"; return }
+    if(idx<0 || idx>=data.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
 
-    studentsData[idx].color = selectedColor
-    await loadStudents()
+    const studentID = data[idx].id
+    const {error:updateError} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",studentID)
+    if(updateError){ console.log(updateError); msg.innerHTML="فشل التلوين"; return }
+
     msg.innerHTML="تم تلوين الطالب 🎨"
+    await loadStudents()
     clearInputs()
 }
 
