@@ -95,7 +95,7 @@ input{
 
 #allTitles{
     margin-top:20px;
-    max-height:350px;
+    max-height:400px;
     overflow-y:auto;
     text-align:right;
     background: rgba(255,255,255,0.1);
@@ -109,6 +109,7 @@ input{
     padding:8px 10px;
     border-bottom:1px solid rgba(255,255,255,0.2);
 }
+.editInputs{display:none;margin-top:10px;}
 </style>
 </head>
 <body>
@@ -119,21 +120,25 @@ input{
 </video>
 
 <div class="container">
-    <h1>ONYX</h1>
+    <h1>ONYX Admin Panel</h1>
 
-    <!-- زر عرض عناوين الطلاب -->
-    <button onclick="showAll()">📋 عناوين الطلاب</button>
-    
-    <!-- حذف طالب -->
+    <!-- عرض وحذف -->
+    <button onclick="showAll()">📋 عرض جميع الطلاب</button>
     <input type="number" id="deleteStudentId" placeholder="ادخل رقم الطالب">
     <button onclick="deleteStudent()">🗑️ حذف طالب</button>
 
-    <!-- زر تبديل حالة إضافة العمود -->
-    <button id="toggleColumnBtn" onclick="toggleAddColumn()" title="اضغط لتبديل حالة الإضافة">✔️ السماح بإضافة عمود</button>
-    
-    <!-- قفل وفتح الموقع -->
-    <button onclick="lockSite()" style="background:rgba(200,0,0,0.7)">🔒 قفل الموقع</button>
-    <button onclick="unlockSite()" style="background:rgba(0,150,0,0.7)">🔓 فتح الموقع</button>
+    <!-- أزرار التحكم -->
+    <button id="toggleLockBtn" onclick="toggleLock()">🔒 قفل الموقع</button>
+    <button id="toggleAddBtn" onclick="toggleAddColumn()">✔️ السماح بإضافة عمود</button>
+
+    <!-- إضافة طالب -->
+    <button id="showAddFormBtn" onclick="showAddForm()" style="background:rgba(0,160,0,0.7)">➕ إضافة طالب</button>
+    <div id="addForm">
+        <input type="text" id="newName" placeholder="اسم الطالب">
+        <input type="text" id="newTitle" placeholder="عنوان التقرير">
+        <input type="text" id="newSubject" placeholder="المادة">
+        <button onclick="addStudent()">💾 حفظ</button>
+    </div>
 
     <div id="msg"></div>
     <div id="allTitles"></div>
@@ -146,96 +151,146 @@ const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
 const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-const toggleColumnBtn = document.getElementById('toggleColumnBtn')
+const toggleLockBtn = document.getElementById('toggleLockBtn')
+const toggleAddBtn = document.getElementById('toggleAddBtn')
+const showAddFormBtn = document.getElementById('showAddFormBtn')
+const addForm = document.getElementById('addForm')
+const msg = document.getElementById('msg')
+const allTitles = document.getElementById('allTitles')
 
-// --- عرض جميع الطلاب ---
+// --- عرض جميع الطلاب مع زر تعديل ---
 async function showAll(){
     const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-    const container = document.getElementById("allTitles")
-    if(error){ container.innerHTML="❌ فشل تحميل البيانات"; console.log(error); return }
+    if(error){ console.log(error); return }
     let html = "<h3>📄 جميع عناوين الطلاب</h3><ul>"
-    data.forEach((d)=>{
-        html+=`<li>${d.id}. ${d.name} | ${d.title} | ${d.subject}</li>`
+    data.forEach(d=>{
+        html+=`<li id="student-${d.id}">
+            ${d.id}. <b>${d.name}</b> | ${d.title} | ${d.subject} | ${new Date(d.created_at).toLocaleString()}
+            <button onclick="showEdit(${d.id})">✏️ تعديل</button>
+            <div class="editInputs" id="edit-${d.id}">
+                <input id="editName-${d.id}" value="${d.name}">
+                <input id="editTitle-${d.id}" value="${d.title}">
+                <input id="editSubject-${d.id}" value="${d.subject}">
+                <button onclick="saveEdit(${d.id})">💾 حفظ</button>
+            </div>
+        </li>`
     })
     html+="</ul>"
-    container.innerHTML = html
+    allTitles.innerHTML = html
+}
+
+// --- إظهار/اخفاء نموذج تعديل ---
+function showEdit(id){
+    const div = document.getElementById(`edit-${id}`)
+    div.style.display = div.style.display==='none'?'block':'none'
+}
+
+// --- حفظ التعديل ---
+async function saveEdit(id){
+    const name = document.getElementById(`editName-${id}`).value.trim()
+    const title = document.getElementById(`editTitle-${id}`).value.trim()
+    const subject = document.getElementById(`editSubject-${id}`).value.trim()
+    if(!name || !title || !subject){ msg.innerText="⚠️ املأ كل الحقول"; return }
+    const {error} = await supabase.from('student_reports').update({name,title,subject}).eq('id',id)
+    if(error){ msg.innerText="❌ خطأ في التعديل"; console.log(error); return }
+    msg.innerText=`✔️ تم تعديل بيانات الطالب: ${name}`
 }
 
 // --- حذف طالب ---
 async function deleteStudent(){
     const id = parseInt(document.getElementById("deleteStudentId").value)
-    const msg = document.getElementById("msg")
-    if(!id){ msg.innerHTML="⚠️ أدخل رقم صحيح"; return }
+    if(!id){ msg.innerText="⚠️ أدخل رقم صحيح"; return }
+    const {error} = await supabase.from("student_reports").delete().eq('id',id)
+    if(error){ msg.innerText="❌ خطأ في الحذف"; return }
+    msg.innerText=`✅ تم حذف الطالب: ${id}`
+}
 
-    const {data,error} = await supabase.from("student_reports").select("*").eq("id",id)
-    if(error || !data || data.length===0){ msg.innerHTML="⚠️ رقم الطالب غير موجود"; return }
+// --- إضافة طالب ---
+async function addStudent(){
+    const name = document.getElementById('newName').value.trim()
+    const title = document.getElementById('newTitle').value.trim()
+    const subject = document.getElementById('newSubject').value.trim()
+    if(!name || !title || !subject){ msg.innerText="⚠️ املأ كل الحقول"; return }
+    const {error} = await supabase.from('student_reports').insert([{name,title,subject}])
+    if(error){ msg.innerText="❌ فشل إضافة الطالب"; console.log(error); return }
+    msg.innerText=`✔️ تم إضافة الطالب: ${name}`
+    addForm.style.display='none'
+}
 
-    await supabase.from("student_reports").delete().eq("id",id)
-    msg.innerHTML=`✅ تم حذف بيانات الطالب: ${data[0].name}`
-    await showAll()
+// --- اظهار/اخفاء نموذج الإضافة ---
+function showAddForm(){ addForm.style.display = addForm.style.display==='none'?'block':'none' }
+
+// --- تبديل حالة القفل ---
+async function toggleLock(){
+    const {data,error} = await supabase.from('site_control').select('locked').eq('id',1).single()
+    if(error){ console.log(error); return }
+    const newStatus = !data.locked
+    await supabase.from('site_control').update({locked:newStatus}).eq('id',1)
+    updateLockButton(newStatus)
 }
 
 // --- تبديل حالة إضافة العمود ---
 async function toggleAddColumn(){
     const {data,error} = await supabase.from('site_control').select('add_disabled').eq('id',1).single()
     if(error){ console.log(error); return }
-
     const newStatus = !data.add_disabled
-    const {error:updateError} = await supabase.from('site_control').update({add_disabled:newStatus}).eq('id',1)
-    if(updateError){ console.log(updateError); return }
-
-    updateColumnButton(newStatus)
+    await supabase.from('site_control').update({add_disabled:newStatus}).eq('id',1)
+    updateAddButton(newStatus)
 }
 
-// --- تحديث الزر حسب الحالة ---
-function updateColumnButton(isDisabled){
-    const msg = document.getElementById('msg')
+// --- تحديث الأزرار ---
+function updateLockButton(isLocked){
+    if(isLocked){
+        toggleLockBtn.innerText = "🔒 الموقع مغلق"
+        toggleLockBtn.style.background = "rgba(200,0,0,0.9)"
+        msg.innerText = "🔒 تم قفل الموقع"
+    } else {
+        toggleLockBtn.innerText = "🔓 فتح الموقع"
+        toggleLockBtn.style.background = "rgba(0,150,0,0.9)"
+        msg.innerText = "🔓 تم فتح الموقع"
+    }
+}
+function updateAddButton(isDisabled){
     if(isDisabled){
-        toggleColumnBtn.style.background="rgba(180,0,0,0.9)"
-        toggleColumnBtn.innerText = "⛔ إيقاف الإضافة"
-        toggleColumnBtn.title = "الإضافة متوقفة"
+        toggleAddBtn.innerText = "⛔ إيقاف الإضافة"
+        toggleAddBtn.style.background = "rgba(180,0,0,0.9)"
+        showAddFormBtn.style.display = 'none'
         msg.innerText = "⛔ تم ايقاف الإضافة"
     } else {
-        toggleColumnBtn.style.background="rgba(0,160,0,0.9)"
-        toggleColumnBtn.innerText = "✔️ السماح بإضافة عمود"
-        toggleColumnBtn.title = "الإضافة مسموحة"
+        toggleAddBtn.innerText = "✔️ السماح بإضافة عمود"
+        toggleAddBtn.style.background = "rgba(0,160,0,0.9)"
+        showAddFormBtn.style.display = 'block'
         msg.innerText = "✔️ تم تشغيل الإضافة"
     }
 }
 
-// --- تحديث تلقائي كل ثانيتين ---
-async function refreshAll(){
-    await showAll() // تحديث الطلاب
-    const {data,error} = await supabase.from('site_control').select('add_disabled').eq('id',1).single()
-    if(!error && data) updateColumnButton(data.add_disabled)
+// --- Realtime لجميع التغييرات ---
+supabase
+  .channel('public:student_reports')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'student_reports' }, payload=>{
+      showAll()
+  })
+  .subscribe()
+
+supabase
+  .channel('public:site_control')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'site_control' }, payload=>{
+      fetchControlRealtime()
+  })
+  .subscribe()
+
+async function fetchControlRealtime(){
+    const {data,error} = await supabase.from('site_control').select('*').eq('id',1).single()
+    if(!error) {
+        updateLockButton(data.locked)
+        updateAddButton(data.add_disabled)
+    }
 }
 
-setInterval(refreshAll,2000) // تحديث كل ثانيتين
-
-// --- قفل الموقع ---
-async function lockSite(){
-    const {error} = await supabase.from("site_control").update({locked:true}).eq("id",1)
-    const msg = document.getElementById("msg")
-    if(error){ msg.innerHTML="❌ فشل قفل الموقع"; console.log(error); return }
-    msg.innerHTML="🔒 تم قفل الموقع"
-}
-
-// --- فتح الموقع ---
-async function unlockSite(){
-    const {error} = await supabase.from("site_control").update({locked:false}).eq("id",1)
-    const msg = document.getElementById("msg")
-    if(error){ msg.innerHTML="❌ فشل فتح الموقع"; console.log(error); return }
-    msg.innerHTML="🔓 تم فتح الموقع"
-}
-
-// --- تصدير الدوال ---
-window.showAll = showAll
-window.deleteStudent = deleteStudent
-window.toggleAddColumn = toggleAddColumn
-window.lockSite = lockSite
-window.unlockSite = unlockSite
+// --- البداية ---
+showAll()
+fetchControlRealtime()
 
 </script>
-
 </body>
 </html>
