@@ -1,13 +1,11 @@
-هجهز لك الكود الكامل مع شاشة تسجيل الدخول وخلفية صورة بدل الفيديو:
-
-
-
-
-
-
-لوحة تحكم الطلبة | Admin Panel
-
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم الطلبة | Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
 
 :root {
   --primary: #0f3460;
@@ -476,254 +474,294 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 [data-tip] { position:relative; }
 [data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
 
+</style>
+</head>
+<body>
 
+<!-- Entrance Animation -->
+<div class="entrance-overlay" id="entranceOverlay">
+  <div class="entrance-logo">🎓</div>
+  <div class="entrance-title">لوحة التحكم</div>
+  <div class="entrance-sub">Student Dashboard • Admin Panel</div>
+  <div class="entrance-progress"><div class="entrance-bar"></div></div>
+</div>
 
+<!-- Background Image -->
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
 
+<!-- Particles -->
+<div id="particles"></div>
 
+<!-- ===================================================
+     LOGIN SCREEN
+     =================================================== -->
+<div id="loginScreen">
+  <div class="login-card" id="loginCard">
+    <div class="login-top">
+      <div class="login-icon">🎓</div>
+      <div class="login-title">تسجيل الدخول</div>
+      <div class="login-subtitle">Admin Panel • لوحة التحكم</div>
+      <div class="login-line"></div>
+    </div>
 
+    <div class="login-input-group">
+      <label class="login-input-label">اسم المستخدم</label>
+      <span class="login-input-icon">👤</span>
+      <input class="login-input" id="loginUsername" type="text" placeholder="أدخل اسم المستخدم" autocomplete="username">
+    </div>
 
-  🎓
-  لوحة التحكم
-  Student Dashboard • Admin Panel
-  
+    <div class="login-input-group">
+      <label class="login-input-label">كلمة المرور</label>
+      <span class="login-input-icon">🔒</span>
+      <input class="login-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') doLogin()">
+      <button class="pass-toggle" type="button" id="passToggleBtn" onclick="togglePassView()" title="إظهار/إخفاء">👁️</button>
+    </div>
 
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">
+      <span>🚀</span> دخول إلى لوحة التحكم
+    </button>
 
+    <div class="login-error" id="loginError"></div>
 
+    <div class="login-note">
+      <span>🔐</span>
+      <span>محمي بكلمة مرور ديناميكية</span>
+    </div>
+  </div>
+</div>
 
+<!-- ===================================================
+     DASHBOARD SCREEN
+     =================================================== -->
+<div id="dashboardScreen">
 
+  <!-- Logout Button -->
+  <button class="logout-btn" onclick="doLogout()">🚪 خروج</button>
 
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-icon">🎓</div>
+    <h1 class="header-title">لوحة تحكم الطلبة</h1>
+    <p class="header-subtitle">Student Management Dashboard</p>
+    <div class="header-line"></div>
+  </div>
 
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
+      <span>إجمالي الطلاب: <strong id="statsTotal">0</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
+      <span>الطلاب المميزون: <strong id="statsBadged">0</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
+      <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
+    </div>
+  </div>
 
+  <!-- Main Grid -->
+  <div class="main-grid">
 
+    <!-- Card 1: Add/Edit Student -->
+    <div class="glass-card card-glow-blue">
+      <div class="card-header">
+        <div class="card-icon icon-blue">✏️</div>
+        <div>
+          <div class="card-title">إضافة / تعديل طالب</div>
+          <div class="card-desc">Add or Edit Student Record</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">اسم الطالب</label>
+        <span class="input-icon">👤</span>
+        <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
+      </div>
+      <div class="input-group">
+        <label class="input-label">عنوان التقرير</label>
+        <span class="input-icon">📋</span>
+        <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
+      </div>
+      <div class="input-group">
+        <label class="input-label">المادة الدراسية</label>
+        <span class="input-icon">📚</span>
+        <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="addStudent()"><span>➕</span> حفظ</button>
+        <button class="btn btn-secondary" onclick="updateStudent()"><span>✏️</span> تعديل</button>
+      </div>
+      <div class="msg-box" id="msgAdd"></div>
+    </div>
 
+    <!-- Card 2: Site Control -->
+    <div class="glass-card card-glow-red">
+      <div class="card-header">
+        <div class="card-icon icon-red">🌐</div>
+        <div>
+          <div class="card-title">التحكم بحالة الموقع</div>
+          <div class="card-desc">Site Status Control</div>
+        </div>
+      </div>
+      <div class="toggle-container">
+        <div class="toggle-info">
+          <div class="toggle-title">حالة الموقع</div>
+          <div class="toggle-desc">تفعيل أو تعطيل الوصول للموقع</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="siteSwitch">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
+        <div class="status-dot dot-closed" id="statusDot"></div>
+        <span id="statusText">الموقع مغلق</span>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
+        <span>⚡</span> تطبيق التغيير
+      </button>
+      <div class="msg-box" id="siteMsg"></div>
+    </div>
 
-  
-    
-      🎓
-      تسجيل الدخول
-      Admin Panel • لوحة التحكم
-      
-    
+    <!-- Card 3: Badge -->
+    <div class="glass-card card-glow-gold">
+      <div class="card-header">
+        <div class="card-icon icon-gold">⭐</div>
+        <div>
+          <div class="card-title">تمييز الطالب</div>
+          <div class="card-desc">Add Badge or Symbol to Student</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">رقم الطالب في القائمة</label>
+        <span class="input-icon">🔢</span>
+        <input class="styled-input" id="badgeIndex" type="number" placeholder="مثال: 1" oninput="previewBadge()">
+      </div>
+      <div class="input-group">
+        <label class="input-label">الشارة أو الرمز</label>
+        <span class="input-icon">🏅</span>
+        <input class="styled-input" id="badgeSymbol" placeholder="مثال: ⭐ أو 🥇" oninput="previewBadge()">
+      </div>
+      <div class="badge-preview" id="badgePreview" style="display:none">
+        <span id="badgePreviewIcon">⭐</span>
+        <span id="badgePreviewText">معاينة الشارة</span>
+      </div>
+      <button class="btn btn-gold" style="width:100%; margin-top:12px" onclick="setBadge()">
+        <span>✨</span> تمييز الطالب
+      </button>
+      <div class="msg-box" id="msgBadge"></div>
+    </div>
 
-    
-      اسم المستخدم
-      👤
-      
-    
+    <!-- Card 4: Color -->
+    <div class="glass-card card-glow-purple">
+      <div class="card-header">
+        <div class="card-icon icon-purple">🎨</div>
+        <div>
+          <div class="card-title">تلوين الطالب</div>
+          <div class="card-desc">Assign Color to Student Name</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">رقم الطالب في القائمة</label>
+        <span class="input-icon">🔢</span>
+        <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
+      </div>
+      <span class="palette-label">اختر لون</span>
+      <div class="color-palette">
+        <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#ffaa00,#cc6600)" onclick="selectColor('orange',this)" data-tip="برتقالي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#aa44ff,#6600cc)" onclick="selectColor('purple',this)" data-tip="بنفسجي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#ff88bb,#cc4488)" onclick="selectColor('pink',this)" data-tip="وردي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#ffee44,#ccaa00)" onclick="selectColor('#f5c518',this)" data-tip="ذهبي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#aa6633,#663300)" onclick="selectColor('brown',this)" data-tip="بني"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#00ddff,#0088aa)" onclick="selectColor('cyan',this)" data-tip="سماوي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#888,#444)" onclick="selectColor('gray',this)" data-tip="رمادي"></div>
+      </div>
+      <div id="selectedColorPreview" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:12px"></div>
+      <button class="btn btn-secondary" style="width:100%" onclick="setColor()">
+        <span>🎨</span> تطبيق اللون
+      </button>
+      <div class="msg-box" id="msgColor"></div>
+    </div>
 
-    
-      كلمة المرور
-      🔒
-      
-      👁️
-    
+    <!-- Card 5: Table -->
+    <div class="glass-card table-card">
+      <div class="card-header">
+        <div class="card-icon icon-blue">📊</div>
+        <div>
+          <div class="card-title">قائمة الطلبة</div>
+          <div class="card-desc">Students List & Records</div>
+        </div>
+        <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
+          <span>🔄</span> تحديث
+        </button>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>عنوان التقرير</th>
+              <th>المادة</th>
+              <th>التاريخ</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTable">
+            <tr><td colspan="6"><div class="empty-state"><div class="loader"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="msg-box" id="msgTable"></div>
+    </div>
 
-    
-      🚀 دخول إلى لوحة التحكم
-    
+  </div><!-- end main-grid -->
+</div><!-- end dashboardScreen -->
 
-    
-
-    
-      🔐
-      محمي بكلمة مرور ديناميكية
-    
-  
-
-
-
-
-
-  
-  🚪 خروج
-
-  
-  
-    🎓
-    لوحة تحكم الطلبة
-    Student Management Dashboard
-    
-  
-
-  
-  
-    
-      
-      إجمالي الطلاب: 0
-    
-    
-      
-      الطلاب المميزون: 0
-    
-    
-      
-      حالة الموقع: ...
-    
-  
-
-  
-  
-
-    
-    
-      
-        ✏️
-        
-          إضافة / تعديل طالب
-          Add or Edit Student Record
-        
-      
-      
-        اسم الطالب
-        👤
-        
-      
-      
-        عنوان التقرير
-        📋
-        
-      
-      
-        المادة الدراسية
-        📚
-        
-      
-      
-        ➕ حفظ
-        ✏️ تعديل
-      
-      
-    
-
-    
-    
-      
-        🌐
-        
-          التحكم بحالة الموقع
-          Site Status Control
-        
-      
-      
-        
-          حالة الموقع
-          تفعيل أو تعطيل الوصول للموقع
-        
-        
-          
-          
-        
-      
-      
-        
-        الموقع مغلق
-      
-      
-      
-        ⚡ تطبيق التغيير
-      
-      
-    
-
-    
-    
-      
-        ⭐
-        
-          تمييز الطالب
-          Add Badge or Symbol to Student
-        
-      
-      
-        رقم الطالب في القائمة
-        🔢
-        
-      
-      
-        الشارة أو الرمز
-        🏅
-        
-      
-      
-        ⭐
-        معاينة الشارة
-      
-      
-        ✨ تمييز الطالب
-      
-      
-    
-
-    
-    
-      
-        🎨
-        
-          تلوين الطالب
-          Assign Color to Student Name
-        
-      
-      
-        رقم الطالب في القائمة
-        🔢
-        
-      
-      اختر لون
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-      
-      
-        🎨 تطبيق اللون
-      
-      
-    
-
-    
-    
-      
-        📊
-        
-          قائمة الطلبة
-          Students List & Records
-        
-        
-          🔄 تحديث
-الاسم
-              عنوان التقرير
-              المادة
-              التاريخ
-              إجراءات
-            
-          
-          
-            
-          
-        
-      
-      
-    
-
-  
-
-
-
+<script>
 /* ===== PARTICLES ===== */
 (function(){
   const container = document.getElementById('particles');
   const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
-  for(let i=0;i
+  for(let i=0;i<25;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+2;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+      box-shadow:0 0 ${size*3}px currentColor;
+    `;
+    container.appendChild(p);
+  }
+})();
 
+/* ===== TOGGLE PASSWORD VIEW ===== */
+function togglePassView(){
+  const inp = document.getElementById('loginPassword');
+  const btn = document.getElementById('passToggleBtn');
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+</script>
 
+<script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
@@ -758,10 +796,10 @@ function showLoginError(msg) {
 function setLoginLoading(isLoading) {
   const btn = document.getElementById('loginBtn')
   if(isLoading){
-    btn.innerHTML = ' جارٍ التحقق...'
+    btn.innerHTML = '<span class="login-loader"></span> جارٍ التحقق...'
     btn.disabled = true
   } else {
-    btn.innerHTML = '🚀 دخول إلى لوحة التحكم'
+    btn.innerHTML = '<span>🚀</span> دخول إلى لوحة التحكم'
     btn.disabled = false
   }
 }
@@ -843,7 +881,7 @@ function showMsg(id, text, type="info") {
   const el = document.getElementById(id)
   if(!el) return
   el.textContent = text
-  el.className = msg-box ${type} show
+  el.className = `msg-box ${type} show`
   setTimeout(() => el.classList.remove('show'), 3500)
 }
 
@@ -864,12 +902,12 @@ function updateSiteUI(isOpen){
     display.className = "site-status status-open"
     dot.className     = "status-dot dot-open"
     text.textContent  = "الموقع مفتوح ✅"
-    badge.innerHTML   = حالة الموقع: مفتوح
+    badge.innerHTML   = `حالة الموقع: <strong style="color:#00ff88">مفتوح</strong>`
   } else {
     display.className = "site-status status-closed"
     dot.className     = "status-dot dot-closed"
     text.textContent  = "الموقع مغلق ❌"
-    badge.innerHTML   = حالة الموقع: مغلق
+    badge.innerHTML   = `حالة الموقع: <strong style="color:#ff6b6b">مغلق</strong>`
   }
 }
 
@@ -891,7 +929,7 @@ window.selectColor = function(color, el){
   document.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'))
   el.classList.add('selected')
   document.getElementById('selectedColorPreview').innerHTML =
-    ●  تم اختيار اللون: ${color}
+    `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`
 }
 
 window.previewBadge = function(){
@@ -959,28 +997,28 @@ async function loadStudents(){
   document.getElementById("statsBadged").textContent = badged
 
   if(total===0){
-    table.innerHTML = 📭لا يوجد طلاب مسجلون بعد
+    table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`
     return
   }
 
   table.innerHTML = data.map((s,i)=>{
-    let displayName = s.badge ? ${s.badge} ${s.name} : s.name
+    let displayName = s.badge ? `${s.badge} ${s.name}` : s.name
     const d = new Date(s.date)
     const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
     return `
-    
-      ${i+1}
-      ${displayName}
-      ${s.title}
-      ${s.subject}
-      ${dateStr}
-      
-        
-          ✏️ تعديل
-          🗑️ حذف
-        
-      
-    `
+    <tr style="animation-delay:${i*0.05}s">
+      <td><span class="row-num">${i+1}</span></td>
+      <td class="student-name-cell" style="color:${s.color||'#e0e0f0'}">${displayName}</td>
+      <td>${s.title}</td>
+      <td><span class="subject-badge">${s.subject}</span></td>
+      <td class="date-cell">${dateStr}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
+          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️ حذف</button>
+        </div>
+      </td>
+    </tr>`
   }).join('')
 }
 window.loadStudents = loadStudents
@@ -992,7 +1030,7 @@ async function setBadge(){
   if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return }
   const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
   if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return }
-  if(idx=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return }
+  if(idx<0||idx>=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return }
   const {error:ue} = await supabase.from("student_reports").update({badge:symbol}).eq("id",data[idx].id)
   if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return }
   showMsg("msgBadge","🎉 تم تمييز الطالب بنجاح","success")
@@ -1006,7 +1044,7 @@ async function setColor(){
   if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return }
   const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
   if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return }
-  if(idx=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return }
+  if(idx<0||idx>=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return }
   const {error:ue} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",data[idx].id)
   if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return }
   showMsg("msgColor","🎨 تم تلوين الطالب بنجاح","success")
@@ -1036,21 +1074,7 @@ window.updateStudent = updateStudent
 window.setBadge      = setBadge
 window.setColor      = setColor
 
-✅ ملخص التعديلات المضافة
+</script>
+</body>
+</html>
 
-🔐 شاشة تسجيل الدخول
-| الميزة | التفاصيل |
-|--------|----------|
-| جلب بيانات الاعتماد | يتم جلبها من رابط GitHub Gist تلقائيًا عند كل محاولة دخول |
-| تحليل الصيغة | يستخرج اسم المستخدم من بين 【S】...【S】 وكلمة المرور من 【P】...【P】 |
-| حماية ديناميكية | أي تغيير في الـ Gist يُطبَّق فوريًا دون تعديل الكود |
-| إظهار/إخفاء كلمة المرور | زر 👁️ لرؤية كلمة المرور |
-| رسائل خطأ واضحة | رسالة حمراء أنيقة عند الخطأ |
-| تحميل ناعم | انيميشن دوران أثناء التحقق من كلمة المرور |
-
-🖼️ الخلفية
-- تم استبدال الفيديو بصورة خلفية احترافية (مكتبة) من Unsplash
-- لتغيير الصورة، عدّل رابط الـ url() داخل .bg-image في CSS
-
-🚪 زر الخروج
-- زر "خروج" ثابت في أعلى اليسار يُعيد لشاشة تسجيل الدخول
