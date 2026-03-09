@@ -2,351 +2,1040 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>لوحة تحكم الطلبة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم الطلبة | Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
-@font-face { font-family: 'TitelFont'; src: url('TITEL.ttf'); }
-@font-face { font-family: 'WriteFont'; src: url('WRITE.otf'); }
 
-body{
-    margin:0;
-    font-family:'WriteFont',sans-serif;
-    overflow: hidden;
-    position: relative;
-    background: #000;
+:root {
+  --primary: #0f3460;
+  --secondary: #16213e;
+  --accent: #e94560;
+  --gold: #f5c518;
+  --neon-blue: #00d4ff;
+  --neon-purple: #7b2fff;
+  --glass: rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.15);
+  --text-light: #e0e0f0;
+  --card-shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
 
-#bgVideo{
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -1;
-    object-fit: cover;
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Cairo',sans-serif;
+  background:#050b1a;
+  color:var(--text-light);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
 }
 
-.container{
-    width:700px;
-    margin:60px auto;
-    background: rgba(255,255,255,0.85);
-    padding:30px;
-    border-radius:15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    font-family:'WriteFont',sans-serif;
-    backdrop-filter: blur(5px);
+/* ===== ANIMATED BACKGROUND ===== */
+#bgVideo {
+  position:fixed; right:0; bottom:0;
+  min-width:100%; min-height:100%;
+  z-index:-2; object-fit:cover;
+  filter:brightness(0.3) saturate(1.5);
 }
 
-h2, h3{text-align:center;}
-
-input{
-    width:100%;
-    padding:12px;
-    margin-bottom:10px;
-    border-radius:6px;
-    border:1px solid rgba(0,0,0,0.3);
-    font-family:'WriteFont',sans-serif;
-    background: rgba(255,255,255,0.6);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+.bg-overlay {
+  position:fixed; inset:0; z-index:-1;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 80%, rgba(233,69,96,0.05) 0%, transparent 60%);
 }
 
-button{
-    width:48%;
-    padding:12px;
-    margin:5px 1%;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-    font-family:'WriteFont',sans-serif;
-    color:white;
-    background: rgba(30,58,95,0.7);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-    transition: all 0.2s ease-in-out;
+/* ===== PARTICLES ===== */
+#particles { position:fixed; inset:0; z-index:-1; pointer-events:none; }
+.particle {
+  position:absolute;
+  border-radius:50%;
+  animation: floatUp linear infinite;
+  opacity:0;
+}
+@keyframes floatUp {
+  0%   { transform:translateY(100vh) scale(0); opacity:0; }
+  10%  { opacity:0.6; }
+  90%  { opacity:0.3; }
+  100% { transform:translateY(-10vh) scale(1); opacity:0; }
 }
 
-button:hover{
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+/* ===== HEADER ===== */
+.dashboard-header {
+  text-align:center;
+  padding:40px 20px 20px;
+  position:relative;
+  animation: slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes slideDown {
+  from { transform:translateY(-60px); opacity:0; }
+  to   { transform:translateY(0); opacity:1; }
 }
 
-button:active{
-    transform: translateY(1px) scale(0.98);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+.header-icon {
+  width:80px; height:80px;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border-radius:24px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:36px;
+  margin-bottom:16px;
+  box-shadow: 0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(123,47,255,0.3);
+  animation: pulse-glow 3s ease-in-out infinite;
+  transform-style:preserve-3d;
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); }
+  50%      { box-shadow:0 0 60px rgba(0,212,255,0.8),0 0 120px rgba(123,47,255,0.5); }
 }
 
-.color-palette{
-    display:flex;
-    justify-content:space-between;
-    margin-top:5px;
+.header-title {
+  font-size:2.5rem; font-weight:900;
+  background: linear-gradient(135deg, #fff 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  text-shadow:none; letter-spacing:1px;
+}
+.header-subtitle {
+  color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px;
+  letter-spacing:2px; text-transform:uppercase;
+}
+.header-line {
+  width:200px; height:2px; margin:16px auto 0;
+  background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-purple), transparent);
 }
 
-.color-box{
-    width:28px;
-    height:28px;
-    border-radius:4px;
-    cursor:pointer;
-    border:1px solid #000;
+/* ===== STATS BAR ===== */
+.stats-bar {
+  display:flex; justify-content:center; gap:20px;
+  padding:10px 20px 20px;
+  animation: fadeIn 1s 0.3s both;
+  flex-wrap:wrap;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.stat-badge {
+  background:var(--glass); border:1px solid var(--glass-border);
+  backdrop-filter:blur(10px);
+  padding:10px 20px; border-radius:50px;
+  display:flex; align-items:center; gap:8px;
+  font-size:0.9rem; font-weight:600;
+  transition:all 0.3s ease;
+}
+.stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); }
+.stat-dot { width:8px; height:8px; border-radius:50%; }
+
+/* ===== MAIN GRID ===== */
+.main-grid {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:24px;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px 40px;
 }
 
-#msg{margin-top:10px; font-weight:bold; text-align:center; color:#222; text-shadow:1px 1px 4px rgba(255,255,255,0.7);}
-table{width:100%; margin-top:20px; border-collapse:collapse;}
-td,th{border:1px solid #ccc; padding:8px; text-align:center; background: rgba(255,255,255,0.6);}
+/* ===== GLASS CARD ===== */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:var(--card-shadow);
+  position:relative; overflow:hidden;
+  transform-style:preserve-3d;
+  transition:transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease;
+  animation: cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both;
+}
+.glass-card:nth-child(1){animation-delay:0.1s}
+.glass-card:nth-child(2){animation-delay:0.2s}
+.glass-card:nth-child(3){animation-delay:0.3s}
+.glass-card:nth-child(4){animation-delay:0.4s}
+.glass-card:nth-child(5){animation-delay:0.5s}
+
+@keyframes cardEntrance {
+  from { transform:translateY(40px) rotateX(10deg); opacity:0; }
+  to   { transform:translateY(0) rotateX(0deg); opacity:1; }
+}
+
+.glass-card:hover {
+  transform:translateY(-6px) rotateX(2deg);
+  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,212,255,0.1);
+}
+
+.glass-card::before {
+  content:''; position:absolute; inset:0; border-radius:24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  pointer-events:none;
+}
+
+.card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(233,69,96,0.15), transparent 70%); pointer-events:none; }
+.card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); pointer-events:none; }
+.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(123,47,255,0.15), transparent 70%); pointer-events:none; }
+.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(245,197,24,0.12), transparent 70%); pointer-events:none; }
+
+/* ===== CARD HEADER ===== */
+.card-header {
+  display:flex; align-items:center; gap:14px; margin-bottom:24px;
+}
+.card-icon {
+  width:48px; height:48px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; flex-shrink:0;
+}
+.icon-blue   { background:linear-gradient(135deg, #00d4ff22, #00d4ff44); border:1px solid #00d4ff44; }
+.icon-red    { background:linear-gradient(135deg, #e9456022, #e9456044); border:1px solid #e9456044; }
+.icon-purple { background:linear-gradient(135deg, #7b2fff22, #7b2fff44); border:1px solid #7b2fff44; }
+.icon-gold   { background:linear-gradient(135deg, #f5c51822, #f5c51844); border:1px solid #f5c51844; }
+.icon-green  { background:linear-gradient(135deg, #00ff8822, #00ff8844); border:1px solid #00ff8844; }
+
+.card-title { font-size:1.2rem; font-weight:700; color:#fff; }
+.card-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:2px; }
+
+/* ===== INPUTS ===== */
+.input-group { position:relative; margin-bottom:14px; }
+.input-label {
+  font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5);
+  text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block;
+}
+.styled-input {
+  width:100%; padding:13px 16px 13px 46px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px; color:#fff;
+  font-family:'Cairo',sans-serif; font-size:0.95rem;
+  transition:all 0.3s ease;
+  outline:none;
+  direction:rtl;
+}
+.styled-input::placeholder { color:rgba(255,255,255,0.3); }
+.styled-input:focus {
+  border-color:var(--neon-blue);
+  background:rgba(0,212,255,0.06);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.1), 0 4px 20px rgba(0,212,255,0.1);
+}
+.input-icon {
+  position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  font-size:18px; pointer-events:none;
+}
+
+/* ===== BUTTONS ===== */
+.btn-row { display:flex; gap:12px; margin-top:8px; }
+
+.btn {
+  flex:1; padding:13px 20px;
+  border:none; border-radius:12px;
+  cursor:pointer; font-family:'Cairo',sans-serif;
+  font-size:0.95rem; font-weight:700;
+  position:relative; overflow:hidden;
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  letter-spacing:0.5px;
+}
+
+.btn::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity:0; transition:opacity 0.3s;
+}
+.btn:hover::before { opacity:1; }
+
+.btn::after {
+  content:''; position:absolute;
+  width:100px; height:100px; border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  transform:scale(0); opacity:0;
+  transition:transform 0.6s, opacity 0.6s;
+  pointer-events:none;
+}
+.btn:active::after {
+  transform:scale(4); opacity:0;
+  transition:0s;
+}
+
+.btn-primary {
+  background:linear-gradient(135deg, #00d4ff, #0077ff);
+  color:#fff;
+  box-shadow:0 6px 25px rgba(0,212,255,0.35);
+}
+.btn-primary:hover {
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 35px rgba(0,212,255,0.5);
+}
+
+.btn-secondary {
+  background:linear-gradient(135deg, #7b2fff, #c044ff);
+  color:#fff;
+  box-shadow:0 6px 25px rgba(123,47,255,0.35);
+}
+.btn-secondary:hover {
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 35px rgba(123,47,255,0.5);
+}
+
+.btn-danger {
+  background:linear-gradient(135deg, #e94560, #ff6b6b);
+  color:#fff;
+  box-shadow:0 6px 25px rgba(233,69,96,0.35);
+}
+.btn-danger:hover {
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 35px rgba(233,69,96,0.5);
+}
+
+.btn-success {
+  background:linear-gradient(135deg, #00c851, #00ff88);
+  color:#fff;
+  box-shadow:0 6px 25px rgba(0,200,81,0.35);
+}
+.btn-success:hover {
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 35px rgba(0,200,81,0.5);
+}
+
+.btn-gold {
+  background:linear-gradient(135deg, #f5c518, #ff9500);
+  color:#000;
+  box-shadow:0 6px 25px rgba(245,197,24,0.35);
+}
+.btn-gold:hover {
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 35px rgba(245,197,24,0.5);
+}
+
+.btn:active { transform:translateY(1px) scale(0.98); }
+
+/* ===== COLOR PALETTE ===== */
+.palette-label {
+  font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5);
+  text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block;
+}
+.color-palette {
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;
+}
+.color-box {
+  width:34px; height:34px; border-radius:10px;
+  cursor:pointer; border:2px solid transparent;
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
+  position:relative; overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+.color-box::after {
+  content:'✓'; position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:14px; font-weight:900;
+  opacity:0; transition:opacity 0.2s;
+  text-shadow:0 1px 3px rgba(0,0,0,0.5);
+}
+.color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
+.color-box.selected::after { opacity:1; }
+
+/* ===== SITE TOGGLE ===== */
+.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+.toggle-info { flex:1; }
+.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
+.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
+
+.switch {
+  position:relative; display:inline-block;
+  width:70px; height:36px; flex-shrink:0;
+}
+.switch input { opacity:0; width:0; height:0; }
+.slider {
+  position:absolute; cursor:pointer; inset:0;
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+  border-radius:36px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+}
+.slider:before {
+  content:''; position:absolute;
+  width:26px; height:26px; border-radius:50%;
+  left:4px; top:4px;
+  background:linear-gradient(135deg, #fff, #ccc);
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);
+  transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+}
+input:checked + .slider { background:linear-gradient(135deg, #00c851, #00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
+input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg, #fff, #e0ffe0); }
+input:not(:checked) + .slider { background:linear-gradient(135deg, #e94560, #ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
+
+/* ===== MESSAGE BOX ===== */
+.msg-box {
+  padding:12px 18px; border-radius:12px; font-weight:600;
+  text-align:center; font-size:0.9rem;
+  transition:all 0.5s cubic-bezier(0.23,1,0.32,1);
+  opacity:0; transform:translateY(-10px);
+  margin-top:16px;
+  border:1px solid rgba(255,255,255,0.1);
+}
+.msg-box.show { opacity:1; transform:translateY(0); }
+.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
+.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
+.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
+
+/* ===== TABLE CARD ===== */
+.table-card {
+  grid-column:1 / -1;
+}
+
+.table-wrapper {
+  overflow-x:auto; border-radius:16px; overflow:hidden;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+table { width:100%; border-collapse:collapse; }
+
+thead tr {
+  background:linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,255,0.15));
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+thead th {
+  padding:16px 14px; text-align:center;
+  font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7);
+  text-transform:uppercase; letter-spacing:1px;
+  white-space:nowrap;
+}
+
+tbody tr {
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:all 0.3s ease;
+  animation: rowSlide 0.5s ease both;
+}
+@keyframes rowSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
+tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
+
+td {
+  padding:14px; text-align:center;
+  font-size:0.9rem; color:var(--text-light);
+}
+
+.student-name-cell { font-weight:700; font-size:1rem; }
+.subject-badge {
+  background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3);
+  padding:4px 12px; border-radius:20px;
+  font-size:0.8rem; display:inline-block; color:#00d4ff;
+}
+.date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
+
+.row-num {
+  width:32px; height:32px; border-radius:10px;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.85rem;
+}
+
+.action-btns { display:flex; gap:8px; justify-content:center; }
+.btn-sm {
+  padding:7px 14px; border:none; border-radius:8px;
+  cursor:pointer; font-family:'Cairo',sans-serif;
+  font-size:0.8rem; font-weight:700;
+  transition:all 0.3s ease;
+  display:flex; align-items:center; gap:4px;
+}
+.btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
+.btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
+.btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
+
+/* ===== DIVIDER ===== */
+.divider {
+  height:1px; margin:20px 0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* ===== SITE STATUS INDICATOR ===== */
+.site-status {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 16px; border-radius:20px;
+  font-weight:700; font-size:0.85rem;
+  margin-top:12px;
+}
+.status-open   { background:rgba(0,200,81,0.15); border:1px solid #00c851; color:#00ff88; }
+.status-closed { background:rgba(233,69,96,0.15); border:1px solid #e94560; color:#ff6b6b; }
+.status-dot {
+  width:8px; height:8px; border-radius:50%;
+  animation:pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.4);opacity:0.7}
+}
+.dot-open   { background:#00ff88; box-shadow:0 0 8px #00ff88; }
+.dot-closed { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
+
+/* ===== LOADER ===== */
+.loader {
+  display:inline-block; width:18px; height:18px;
+  border:2px solid rgba(255,255,255,0.2);
+  border-top-color:#00d4ff;
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align:center; padding:40px;
+  color:rgba(255,255,255,0.3);
+}
+.empty-icon { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.empty-text { font-size:1rem; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
+::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
+
+/* ===== ENTRANCE ANIMATION ===== */
+.entrance-overlay {
+  position:fixed; inset:0; z-index:1000;
+  background:linear-gradient(135deg, #050b1a, #0f1a2e);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  animation:overlayFade 0.8s 1.8s forwards;
+}
+@keyframes overlayFade { to{opacity:0;pointer-events:none;visibility:hidden} }
+
+.entrance-logo {
+  width:100px; height:100px;
+  background:linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border-radius:28px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:44px;
+  box-shadow:0 0 60px rgba(0,212,255,0.6), 0 0 120px rgba(123,47,255,0.4);
+  animation: logoAnim 1.5s cubic-bezier(0.23,1,0.32,1) both;
+  margin-bottom:24px;
+}
+@keyframes logoAnim {
+  0%   { transform:scale(0) rotateY(180deg); opacity:0; }
+  60%  { transform:scale(1.1) rotateY(-10deg); }
+  100% { transform:scale(1) rotateY(0deg); opacity:1; }
+}
+
+.entrance-title {
+  font-size:2rem; font-weight:900;
+  background:linear-gradient(135deg, #fff, var(--neon-blue));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:fadeInUp 0.8s 0.5s both;
+}
+.entrance-sub {
+  color:rgba(255,255,255,0.4); font-size:0.9rem; margin-top:8px;
+  letter-spacing:3px; text-transform:uppercase;
+  animation:fadeInUp 0.8s 0.7s both;
+}
+@keyframes fadeInUp {
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.entrance-progress {
+  width:200px; height:3px; background:rgba(255,255,255,0.1);
+  border-radius:3px; margin-top:32px; overflow:hidden;
+  animation:fadeInUp 0.8s 0.9s both;
+}
+.entrance-bar {
+  height:100%; border-radius:3px;
+  background:linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both;
+  box-shadow:0 0 10px rgba(0,212,255,0.8);
+}
+@keyframes progressFill { from{width:0} to{width:100%} }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .main-grid { grid-template-columns:1fr; padding:0 12px 40px; }
+  .table-card { grid-column:auto; }
+  .header-title { font-size:1.6rem; }
+}
+
+/* ===== TOOLTIP ===== */
+[data-tip] { position:relative; }
+[data-tip]:hover::after {
+  content:attr(data-tip);
+  position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px;
+  border-radius:8px; font-size:0.75rem; white-space:nowrap;
+  pointer-events:none; z-index:100;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== BADGE PREVIEW ===== */
+.badge-preview {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3);
+  padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px;
+  transition:all 0.3s; color:#f5c518;
+}
+
+/* Section Numbers */
+.section-number {
+  width:28px; height:28px; border-radius:8px;
+  background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:0.8rem; font-weight:900; color:#00d4ff; flex-shrink:0;
+}
+
 </style>
 </head>
-
 <body>
 
+<!-- Entrance Animation -->
+<div class="entrance-overlay" id="entranceOverlay">
+  <div class="entrance-logo">🎓</div>
+  <div class="entrance-title">لوحة التحكم</div>
+  <div class="entrance-sub">Student Dashboard • Admin Panel</div>
+  <div class="entrance-progress"><div class="entrance-bar"></div></div>
+</div>
+
+<!-- Background Video -->
 <video autoplay muted loop id="bgVideo">
-    <source src="V.mp4" type="video/mp4">
-    متصفحك لا يدعم عرض الفيديو.
+  <source src="V.mp4" type="video/mp4">
 </video>
+<div class="bg-overlay"></div>
 
-<div class="container">
-<h2>إضافة / تعديل طالب</h2>
+<!-- Particles -->
+<div id="particles"></div>
 
-<input id="studentName" placeholder="اسم الطالب">
-<input id="reportTitle" placeholder="عنوان التقرير">
-<input id="subjectName" placeholder="المادة الدراسية">
-<br>
-<button onclick="addStudent()">➕ حفظ</button>
-<button onclick="updateStudent()">✏ تعديل</button>
-
-<hr>
-
-<h3>تمييز الطالب</h3>
-<input id="badgeIndex" placeholder="رقم الطالب">
-<input id="badgeSymbol" placeholder="⭐ ضع شارة أو نص">
-<button onclick="setBadge()">تمييز</button>
-
-<hr>
-
-<h3>تلوين الطالب</h3>
-<input id="colorIndex" placeholder="رقم الطالب">
-<div class="color-palette">
-    <div class="color-box" style="background:red;" onclick="selectColor('red')"></div>
-    <div class="color-box" style="background:blue;" onclick="selectColor('blue')"></div>
-    <div class="color-box" style="background:green;" onclick="selectColor('green')"></div>
-    <div class="color-box" style="background:orange;" onclick="selectColor('orange')"></div>
-    <div class="color-box" style="background:purple;" onclick="selectColor('purple')"></div>
-    <div class="color-box" style="background:pink;" onclick="selectColor('pink')"></div>
-    <div class="color-box" style="background:yellow;" onclick="selectColor('yellow')"></div>
-    <div class="color-box" style="background:brown;" onclick="selectColor('brown')"></div>
-    <div class="color-box" style="background:cyan;" onclick="selectColor('cyan')"></div>
-    <div class="color-box" style="background:gray;" onclick="selectColor('gray')"></div>
+<!-- Header -->
+<div class="dashboard-header">
+  <div class="header-icon">🎓</div>
+  <h1 class="header-title">لوحة تحكم الطلبة</h1>
+  <p class="header-subtitle">Student Management Dashboard</p>
+  <div class="header-line"></div>
 </div>
-<button onclick="setColor()">تلوين</button>
 
-
-<hr>
-
-<h3>تحكم بحالة الموقع</h3>
-<label class="switch">
-  <input type="checkbox" id="siteSwitch">
-  <span class="slider"></span>
-</label>
-<button onclick="toggleSite()">تطبيق التغيير</button>
-<div id="siteMsg" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
-
-<div id="msg"></div>
-
-<h3>قائمة الطلبة</h3>
-
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>الاسم</th>
-<th>العنوان</th>
-<th>المادة</th>
-<th>التاريخ</th>
-<th>تحكم</th>
-</tr>
-</thead>
-<tbody id="studentsTable"></tbody>
-</table>
-
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat-badge">
+    <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
+    <span>إجمالي الطلاب: <strong id="statsTotal">0</strong></span>
+  </div>
+  <div class="stat-badge">
+    <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
+    <span>الطلاب المميزون: <strong id="statsBadged">0</strong></span>
+  </div>
+  <div class="stat-badge">
+    <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
+    <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
+  </div>
 </div>
+
+<!-- Main Grid -->
+<div class="main-grid">
+
+  <!-- Card 1: Add/Edit Student -->
+  <div class="glass-card card-glow-blue">
+    <div class="card-header">
+      <div class="card-icon icon-blue">✏️</div>
+      <div>
+        <div class="card-title">إضافة / تعديل طالب</div>
+        <div class="card-desc">Add or Edit Student Record</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">اسم الطالب</label>
+      <span class="input-icon">👤</span>
+      <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
+    </div>
+    <div class="input-group">
+      <label class="input-label">عنوان التقرير</label>
+      <span class="input-icon">📋</span>
+      <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
+    </div>
+    <div class="input-group">
+      <label class="input-label">المادة الدراسية</label>
+      <span class="input-icon">📚</span>
+      <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="addStudent()">
+        <span>➕</span> حفظ
+      </button>
+      <button class="btn btn-secondary" onclick="updateStudent()">
+        <span>✏️</span> تعديل
+      </button>
+    </div>
+
+    <div class="msg-box" id="msgAdd"></div>
+  </div>
+
+  <!-- Card 2: Site Control -->
+  <div class="glass-card card-glow-red">
+    <div class="card-header">
+      <div class="card-icon icon-red">🌐</div>
+      <div>
+        <div class="card-title">التحكم بحالة الموقع</div>
+        <div class="card-desc">Site Status Control</div>
+      </div>
+    </div>
+
+    <div class="toggle-container">
+      <div class="toggle-info">
+        <div class="toggle-title">حالة الموقع</div>
+        <div class="toggle-desc">تفعيل أو تعطيل الوصول للموقع</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="siteSwitch">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
+      <div class="status-dot dot-closed" id="statusDot"></div>
+      <span id="statusText">الموقع مغلق</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
+      <span>⚡</span> تطبيق التغيير
+    </button>
+
+    <div class="msg-box" id="siteMsg"></div>
+  </div>
+
+  <!-- Card 3: Badge -->
+  <div class="glass-card card-glow-gold">
+    <div class="card-header">
+      <div class="card-icon icon-gold">⭐</div>
+      <div>
+        <div class="card-title">تمييز الطالب</div>
+        <div class="card-desc">Add Badge or Symbol to Student</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">رقم الطالب في القائمة</label>
+      <span class="input-icon">🔢</span>
+      <input class="styled-input" id="badgeIndex" type="number" placeholder="مثال: 1" oninput="previewBadge()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">الشارة أو الرمز</label>
+      <span class="input-icon">🏅</span>
+      <input class="styled-input" id="badgeSymbol" placeholder="مثال: ⭐ أو 🥇" oninput="previewBadge()">
+    </div>
+
+    <div class="badge-preview" id="badgePreview" style="display:none">
+      <span id="badgePreviewIcon">⭐</span>
+      <span id="badgePreviewText">معاينة الشارة</span>
+    </div>
+
+    <button class="btn btn-gold" style="width:100%; margin-top:12px" onclick="setBadge()">
+      <span>✨</span> تمييز الطالب
+    </button>
+    <div class="msg-box" id="msgBadge"></div>
+  </div>
+
+  <!-- Card 4: Color -->
+  <div class="glass-card card-glow-purple">
+    <div class="card-header">
+      <div class="card-icon icon-purple">🎨</div>
+      <div>
+        <div class="card-title">تلوين الطالب</div>
+        <div class="card-desc">Assign Color to Student Name</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">رقم الطالب في القائمة</label>
+      <span class="input-icon">🔢</span>
+      <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
+    </div>
+
+    <span class="palette-label">اختر لون</span>
+    <div class="color-palette">
+      <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#ffaa00,#cc6600)" onclick="selectColor('orange',this)" data-tip="برتقالي"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#aa44ff,#6600cc)" onclick="selectColor('purple',this)" data-tip="بنفسجي"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#ff88bb,#cc4488)" onclick="selectColor('pink',this)" data-tip="وردي"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#ffee44,#ccaa00)" onclick="selectColor('#f5c518',this)" data-tip="ذهبي"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#aa6633,#663300)" onclick="selectColor('brown',this)" data-tip="بني"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#00ddff,#0088aa)" onclick="selectColor('cyan',this)" data-tip="سماوي"></div>
+      <div class="color-box" style="background:linear-gradient(135deg,#888,#444)" onclick="selectColor('gray',this)" data-tip="رمادي"></div>
+    </div>
+
+    <div id="selectedColorPreview" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:12px"></div>
+
+    <button class="btn btn-secondary" style="width:100%" onclick="setColor()">
+      <span>🎨</span> تطبيق اللون
+    </button>
+    <div class="msg-box" id="msgColor"></div>
+  </div>
+
+  <!-- Card 5: Table -->
+  <div class="glass-card table-card">
+    <div class="card-header">
+      <div class="card-icon icon-blue">📊</div>
+      <div>
+        <div class="card-title">قائمة الطلبة</div>
+        <div class="card-desc">Students List & Records</div>
+      </div>
+      <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
+        <span>🔄</span> تحديث
+      </button>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>عنوان التقرير</th>
+            <th>المادة</th>
+            <th>التاريخ</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="studentsTable">
+          <tr><td colspan="6"><div class="empty-state"><div class="loader"></div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="msg-box" id="msgTable"></div>
+  </div>
+
+</div><!-- end main-grid -->
+
+<script>
+// ===== PARTICLES =====
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
+  for(let i=0;i<25;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+2;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+      box-shadow:0 0 ${size*3}px currentColor;
+    `;
+    container.appendChild(p);
+  }
+})();
+</script>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const SUPABASE_URL="https://mcwemgjmqwbgxoyiwant.supabase.co"
-const SUPABASE_KEY="sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
-const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
+const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
+const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 const siteSwitch = document.getElementById("siteSwitch")
-const siteMsg = document.getElementById("siteMsg")
 
-// تحميل الحالة الحالية عند فتح لوحة التحكم
+// ===== SHOW MESSAGE =====
+function showMsg(id, text, type="info") {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = text;
+  el.className = `msg-box ${type} show`;
+  setTimeout(()=>{ el.classList.remove('show'); }, 3500);
+}
+
+// ===== LOAD SITE STATUS =====
 async function loadSiteStatus(){
-    const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
-    if(error){ siteMsg.innerText = "فشل تحميل حالة الموقع"; console.log(error); return }
-    siteSwitch.checked = data.site_open
+  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
+  if(error){ return; }
+  siteSwitch.checked = data.site_open;
+  updateSiteUI(data.site_open);
 }
 loadSiteStatus()
 
-// عند الضغط على الزر لتغيير الحالة
+function updateSiteUI(isOpen){
+  const display = document.getElementById("siteStatusDisplay");
+  const dot     = document.getElementById("statusDot");
+  const text    = document.getElementById("statusText");
+  const badge   = document.getElementById("siteStatusBadge");
+
+  if(isOpen){
+    display.className = "site-status status-open";
+    dot.className     = "status-dot dot-open";
+    text.textContent  = "الموقع مفتوح ✅";
+    badge.innerHTML   = `حالة الموقع: <strong style="color:#00ff88">مفتوح</strong>`;
+  } else {
+    display.className = "site-status status-closed";
+    dot.className     = "status-dot dot-closed";
+    text.textContent  = "الموقع مغلق ❌";
+    badge.innerHTML   = `حالة الموقع: <strong style="color:#ff6b6b">مغلق</strong>`;
+  }
+}
+
 async function toggleSite(){
-    const newValue = siteSwitch.checked
-    const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
-    if(error){
-        siteMsg.innerText = "فشل تحديث حالة الموقع ❌"
-        console.log(error)
-    } else {
-        siteMsg.innerText = newValue ? "تم فتح الموقع ✅" : "تم إغلاق الموقع ❌"
-    }
+  const newValue = siteSwitch.checked
+  const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
+  if(error){ showMsg("siteMsg","فشل تحديث حالة الموقع ❌","error"); return; }
+  updateSiteUI(newValue);
+  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع بنجاح" : "❌ تم إغلاق الموقع بنجاح", newValue ? "success" : "error");
 }
 window.toggleSite = toggleSite
 
+// ===== STATE =====
+let selectedID    = null
+let selectedColor = null
 
-let selectedID=null
-let selectedColor=null
-const msg = document.getElementById("msg")
+window.selectColor = function(color, el){
+  selectedColor = color;
+  document.querySelectorAll('.color-box').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('selectedColorPreview').innerHTML =
+    `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`;
+}
 
-function selectColor(color){ selectedColor=color; }
+// ===== BADGE PREVIEW =====
+window.previewBadge = function(){
+  const sym  = document.getElementById("badgeSymbol").value;
+  const prev = document.getElementById("badgePreview");
+  const icon = document.getElementById("badgePreviewIcon");
+  const txt  = document.getElementById("badgePreviewText");
+  if(sym){ prev.style.display='inline-flex'; icon.textContent=sym; txt.textContent='معاينة الشارة'; }
+  else { prev.style.display='none'; }
+}
 
-// ---------------- إضافة طالب ----------------
+// ===== ADD STUDENT =====
 async function addStudent(){
-    const name=document.getElementById("studentName").value.trim()
-    const title=document.getElementById("reportTitle").value.trim()
-    const subject=document.getElementById("subjectName").value.trim()
-    if(!name||!title||!subject){ msg.innerHTML="املأ جميع الحقول"; return }
-
-    const now=new Date().toISOString()
-    const {error}=await supabase.from("student_reports").insert([{name,title,subject,date:now}])
-    if(error){ msg.innerHTML="فشل الإضافة"; console.log(error); return }
-
-    msg.innerHTML="تم إضافة الطالب 🎉"
-    clearInputs()
-    await loadStudents()
+  const name    = document.getElementById("studentName").value.trim()
+  const title   = document.getElementById("reportTitle").value.trim()
+  const subject = document.getElementById("subjectName").value.trim()
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  const now = new Date().toISOString()
+  const {error} = await supabase.from("student_reports").insert([{name,title,subject,date:now}])
+  if(error){ showMsg("msgAdd","❌ فشل الإضافة","error"); return; }
+  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success");
+  clearInputs(); await loadStudents();
 }
 
-// ---------------- تعديل طالب ----------------
+// ===== UPDATE STUDENT =====
 async function updateStudent(){
-    if(!selectedID){ alert("اختر طالب للتعديل"); return }
-    const name=document.getElementById("studentName").value.trim()
-    const title=document.getElementById("reportTitle").value.trim()
-    const subject=document.getElementById("subjectName").value.trim()
-    if(!name||!title||!subject){ alert("املأ جميع الحقول"); return }
-    const now=new Date().toISOString()
-    const {error}=await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
-    if(error){ alert("فشل التعديل"); console.log(error); return }
-    msg.innerHTML="تم التعديل ✏"
-    clearInputs()
-    await loadStudents()
+  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return; }
+  const name    = document.getElementById("studentName").value.trim()
+  const title   = document.getElementById("reportTitle").value.trim()
+  const subject = document.getElementById("subjectName").value.trim()
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  const now = new Date().toISOString()
+  const {error} = await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
+  if(error){ showMsg("msgAdd","❌ فشل التعديل","error"); return; }
+  showMsg("msgAdd","✏️ تم التعديل بنجاح","success");
+  clearInputs(); await loadStudents();
 }
 
-// ---------------- اختيار طالب للتعديل ----------------
-function editStudent(student){
-    selectedID=student.id
-    document.getElementById("studentName").value=student.name
-    document.getElementById("reportTitle").value=student.title
-    document.getElementById("subjectName").value=student.subject
+window.editStudent = function(student){
+  selectedID = student.id;
+  document.getElementById("studentName").value  = student.name
+  document.getElementById("reportTitle").value  = student.title
+  document.getElementById("subjectName").value  = student.subject
+  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info");
+  document.getElementById("studentName").scrollIntoView({behavior:"smooth", block:"center"});
 }
 
-// ---------------- حذف طالب ----------------
-async function deleteStudent(id){
-    if(!confirm("حذف الطالب؟")) return
-    const {error}=await supabase.from("student_reports").delete().eq("id",id)
-    if(error){ console.log(error); msg.innerHTML="فشل الحذف"; return }
-    msg.innerHTML="تم حذف الطالب 🗑"
-    await loadStudents()
+window.deleteStudent = async function(id){
+  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return;
+  const {error} = await supabase.from("student_reports").delete().eq("id",id)
+  if(error){ showMsg("msgTable","❌ فشل الحذف","error"); return; }
+  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success");
+  await loadStudents();
 }
 
-// ---------------- تحميل وعرض الطلاب ----------------
+// ===== LOAD STUDENTS =====
 async function loadStudents(){
-    // تم تعديل الترتيب ليكون حسب sequence_number
-    const {data,error}=await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
-    if(error){ console.log(error); msg.innerHTML="فشل تحميل البيانات"; return }
+  const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
+  if(error){ console.log(error); return; }
 
-    const table=document.getElementById("studentsTable")
-    table.innerHTML=""
-    data.forEach((s,i)=>{
-        let displayName = s.name
-        if(s.badge) displayName = `${s.badge} ${displayName}`
-        table.innerHTML+=`
-        <tr>
-        <td>${i+1}</td>
-        <td style="color:${s.color||'black'}">${displayName}</td>
-        <td>${s.title}</td>
-        <td>${s.subject}</td>
-        <td>${new Date(s.date).toLocaleString()}</td>
-        <td>
-        <button onclick='editStudent(${JSON.stringify(s)})'>تعديل</button>
-        <button onclick='deleteStudent(${s.id})'>حذف</button>
-        </td>
-        </tr>
-        `
-    })
+  const table  = document.getElementById("studentsTable")
+  const total  = data.length
+  const badged = data.filter(s=>s.badge).length
+
+  document.getElementById("statsTotal").textContent  = total
+  document.getElementById("statsBadged").textContent = badged
+
+  if(total===0){
+    table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`;
+    return;
+  }
+
+  table.innerHTML = data.map((s,i)=>{
+    let displayName = s.badge ? `${s.badge} ${s.name}` : s.name
+    const d = new Date(s.date)
+    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
+    return `
+    <tr style="animation-delay:${i*0.05}s">
+      <td><span class="row-num">${i+1}</span></td>
+      <td class="student-name-cell" style="color:${s.color||'#e0e0f0'}">${displayName}</td>
+      <td>${s.title}</td>
+      <td><span class="subject-badge">${s.subject}</span></td>
+      <td class="date-cell">${dateStr}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
+          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️ حذف</button>
+        </div>
+      </td>
+    </tr>`
+  }).join('')
 }
+window.loadStudents = loadStudents
 
-// ---------------- مسح الحقول ----------------
-function clearInputs(){
-    document.getElementById("studentName").value=""
-    document.getElementById("reportTitle").value=""
-    document.getElementById("subjectName").value=""
-    document.getElementById("badgeIndex").value=""
-    document.getElementById("badgeSymbol").value=""
-    document.getElementById("colorIndex").value=""
-    selectedID=null
-}
-
-// ---------------- تمييز الطلاب ----------------
+// ===== SET BADGE =====
 async function setBadge(){
-    const idx=parseInt(document.getElementById("badgeIndex").value)-1
-    const symbol=document.getElementById("badgeSymbol").value.trim()
-    if(isNaN(idx) || !symbol){ msg.innerHTML="ادخل رقم الطالب والشارة"; return }
-
-    const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
-    if(error){ console.log(error); msg.innerHTML="فشل تحميل بيانات الطلاب"; return }
-    if(idx<0 || idx>=data.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
-
-    const studentID = data[idx].id
-    const {error:updateError} = await supabase.from("student_reports").update({badge:symbol}).eq("id",studentID)
-    if(updateError){ console.log(updateError); msg.innerHTML="فشل تمييز الطالب"; return }
-
-    msg.innerHTML="تم تمييز الطالب 🎉"
-    await loadStudents()
-    clearInputs()
+  const idx    = parseInt(document.getElementById("badgeIndex").value)-1
+  const symbol = document.getElementById("badgeSymbol").value.trim()
+  if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return; }
+  const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
+  if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return; }
+  if(idx<0||idx>=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return; }
+  const {error:ue} = await supabase.from("student_reports").update({badge:symbol}).eq("id",data[idx].id)
+  if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return; }
+  showMsg("msgBadge","🎉 تم تمييز الطالب بنجاح","success");
+  await loadStudents(); clearInputs();
 }
 
-// ---------------- تلوين الطلاب ----------------
+// ===== SET COLOR =====
 async function setColor(){
-    const idx=parseInt(document.getElementById("colorIndex").value)-1
-    if(isNaN(idx)){ msg.innerHTML="ادخل رقم الطالب"; return }
-    if(!selectedColor){ msg.innerHTML="اختر لون"; return }
-
-    const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
-    if(error){ console.log(error); msg.innerHTML="فشل تحميل بيانات الطلاب"; return }
-    if(idx<0 || idx>=data.length){ msg.innerHTML="رقم الطالب غير صحيح"; return }
-
-    const studentID = data[idx].id
-    const {error:updateError} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",studentID)
-    if(updateError){ console.log(updateError); msg.innerHTML="فشل التلوين"; return }
-
-    msg.innerHTML="تم تلوين الطالب 🎨"
-    await loadStudents()
-    clearInputs()
+  const idx = parseInt(document.getElementById("colorIndex").value)-1
+  if(isNaN(idx)){ showMsg("msgColor","⚠️ أدخل رقم الطالب","error"); return; }
+  if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return; }
+  const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
+  if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return; }
+  if(idx<0||idx>=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return; }
+  const {error:ue} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",data[idx].id)
+  if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return; }
+  showMsg("msgColor","🎨 تم تلوين الطالب بنجاح","success");
+  await loadStudents(); clearInputs();
 }
 
-// ---------------- Realtime ----------------
-supabase.channel("students_channel")
-.on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},payload=>{
-    loadStudents()
-})
-.subscribe()
+// ===== CLEAR =====
+function clearInputs(){
+  ['studentName','reportTitle','subjectName','badgeIndex','badgeSymbol','colorIndex'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  selectedID = null;
+  selectedColor = null;
+  document.querySelectorAll('.color-box').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('selectedColorPreview').innerHTML='';
+  document.getElementById('badgePreview').style.display='none';
+}
 
-window.addStudent=addStudent
-window.updateStudent=updateStudent
-window.deleteStudent=deleteStudent
-window.editStudent=editStudent
-window.setBadge=setBadge
-window.selectColor=selectColor
-window.setColor=setColor
+// ===== REALTIME =====
+supabase.channel("students_channel")
+  .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents(); })
+  .subscribe()
+
+// ===== INIT =====
+window.addStudent    = addStudent
+window.updateStudent = updateStudent
+window.setBadge      = setBadge
+window.setColor      = setColor
 
 loadStudents()
 </script>
 </body>
-</html>
+    </html>
