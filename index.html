@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة تحكم الطلبة | Admin Panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<style>
+هجهز لك الكود الكامل مع شاشة تسجيل الدخول وخلفية صورة بدل الفيديو:
+
+
+
+
+
+
+لوحة تحكم الطلبة | Admin Panel
+
+
 
 :root {
   --primary: #0f3460;
@@ -31,19 +33,21 @@ body {
   position:relative;
 }
 
-/* ===== ANIMATED BACKGROUND ===== */
-#bgVideo {
-  position:fixed; right:0; bottom:0;
-  min-width:100%; min-height:100%;
-  z-index:-2; object-fit:cover;
-  filter:brightness(0.3) saturate(1.5);
+/* ===== ANIMATED IMAGE BACKGROUND ===== */
+.bg-image {
+  position:fixed; inset:0; z-index:-2;
+  background:
+    url('https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1920&q=80')
+    center center / cover no-repeat;
+  filter:brightness(0.25) saturate(1.5);
 }
 
 .bg-overlay {
   position:fixed; inset:0; z-index:-1;
-  background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 50% 80%, rgba(233,69,96,0.05) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.10) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.10) 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 80%, rgba(233,69,96,0.07) 0%, transparent 60%),
+              linear-gradient(180deg, rgba(5,11,26,0.4) 0%, rgba(5,11,26,0.7) 100%);
 }
 
 /* ===== PARTICLES ===== */
@@ -61,64 +65,214 @@ body {
   100% { transform:translateY(-10vh) scale(1); opacity:0; }
 }
 
+/* ===================================================
+   ============== LOGIN SCREEN =======================
+   =================================================== */
+#loginScreen {
+  position:fixed; inset:0; z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+}
+
+.login-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+  border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(30px);
+  border-radius:28px;
+  padding:44px 40px 36px;
+  width:100%; max-width:420px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(0,212,255,0.08);
+  position:relative; overflow:hidden;
+  animation: loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes loginCardIn {
+  from { transform:translateY(60px) scale(0.9); opacity:0; }
+  to   { transform:translateY(0) scale(1); opacity:1; }
+}
+
+.login-card::before {
+  content:''; position:absolute; inset:0; border-radius:28px;
+  background:linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 55%);
+  pointer-events:none;
+}
+
+.login-top {
+  text-align:center; margin-bottom:32px;
+}
+
+.login-icon {
+  width:78px; height:78px;
+  background:linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border-radius:22px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:36px; margin-bottom:16px;
+  box-shadow:0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(123,47,255,0.3);
+  animation:pulse-glow 3s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%,100%{box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3);}
+  50%{box-shadow:0 0 60px rgba(0,212,255,0.9),0 0 120px rgba(123,47,255,0.6);}
+}
+
+.login-title {
+  font-size:1.8rem; font-weight:900;
+  background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.login-subtitle {
+  color:rgba(255,255,255,0.4); font-size:0.82rem;
+  letter-spacing:2px; text-transform:uppercase; margin-top:5px;
+}
+.login-line {
+  width:160px; height:2px; margin:14px auto 0;
+  background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent);
+}
+
+/* Login inputs */
+.login-input-group { position:relative; margin-bottom:16px; }
+.login-input-label {
+  font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5);
+  text-transform:uppercase; letter-spacing:1px; margin-bottom:7px; display:block;
+}
+.login-input {
+  width:100%; padding:14px 16px 14px 50px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:14px; color:#fff;
+  font-family:'Cairo',sans-serif; font-size:0.97rem;
+  transition:all 0.3s ease; outline:none; direction:rtl;
+}
+.login-input::placeholder { color:rgba(255,255,255,0.28); }
+.login-input:focus {
+  border-color:var(--neon-blue);
+  background:rgba(0,212,255,0.07);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.12), 0 4px 20px rgba(0,212,255,0.1);
+}
+.login-input-icon {
+  position:absolute; left:15px; top:50%; transform:translateY(-50%);
+  font-size:19px; pointer-events:none;
+}
+
+/* Show/hide password toggle */
+.pass-toggle {
+  position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  cursor:pointer; font-size:18px; color:rgba(255,255,255,0.4);
+  transition:color 0.2s; user-select:none; background:none; border:none;
+}
+.pass-toggle:hover { color:var(--neon-blue); }
+
+/* Login button */
+.btn-login {
+  width:100%; padding:15px;
+  border:none; border-radius:14px; cursor:pointer;
+  font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800;
+  background:linear-gradient(135deg, #00d4ff, #7b2fff);
+  color:#fff; letter-spacing:0.5px;
+  box-shadow:0 8px 30px rgba(0,212,255,0.4);
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
+  position:relative; overflow:hidden; margin-top:6px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.btn-login::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.18),transparent);
+  opacity:0; transition:opacity 0.3s;
+}
+.btn-login:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 14px 40px rgba(0,212,255,0.55); }
+.btn-login:hover::before { opacity:1; }
+.btn-login:active { transform:translateY(1px) scale(0.99); }
+
+/* Login error */
+.login-error {
+  margin-top:14px; padding:11px 16px; border-radius:12px;
+  background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.4);
+  color:#ff6b6b; font-size:0.88rem; font-weight:600; text-align:center;
+  opacity:0; transform:translateY(-8px);
+  transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+}
+.login-error.show { opacity:1; transform:translateY(0); }
+
+/* Login loading spinner */
+.login-loader {
+  display:inline-block; width:18px; height:18px;
+  border:2px solid rgba(255,255,255,0.25);
+  border-top-color:#fff; border-radius:50%;
+  animation:spin 0.7s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* Login security note */
+.login-note {
+  text-align:center; margin-top:18px;
+  font-size:0.75rem; color:rgba(255,255,255,0.28);
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+
+/* Hide/show screens */
+#dashboardScreen { display:none; }
+#dashboardScreen.active { display:block; }
+#loginScreen.hidden { display:none !important; }
+
+/* Login screen exit animation */
+@keyframes loginExit {
+  to { transform:scale(1.05); opacity:0; }
+}
+.login-card.exiting { animation:loginExit 0.4s cubic-bezier(0.23,1,0.32,1) forwards; }
+
+/* ===================================================
+   ============== DASHBOARD STYLES ===================
+   =================================================== */
+
 /* ===== HEADER ===== */
 .dashboard-header {
-  text-align:center;
-  padding:40px 20px 20px;
-  position:relative;
-  animation: slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both;
+  text-align:center; padding:40px 20px 20px;
+  position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both;
 }
-@keyframes slideDown {
-  from { transform:translateY(-60px); opacity:0; }
-  to   { transform:translateY(0); opacity:1; }
-}
+@keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
 
 .header-icon {
   width:80px; height:80px;
-  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
   border-radius:24px;
   display:inline-flex; align-items:center; justify-content:center;
-  font-size:36px;
-  margin-bottom:16px;
-  box-shadow: 0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(123,47,255,0.3);
-  animation: pulse-glow 3s ease-in-out infinite;
-  transform-style:preserve-3d;
+  font-size:36px; margin-bottom:16px;
+  box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3);
+  animation:pulse-glow 3s ease-in-out infinite;
 }
-@keyframes pulse-glow {
-  0%,100% { box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); }
-  50%      { box-shadow:0 0 60px rgba(0,212,255,0.8),0 0 120px rgba(123,47,255,0.5); }
-}
-
 .header-title {
   font-size:2.5rem; font-weight:900;
-  background: linear-gradient(135deg, #fff 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+  background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  text-shadow:none; letter-spacing:1px;
+  letter-spacing:1px;
 }
-.header-subtitle {
-  color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px;
-  letter-spacing:2px; text-transform:uppercase;
-}
+.header-subtitle { color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px; letter-spacing:2px; text-transform:uppercase; }
 .header-line {
   width:200px; height:2px; margin:16px auto 0;
-  background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-purple), transparent);
+  background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent);
 }
+
+/* Logout button */
+.logout-btn {
+  position:fixed; top:20px; left:20px; z-index:100;
+  padding:9px 18px; border:none; border-radius:10px;
+  cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700;
+  background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.35); color:#ff6b6b;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s ease; display:flex; align-items:center; gap:6px;
+}
+.logout-btn:hover { background:rgba(233,69,96,0.3); transform:translateY(-2px); box-shadow:0 6px 20px rgba(233,69,96,0.3); }
 
 /* ===== STATS BAR ===== */
 .stats-bar {
-  display:flex; justify-content:center; gap:20px;
-  padding:10px 20px 20px;
-  animation: fadeIn 1s 0.3s both;
-  flex-wrap:wrap;
+  display:flex; justify-content:center; gap:20px; padding:10px 20px 20px;
+  animation:fadeIn 1s 0.3s both; flex-wrap:wrap;
 }
 @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
 .stat-badge {
   background:var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter:blur(10px);
-  padding:10px 20px; border-radius:50px;
-  display:flex; align-items:center; gap:8px;
-  font-size:0.9rem; font-weight:600;
+  backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px;
+  display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600;
   transition:all 0.3s ease;
 }
 .stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); }
@@ -126,26 +280,18 @@ body {
 
 /* ===== MAIN GRID ===== */
 .main-grid {
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:24px;
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 24px 40px;
+  display:grid; grid-template-columns:1fr 1fr; gap:24px;
+  max-width:1200px; margin:0 auto; padding:0 24px 40px;
 }
 
 /* ===== GLASS CARD ===== */
 .glass-card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-  border:1px solid var(--glass-border);
-  backdrop-filter:blur(20px);
-  border-radius:24px;
-  padding:28px;
-  box-shadow:var(--card-shadow);
-  position:relative; overflow:hidden;
-  transform-style:preserve-3d;
-  transition:transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease;
-  animation: cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));
+  border:1px solid var(--glass-border); backdrop-filter:blur(20px);
+  border-radius:24px; padding:28px; box-shadow:var(--card-shadow);
+  position:relative; overflow:hidden; transform-style:preserve-3d;
+  transition:transform 0.4s cubic-bezier(0.23,1,0.32,1),box-shadow 0.4s ease;
+  animation:cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both;
 }
 .glass-card:nth-child(1){animation-delay:0.1s}
 .glass-card:nth-child(2){animation-delay:0.2s}
@@ -154,179 +300,73 @@ body {
 .glass-card:nth-child(5){animation-delay:0.5s}
 
 @keyframes cardEntrance {
-  from { transform:translateY(40px) rotateX(10deg); opacity:0; }
-  to   { transform:translateY(0) rotateX(0deg); opacity:1; }
+  from{transform:translateY(40px) rotateX(10deg);opacity:0}
+  to{transform:translateY(0) rotateX(0deg);opacity:1}
 }
+.glass-card:hover { transform:translateY(-6px) rotateX(2deg); box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.1); }
+.glass-card::before { content:''; position:absolute; inset:0; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
 
-.glass-card:hover {
-  transform:translateY(-6px) rotateX(2deg);
-  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,212,255,0.1);
-}
-
-.glass-card::before {
-  content:''; position:absolute; inset:0; border-radius:24px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-  pointer-events:none;
-}
-
-.card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(233,69,96,0.15), transparent 70%); pointer-events:none; }
-.card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); pointer-events:none; }
-.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(123,47,255,0.15), transparent 70%); pointer-events:none; }
-.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(245,197,24,0.12), transparent 70%); pointer-events:none; }
+.card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(233,69,96,0.15),transparent 70%); pointer-events:none; }
+.card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); pointer-events:none; }
+.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
+.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
 
 /* ===== CARD HEADER ===== */
-.card-header {
-  display:flex; align-items:center; gap:14px; margin-bottom:24px;
-}
-.card-icon {
-  width:48px; height:48px; border-radius:14px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:22px; flex-shrink:0;
-}
-.icon-blue   { background:linear-gradient(135deg, #00d4ff22, #00d4ff44); border:1px solid #00d4ff44; }
-.icon-red    { background:linear-gradient(135deg, #e9456022, #e9456044); border:1px solid #e9456044; }
-.icon-purple { background:linear-gradient(135deg, #7b2fff22, #7b2fff44); border:1px solid #7b2fff44; }
-.icon-gold   { background:linear-gradient(135deg, #f5c51822, #f5c51844); border:1px solid #f5c51844; }
-.icon-green  { background:linear-gradient(135deg, #00ff8822, #00ff8844); border:1px solid #00ff8844; }
-
+.card-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+.card-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.icon-blue   { background:linear-gradient(135deg,#00d4ff22,#00d4ff44); border:1px solid #00d4ff44; }
+.icon-red    { background:linear-gradient(135deg,#e9456022,#e9456044); border:1px solid #e9456044; }
+.icon-purple { background:linear-gradient(135deg,#7b2fff22,#7b2fff44); border:1px solid #7b2fff44; }
+.icon-gold   { background:linear-gradient(135deg,#f5c51822,#f5c51844); border:1px solid #f5c51844; }
+.icon-green  { background:linear-gradient(135deg,#00ff8822,#00ff8844); border:1px solid #00ff8844; }
 .card-title { font-size:1.2rem; font-weight:700; color:#fff; }
 .card-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:2px; }
 
 /* ===== INPUTS ===== */
 .input-group { position:relative; margin-bottom:14px; }
-.input-label {
-  font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5);
-  text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block;
-}
+.input-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
 .styled-input {
   width:100%; padding:13px 16px 13px 46px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:12px; color:#fff;
-  font-family:'Cairo',sans-serif; font-size:0.95rem;
-  transition:all 0.3s ease;
-  outline:none;
-  direction:rtl;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem;
+  transition:all 0.3s ease; outline:none; direction:rtl;
 }
 .styled-input::placeholder { color:rgba(255,255,255,0.3); }
-.styled-input:focus {
-  border-color:var(--neon-blue);
-  background:rgba(0,212,255,0.06);
-  box-shadow:0 0 0 3px rgba(0,212,255,0.1), 0 4px 20px rgba(0,212,255,0.1);
-}
-.input-icon {
-  position:absolute; left:14px; top:50%; transform:translateY(-50%);
-  font-size:18px; pointer-events:none;
-}
+.styled-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1),0 4px 20px rgba(0,212,255,0.1); }
+.input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
 
 /* ===== BUTTONS ===== */
 .btn-row { display:flex; gap:12px; margin-top:8px; }
-
 .btn {
-  flex:1; padding:13px 20px;
-  border:none; border-radius:12px;
-  cursor:pointer; font-family:'Cairo',sans-serif;
-  font-size:0.95rem; font-weight:700;
+  flex:1; padding:13px 20px; border:none; border-radius:12px;
+  cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:700;
   position:relative; overflow:hidden;
   transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  letter-spacing:0.5px;
+  display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.5px;
 }
-
-.btn::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-  opacity:0; transition:opacity 0.3s;
-}
+.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity 0.3s; }
 .btn:hover::before { opacity:1; }
-
-.btn::after {
-  content:''; position:absolute;
-  width:100px; height:100px; border-radius:50%;
-  background:rgba(255,255,255,0.2);
-  transform:scale(0); opacity:0;
-  transition:transform 0.6s, opacity 0.6s;
-  pointer-events:none;
-}
-.btn:active::after {
-  transform:scale(4); opacity:0;
-  transition:0s;
-}
-
-.btn-primary {
-  background:linear-gradient(135deg, #00d4ff, #0077ff);
-  color:#fff;
-  box-shadow:0 6px 25px rgba(0,212,255,0.35);
-}
-.btn-primary:hover {
-  transform:translateY(-3px) scale(1.02);
-  box-shadow:0 12px 35px rgba(0,212,255,0.5);
-}
-
-.btn-secondary {
-  background:linear-gradient(135deg, #7b2fff, #c044ff);
-  color:#fff;
-  box-shadow:0 6px 25px rgba(123,47,255,0.35);
-}
-.btn-secondary:hover {
-  transform:translateY(-3px) scale(1.02);
-  box-shadow:0 12px 35px rgba(123,47,255,0.5);
-}
-
-.btn-danger {
-  background:linear-gradient(135deg, #e94560, #ff6b6b);
-  color:#fff;
-  box-shadow:0 6px 25px rgba(233,69,96,0.35);
-}
-.btn-danger:hover {
-  transform:translateY(-3px) scale(1.02);
-  box-shadow:0 12px 35px rgba(233,69,96,0.5);
-}
-
-.btn-success {
-  background:linear-gradient(135deg, #00c851, #00ff88);
-  color:#fff;
-  box-shadow:0 6px 25px rgba(0,200,81,0.35);
-}
-.btn-success:hover {
-  transform:translateY(-3px) scale(1.02);
-  box-shadow:0 12px 35px rgba(0,200,81,0.5);
-}
-
-.btn-gold {
-  background:linear-gradient(135deg, #f5c518, #ff9500);
-  color:#000;
-  box-shadow:0 6px 25px rgba(245,197,24,0.35);
-}
-.btn-gold:hover {
-  transform:translateY(-3px) scale(1.02);
-  box-shadow:0 12px 35px rgba(245,197,24,0.5);
-}
-
+.btn-primary  { background:linear-gradient(135deg,#00d4ff,#0077ff); color:#fff; box-shadow:0 6px 25px rgba(0,212,255,0.35); }
+.btn-secondary{ background:linear-gradient(135deg,#7b2fff,#c044ff); color:#fff; box-shadow:0 6px 25px rgba(123,47,255,0.35); }
+.btn-danger   { background:linear-gradient(135deg,#e94560,#ff6b6b); color:#fff; box-shadow:0 6px 25px rgba(233,69,96,0.35); }
+.btn-success  { background:linear-gradient(135deg,#00c851,#00ff88); color:#fff; box-shadow:0 6px 25px rgba(0,200,81,0.35); }
+.btn-gold     { background:linear-gradient(135deg,#f5c518,#ff9500); color:#000; box-shadow:0 6px 25px rgba(245,197,24,0.35); }
+.btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
+.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
+.btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
+.btn-success:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
+.btn-gold:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
 .btn:active { transform:translateY(1px) scale(0.98); }
 
 /* ===== COLOR PALETTE ===== */
-.palette-label {
-  font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5);
-  text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block;
-}
-.color-palette {
-  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;
-}
+.palette-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
+.color-palette { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
 .color-box {
-  width:34px; height:34px; border-radius:10px;
-  cursor:pointer; border:2px solid transparent;
-  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
-  position:relative; overflow:hidden;
+  width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent;
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden;
   box-shadow:0 4px 10px rgba(0,0,0,0.3);
 }
-.color-box::after {
-  content:'✓'; position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  color:#fff; font-size:14px; font-weight:900;
-  opacity:0; transition:opacity 0.2s;
-  text-shadow:0 1px 3px rgba(0,0,0,0.5);
-}
+.color-box::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; opacity:0; transition:opacity 0.2s; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
 .color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
 .color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
 .color-box.selected::after { opacity:1; }
@@ -336,36 +376,20 @@ body {
 .toggle-info { flex:1; }
 .toggle-title { font-size:1rem; font-weight:700; color:#fff; }
 .toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
-
-.switch {
-  position:relative; display:inline-block;
-  width:70px; height:36px; flex-shrink:0;
-}
+.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
 .switch input { opacity:0; width:0; height:0; }
-.slider {
-  position:absolute; cursor:pointer; inset:0;
-  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
-  border-radius:36px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.slider:before {
-  content:''; position:absolute;
-  width:26px; height:26px; border-radius:50%;
-  left:4px; top:4px;
-  background:linear-gradient(135deg, #fff, #ccc);
-  box-shadow:0 2px 8px rgba(0,0,0,0.4);
-  transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-input:checked + .slider { background:linear-gradient(135deg, #00c851, #00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
-input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg, #fff, #e0ffe0); }
-input:not(:checked) + .slider { background:linear-gradient(135deg, #e94560, #ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
+.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
+input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
+input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
 
 /* ===== MESSAGE BOX ===== */
 .msg-box {
   padding:12px 18px; border-radius:12px; font-weight:600;
   text-align:center; font-size:0.9rem;
   transition:all 0.5s cubic-bezier(0.23,1,0.32,1);
-  opacity:0; transform:translateY(-10px);
-  margin-top:16px;
+  opacity:0; transform:translateY(-10px); margin-top:16px;
   border:1px solid rgba(255,255,255,0.1);
 }
 .msg-box.show { opacity:1; transform:translateY(0); }
@@ -374,112 +398,44 @@ input:not(:checked) + .slider { background:linear-gradient(135deg, #e94560, #ff4
 .msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
 
 /* ===== TABLE CARD ===== */
-.table-card {
-  grid-column:1 / -1;
-}
-
-.table-wrapper {
-  overflow-x:auto; border-radius:16px; overflow:hidden;
-  box-shadow:0 10px 40px rgba(0,0,0,0.4);
-}
-
+.table-card { grid-column:1 / -1; }
+.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
 table { width:100%; border-collapse:collapse; }
-
-thead tr {
-  background:linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,255,0.15));
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-thead th {
-  padding:16px 14px; text-align:center;
-  font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7);
-  text-transform:uppercase; letter-spacing:1px;
-  white-space:nowrap;
-}
-
-tbody tr {
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  transition:all 0.3s ease;
-  animation: rowSlide 0.5s ease both;
-}
+thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
+thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:all 0.3s ease; animation:rowSlide 0.5s ease both; }
 @keyframes rowSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
-
 tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
-
-td {
-  padding:14px; text-align:center;
-  font-size:0.9rem; color:var(--text-light);
-}
-
+td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
 .student-name-cell { font-weight:700; font-size:1rem; }
-.subject-badge {
-  background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3);
-  padding:4px 12px; border-radius:20px;
-  font-size:0.8rem; display:inline-block; color:#00d4ff;
-}
+.subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:4px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; color:#00d4ff; }
 .date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
-
-.row-num {
-  width:32px; height:32px; border-radius:10px;
-  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
-  display:inline-flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:0.85rem;
-}
-
+.row-num { width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; }
 .action-btns { display:flex; gap:8px; justify-content:center; }
-.btn-sm {
-  padding:7px 14px; border:none; border-radius:8px;
-  cursor:pointer; font-family:'Cairo',sans-serif;
-  font-size:0.8rem; font-weight:700;
-  transition:all 0.3s ease;
-  display:flex; align-items:center; gap:4px;
-}
+.btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:all 0.3s ease; display:flex; align-items:center; gap:4px; }
 .btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
 .btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
 .btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
 
 /* ===== DIVIDER ===== */
-.divider {
-  height:1px; margin:20px 0;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
+.divider { height:1px; margin:20px 0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
 
-/* ===== SITE STATUS INDICATOR ===== */
-.site-status {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:8px 16px; border-radius:20px;
-  font-weight:700; font-size:0.85rem;
-  margin-top:12px;
-}
+/* ===== SITE STATUS ===== */
+.site-status { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:20px; font-weight:700; font-size:0.85rem; margin-top:12px; }
 .status-open   { background:rgba(0,200,81,0.15); border:1px solid #00c851; color:#00ff88; }
 .status-closed { background:rgba(233,69,96,0.15); border:1px solid #e94560; color:#ff6b6b; }
-.status-dot {
-  width:8px; height:8px; border-radius:50%;
-  animation:pulse-dot 1.5s ease-in-out infinite;
-}
-@keyframes pulse-dot {
-  0%,100%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.4);opacity:0.7}
-}
+.status-dot { width:8px; height:8px; border-radius:50%; animation:pulse-dot 1.5s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
 .dot-open   { background:#00ff88; box-shadow:0 0 8px #00ff88; }
 .dot-closed { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
 
 /* ===== LOADER ===== */
-.loader {
-  display:inline-block; width:18px; height:18px;
-  border:2px solid rgba(255,255,255,0.2);
-  border-top-color:#00d4ff;
-  border-radius:50%;
-  animation:spin 0.8s linear infinite;
-}
-@keyframes spin { to{transform:rotate(360deg)} }
+.loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.2); border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
 
 /* ===== EMPTY STATE ===== */
-.empty-state {
-  text-align:center; padding:40px;
-  color:rgba(255,255,255,0.3);
-}
-.empty-icon { font-size:48px; margin-bottom:12px; opacity:0.5; }
-.empty-text { font-size:1rem; }
+.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
+.empty-icon  { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.empty-text  { font-size:1rem; }
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width:6px; height:6px; }
@@ -490,465 +446,510 @@ td {
 /* ===== ENTRANCE ANIMATION ===== */
 .entrance-overlay {
   position:fixed; inset:0; z-index:1000;
-  background:linear-gradient(135deg, #050b1a, #0f1a2e);
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#050b1a,#0f1a2e);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
   animation:overlayFade 0.8s 1.8s forwards;
 }
 @keyframes overlayFade { to{opacity:0;pointer-events:none;visibility:hidden} }
 
-.entrance-logo {
-  width:100px; height:100px;
-  background:linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-  border-radius:28px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:44px;
-  box-shadow:0 0 60px rgba(0,212,255,0.6), 0 0 120px rgba(123,47,255,0.4);
-  animation: logoAnim 1.5s cubic-bezier(0.23,1,0.32,1) both;
-  margin-bottom:24px;
-}
-@keyframes logoAnim {
-  0%   { transform:scale(0) rotateY(180deg); opacity:0; }
-  60%  { transform:scale(1.1) rotateY(-10deg); }
-  100% { transform:scale(1) rotateY(0deg); opacity:1; }
-}
-
-.entrance-title {
-  font-size:2rem; font-weight:900;
-  background:linear-gradient(135deg, #fff, var(--neon-blue));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  animation:fadeInUp 0.8s 0.5s both;
-}
-.entrance-sub {
-  color:rgba(255,255,255,0.4); font-size:0.9rem; margin-top:8px;
-  letter-spacing:3px; text-transform:uppercase;
-  animation:fadeInUp 0.8s 0.7s both;
-}
-@keyframes fadeInUp {
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.entrance-progress {
-  width:200px; height:3px; background:rgba(255,255,255,0.1);
-  border-radius:3px; margin-top:32px; overflow:hidden;
-  animation:fadeInUp 0.8s 0.9s both;
-}
-.entrance-bar {
-  height:100%; border-radius:3px;
-  background:linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-  animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both;
-  box-shadow:0 0 10px rgba(0,212,255,0.8);
-}
+.entrance-logo { width:100px; height:100px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:28px; display:flex; align-items:center; justify-content:center; font-size:44px; box-shadow:0 0 60px rgba(0,212,255,0.6),0 0 120px rgba(123,47,255,0.4); animation:logoAnim 1.5s cubic-bezier(0.23,1,0.32,1) both; margin-bottom:24px; }
+@keyframes logoAnim { 0%{transform:scale(0) rotateY(180deg);opacity:0} 60%{transform:scale(1.1) rotateY(-10deg)} 100%{transform:scale(1) rotateY(0deg);opacity:1} }
+.entrance-title { font-size:2rem; font-weight:900; background:linear-gradient(135deg,#fff,var(--neon-blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:fadeInUp 0.8s 0.5s both; }
+.entrance-sub { color:rgba(255,255,255,0.4); font-size:0.9rem; margin-top:8px; letter-spacing:3px; text-transform:uppercase; animation:fadeInUp 0.8s 0.7s both; }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.entrance-progress { width:200px; height:3px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:32px; overflow:hidden; animation:fadeInUp 0.8s 0.9s both; }
+.entrance-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple)); animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both; box-shadow:0 0 10px rgba(0,212,255,0.8); }
 @keyframes progressFill { from{width:0} to{width:100%} }
+
+/* ===== BADGE PREVIEW ===== */
+.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:all 0.3s; color:#f5c518; }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
   .main-grid { grid-template-columns:1fr; padding:0 12px 40px; }
   .table-card { grid-column:auto; }
   .header-title { font-size:1.6rem; }
+  .login-card { padding:32px 24px 28px; }
 }
 
 /* ===== TOOLTIP ===== */
 [data-tip] { position:relative; }
-[data-tip]:hover::after {
-  content:attr(data-tip);
-  position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
-  background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px;
-  border-radius:8px; font-size:0.75rem; white-space:nowrap;
-  pointer-events:none; z-index:100;
-  border:1px solid rgba(255,255,255,0.1);
-}
+[data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
 
-/* ===== BADGE PREVIEW ===== */
-.badge-preview {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3);
-  padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px;
-  transition:all 0.3s; color:#f5c518;
-}
 
-/* Section Numbers */
-.section-number {
-  width:28px; height:28px; border-radius:8px;
-  background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3);
-  display:inline-flex; align-items:center; justify-content:center;
-  font-size:0.8rem; font-weight:900; color:#00d4ff; flex-shrink:0;
-}
 
-</style>
-</head>
-<body>
 
-<!-- Entrance Animation -->
-<div class="entrance-overlay" id="entranceOverlay">
-  <div class="entrance-logo">🎓</div>
-  <div class="entrance-title">لوحة التحكم</div>
-  <div class="entrance-sub">Student Dashboard • Admin Panel</div>
-  <div class="entrance-progress"><div class="entrance-bar"></div></div>
-</div>
 
-<!-- Background Video -->
-<video autoplay muted loop id="bgVideo">
-  <source src="V.mp4" type="video/mp4">
-</video>
-<div class="bg-overlay"></div>
 
-<!-- Particles -->
-<div id="particles"></div>
 
-<!-- Header -->
-<div class="dashboard-header">
-  <div class="header-icon">🎓</div>
-  <h1 class="header-title">لوحة تحكم الطلبة</h1>
-  <p class="header-subtitle">Student Management Dashboard</p>
-  <div class="header-line"></div>
-</div>
+  🎓
+  لوحة التحكم
+  Student Dashboard • Admin Panel
+  
 
-<!-- Stats -->
-<div class="stats-bar">
-  <div class="stat-badge">
-    <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
-    <span>إجمالي الطلاب: <strong id="statsTotal">0</strong></span>
-  </div>
-  <div class="stat-badge">
-    <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
-    <span>الطلاب المميزون: <strong id="statsBadged">0</strong></span>
-  </div>
-  <div class="stat-badge">
-    <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
-    <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
-  </div>
-</div>
 
-<!-- Main Grid -->
-<div class="main-grid">
 
-  <!-- Card 1: Add/Edit Student -->
-  <div class="glass-card card-glow-blue">
-    <div class="card-header">
-      <div class="card-icon icon-blue">✏️</div>
-      <div>
-        <div class="card-title">إضافة / تعديل طالب</div>
-        <div class="card-desc">Add or Edit Student Record</div>
-      </div>
-    </div>
 
-    <div class="input-group">
-      <label class="input-label">اسم الطالب</label>
-      <span class="input-icon">👤</span>
-      <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
-    </div>
-    <div class="input-group">
-      <label class="input-label">عنوان التقرير</label>
-      <span class="input-icon">📋</span>
-      <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
-    </div>
-    <div class="input-group">
-      <label class="input-label">المادة الدراسية</label>
-      <span class="input-icon">📚</span>
-      <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
-    </div>
 
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="addStudent()">
-        <span>➕</span> حفظ
-      </button>
-      <button class="btn btn-secondary" onclick="updateStudent()">
-        <span>✏️</span> تعديل
-      </button>
-    </div>
 
-    <div class="msg-box" id="msgAdd"></div>
-  </div>
 
-  <!-- Card 2: Site Control -->
-  <div class="glass-card card-glow-red">
-    <div class="card-header">
-      <div class="card-icon icon-red">🌐</div>
-      <div>
-        <div class="card-title">التحكم بحالة الموقع</div>
-        <div class="card-desc">Site Status Control</div>
-      </div>
-    </div>
 
-    <div class="toggle-container">
-      <div class="toggle-info">
-        <div class="toggle-title">حالة الموقع</div>
-        <div class="toggle-desc">تفعيل أو تعطيل الوصول للموقع</div>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="siteSwitch">
-        <span class="slider"></span>
-      </label>
-    </div>
 
-    <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
-      <div class="status-dot dot-closed" id="statusDot"></div>
-      <span id="statusText">الموقع مغلق</span>
-    </div>
 
-    <div class="divider"></div>
 
-    <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
-      <span>⚡</span> تطبيق التغيير
-    </button>
+  
+    
+      🎓
+      تسجيل الدخول
+      Admin Panel • لوحة التحكم
+      
+    
 
-    <div class="msg-box" id="siteMsg"></div>
-  </div>
+    
+      اسم المستخدم
+      👤
+      
+    
 
-  <!-- Card 3: Badge -->
-  <div class="glass-card card-glow-gold">
-    <div class="card-header">
-      <div class="card-icon icon-gold">⭐</div>
-      <div>
-        <div class="card-title">تمييز الطالب</div>
-        <div class="card-desc">Add Badge or Symbol to Student</div>
-      </div>
-    </div>
+    
+      كلمة المرور
+      🔒
+      
+      👁️
+    
 
-    <div class="input-group">
-      <label class="input-label">رقم الطالب في القائمة</label>
-      <span class="input-icon">🔢</span>
-      <input class="styled-input" id="badgeIndex" type="number" placeholder="مثال: 1" oninput="previewBadge()">
-    </div>
-    <div class="input-group">
-      <label class="input-label">الشارة أو الرمز</label>
-      <span class="input-icon">🏅</span>
-      <input class="styled-input" id="badgeSymbol" placeholder="مثال: ⭐ أو 🥇" oninput="previewBadge()">
-    </div>
+    
+      🚀 دخول إلى لوحة التحكم
+    
 
-    <div class="badge-preview" id="badgePreview" style="display:none">
-      <span id="badgePreviewIcon">⭐</span>
-      <span id="badgePreviewText">معاينة الشارة</span>
-    </div>
+    
 
-    <button class="btn btn-gold" style="width:100%; margin-top:12px" onclick="setBadge()">
-      <span>✨</span> تمييز الطالب
-    </button>
-    <div class="msg-box" id="msgBadge"></div>
-  </div>
+    
+      🔐
+      محمي بكلمة مرور ديناميكية
+    
+  
 
-  <!-- Card 4: Color -->
-  <div class="glass-card card-glow-purple">
-    <div class="card-header">
-      <div class="card-icon icon-purple">🎨</div>
-      <div>
-        <div class="card-title">تلوين الطالب</div>
-        <div class="card-desc">Assign Color to Student Name</div>
-      </div>
-    </div>
 
-    <div class="input-group">
-      <label class="input-label">رقم الطالب في القائمة</label>
-      <span class="input-icon">🔢</span>
-      <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
-    </div>
 
-    <span class="palette-label">اختر لون</span>
-    <div class="color-palette">
-      <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#ffaa00,#cc6600)" onclick="selectColor('orange',this)" data-tip="برتقالي"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#aa44ff,#6600cc)" onclick="selectColor('purple',this)" data-tip="بنفسجي"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#ff88bb,#cc4488)" onclick="selectColor('pink',this)" data-tip="وردي"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#ffee44,#ccaa00)" onclick="selectColor('#f5c518',this)" data-tip="ذهبي"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#aa6633,#663300)" onclick="selectColor('brown',this)" data-tip="بني"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#00ddff,#0088aa)" onclick="selectColor('cyan',this)" data-tip="سماوي"></div>
-      <div class="color-box" style="background:linear-gradient(135deg,#888,#444)" onclick="selectColor('gray',this)" data-tip="رمادي"></div>
-    </div>
 
-    <div id="selectedColorPreview" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:12px"></div>
 
-    <button class="btn btn-secondary" style="width:100%" onclick="setColor()">
-      <span>🎨</span> تطبيق اللون
-    </button>
-    <div class="msg-box" id="msgColor"></div>
-  </div>
+  
+  🚪 خروج
 
-  <!-- Card 5: Table -->
-  <div class="glass-card table-card">
-    <div class="card-header">
-      <div class="card-icon icon-blue">📊</div>
-      <div>
-        <div class="card-title">قائمة الطلبة</div>
-        <div class="card-desc">Students List & Records</div>
-      </div>
-      <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
-        <span>🔄</span> تحديث
-      </button>
-    </div>
+  
+  
+    🎓
+    لوحة تحكم الطلبة
+    Student Management Dashboard
+    
+  
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>الاسم</th>
-            <th>عنوان التقرير</th>
-            <th>المادة</th>
-            <th>التاريخ</th>
-            <th>إجراءات</th>
-          </tr>
-        </thead>
-        <tbody id="studentsTable">
-          <tr><td colspan="6"><div class="empty-state"><div class="loader"></div></div></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="msg-box" id="msgTable"></div>
-  </div>
+  
+  
+    
+      
+      إجمالي الطلاب: 0
+    
+    
+      
+      الطلاب المميزون: 0
+    
+    
+      
+      حالة الموقع: ...
+    
+  
 
-</div><!-- end main-grid -->
+  
+  
 
-<script>
-// ===== PARTICLES =====
+    
+    
+      
+        ✏️
+        
+          إضافة / تعديل طالب
+          Add or Edit Student Record
+        
+      
+      
+        اسم الطالب
+        👤
+        
+      
+      
+        عنوان التقرير
+        📋
+        
+      
+      
+        المادة الدراسية
+        📚
+        
+      
+      
+        ➕ حفظ
+        ✏️ تعديل
+      
+      
+    
+
+    
+    
+      
+        🌐
+        
+          التحكم بحالة الموقع
+          Site Status Control
+        
+      
+      
+        
+          حالة الموقع
+          تفعيل أو تعطيل الوصول للموقع
+        
+        
+          
+          
+        
+      
+      
+        
+        الموقع مغلق
+      
+      
+      
+        ⚡ تطبيق التغيير
+      
+      
+    
+
+    
+    
+      
+        ⭐
+        
+          تمييز الطالب
+          Add Badge or Symbol to Student
+        
+      
+      
+        رقم الطالب في القائمة
+        🔢
+        
+      
+      
+        الشارة أو الرمز
+        🏅
+        
+      
+      
+        ⭐
+        معاينة الشارة
+      
+      
+        ✨ تمييز الطالب
+      
+      
+    
+
+    
+    
+      
+        🎨
+        
+          تلوين الطالب
+          Assign Color to Student Name
+        
+      
+      
+        رقم الطالب في القائمة
+        🔢
+        
+      
+      اختر لون
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+      
+      
+        🎨 تطبيق اللون
+      
+      
+    
+
+    
+    
+      
+        📊
+        
+          قائمة الطلبة
+          Students List & Records
+        
+        
+          🔄 تحديث
+الاسم
+              عنوان التقرير
+              المادة
+              التاريخ
+              إجراءات
+            
+          
+          
+            
+          
+        
+      
+      
+    
+
+  
+
+
+
+/* ===== PARTICLES ===== */
 (function(){
   const container = document.getElementById('particles');
   const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
-  for(let i=0;i<25;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random()*4+2;
-    p.style.cssText = `
-      width:${size}px; height:${size}px;
-      left:${Math.random()*100}%;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      animation-duration:${Math.random()*15+10}s;
-      animation-delay:${Math.random()*10}s;
-      box-shadow:0 0 ${size*3}px currentColor;
-    `;
-    container.appendChild(p);
-  }
-})();
-</script>
+  for(let i=0;i
 
-<script type="module">
+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
 const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
+const CREDS_URL = "https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/2f6ecbcb632f4a10716aa8a742c7e5a1263d2479/SS"
+
+/* ===================================================
+   ============== AUTH LOGIC =========================
+   =================================================== */
+
+/** Parse credentials from raw gist text */
+function parseCreds(raw) {
+  const usernameMatch = raw.match(/【S】(.+?)【S】/)
+  const passwordMatch = raw.match(/【P】(.+?)【P】/)
+  return {
+    username: usernameMatch ? usernameMatch[1].trim() : null,
+    password: passwordMatch ? passwordMatch[1].trim() : null
+  }
+}
+
+/** Show login error message */
+function showLoginError(msg) {
+  const el = document.getElementById('loginError')
+  el.textContent = msg
+  el.classList.add('show')
+  setTimeout(() => el.classList.remove('show'), 4000)
+}
+
+/** Set login button loading state */
+function setLoginLoading(isLoading) {
+  const btn = document.getElementById('loginBtn')
+  if(isLoading){
+    btn.innerHTML = ' جارٍ التحقق...'
+    btn.disabled = true
+  } else {
+    btn.innerHTML = '🚀 دخول إلى لوحة التحكم'
+    btn.disabled = false
+  }
+}
+
+/** Main login function */
+async function doLogin() {
+  const enteredUser = document.getElementById('loginUsername').value.trim()
+  const enteredPass = document.getElementById('loginPassword').value.trim()
+
+  if(!enteredUser || !enteredPass){
+    showLoginError('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور')
+    return
+  }
+
+  setLoginLoading(true)
+
+  try {
+    // Fetch credentials from GitHub Gist with cache-busting
+    const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' })
+    if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد')
+    const raw = await res.text()
+    const creds = parseCreds(raw)
+
+    if(!creds.username || !creds.password){
+      showLoginError('❌ تعذّر قراءة بيانات الاعتماد، تواصل مع المطوّر')
+      return
+    }
+
+    // Compare — case-sensitive
+    if(enteredUser === creds.username && enteredPass === creds.password){
+      // Success → animate login card out then show dashboard
+      const card = document.getElementById('loginCard')
+      card.classList.add('exiting')
+      setTimeout(() => {
+        document.getElementById('loginScreen').classList.add('hidden')
+        const dash = document.getElementById('dashboardScreen')
+        dash.classList.add('active')
+        // Init dashboard
+        loadSiteStatus()
+        loadStudents()
+      }, 400)
+    } else {
+      showLoginError('❌ اسم المستخدم أو كلمة المرور غير صحيحة')
+    }
+  } catch(err) {
+    showLoginError('⚠️ خطأ في الاتصال: ' + err.message)
+  } finally {
+    setLoginLoading(false)
+  }
+}
+window.doLogin = doLogin
+
+/** Logout */
+function doLogout(){
+  document.getElementById('dashboardScreen').classList.remove('active')
+  const loginScreen = document.getElementById('loginScreen')
+  loginScreen.classList.remove('hidden')
+  // Reset card animation
+  const card = document.getElementById('loginCard')
+  card.classList.remove('exiting')
+  card.style.animation = 'none'
+  requestAnimationFrame(() => {
+    card.style.animation = ''
+    card.style.animation = 'loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both'
+  })
+  // Clear fields
+  document.getElementById('loginUsername').value = ''
+  document.getElementById('loginPassword').value = ''
+}
+window.doLogout = doLogout
+
+/* ===================================================
+   ============== DASHBOARD LOGIC ====================
+   =================================================== */
+
 const siteSwitch = document.getElementById("siteSwitch")
 
-// ===== SHOW MESSAGE =====
 function showMsg(id, text, type="info") {
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.textContent = text;
-  el.className = `msg-box ${type} show`;
-  setTimeout(()=>{ el.classList.remove('show'); }, 3500);
+  const el = document.getElementById(id)
+  if(!el) return
+  el.textContent = text
+  el.className = msg-box ${type} show
+  setTimeout(() => el.classList.remove('show'), 3500)
 }
 
-// ===== LOAD SITE STATUS =====
+/* ===== SITE STATUS ===== */
 async function loadSiteStatus(){
   const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
-  if(error){ return; }
-  siteSwitch.checked = data.site_open;
-  updateSiteUI(data.site_open);
+  if(error) return
+  siteSwitch.checked = data.site_open
+  updateSiteUI(data.site_open)
 }
-loadSiteStatus()
 
 function updateSiteUI(isOpen){
-  const display = document.getElementById("siteStatusDisplay");
-  const dot     = document.getElementById("statusDot");
-  const text    = document.getElementById("statusText");
-  const badge   = document.getElementById("siteStatusBadge");
-
+  const display = document.getElementById("siteStatusDisplay")
+  const dot     = document.getElementById("statusDot")
+  const text    = document.getElementById("statusText")
+  const badge   = document.getElementById("siteStatusBadge")
   if(isOpen){
-    display.className = "site-status status-open";
-    dot.className     = "status-dot dot-open";
-    text.textContent  = "الموقع مفتوح ✅";
-    badge.innerHTML   = `حالة الموقع: <strong style="color:#00ff88">مفتوح</strong>`;
+    display.className = "site-status status-open"
+    dot.className     = "status-dot dot-open"
+    text.textContent  = "الموقع مفتوح ✅"
+    badge.innerHTML   = حالة الموقع: مفتوح
   } else {
-    display.className = "site-status status-closed";
-    dot.className     = "status-dot dot-closed";
-    text.textContent  = "الموقع مغلق ❌";
-    badge.innerHTML   = `حالة الموقع: <strong style="color:#ff6b6b">مغلق</strong>`;
+    display.className = "site-status status-closed"
+    dot.className     = "status-dot dot-closed"
+    text.textContent  = "الموقع مغلق ❌"
+    badge.innerHTML   = حالة الموقع: مغلق
   }
 }
 
 async function toggleSite(){
   const newValue = siteSwitch.checked
   const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
-  if(error){ showMsg("siteMsg","فشل تحديث حالة الموقع ❌","error"); return; }
-  updateSiteUI(newValue);
-  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع بنجاح" : "❌ تم إغلاق الموقع بنجاح", newValue ? "success" : "error");
+  if(error){ showMsg("siteMsg","فشل تحديث حالة الموقع ❌","error"); return }
+  updateSiteUI(newValue)
+  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع بنجاح" : "❌ تم إغلاق الموقع بنجاح", newValue ? "success" : "error")
 }
 window.toggleSite = toggleSite
 
-// ===== STATE =====
+/* ===== STATE ===== */
 let selectedID    = null
 let selectedColor = null
 
 window.selectColor = function(color, el){
-  selectedColor = color;
-  document.querySelectorAll('.color-box').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');
+  selectedColor = color
+  document.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'))
+  el.classList.add('selected')
   document.getElementById('selectedColorPreview').innerHTML =
-    `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`;
+    ●  تم اختيار اللون: ${color}
 }
 
-// ===== BADGE PREVIEW =====
 window.previewBadge = function(){
-  const sym  = document.getElementById("badgeSymbol").value;
-  const prev = document.getElementById("badgePreview");
-  const icon = document.getElementById("badgePreviewIcon");
-  const txt  = document.getElementById("badgePreviewText");
-  if(sym){ prev.style.display='inline-flex'; icon.textContent=sym; txt.textContent='معاينة الشارة'; }
-  else { prev.style.display='none'; }
+  const sym  = document.getElementById("badgeSymbol").value
+  const prev = document.getElementById("badgePreview")
+  const icon = document.getElementById("badgePreviewIcon")
+  if(sym){ prev.style.display='inline-flex'; icon.textContent=sym }
+  else { prev.style.display='none' }
 }
 
-// ===== ADD STUDENT =====
+/* ===== ADD STUDENT ===== */
 async function addStudent(){
   const name    = document.getElementById("studentName").value.trim()
   const title   = document.getElementById("reportTitle").value.trim()
   const subject = document.getElementById("subjectName").value.trim()
-  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
   const now = new Date().toISOString()
   const {error} = await supabase.from("student_reports").insert([{name,title,subject,date:now}])
-  if(error){ showMsg("msgAdd","❌ فشل الإضافة","error"); return; }
-  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success");
-  clearInputs(); await loadStudents();
+  if(error){ showMsg("msgAdd","❌ فشل الإضافة","error"); return }
+  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success")
+  clearInputs(); await loadStudents()
 }
 
-// ===== UPDATE STUDENT =====
+/* ===== UPDATE STUDENT ===== */
 async function updateStudent(){
-  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return; }
+  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return }
   const name    = document.getElementById("studentName").value.trim()
   const title   = document.getElementById("reportTitle").value.trim()
   const subject = document.getElementById("subjectName").value.trim()
-  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
   const now = new Date().toISOString()
   const {error} = await supabase.from("student_reports").update({name,title,subject,date:now}).eq("id",selectedID)
-  if(error){ showMsg("msgAdd","❌ فشل التعديل","error"); return; }
-  showMsg("msgAdd","✏️ تم التعديل بنجاح","success");
-  clearInputs(); await loadStudents();
+  if(error){ showMsg("msgAdd","❌ فشل التعديل","error"); return }
+  showMsg("msgAdd","✏️ تم التعديل بنجاح","success")
+  clearInputs(); await loadStudents()
 }
 
 window.editStudent = function(student){
-  selectedID = student.id;
+  selectedID = student.id
   document.getElementById("studentName").value  = student.name
   document.getElementById("reportTitle").value  = student.title
   document.getElementById("subjectName").value  = student.subject
-  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info");
-  document.getElementById("studentName").scrollIntoView({behavior:"smooth", block:"center"});
+  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info")
+  document.getElementById("studentName").scrollIntoView({behavior:"smooth",block:"center"})
 }
 
 window.deleteStudent = async function(id){
-  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return;
+  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return
   const {error} = await supabase.from("student_reports").delete().eq("id",id)
-  if(error){ showMsg("msgTable","❌ فشل الحذف","error"); return; }
-  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success");
-  await loadStudents();
+  if(error){ showMsg("msgTable","❌ فشل الحذف","error"); return }
+  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success")
+  await loadStudents()
 }
 
-// ===== LOAD STUDENTS =====
+/* ===== LOAD STUDENTS ===== */
 async function loadStudents(){
   const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
-  if(error){ console.log(error); return; }
+  if(error){ console.log(error); return }
 
   const table  = document.getElementById("studentsTable")
   const total  = data.length
@@ -958,84 +959,98 @@ async function loadStudents(){
   document.getElementById("statsBadged").textContent = badged
 
   if(total===0){
-    table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`;
-    return;
+    table.innerHTML = 📭لا يوجد طلاب مسجلون بعد
+    return
   }
 
   table.innerHTML = data.map((s,i)=>{
-    let displayName = s.badge ? `${s.badge} ${s.name}` : s.name
+    let displayName = s.badge ? ${s.badge} ${s.name} : s.name
     const d = new Date(s.date)
     const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
     return `
-    <tr style="animation-delay:${i*0.05}s">
-      <td><span class="row-num">${i+1}</span></td>
-      <td class="student-name-cell" style="color:${s.color||'#e0e0f0'}">${displayName}</td>
-      <td>${s.title}</td>
-      <td><span class="subject-badge">${s.subject}</span></td>
-      <td class="date-cell">${dateStr}</td>
-      <td>
-        <div class="action-btns">
-          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
-          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️ حذف</button>
-        </div>
-      </td>
-    </tr>`
+    
+      ${i+1}
+      ${displayName}
+      ${s.title}
+      ${s.subject}
+      ${dateStr}
+      
+        
+          ✏️ تعديل
+          🗑️ حذف
+        
+      
+    `
   }).join('')
 }
 window.loadStudents = loadStudents
 
-// ===== SET BADGE =====
+/* ===== SET BADGE ===== */
 async function setBadge(){
   const idx    = parseInt(document.getElementById("badgeIndex").value)-1
   const symbol = document.getElementById("badgeSymbol").value.trim()
-  if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return; }
+  if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return }
   const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
-  if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return; }
-  if(idx<0||idx>=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return; }
+  if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return }
+  if(idx=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return }
   const {error:ue} = await supabase.from("student_reports").update({badge:symbol}).eq("id",data[idx].id)
-  if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return; }
-  showMsg("msgBadge","🎉 تم تمييز الطالب بنجاح","success");
-  await loadStudents(); clearInputs();
+  if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return }
+  showMsg("msgBadge","🎉 تم تمييز الطالب بنجاح","success")
+  await loadStudents(); clearInputs()
 }
 
-// ===== SET COLOR =====
+/* ===== SET COLOR ===== */
 async function setColor(){
   const idx = parseInt(document.getElementById("colorIndex").value)-1
-  if(isNaN(idx)){ showMsg("msgColor","⚠️ أدخل رقم الطالب","error"); return; }
-  if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return; }
+  if(isNaN(idx)){ showMsg("msgColor","⚠️ أدخل رقم الطالب","error"); return }
+  if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return }
   const {data,error} = await supabase.from("student_reports").select("*").order("sequence_number",{ascending:true})
-  if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return; }
-  if(idx<0||idx>=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return; }
+  if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return }
+  if(idx=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return }
   const {error:ue} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",data[idx].id)
-  if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return; }
-  showMsg("msgColor","🎨 تم تلوين الطالب بنجاح","success");
-  await loadStudents(); clearInputs();
+  if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return }
+  showMsg("msgColor","🎨 تم تلوين الطالب بنجاح","success")
+  await loadStudents(); clearInputs()
 }
 
-// ===== CLEAR =====
+/* ===== CLEAR ===== */
 function clearInputs(){
   ['studentName','reportTitle','subjectName','badgeIndex','badgeSymbol','colorIndex'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
-  selectedID = null;
-  selectedColor = null;
-  document.querySelectorAll('.color-box').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('selectedColorPreview').innerHTML='';
-  document.getElementById('badgePreview').style.display='none';
+    const el=document.getElementById(id); if(el) el.value=''
+  })
+  selectedID = null
+  selectedColor = null
+  document.querySelectorAll('.color-box').forEach(b=>b.classList.remove('selected'))
+  document.getElementById('selectedColorPreview').innerHTML=''
+  document.getElementById('badgePreview').style.display='none'
 }
 
-// ===== REALTIME =====
+/* ===== REALTIME ===== */
 supabase.channel("students_channel")
-  .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents(); })
+  .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents() })
   .subscribe()
 
-// ===== INIT =====
+/* ===== EXPOSE GLOBALS ===== */
 window.addStudent    = addStudent
 window.updateStudent = updateStudent
 window.setBadge      = setBadge
 window.setColor      = setColor
 
-loadStudents()
-</script>
-</body>
-    </html>
+✅ ملخص التعديلات المضافة
+
+🔐 شاشة تسجيل الدخول
+| الميزة | التفاصيل |
+|--------|----------|
+| جلب بيانات الاعتماد | يتم جلبها من رابط GitHub Gist تلقائيًا عند كل محاولة دخول |
+| تحليل الصيغة | يستخرج اسم المستخدم من بين 【S】...【S】 وكلمة المرور من 【P】...【P】 |
+| حماية ديناميكية | أي تغيير في الـ Gist يُطبَّق فوريًا دون تعديل الكود |
+| إظهار/إخفاء كلمة المرور | زر 👁️ لرؤية كلمة المرور |
+| رسائل خطأ واضحة | رسالة حمراء أنيقة عند الخطأ |
+| تحميل ناعم | انيميشن دوران أثناء التحقق من كلمة المرور |
+
+🖼️ الخلفية
+- تم استبدال الفيديو بصورة خلفية احترافية (مكتبة) من Unsplash
+- لتغيير الصورة، عدّل رابط الـ url() داخل .bg-image في CSS
+
+🚪 زر الخروج
+- زر "خروج" ثابت في أعلى اليسار يُعيد لشاشة تسجيل الدخول
