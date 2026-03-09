@@ -138,6 +138,17 @@ td,th{border:1px solid #ccc; padding:8px; text-align:center; background: rgba(25
 </div>
 <button onclick="setColor()">تلوين</button>
 
+
+<hr>
+
+<h3>تحكم بحالة الموقع</h3>
+<label class="switch">
+  <input type="checkbox" id="siteSwitch">
+  <span class="slider"></span>
+</label>
+<button onclick="toggleSite()">تطبيق التغيير</button>
+<div id="siteMsg" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+
 <div id="msg"></div>
 
 <h3>قائمة الطلبة</h3>
@@ -164,6 +175,31 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL="https://mcwemgjmqwbgxoyiwant.supabase.co"
 const SUPABASE_KEY="sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY)
+
+const siteSwitch = document.getElementById("siteSwitch")
+const siteMsg = document.getElementById("siteMsg")
+
+// تحميل الحالة الحالية عند فتح لوحة التحكم
+async function loadSiteStatus(){
+    const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
+    if(error){ siteMsg.innerText = "فشل تحميل حالة الموقع"; console.log(error); return }
+    siteSwitch.checked = data.site_open
+}
+loadSiteStatus()
+
+// عند الضغط على الزر لتغيير الحالة
+async function toggleSite(){
+    const newValue = siteSwitch.checked
+    const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
+    if(error){
+        siteMsg.innerText = "فشل تحديث حالة الموقع ❌"
+        console.log(error)
+    } else {
+        siteMsg.innerText = newValue ? "تم فتح الموقع ✅" : "تم إغلاق الموقع ❌"
+    }
+}
+window.toggleSite = toggleSite
+
 
 let selectedID=null
 let selectedColor=null
