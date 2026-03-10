@@ -1,1227 +1,1114 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة تحكم الطلبة | Admin Panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<style>
-:root {
-  --primary: #0f3460;
-  --secondary: #16213e;
-  --accent: #e94560;
-  --gold: #f5c518;
-  --neon-blue: #00d4ff;
-  --neon-purple: #7b2fff;
-  --glass: rgba(255,255,255,0.07);
-  --glass-border: rgba(255,255,255,0.15);
-  --text-light: #e0e0f0;
-  --card-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family:'Cairo',sans-serif;
-  background:#050b1a;
-  color:var(--text-light);
-  min-height:100vh;
-  overflow-x:hidden;
-  position:relative;
-}
-.bg-image {
-  position:fixed; inset:0; z-index:-2;
-  background: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1920&q=80') center center / cover no-repeat;
-  filter:brightness(0.25) saturate(1.5);
-}
-.bg-overlay {
-  position:fixed; inset:0; z-index:-1;
-  background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.10) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.10) 0%, transparent 60%),
-              radial-gradient(ellipse at 50% 80%, rgba(233,69,96,0.07) 0%, transparent 60%),
-              linear-gradient(180deg, rgba(5,11,26,0.4) 0%, rgba(5,11,26,0.7) 100%);
-}
-#particles { position:fixed; inset:0; z-index:-1; pointer-events:none; }
-.particle {
-  position:absolute; border-radius:50%;
-  animation: floatUp linear infinite; opacity:0;
-}
-@keyframes floatUp {
-  0%   { transform:translateY(100vh) scale(0); opacity:0; }
-  10%  { opacity:0.6; }
-  90%  { opacity:0.3; }
-  100% { transform:translateY(-10vh) scale(1); opacity:0; }
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تحكم تقارير الطلبة | ONX-TAQE</title>
+  <style>
+    @font-face { font-family: 'TitelFont'; src: url('TITEL.ttf'); font-display: swap; }
+    @font-face { font-family: 'WriteFont'; src: url('WRITE.otf'); font-display: swap; }
 
-/* ===== LOGIN ===== */
-#loginScreen { position:fixed; inset:0; z-index:500; display:flex; align-items:center; justify-content:center; padding:20px; }
-.login-card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-  border:1px solid rgba(255,255,255,0.18); backdrop-filter:blur(30px);
-  border-radius:28px; padding:44px 40px 36px; width:100%; max-width:420px;
-  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(0,212,255,0.08);
-  position:relative; overflow:hidden;
-  animation: loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both;
-}
-@keyframes loginCardIn { from{transform:translateY(60px) scale(0.9);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
-.login-card::before { content:''; position:absolute; inset:0; border-radius:28px; background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 55%); pointer-events:none; }
-.login-top { text-align:center; margin-bottom:32px; }
-.login-icon { width:78px; height:78px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:22px; display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); animation:pulse-glow 3s ease-in-out infinite; }
-@keyframes pulse-glow { 0%,100%{box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3);} 50%{box-shadow:0 0 60px rgba(0,212,255,0.9),0 0 120px rgba(123,47,255,0.6);} }
-.login-title { font-size:1.8rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.login-subtitle { color:rgba(255,255,255,0.4); font-size:0.82rem; letter-spacing:2px; text-transform:uppercase; margin-top:5px; }
-.login-line { width:160px; height:2px; margin:14px auto 0; background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent); }
-.login-input-group { position:relative; margin-bottom:16px; }
-.login-input-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:7px; display:block; }
-.login-input { width:100%; padding:14px 16px 14px 50px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); border-radius:14px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.97rem; transition:all 0.3s ease; outline:none; direction:rtl; }
-.login-input::placeholder { color:rgba(255,255,255,0.28); }
-.login-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.07); box-shadow:0 0 0 3px rgba(0,212,255,0.12),0 4px 20px rgba(0,212,255,0.1); }
-.login-input-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:19px; pointer-events:none; }
-.pass-toggle { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px; color:rgba(255,255,255,0.4); transition:color 0.2s; user-select:none; background:none; border:none; }
-.pass-toggle:hover { color:var(--neon-blue); }
-.btn-login { width:100%; padding:15px; border:none; border-radius:14px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#00d4ff,#7b2fff); color:#fff; letter-spacing:0.5px; box-shadow:0 8px 30px rgba(0,212,255,0.4); transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:10px; }
-.btn-login::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.18),transparent); opacity:0; transition:opacity 0.3s; }
-.btn-login:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 14px 40px rgba(0,212,255,0.55); }
-.btn-login:hover::before { opacity:1; }
-.btn-login:active { transform:translateY(1px) scale(0.99); }
-.login-error { margin-top:14px; padding:11px 16px; border-radius:12px; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.4); color:#ff6b6b; font-size:0.88rem; font-weight:600; text-align:center; opacity:0; transform:translateY(-8px); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
-.login-error.show { opacity:1; transform:translateY(0); }
-.login-loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.25); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; }
-@keyframes spin { to{transform:rotate(360deg)} }
-.login-note { text-align:center; margin-top:18px; font-size:0.75rem; color:rgba(255,255,255,0.28); display:flex; align-items:center; justify-content:center; gap:6px; }
-#dashboardScreen { display:none; }
-#dashboardScreen.active { display:block; }
-#loginScreen.hidden { display:none !important; }
-@keyframes loginExit { to{transform:scale(1.05);opacity:0} }
-.login-card.exiting { animation:loginExit 0.4s cubic-bezier(0.23,1,0.32,1) forwards; }
+    /* ===== DISABLE TEXT SELECTION + OUTLINE ===== */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-tap-highlight-color: transparent !important;
+      outline: none !important;
+    }
+    input, textarea, #searchInput, .modal-input, #modal-textarea {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+    }
+    input:focus, textarea:focus { outline: none !important; }
+    button:focus, a:focus, [tabindex]:focus { outline: none !important; }
+    ::selection { background: transparent; }
+    ::-moz-selection { background: transparent; }
 
-/* ===== DASHBOARD ===== */
-.dashboard-header { text-align:center; padding:40px 20px 20px; position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; }
-@keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
-.header-icon { width:80px; height:80px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:24px; display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); animation:pulse-glow 3s ease-in-out infinite; }
-.header-title { font-size:2.5rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:1px; }
-.header-subtitle { color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px; letter-spacing:2px; text-transform:uppercase; }
-.header-line { width:200px; height:2px; margin:16px auto 0; background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent); }
-.logout-btn { position:fixed; top:20px; left:20px; z-index:100; padding:9px 18px; border:none; border-radius:10px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.35); color:#ff6b6b; backdrop-filter:blur(10px); transition:all 0.3s ease; display:flex; align-items:center; gap:6px; }
-.logout-btn:hover { background:rgba(233,69,96,0.3); transform:translateY(-2px); box-shadow:0 6px 20px rgba(233,69,96,0.3); }
+    :root {
+      --txt: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.62);
+      --glass-bg: rgba(255,255,255,0.08);
+      --glass-bg-2: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.14);
+      --glass-border-strong: rgba(255,255,255,0.20);
+      --shadow: 0 22px 60px rgba(0,0,0,0.55);
+      --shadow-soft: 0 14px 35px rgba(0,0,0,0.45);
+      --accent: #7dd3fc;
+      --gold: #f5c842;
+      --danger: #ff5c5c;
+      --ok: #4cff91;
+      --blur: 18px;
+      --radius: 22px;
+    }
 
-/* ===== STATS BAR ===== */
-.stats-bar { display:flex; justify-content:center; gap:20px; padding:10px 20px 20px; animation:fadeIn 1s 0.3s both; flex-wrap:wrap; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.stat-badge { background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px; display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; transition:all 0.3s ease; }
-.stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); }
-.stat-dot { width:8px; height:8px; border-radius:50%; }
+    html, body {
+      height: 100%;
+      font-family: 'WriteFont', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--txt);
+      overflow: hidden;
+    }
 
-/* ===== GRID ===== */
-.main-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1200px; margin:0 auto; padding:0 24px 40px; }
+    /* Background */
+    .bg-image {
+      position: fixed; inset: 0;
+      background: url('M.jpg') no-repeat center center fixed;
+      background-size: cover; z-index: -10;
+    }
+    .bg-overlay {
+      position: fixed; inset: 0; z-index: -9;
+      background:
+        radial-gradient(ellipse at 30% 10%, rgba(125,211,252,0.18), transparent 55%),
+        radial-gradient(ellipse at 90% 90%, rgba(245,200,66,0.12), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.52), rgba(0,0,0,0.35));
+    }
+    .bg-noise {
+      position: fixed; inset: 0; z-index: -8; pointer-events: none; opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+    .bg-orbs { position: fixed; inset: -120px; z-index: -7; pointer-events: none; filter: blur(26px) saturate(1.1); opacity: 0.9; }
+    .orb { position: absolute; border-radius: 50%; transform: translate3d(0,0,0); will-change: transform; }
+    .orb-a { width: 520px; height: 520px; left: -190px; top: -220px; background: radial-gradient(circle at 30% 30%, rgba(125,211,252,0.22), rgba(45,108,223,0.08) 55%, transparent 70%); animation: floatA 16s ease-in-out infinite; }
+    .orb-b { width: 620px; height: 620px; right: -210px; bottom: -260px; background: radial-gradient(circle at 40% 40%, rgba(245,200,66,0.20), rgba(224,168,0,0.06) 60%, transparent 74%); animation: floatB 18s ease-in-out infinite; }
+    .orb-c { width: 420px; height: 420px; left: 55%; top: 55%; background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.10), rgba(125,211,252,0.06) 55%, transparent 72%); animation: floatC 22s ease-in-out infinite; }
+    @keyframes floatA { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(65px,40px,0) scale(1.05)} }
+    @keyframes floatB { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(-70px,-55px,0) scale(1.04)} }
+    @keyframes floatC { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(40px,-30px,0) scale(1.03)} }
 
-/* ===== GLASS CARD ===== */
-.glass-card { background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)); border:1px solid var(--glass-border); backdrop-filter:blur(20px); border-radius:24px; padding:28px; box-shadow:var(--card-shadow); position:relative; overflow:hidden; transform-style:preserve-3d; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1),box-shadow 0.4s ease; animation:cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both; }
-.glass-card:nth-child(1){animation-delay:0.1s}
-.glass-card:nth-child(2){animation-delay:0.2s}
-.glass-card:nth-child(3){animation-delay:0.3s}
-.glass-card:nth-child(4){animation-delay:0.4s}
-.glass-card:nth-child(5){animation-delay:0.5s}
-.glass-card:nth-child(6){animation-delay:0.6s}
-.glass-card:nth-child(7){animation-delay:0.7s}
-.glass-card:nth-child(8){animation-delay:0.8s}
-@keyframes cardEntrance { from{transform:translateY(40px) rotateX(10deg);opacity:0} to{transform:translateY(0) rotateX(0deg);opacity:1} }
-.glass-card:hover { transform:translateY(-6px) rotateX(2deg); box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.1); }
-.glass-card::before { content:''; position:absolute; inset:0; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
-.card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(233,69,96,0.15),transparent 70%); pointer-events:none; }
-.card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); pointer-events:none; }
-.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
-.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
-.card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
-.card-glow-orange::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,140,0,0.12),transparent 70%); pointer-events:none; }
+    #particles-canvas { position: fixed; inset: 0; z-index: -6; pointer-events: none; opacity: 0.85; }
+    #cursorGlow { position: fixed; width: 320px; height: 320px; border-radius: 50%; pointer-events: none; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(125,211,252,0.16) 0%, rgba(245,200,66,0.06) 28%, transparent 68%); filter: blur(2px); z-index: 0; opacity: 0; transition: opacity .2s ease; }
 
-/* ===== CARD HEADER ===== */
-.card-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
-.card-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
-.icon-blue   { background:linear-gradient(135deg,#00d4ff22,#00d4ff44); border:1px solid #00d4ff44; }
-.icon-red    { background:linear-gradient(135deg,#e9456022,#e9456044); border:1px solid #e9456044; }
-.icon-purple { background:linear-gradient(135deg,#7b2fff22,#7b2fff44); border:1px solid #7b2fff44; }
-.icon-gold   { background:linear-gradient(135deg,#f5c51822,#f5c51844); border:1px solid #f5c51844; }
-.icon-green  { background:linear-gradient(135deg,#00ff8822,#00ff8844); border:1px solid #00ff8844; }
-.icon-orange { background:linear-gradient(135deg,#ff8c0022,#ff8c0044); border:1px solid #ff8c0044; }
-.card-title { font-size:1.2rem; font-weight:700; color:#fff; }
-.card-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:2px; }
+    /* Loader */
+    #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity .7s ease, transform .7s ease; }
+    #loader .loader-logo { font-family: 'TitelFont', sans-serif; font-size: 44px; letter-spacing: 1px; opacity: 0; animation: logoAppear 1s ease .20s forwards; text-align: center; }
+    #loader .loader-logo span { color: var(--gold); text-shadow: 0 0 30px rgba(245,200,66,.75); }
+    #loader .loader-sub { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.55); opacity: 0; animation: logoAppear 1s ease .30s forwards; }
+    #loader .loader-bar-wrap { margin-top: 28px; width: 280px; height: 4px; border-radius: 10px; background: rgba(255,255,255,0.15); overflow: hidden; }
+    #loader .loader-bar { height: 100%; width: 0%; border-radius: 10px; background: linear-gradient(90deg, rgba(245,200,66,0.9), rgba(125,211,252,0.9), rgba(255,255,255,0.7)); animation: loadBar 1.5s ease forwards; }
+    @keyframes logoAppear { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes loadBar { to{width:100%} }
 
-/* ===== INPUTS ===== */
-.input-group { position:relative; margin-bottom:14px; }
-.input-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
-.styled-input { width:100%; padding:13px 16px 13px 46px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem; transition:all 0.3s ease; outline:none; direction:rtl; }
-.styled-input::placeholder { color:rgba(255,255,255,0.3); }
-.styled-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1),0 4px 20px rgba(0,212,255,0.1); }
-.input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
-.styled-input[type="datetime-local"] { color-scheme: dark; padding-left: 14px; }
+    /* ===== NOTIFICATION BANNER ===== */
+    #notifBanner {
+      position: fixed;
+      top: 74px; left: 0; right: 0;
+      z-index: 400;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 20px;
+      background: linear-gradient(135deg, rgba(245,200,66,0.20), rgba(245,200,66,0.08));
+      border-bottom: 1px solid rgba(245,200,66,0.30);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    #notifBanner.visible {
+      display: flex;
+      animation: notifSlide 0.5s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes notifSlide { from{transform:translateY(-40px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .notif-icon { font-size: 20px; flex-shrink: 0; animation: notifPulse 2s ease-in-out infinite; }
+    @keyframes notifPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+    .notif-text { flex: 1; color: rgba(255,255,255,0.95); font-size: 14px; font-weight: 700; line-height: 1.5; }
+    .notif-close {
+      background: none; border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.50); cursor: pointer;
+      font-size: 16px; padding: 3px 10px; border-radius: 8px;
+      transition: all 0.2s; line-height: 1; flex-shrink: 0;
+    }
+    .notif-close:hover { color: #fff; background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
 
-/* ===== BUTTONS ===== */
-.btn-row { display:flex; gap:12px; margin-top:8px; }
-.btn { flex:1; padding:13px 20px; border:none; border-radius:12px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:700; position:relative; overflow:hidden; transition:all 0.3s cubic-bezier(0.23,1,0.32,1); display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.5px; }
-.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity 0.3s; }
-.btn:hover::before { opacity:1; }
-.btn-primary  { background:linear-gradient(135deg,#00d4ff,#0077ff); color:#fff; box-shadow:0 6px 25px rgba(0,212,255,0.35); }
-.btn-secondary{ background:linear-gradient(135deg,#7b2fff,#c044ff); color:#fff; box-shadow:0 6px 25px rgba(123,47,255,0.35); }
-.btn-danger   { background:linear-gradient(135deg,#e94560,#ff6b6b); color:#fff; box-shadow:0 6px 25px rgba(233,69,96,0.35); }
-.btn-success  { background:linear-gradient(135deg,#00c851,#00ff88); color:#fff; box-shadow:0 6px 25px rgba(0,200,81,0.35); }
-.btn-gold     { background:linear-gradient(135deg,#f5c518,#ff9500); color:#000; box-shadow:0 6px 25px rgba(245,197,24,0.35); }
-.btn-orange   { background:linear-gradient(135deg,#ff8c00,#ff5500); color:#fff; box-shadow:0 6px 25px rgba(255,140,0,0.35); }
-.btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
-.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
-.btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
-.btn-success:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
-.btn-gold:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
-.btn-orange:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(255,140,0,0.5); }
-.btn:active { transform:translateY(1px) scale(0.98); }
+    /* Topbar */
+    .topbar {
+      position: relative; z-index: 2;
+      padding: 16px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      opacity: 0; transform: translateY(-28px);
+      animation: topbarIn .65s cubic-bezier(.22,1,.36,1) 1.35s forwards;
+    }
+    @keyframes topbarIn { to{opacity:1;transform:translateY(0)} }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-badge { width: 40px; height: 40px; border-radius: 14px; background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 12px 26px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.92); }
+    .brand-text { min-width: 0; }
+    .brand-text h1 { font-family: 'TitelFont', sans-serif; font-size: 18px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-text p { font-size: 12px; color: rgba(255,255,255,0.58); margin-top: 2px; }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); text-decoration: none; font-size: 13px; transition: transform .18s ease, background .18s ease, border-color .18s ease; backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); }
+    .pill:hover { transform: translateY(-2px); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+    .pill i { font-style: normal; }
+    .pill.name { color: rgba(245,200,66,0.95); border-color: rgba(245,200,66,0.22); }
+    .pill.dev { border-color: rgba(125,211,252,0.22); }
 
-/* ===== COLOR PALETTE ===== */
-.palette-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
-.color-palette { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-.color-box { width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
-.color-box::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; opacity:0; transition:opacity 0.2s; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
-.color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
-.color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
-.color-box.selected::after { opacity:1; }
+    /* Layout */
+    .page-wrap {
+      height: calc(100vh - 74px);
+      overflow: auto;
+      padding: 26px 14px 38px;
+      position: relative; z-index: 1;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.18) transparent;
+      transition: padding-top 0.4s cubic-bezier(.22,1,.36,1);
+    }
+    .page-wrap.has-notif { padding-top: 64px; }
+    .page-wrap::-webkit-scrollbar { width: 6px; }
+    .page-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 10px; }
 
-/* ===== ALERT TYPE RADIOS ===== */
-.alert-type-row { display:flex; gap:12px; align-items:stretch; flex-wrap:wrap; margin-bottom:16px; }
-.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:all 0.3s ease; flex:1; min-width:130px; }
-.alert-type-label.private-lbl { background:rgba(123,47,255,0.12); border:1px solid rgba(123,47,255,0.3); }
-.alert-type-label.public-lbl  { background:rgba(0,212,255,0.12);  border:1px solid rgba(0,212,255,0.3);  }
-.alert-type-label:hover { transform:translateY(-1px); filter:brightness(1.2); }
-.alert-type-label input { accent-color:#7b2fff; width:16px; height:16px; cursor:pointer; }
-.alert-type-label.public-lbl input { accent-color:#00d4ff; }
-.alert-type-text { color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:700; }
+    /* Card */
+    .card {
+      width: 760px; max-width: 100%;
+      margin: 0 auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      padding: 30px 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      opacity: 0; transform: translateY(34px) scale(.985);
+      animation: cardIn .8s cubic-bezier(.22,1,.36,1) 1.55s forwards;
+      position: relative; overflow: hidden;
+      transform-style: preserve-3d; will-change: transform;
+    }
+    @keyframes cardIn { to{opacity:1;transform:translateY(0) scale(1)} }
+    .card::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(800px 400px at 20% 0%, rgba(255,255,255,0.10), transparent 55%), radial-gradient(700px 380px at 90% 100%, rgba(125,211,252,0.10), transparent 60%); }
+    .card-topline { height: 2px; margin: 0 -28px 18px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), rgba(125,211,252,0.28), transparent); opacity: 0.8; }
+    .section-title { font-family: 'TitelFont', sans-serif; color: rgba(245,200,66,0.92); font-size: 13px; text-align: center; letter-spacing: 3px; opacity: .95; margin: 10px 0 18px; }
 
-/* ===== TOGGLE SWITCH ===== */
-.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
-.toggle-info { flex:1; }
-.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
-.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
-.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
-.switch input { opacity:0; width:0; height:0; }
-.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
-.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
-input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
-input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
-input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
+    /* ===== DEADLINE PANEL ===== */
+    #deadlinePanel {
+      display: none;
+      background: linear-gradient(135deg, rgba(125,211,252,0.10), rgba(125,211,252,0.04));
+      border: 1px solid rgba(125,211,252,0.22);
+      border-radius: 18px;
+      padding: 16px 20px 14px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeSlide .4s ease;
+    }
+    #deadlinePanel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(500px 200px at 50% 0%, rgba(125,211,252,0.07), transparent 70%); pointer-events: none; }
+    #deadlinePanel::after { content: '⏰'; position: absolute; left: -10px; top: -10px; font-size: 70px; opacity: 0.04; pointer-events: none; }
+    .deadline-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .deadline-icon-box { width: 38px; height: 38px; border-radius: 10px; background: rgba(125,211,252,0.15); border: 1px solid rgba(125,211,252,0.25); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .deadline-info { flex: 1; }
+    .deadline-label-text { font-size: 11px; color: rgba(125,211,252,0.65); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3px; }
+    .deadline-date-display { font-size: 14px; font-weight: 700; color: rgba(125,211,252,0.95); }
+    .deadline-countdown {
+      font-size: 19px; font-weight: 900;
+      color: rgba(245,200,66,0.95);
+      text-shadow: 0 0 20px rgba(245,200,66,0.25);
+      letter-spacing: 0.5px;
+      direction: ltr;
+      text-align: center;
+      padding: 6px 0 2px;
+    }
 
-/* ===== MSG BOX ===== */
-.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:all 0.5s cubic-bezier(0.23,1,0.32,1); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
-.msg-box.show { opacity:1; transform:translateY(0); }
-.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
-.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
-.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
+    /* Inputs */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .input-group { position: relative; opacity: 0; transform: translateX(12px); will-change: transform, opacity; }
+    .input-group.anim-in { animation: inputIn .55s cubic-bezier(.22,1,.36,1) forwards; }
+    @keyframes inputIn { to{opacity:1;transform:translateX(0)} }
+    .input-group.full { grid-column: 1 / -1; }
+    .input-group label { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.60); margin-bottom: 6px; padding-right: 6px; letter-spacing: 1px; }
+    .hint { font-size: 10px; color: rgba(255,255,255,0.38); }
+    .input-group input { width: 100%; padding: 13px 16px 13px 44px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; color: #fff; font-size: 14px; outline: none; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease; backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); }
+    .input-group input::placeholder { color: rgba(255,255,255,0.30); }
+    .input-group input:focus { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.22); box-shadow: 0 0 0 3px rgba(125,211,252,0.12); transform: translateY(-1px); }
+    .input-icon { position: absolute; left: 14px; bottom: 12px; font-size: 16px; color: rgba(255,255,255,0.30); transition: color .18s ease, transform .18s ease; pointer-events: none; }
+    .input-group input:focus ~ .input-icon { color: rgba(125,211,252,0.92); transform: scale(1.06); }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.16), transparent); margin: 18px 0; }
 
-/* ===== TABLE CARD ===== */
-.table-card { grid-column:1 / -1; }
-.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
-table { width:100%; border-collapse:collapse; }
-thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
-thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
-tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:all 0.3s ease; animation:rowSlide 0.5s ease both; }
-@keyframes rowSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
-tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
-td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
-.student-name-cell { font-weight:700; font-size:1rem; }
-.subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:4px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; color:#00d4ff; }
-.date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
-.row-num { width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; }
-.action-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-.btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:all 0.3s ease; display:flex; align-items:center; gap:4px; }
-.btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
-.btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
-.btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
+    /* Buttons */
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .btn-wrap { opacity: 0; transform: translateY(12px); will-change: transform, opacity; }
+    .btn-wrap.anim-in { animation: btnIn .55s cubic-bezier(.22,1,.36,1) forwards; }
+    @keyframes btnIn { to{opacity:1;transform:translateY(0)} }
+    .full-row { grid-column: 1 / -1; }
 
-/* Alert badge in table */
-.alert-table-badge {
-  display:inline-flex; align-items:center; gap:4px;
-  padding:3px 10px; border-radius:14px; font-size:0.75rem; font-weight:700;
-  border:1px solid; margin-top:4px;
-  animation: alertGlowSoft 2.5s ease-in-out infinite;
-}
-@keyframes alertGlowSoft {
-  0%,100%{opacity:0.85;} 50%{opacity:1;filter:brightness(1.2);}
-}
-.alert-badge-type { font-size:0.65rem; opacity:0.75; }
+    .btn-glass { width: 100%; position: relative; border: none; border-radius: 18px; padding: 14px 16px; cursor: pointer; color: #fff; font-weight: 900; font-size: 14px; font-family: 'WriteFont', sans-serif; letter-spacing: .2px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); box-shadow: var(--shadow-soft); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); overflow: hidden; transform: translateZ(0); transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease; will-change: transform; }
+    .btn-glass::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(500px 120px at 20% 0%, rgba(255,255,255,0.18), transparent 55%), radial-gradient(500px 120px at 80% 100%, rgba(255,255,255,0.10), transparent 60%); opacity: 0.9; }
+    .btn-glass::after { content: ''; position: absolute; inset: -2px; pointer-events: none; background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.18) 35%, transparent 70%); transform: translateX(140%); transition: transform .7s cubic-bezier(.22,1,.36,1); opacity: .85; }
+    .btn-glass:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 22px 55px rgba(0,0,0,0.55); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.20); }
+    .btn-glass:hover::after { transform: translateX(-140%); }
+    .btn-glass:active { transform: translateY(1px) scale(.995); }
+    .btn-icon { margin-left: 8px; font-style: normal; opacity: .95; }
+    .btn-primary  { box-shadow: 0 18px 45px rgba(125,211,252,0.10), var(--shadow-soft); }
+    .btn-warn     { box-shadow: 0 18px 45px rgba(245,200,66,0.10), var(--shadow-soft); }
+    .btn-success  { box-shadow: 0 18px 45px rgba(76,255,145,0.08), var(--shadow-soft); }
+    .btn-danger   { box-shadow: 0 18px 45px rgba(255,92,92,0.08), var(--shadow-soft); }
+    .btn-cyan     { box-shadow: 0 18px 45px rgba(125,211,252,0.10), var(--shadow-soft); }
+    .btn-delete   { border-color: rgba(255,92,92,0.20); }
+    .btn-problem  { border-color: rgba(255,140,0,0.25); box-shadow: 0 18px 45px rgba(255,140,0,0.10), var(--shadow-soft); }
 
-/* ===== DIVIDER ===== */
-.divider { height:1px; margin:20px 0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
+    /* Ripple */
+    .ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple .55s ease-out; background: rgba(255,255,255,0.20); pointer-events: none; mix-blend-mode: overlay; }
+    @keyframes ripple { to{transform:scale(4.2);opacity:0} }
 
-/* ===== SITE STATUS ===== */
-.site-status { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:20px; font-weight:700; font-size:0.85rem; margin-top:12px; }
-.status-open   { background:rgba(0,200,81,0.15); border:1px solid #00c851; color:#00ff88; }
-.status-closed { background:rgba(233,69,96,0.15); border:1px solid #e94560; color:#ff6b6b; }
-.status-dot { width:8px; height:8px; border-radius:50%; animation:pulse-dot 1.5s ease-in-out infinite; }
-@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
-.dot-open   { background:#00ff88; box-shadow:0 0 8px #00ff88; }
-.dot-closed { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
+    /* msg */
+    #msg { margin-top: 14px; min-height: 22px; text-align: center; font-weight: 900; font-size: 14px; opacity: 0; transform: translateY(6px); transition: all .22s ease; }
+    #msg.show { opacity: 1; transform: translateY(0); }
+    #msg.success { color: var(--ok); text-shadow: 0 0 12px rgba(76,255,145,0.25); }
+    #msg.error   { color: var(--danger); text-shadow: 0 0 12px rgba(255,92,92,0.25); }
+    #msg.info    { color: var(--accent); text-shadow: 0 0 12px rgba(125,211,252,0.22); }
 
-/* ===== LOADER ===== */
-.loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.2); border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
+    /* Panels */
+    .panel { margin-top: 16px; padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); display: none; animation: fadeSlide .35s ease; }
+    @keyframes fadeSlide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .panel h4, .panel h3 { font-family: 'TitelFont', sans-serif; color: rgba(245,200,66,0.92); margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+    .badge { margin-right: auto; color: rgba(255,255,255,0.55); font-size: 12px; }
+    .panel p { padding: 7px 0; font-size: 14px; color: rgba(255,255,255,0.86); border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px; }
+    .panel p:last-child { border-bottom: none; }
+    .panel p strong { color: rgba(255,255,255,0.45); font-size: 12px; min-width: 70px; }
 
-/* ===== EMPTY STATE ===== */
-.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
-.empty-icon  { font-size:48px; margin-bottom:12px; opacity:0.5; }
-.empty-text  { font-size:1rem; }
+    .searchRow { display: flex; gap: 10px; margin: 12px 0 14px; }
+    .searchRow input { flex: 1; padding: 12px 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #fff; outline: none; backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); }
+    .searchRow input::placeholder { color: rgba(255,255,255,0.30); }
+    .searchRow input:focus { border-color: rgba(125,211,252,0.28); box-shadow: 0 0 0 3px rgba(125,211,252,0.10); }
 
-/* ===== CURRENT NOTIF ===== */
-.current-notif { padding:10px 14px; border-radius:12px; background:rgba(245,197,24,0.12); border:1px solid rgba(245,197,24,0.3); color:#f5c518; font-size:0.85rem; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    #allTitles { max-height: 360px; overflow: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    #allTitles::-webkit-scrollbar { width: 5px; }
+    #allTitles::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 10px; }
+    #allTitles ul { list-style: none; }
+    #allTitles li { padding: 10px 12px; border-radius: 14px; margin-bottom: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; align-items: center; transition: transform .18s ease, background .18s ease, border-color .18s ease; font-size: 13px; }
+    #allTitles li:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); transform: translateX(-3px); }
+    .row-num { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; background: rgba(125,211,252,0.22); flex-shrink: 0; }
+    .time { margin-right: auto; direction: ltr; color: rgba(255,255,255,0.34); font-size: 11px; flex-shrink: 0; }
+    .info { text-align: right; flex: 1; }
+    .highlight { background: rgba(245,200,66,0.08) !important; border: 1px solid rgba(245,200,66,0.22) !important; }
+    .highlight .row-num { background: rgba(245,200,66,0.22); }
 
-/* ===== BADGE PREVIEW ===== */
-.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:all 0.3s; color:#f5c518; }
+    /* Modal */
+    #modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.62); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+    #modal-overlay.active { display: flex; }
+    .modal-box { width: 420px; max-width: 92%; padding: 30px; border-radius: 22px; background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06)); border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 25px 65px rgba(0,0,0,0.75); text-align: center; animation: modalIn .28s cubic-bezier(.22,1,.36,1); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); }
+    @keyframes modalIn { from{opacity:0;transform:scale(.92) translateY(14px)} to{opacity:1;transform:scale(1) translateY(0)} }
+    .modal-icon { font-size: 44px; display: block; margin-bottom: 12px; }
+    .modal-title { font-family: 'TitelFont', sans-serif; color: rgba(245,200,66,0.92); font-size: 18px; margin-bottom: 8px; }
+    .modal-msg { color: rgba(255,255,255,0.68); font-size: 14px; line-height: 1.7; margin-bottom: 16px; white-space: pre-line; }
+    .modal-input, #modal-textarea {
+      width: 100%; padding: 12px 14px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06); color: #fff; outline: none;
+      margin-bottom: 16px;
+      backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur));
+      user-select: text !important; -webkit-user-select: text !important;
+      font-family: 'WriteFont', sans-serif; font-size: 14px;
+    }
+    #modal-textarea { resize: none; height: 110px; }
+    .modal-input:focus, #modal-textarea:focus { border-color: rgba(125,211,252,0.28); box-shadow: 0 0 0 3px rgba(125,211,252,0.10); }
+    .modal-btns { display: flex; gap: 12px; }
+    .modal-btn { flex: 1; padding: 12px 14px; border: none; border-radius: 16px; cursor: pointer; font-weight: 900; font-family: 'WriteFont', sans-serif; font-size: 14px; transition: transform .16s ease, filter .16s ease; }
+    .modal-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .modal-btn-cancel  { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.80); }
+    .modal-btn-confirm { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); color: #fff; }
 
-/* ===== ALERT PREVIEW ===== */
-.alert-preview-box {
-  padding:10px 16px; border-radius:12px; margin-bottom:14px;
-  display:none; align-items:center; gap:10px;
-  font-size:0.9rem; font-weight:700;
-  position:relative; overflow:hidden;
-}
-.alert-preview-box.show { display:flex; }
-.alert-preview-box::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  background-size:200% 100%;
-  animation:shimmerPrev 2s linear infinite;
-}
-@keyframes shimmerPrev { 0%{background-position:200% center} 100%{background-position:-200% center} }
+    /* Toast */
+    #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(110px); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); padding: 12px 20px; border-radius: 999px; box-shadow: 0 18px 40px rgba(0,0,0,0.45); display: flex; gap: 10px; align-items: center; z-index: 9000; transition: transform .38s cubic-bezier(.22,1,.36,1); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.success-toast { border-color: rgba(76,255,145,0.18); }
+    #toast.error-toast   { border-color: rgba(255,92,92,0.18); }
+    #toast.info-toast    { border-color: rgba(125,211,252,0.18); }
+    #toast-text { font-size: 13px; color: #fff; }
 
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width:6px; height:6px; }
-::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
-::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
+    /* Footer */
+    .footer { margin-top: 14px; text-align: center; color: rgba(255,255,255,0.46); font-size: 11px; }
+    .footer a { color: rgba(245,200,66,0.80); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
 
-/* ===== ENTRANCE ANIMATION ===== */
-.entrance-overlay { position:fixed; inset:0; z-index:1000; background:linear-gradient(135deg,#050b1a,#0f1a2e); display:flex; flex-direction:column; align-items:center; justify-content:center; animation:overlayFade 0.8s 1.8s forwards; }
-@keyframes overlayFade { to{opacity:0;pointer-events:none;visibility:hidden} }
-.entrance-logo { width:100px; height:100px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:28px; display:flex; align-items:center; justify-content:center; font-size:44px; box-shadow:0 0 60px rgba(0,212,255,0.6),0 0 120px rgba(123,47,255,0.4); animation:logoAnim 1.5s cubic-bezier(0.23,1,0.32,1) both; margin-bottom:24px; }
-@keyframes logoAnim { 0%{transform:scale(0) rotateY(180deg);opacity:0} 60%{transform:scale(1.1) rotateY(-10deg)} 100%{transform:scale(1) rotateY(0deg);opacity:1} }
-.entrance-title { font-size:2rem; font-weight:900; background:linear-gradient(135deg,#fff,var(--neon-blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:fadeInUp 0.8s 0.5s both; }
-.entrance-sub { color:rgba(255,255,255,0.4); font-size:0.9rem; margin-top:8px; letter-spacing:3px; text-transform:uppercase; animation:fadeInUp 0.8s 0.7s both; }
-@keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.entrance-progress { width:200px; height:3px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:32px; overflow:hidden; animation:fadeInUp 0.8s 0.9s both; }
-.entrance-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple)); animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both; box-shadow:0 0 10px rgba(0,212,255,0.8); }
-@keyframes progressFill { from{width:0} to{width:100%} }
-
-/* ===== TOOLTIP ===== */
-[data-tip] { position:relative; }
-[data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
-
-/* ===== VISITORS TABLE CODE CELL ===== */
-.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
-.visitor-unregistered { color:rgba(255,255,255,0.3); font-style:italic; font-size:0.85rem; }
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:768px){
-  .main-grid { grid-template-columns:1fr; padding:0 12px 40px; }
-  .table-card { grid-column:auto; }
-  .header-title { font-size:1.6rem; }
-  .login-card { padding:32px 24px 28px; }
-  .alert-type-row { flex-direction:column; }
-}
-</style>
+    @media (max-width:720px) {
+      .grid, .btn-grid, .btn-grid-3 { grid-template-columns: 1fr; }
+      .input-group.full { grid-column: auto; }
+      .card { padding: 26px 18px; }
+      .card-topline { margin: 0 -18px 18px; }
+      .topbar .brand-text h1 { font-size: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .notif-icon { animation: none !important; }
+      .topbar { animation: none !important; opacity: 1; transform: none; }
+      .card { animation: none !important; opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Entrance -->
-<div class="entrance-overlay" id="entranceOverlay">
-  <div class="entrance-logo">🎓</div>
-  <div class="entrance-title">لوحة التحكم</div>
-  <div class="entrance-sub">Student Dashboard • Admin Panel</div>
-  <div class="entrance-progress"><div class="entrance-bar"></div></div>
-</div>
-
-<div class="bg-image"></div>
-<div class="bg-overlay"></div>
-<div id="particles"></div>
-
-<!-- ===== LOGIN ===== -->
-<div id="loginScreen">
-  <div class="login-card" id="loginCard">
-    <div class="login-top">
-      <div class="login-icon">🎓</div>
-      <div class="login-title">تسجيل الدخول</div>
-      <div class="login-subtitle">Admin Panel • لوحة التحكم</div>
-      <div class="login-line"></div>
-    </div>
-    <div class="login-input-group">
-      <label class="login-input-label">اسم المستخدم</label>
-      <span class="login-input-icon">👤</span>
-      <input class="login-input" id="loginUsername" type="text" placeholder="أدخل اسم المستخدم" autocomplete="username">
-    </div>
-    <div class="login-input-group">
-      <label class="login-input-label">كلمة المرور</label>
-      <span class="login-input-icon">🔒</span>
-      <input class="login-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password"
-        onkeydown="if(event.key==='Enter') doLogin()">
-      <button class="pass-toggle" type="button" id="passToggleBtn" onclick="togglePassView()" title="إظهار/إخفاء">👁️</button>
-    </div>
-    <button class="btn-login" id="loginBtn" onclick="doLogin()">
-      <span>🚀</span> دخول إلى لوحة التحكم
-    </button>
-    <div class="login-error" id="loginError"></div>
-    <div class="login-note"><span>🔐</span><span>محمي بكلمة مرور ديناميكية</span></div>
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
+  <div class="bg-noise"></div>
+  <div class="bg-orbs">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
   </div>
-</div>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+  <div id="cursorGlow" aria-hidden="true"></div>
 
-<!-- ===== DASHBOARD ===== -->
-<div id="dashboardScreen">
-  <button class="logout-btn" onclick="doLogout()">🚪 خروج</button>
-
-  <div class="dashboard-header">
-    <div class="header-icon">🎓</div>
-    <h1 class="header-title">لوحة تحكم الطلبة</h1>
-    <p class="header-subtitle">Student Management Dashboard</p>
-    <div class="header-line"></div>
+  <!-- LOADER -->
+  <div id="loader" role="status" aria-live="polite">
+    <div class="loader-logo">لوحة <span>تقارير الطلبة</span></div>
+    <div class="loader-sub">Powered by ONX-TAQE • Loading UI…</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
   </div>
 
-  <!-- Stats Bar -->
-  <div class="stats-bar">
-    <div class="stat-badge">
-      <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
-      <span>إجمالي الطلاب: <strong id="statsTotal">0</strong></span>
-    </div>
-    <div class="stat-badge">
-      <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
-      <span>الطلاب المميزون: <strong id="statsBadged">0</strong></span>
-    </div>
-    <div class="stat-badge">
-      <div class="stat-dot" style="background:#e94560;box-shadow:0 0 8px #e94560"></div>
-      <span>آخر إضافة: <strong id="statsLastReport">—</strong></span>
-    </div>
-    <div class="stat-badge">
-      <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
-      <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
-    </div>
-    <div class="stat-badge">
-      <div class="stat-dot" style="background:#ff8c00;box-shadow:0 0 8px #ff8c00"></div>
-      <span>التحذيرات النشطة: <strong id="statsAlerts">0</strong></span>
+  <!-- ✅ NOTIFICATION BANNER -->
+  <div id="notifBanner">
+    <span class="notif-icon">📢</span>
+    <span class="notif-text" id="notifText">إشعار من الإدارة</span>
+    <button class="notif-close" onclick="dismissNotif()">✕</button>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <span class="modal-icon" id="modal-icon">✏️</span>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-msg"   id="modal-msg"></div>
+      <input    class="modal-input" id="modal-input"    style="display:none" placeholder="" />
+      <textarea class="modal-input" id="modal-textarea" style="display:none" placeholder=""></textarea>
+      <div class="modal-btns" id="modal-btns"></div>
     </div>
   </div>
 
-  <div class="main-grid">
+  <!-- TOAST -->
+  <div id="toast" aria-live="polite">
+    <span id="toast-icon">✅</span>
+    <span id="toast-text"></span>
+  </div>
 
-    <!-- Card 1: Add/Edit Student -->
-    <div class="glass-card card-glow-blue">
-      <div class="card-header">
-        <div class="card-icon icon-blue">✏️</div>
-        <div>
-          <div class="card-title">إضافة / تعديل طالب</div>
-          <div class="card-desc">Add or Edit Student Record</div>
-        </div>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-badge">✦</div>
+      <div class="brand-text">
+        <h1>نظام إدارة عناوين تقارير الطلبة</h1>
+        <p>واجهة لوحة تحكّم للطلبة — حفظ • تعديل • عرض • تصدير</p>
       </div>
-      <div class="input-group">
-        <label class="input-label">اسم الطالب</label>
-        <span class="input-icon">👤</span>
-        <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
-      </div>
-      <div class="input-group">
-        <label class="input-label">عنوان التقرير</label>
-        <span class="input-icon">📋</span>
-        <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
-      </div>
-      <div class="input-group">
-        <label class="input-label">المادة الدراسية</label>
-        <span class="input-icon">📚</span>
-        <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="addStudent()"><span>➕</span> حفظ</button>
-        <button class="btn btn-secondary" onclick="updateStudent()"><span>✏️</span> تعديل</button>
-      </div>
-      <div class="msg-box" id="msgAdd"></div>
     </div>
+    <div class="topbar-actions">
+      <span class="pill name" title="اسم المطوّر/المالك"><i>👑</i> ONX-TAQE</span>
+      <a class="pill dev" href="https://t.me/ONX44" target="_blank" rel="noopener"><i>💬</i> تواصل مع المطوّر</a>
+    </div>
+  </header>
 
-    <!-- Card 2: Site Control -->
-    <div class="glass-card card-glow-red">
-      <div class="card-header">
-        <div class="card-icon icon-red">🌐</div>
-        <div>
-          <div class="card-title">التحكم بحالة الموقع</div>
-          <div class="card-desc">Site Status Control</div>
+  <!-- MAIN -->
+  <main class="page-wrap" id="pageWrap">
+    <section class="card" id="mainCard">
+      <div class="card-topline"></div>
+
+      <!-- ✅ DEADLINE PANEL -->
+      <div id="deadlinePanel">
+        <div class="deadline-header">
+          <div class="deadline-icon-box">⏰</div>
+          <div class="deadline-info">
+            <div class="deadline-label-text">موعد تسليم التقارير</div>
+            <div class="deadline-date-display" id="deadlineDateDisplay">—</div>
+          </div>
+        </div>
+        <div class="deadline-countdown" id="deadlineCountdown">جارٍ التحميل…</div>
+      </div>
+
+      <p class="section-title">✦ إدخال البيانات ✦</p>
+
+      <div class="grid">
+        <div class="input-group">
+          <label>الاسم الثنائي <span class="hint">لازم اسمين على الأقل</span></label>
+          <input id="studentName" placeholder="مثال: أحمد محمد" autocomplete="name" />
+          <span class="input-icon">👤</span>
+        </div>
+        <div class="input-group">
+          <label>المادة الدراسية <span class="hint">مثال: قواعد بيانات</span></label>
+          <input id="subjectName" placeholder="اسم المادة" />
+          <span class="input-icon">📚</span>
+        </div>
+        <div class="input-group full">
+          <label>عنوان التقرير <span class="hint">العنوان لازم يكون فريد</span></label>
+          <input id="reportTitle" placeholder="اكتب عنوان تقريرك هنا" />
+          <span class="input-icon">📄</span>
         </div>
       </div>
-      <div class="toggle-container">
-        <div class="toggle-info">
-          <div class="toggle-title">حالة الموقع</div>
-          <div class="toggle-desc">تفعيل أو تعطيل الوصول للموقع</div>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="siteSwitch">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
-        <div class="status-dot dot-closed" id="statusDot"></div>
-        <span id="statusText">الموقع مغلق</span>
-      </div>
+
       <div class="divider"></div>
-      <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
-        <span>⚡</span> تطبيق التغيير
-      </button>
-      <div class="msg-box" id="siteMsg"></div>
-    </div>
+      <p class="section-title">✦ الإجراءات ✦</p>
 
-    <!-- Card 3: Badge -->
-    <div class="glass-card card-glow-gold">
-      <div class="card-header">
-        <div class="card-icon icon-gold">⭐</div>
-        <div>
-          <div class="card-title">تمييز الطالب</div>
-          <div class="card-desc">Add Badge to Student</div>
+      <div class="btn-grid">
+        <div class="btn-wrap">
+          <button class="btn-glass btn-primary" onclick="saveData()">
+            <i class="btn-icon">💾</i> حفظ البيانات
+          </button>
         </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">رقم الطالب في القائمة</label>
-        <span class="input-icon">🔢</span>
-        <input class="styled-input" id="badgeIndex" type="number" placeholder="مثال: 1" oninput="previewBadge()">
-      </div>
-      <div class="input-group">
-        <label class="input-label">الشارة أو الرمز</label>
-        <span class="input-icon">🏅</span>
-        <input class="styled-input" id="badgeSymbol" placeholder="مثال: ⭐ أو 🥇" oninput="previewBadge()">
-      </div>
-      <div class="badge-preview" id="badgePreview" style="display:none">
-        <span id="badgePreviewIcon">⭐</span>
-        <span id="badgePreviewText">معاينة الشارة</span>
-      </div>
-      <button class="btn btn-gold" style="width:100%; margin-top:12px" onclick="setBadge()">
-        <span>✨</span> تمييز الطالب
-      </button>
-      <div class="msg-box" id="msgBadge"></div>
-    </div>
-
-    <!-- Card 4: Color -->
-    <div class="glass-card card-glow-purple">
-      <div class="card-header">
-        <div class="card-icon icon-purple">🎨</div>
-        <div>
-          <div class="card-title">تلوين اسم الطالب</div>
-          <div class="card-desc">Assign Color — يظهر في لوحة الطلبة</div>
-        </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">رقم الطالب في القائمة</label>
-        <span class="input-icon">🔢</span>
-        <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
-      </div>
-      <span class="palette-label">اختر لون الاسم</span>
-      <div class="color-palette" id="nameColorPalette">
-        <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#ffaa00,#cc6600)" onclick="selectColor('orange',this)" data-tip="برتقالي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#aa44ff,#6600cc)" onclick="selectColor('purple',this)" data-tip="بنفسجي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#ff88bb,#cc4488)" onclick="selectColor('pink',this)" data-tip="وردي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#ffee44,#ccaa00)" onclick="selectColor('#f5c518',this)" data-tip="ذهبي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#aa6633,#663300)" onclick="selectColor('brown',this)" data-tip="بني"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#00ddff,#0088aa)" onclick="selectColor('cyan',this)" data-tip="سماوي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#888,#444)" onclick="selectColor('gray',this)" data-tip="رمادي"></div>
-      </div>
-      <div id="selectedColorPreview" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:12px"></div>
-      <button class="btn btn-secondary" style="width:100%" onclick="setColor()">
-        <span>🎨</span> تطبيق اللون
-      </button>
-      <div class="msg-box" id="msgColor"></div>
-    </div>
-
-    <!-- Card 5: Send Notification -->
-    <div class="glass-card card-glow-gold">
-      <div class="card-header">
-        <div class="card-icon icon-gold">📢</div>
-        <div>
-          <div class="card-title">إرسال إشعار / تنبيه</div>
-          <div class="card-desc">Broadcast Message to Students</div>
-        </div>
-      </div>
-      <div id="currentNotif" class="current-notif" style="display:none">
-        <span>📢</span> <span id="currentNotifText"></span>
-      </div>
-      <div class="input-group">
-        <label class="input-label">نص الإشعار</label>
-        <span class="input-icon">📝</span>
-        <input class="styled-input" id="notifInput" placeholder="اكتب الإشعار الذي سيظهر للطلاب...">
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-gold" onclick="sendNotification()"><span>📤</span> إرسال</button>
-        <button class="btn btn-danger" onclick="clearNotification()"><span>🗑️</span> مسح</button>
-      </div>
-      <div class="msg-box" id="msgNotif"></div>
-    </div>
-
-    <!-- Card 6: Deadline -->
-    <div class="glass-card card-glow-blue">
-      <div class="card-header">
-        <div class="card-icon icon-blue">📅</div>
-        <div>
-          <div class="card-title">تاريخ تسليم التقارير</div>
-          <div class="card-desc">Report Submission Deadline</div>
-        </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">تاريخ ووقت التسليم</label>
-        <input class="styled-input" id="deadlineInput" type="datetime-local">
-      </div>
-      <div class="toggle-container" style="margin:14px 0">
-        <div class="toggle-info">
-          <div class="toggle-title">إظهار التاريخ للطلاب</div>
-          <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="deadlineActiveSwitch">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="saveDeadline()">
-        <span>💾</span> حفظ تاريخ التسليم
-      </button>
-      <div class="msg-box" id="msgDeadline"></div>
-    </div>
-
-    <!-- Card 7: ⚠️ Student Alert (NEW) -->
-    <div class="glass-card card-glow-orange" style="grid-column:1/-1">
-      <div class="card-header">
-        <div class="card-icon icon-orange">⚠️</div>
-        <div>
-          <div class="card-title">إرسال تحذير / تنبيه لطالب</div>
-          <div class="card-desc">Send Targeted Alert — يظهر في لوحة بيانات الطالب</div>
+        <div class="btn-wrap">
+          <button class="btn-glass btn-warn" onclick="changeTitle()">
+            <i class="btn-icon">✏️</i> تغيير العنوان
+          </button>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div>
-          <div class="input-group">
-            <label class="input-label">رقم الطالب في القائمة</label>
-            <span class="input-icon">🔢</span>
-            <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
-          </div>
-          <div class="input-group">
-            <label class="input-label">نص التحذير / التنبيه</label>
-            <span class="input-icon">✍️</span>
-            <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
-          </div>
-
-          <!-- Alert type -->
-          <div class="alert-type-row">
-            <label class="alert-type-label private-lbl">
-              <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
-              <span class="alert-type-text">🔒 خاص — فقط في معلوماتي</span>
-            </label>
-            <label class="alert-type-label public-lbl">
-              <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
-              <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
-            </label>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال التحذير</button>
-            <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف التحذير</button>
-          </div>
-          <div class="msg-box" id="msgAlert"></div>
+      <div class="btn-grid-3" style="margin-top:14px;">
+        <div class="btn-wrap">
+          <button class="btn-glass btn-success" onclick="showMyInfo()">
+            <i class="btn-icon">👁️</i> معلوماتي
+          </button>
         </div>
-
-        <div>
-          <span class="palette-label">🎨 اختر لون التحذير</span>
-          <div class="color-palette" id="alertColorPalette">
-            <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#555,#222)" onclick="selectAlertColor('#444444',this)" data-tip="أسود"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#eee,#bbb)" onclick="selectAlertColor('#eeeeee',this)" data-tip="أبيض"></div>
-          </div>
-
-          <!-- Alert preview -->
-          <div class="divider" style="margin:12px 0"></div>
-          <span class="palette-label">معاينة التحذير</span>
-          <div id="alertPreviewBox" class="alert-preview-box">
-            <span>⚠️</span>
-            <span id="alertPreviewText">نص التحذير يظهر هنا</span>
-            <span id="alertPreviewType" class="alert-badge-type"></span>
-          </div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:8px;line-height:1.6">
-            💡 <strong>خاص:</strong> يظهر فقط في قسم "معلوماتي" للطالب المحدد<br>
-            💡 <strong>عام:</strong> يظهر أمام اسم الطالب في جدول جميع العناوين
-          </div>
+        <div class="btn-wrap">
+          <button class="btn-glass btn-danger" onclick="showAll()">
+            <i class="btn-icon">📋</i> عناوين الطلبة
+          </button>
+        </div>
+        <div class="btn-wrap">
+          <button class="btn-glass btn-cyan" onclick="downloadMyData()">
+            <i class="btn-icon">⬇️</i> تحميل بياناتي
+          </button>
         </div>
       </div>
-    </div>
 
-    <!-- Card 8: Visitors (full width) -->
-    <div class="glass-card table-card card-glow-green">
-      <div class="card-header">
-        <div class="card-icon icon-green">👥</div>
-        <div>
-          <div class="card-title">سجل الزوار</div>
-          <div class="card-desc">Visitors Log — مَن زار الموقع</div>
+      <!-- ✅ زر حذف + زر إرسال مشكلة -->
+      <div class="btn-grid" style="margin-top:14px;">
+        <div class="btn-wrap">
+          <button class="btn-glass btn-delete" onclick="deleteMyData()">
+            <i class="btn-icon">🗑️</i> حذف معلوماتي
+          </button>
         </div>
-        <button class="btn btn-success" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadVisitors()">
-          <span>🔄</span> تحديث
-        </button>
-      </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>الاسم</th>
-              <th>كود الجهاز</th>
-              <th>آخر زيارة</th>
-              <th>عدد الزيارات</th>
-            </tr>
-          </thead>
-          <tbody id="visitorsTable">
-            <tr><td colspan="5"><div class="empty-state"><div class="loader"></div></div></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Card 9: Students Table (full width) -->
-    <div class="glass-card table-card">
-      <div class="card-header">
-        <div class="card-icon icon-blue">📊</div>
-        <div>
-          <div class="card-title">قائمة الطلبة</div>
-          <div class="card-desc">Students List & Records • يتحدث تلقائياً</div>
+        <div class="btn-wrap">
+          <button class="btn-glass btn-problem" onclick="reportProblem()">
+            <i class="btn-icon">🆘</i> أرسل مشكلتك
+          </button>
         </div>
-        <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
-          <span>🔄</span> تحديث
-        </button>
       </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>الاسم</th>
-              <th>عنوان التقرير</th>
-              <th>المادة</th>
-              <th>التاريخ</th>
-              <th>التحذير</th>
-              <th>إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="studentsTable">
-            <tr><td colspan="7"><div class="empty-state"><div class="loader"></div></div></td></tr>
-          </tbody>
-        </table>
+
+      <div id="msg"></div>
+
+      <!-- INFO BOX -->
+      <div id="infoBox" class="panel"></div>
+
+      <!-- ALL PANEL -->
+      <div id="allPanel" class="panel">
+        <h3>📋 جميع العناوين <span id="counterBadge" class="badge"></span></h3>
+        <div class="searchRow">
+          <input id="searchInput" placeholder="ابحث بالاسم / العنوان / المادة..." />
+        </div>
+        <div id="allTitles"></div>
       </div>
-      <div class="msg-box" id="msgTable"></div>
-    </div>
 
-  </div><!-- end main-grid -->
-</div><!-- end dashboardScreen -->
+      <footer class="footer">
+        واجهة لوحة تحكّم — <a href="https://t.me/ONX44" target="_blank" rel="noopener">@ONX44</a>
+      </footer>
+    </section>
+  </main>
 
-<script>
-/* ===== PARTICLES ===== */
-(function(){
-  const container = document.getElementById('particles');
-  const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
-  for(let i=0;i<25;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random()*4+2;
-    p.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${Math.random()*100}%;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      animation-duration:${Math.random()*15+10}s;
-      animation-delay:${Math.random()*10}s;
-      box-shadow:0 0 ${size*3}px currentColor;
-    `;
-    container.appendChild(p);
-  }
-})();
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-function togglePassView(){
-  const inp = document.getElementById('loginPassword');
-  const btn = document.getElementById('passToggleBtn');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
-}
-</script>
+    /* =============================================
+       CONFIG — Supabase
+    ============================================= */
+    const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    /* =============================================
+       ⚠️  Telegram CONFIG
+       1. أرسل رسالة للبوت الخاص بك أولاً
+       2. افتح الرابط التالي في متصفحك لتحصل على chat_id:
+          https://api.telegram.org/bot7735965641:AAFzkUy27zKXYWroodhdxOBapMgwttyq5_s/getUpdates
+       3. انسخ قيمة  "id"  من  "chat"  وضعها أدناه
+    ============================================= */
+    const TELEGRAM_BOT_TOKEN = "7735965641:AAFzkUy27zKXYWroodhdxOBapMgwttyq5_s";
+    const TELEGRAM_CHAT_ID   = "YOUR_CHAT_ID"; // ← ضع هنا رقم chat_id الخاص بك
 
-const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
-const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+    /* ===== Performance ===== */
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile     = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-const CREDS_URL = "https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/2f6ecbcb632f4a10716aa8a742c7e5a1263d2479/SS"
+    /* ===== Particles ===== */
+    const canvas = document.getElementById('particles-canvas');
+    const ctx    = canvas.getContext('2d', { alpha: true });
+    function resizeCanvas(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+    resizeCanvas();
+    addEventListener('resize', resizeCanvas);
 
-/* ===== AUTH ===== */
-function parseCreds(raw) {
-  const um = raw.match(/【S】(.+?)【S】/)
-  const pm = raw.match(/【P】(.+?)【P】/)
-  return { username: um ? um[1].trim() : null, password: pm ? pm[1].trim() : null }
-}
-
-function showLoginError(msg) {
-  const el = document.getElementById('loginError')
-  el.textContent = msg
-  el.classList.add('show')
-  setTimeout(() => el.classList.remove('show'), 4000)
-}
-
-function setLoginLoading(v) {
-  const btn = document.getElementById('loginBtn')
-  btn.innerHTML = v ? '<span class="login-loader"></span> جارٍ التحقق...' : '<span>🚀</span> دخول إلى لوحة التحكم'
-  btn.disabled = v
-}
-
-async function doLogin() {
-  const u = document.getElementById('loginUsername').value.trim()
-  const p = document.getElementById('loginPassword').value.trim()
-  if(!u || !p){ showLoginError('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور'); return }
-  setLoginLoading(true)
-  try {
-    const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' })
-    if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد')
-    const raw = await res.text()
-    const creds = parseCreds(raw)
-    if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return }
-    if(u === creds.username && p === creds.password){
-      const card = document.getElementById('loginCard')
-      card.classList.add('exiting')
-      setTimeout(() => {
-        document.getElementById('loginScreen').classList.add('hidden')
-        const dash = document.getElementById('dashboardScreen')
-        dash.classList.add('active')
-        initDashboard()
-      }, 400)
-    } else {
-      showLoginError('❌ اسم المستخدم أو كلمة المرور غير صحيحة')
+    class Particle {
+      constructor(init=true){ this.reset(init); }
+      reset(init=false){
+        this.x   = init ? Math.random()*canvas.width : (Math.random()>.5 ? -10 : canvas.width+10);
+        this.y   = Math.random()*canvas.height;
+        this.r   = Math.random()*1.8 + 0.6;
+        this.vx  = (Math.random()*0.35 + 0.08) * (Math.random()>.5 ? 1 : -1);
+        this.vy  = (Math.random()-0.5)*0.14;
+        this.a   = Math.random()*0.30 + 0.10;
+        this.rgb = Math.random()>0.7 ? '245,200,66' : '125,211,252';
+      }
+      step(){
+        this.x += this.vx; this.y += this.vy;
+        if(this.y < -20)             this.y = canvas.height+20;
+        if(this.y > canvas.height+20) this.y = -20;
+        if(this.x < -30 || this.x > canvas.width+30) this.reset();
+      }
+      draw(){
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(${this.rgb},${this.a})`; ctx.fill();
+      }
     }
-  } catch(err) {
-    showLoginError('⚠️ خطأ في الاتصال: ' + err.message)
-  } finally {
-    setLoginLoading(false)
-  }
-}
-window.doLogin = doLogin
+    function initParticles(){
+      if(reduceMotion) return;
+      const count = isMobile ? 26 : 44;
+      const particles = Array.from({length: count}, ()=> new Particle(true));
+      (function anim(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(const p of particles){ p.step(); p.draw(); }
+        requestAnimationFrame(anim);
+      })();
+    }
+    initParticles();
 
-function doLogout(){
-  document.getElementById('dashboardScreen').classList.remove('active')
-  const ls = document.getElementById('loginScreen')
-  ls.classList.remove('hidden')
-  const card = document.getElementById('loginCard')
-  card.classList.remove('exiting')
-  card.style.animation = 'none'
-  requestAnimationFrame(() => {
-    card.style.animation = ''
-    card.style.animation = 'loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both'
-  })
-  document.getElementById('loginUsername').value = ''
-  document.getElementById('loginPassword').value = ''
-}
-window.doLogout = doLogout
+    /* ===== Cursor glow ===== */
+    const glow = document.getElementById('cursorGlow');
+    addEventListener('mousemove', e=>{ glow.style.left=e.clientX+'px'; glow.style.top=e.clientY+'px'; glow.style.opacity='1'; });
+    addEventListener('mouseleave', ()=> glow.style.opacity='0');
 
-/* ===== INIT DASHBOARD ===== */
-function initDashboard() {
-  loadSiteStatus()
-  loadStudents()
-  loadSiteSettings()
-  loadVisitors()
-  setupRealtime()
-}
-
-/* ===== HELPERS ===== */
-const siteSwitch = document.getElementById("siteSwitch")
-
-function showMsg(id, text, type="info") {
-  const el = document.getElementById(id)
-  if(!el) return
-  el.textContent = text
-  el.className = `msg-box ${type} show`
-  setTimeout(() => el.classList.remove('show'), 3500)
-}
-
-/* ===== SITE STATUS ===== */
-async function loadSiteStatus(){
-  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
-  if(error) return
-  siteSwitch.checked = data.site_open
-  updateSiteUI(data.site_open)
-}
-
-function updateSiteUI(isOpen){
-  const display = document.getElementById("siteStatusDisplay")
-  const dot     = document.getElementById("statusDot")
-  const text    = document.getElementById("statusText")
-  const badge   = document.getElementById("siteStatusBadge")
-  if(isOpen){
-    display.className = "site-status status-open"
-    dot.className     = "status-dot dot-open"
-    text.textContent  = "الموقع مفتوح ✅"
-    badge.innerHTML   = `حالة الموقع: <strong style="color:#00ff88">مفتوح</strong>`
-  } else {
-    display.className = "site-status status-closed"
-    dot.className     = "status-dot dot-closed"
-    text.textContent  = "الموقع مغلق ❌"
-    badge.innerHTML   = `حالة الموقع: <strong style="color:#ff6b6b">مغلق</strong>`
-  }
-}
-
-async function toggleSite(){
-  const newValue = siteSwitch.checked
-  const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
-  if(error){ showMsg("siteMsg","فشل تحديث حالة الموقع ❌","error"); return }
-  updateSiteUI(newValue)
-  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع" : "❌ تم إغلاق الموقع", newValue ? "success" : "error")
-}
-window.toggleSite = toggleSite
-
-/* ===== LOAD SITE SETTINGS ===== */
-async function loadSiteSettings(){
-  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
-  if(error || !data) return
-  const currentNotif = document.getElementById("currentNotif")
-  const currentNotifText = document.getElementById("currentNotifText")
-  if(data.notification && data.notification.trim()){
-    document.getElementById("notifInput").value = data.notification
-    currentNotif.style.display = "flex"
-    currentNotifText.textContent = data.notification
-  } else {
-    currentNotif.style.display = "none"
-    document.getElementById("notifInput").value = ""
-  }
-  if(data.deadline){
-    const dt = new Date(data.deadline)
-    const localDt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0,16)
-    document.getElementById("deadlineInput").value = localDt
-  }
-  if(data.deadline_active !== undefined){
-    document.getElementById("deadlineActiveSwitch").checked = !!data.deadline_active
-  }
-}
-
-/* ===== SEND NOTIFICATION ===== */
-async function sendNotification(){
-  const msg = document.getElementById("notifInput").value.trim()
-  if(!msg){ showMsg("msgNotif","⚠️ أدخل نص الإشعار","error"); return }
-  const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1)
-  if(error){ showMsg("msgNotif","❌ فشل الإرسال","error"); return }
-  const currentNotif = document.getElementById("currentNotif")
-  document.getElementById("currentNotifText").textContent = msg
-  currentNotif.style.display = "flex"
-  showMsg("msgNotif","✅ تم إرسال الإشعار للطلاب","success")
-}
-window.sendNotification = sendNotification
-
-/* ===== CLEAR NOTIFICATION ===== */
-async function clearNotification(){
-  const {error} = await supabase.from("site_control").update({notification: ""}).eq("id",1)
-  if(error){ showMsg("msgNotif","❌ فشل المسح","error"); return }
-  document.getElementById("notifInput").value = ""
-  document.getElementById("currentNotif").style.display = "none"
-  showMsg("msgNotif","🗑️ تم مسح الإشعار","info")
-}
-window.clearNotification = clearNotification
-
-/* ===== SAVE DEADLINE ===== */
-async function saveDeadline(){
-  const dtVal = document.getElementById("deadlineInput").value
-  const active = document.getElementById("deadlineActiveSwitch").checked
-  const {error} = await supabase.from("site_control")
-    .update({ deadline: dtVal ? new Date(dtVal).toISOString() : null, deadline_active: active })
-    .eq("id",1)
-  if(error){ showMsg("msgDeadline","❌ فشل الحفظ","error"); return }
-  showMsg("msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success")
-}
-window.saveDeadline = saveDeadline
-
-/* ===== LOAD VISITORS ===== */
-async function loadVisitors(){
-  const {data,error} = await supabase.from("visitors").select("*").order("last_visit",{ascending:false})
-  const table = document.getElementById("visitorsTable")
-  if(error || !data || data.length === 0){
-    table.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👻</div><div class="empty-text">لا يوجد زوار بعد</div></div></td></tr>`
-    return
-  }
-  table.innerHTML = data.map((v,i) => {
-    const name = v.name
-      ? `<span class="student-name-cell">${v.name}</span>`
-      : `<span class="visitor-unregistered">غير مسجل</span>`
-    const d = new Date(v.last_visit)
-    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
-    const shortCode = v.code ? v.code.slice(0,14) + '…' : '-'
-    return `<tr style="animation-delay:${i*0.04}s">
-      <td><span class="row-num">${i+1}</span></td>
-      <td>${name}</td>
-      <td class="code-cell">${shortCode}</td>
-      <td class="date-cell">${dateStr}</td>
-      <td><span class="subject-badge">${v.visit_count || 1}</span></td>
-    </tr>`
-  }).join('')
-}
-window.loadVisitors = loadVisitors
-
-/* ===== STATE ===== */
-let selectedID    = null
-let selectedColor = null
-let selectedAlertColor = '#ff4444'
-
-/* ===== SELECT NAME COLOR ===== */
-window.selectColor = function(color, el){
-  selectedColor = color
-  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
-  el.classList.add('selected')
-  document.getElementById('selectedColorPreview').innerHTML =
-    `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`
-}
-
-/* ===== SELECT ALERT COLOR ===== */
-window.selectAlertColor = function(color, el){
-  selectedAlertColor = color
-  document.querySelectorAll('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'))
-  el.classList.add('selected')
-  previewAlert()
-}
-
-/* ===== PREVIEW ALERT ===== */
-window.previewAlert = function(){
-  const text = document.getElementById('alertStudentText').value.trim()
-  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
-  const box  = document.getElementById('alertPreviewBox')
-  const ptext= document.getElementById('alertPreviewText')
-  const ptype= document.getElementById('alertPreviewType')
-  if(text){
-    box.style.display = 'flex'
-    box.style.color   = selectedAlertColor
-    box.style.borderLeft = `3px solid ${selectedAlertColor}`
-    box.style.background = `${selectedAlertColor}18`
-    ptext.textContent = text
-    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام'
-  } else {
-    box.style.display = 'none'
-  }
-}
-
-window.previewBadge = function(){
-  const sym  = document.getElementById("badgeSymbol").value
-  const prev = document.getElementById("badgePreview")
-  const icon = document.getElementById("badgePreviewIcon")
-  if(sym){ prev.style.display='inline-flex'; icon.textContent=sym }
-  else { prev.style.display='none' }
-}
-
-/* ===== ADD STUDENT ===== */
-async function addStudent(){
-  const name    = document.getElementById("studentName").value.trim()
-  const title   = document.getElementById("reportTitle").value.trim()
-  const subject = document.getElementById("subjectName").value.trim()
-  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
-  const {error} = await supabase.from("student_reports").insert([{name,title,subject,date:new Date().toISOString()}])
-  if(error){ showMsg("msgAdd","❌ فشل الإضافة","error"); return }
-  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success")
-  clearInputs(); await loadStudents()
-}
-
-/* ===== UPDATE STUDENT ===== */
-async function updateStudent(){
-  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return }
-  const name    = document.getElementById("studentName").value.trim()
-  const title   = document.getElementById("reportTitle").value.trim()
-  const subject = document.getElementById("subjectName").value.trim()
-  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
-  const {error} = await supabase.from("student_reports").update({name,title,subject,date:new Date().toISOString()}).eq("id",selectedID)
-  if(error){ showMsg("msgAdd","❌ فشل التعديل","error"); return }
-  showMsg("msgAdd","✏️ تم التعديل بنجاح","success")
-  clearInputs(); await loadStudents()
-}
-
-window.editStudent = function(student){
-  selectedID = student.id
-  document.getElementById("studentName").value  = student.name
-  document.getElementById("reportTitle").value  = student.title
-  document.getElementById("subjectName").value  = student.subject
-  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info")
-  document.getElementById("studentName").scrollIntoView({behavior:"smooth",block:"center"})
-}
-
-window.deleteStudent = async function(id){
-  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return
-  const {error} = await supabase.from("student_reports").delete().eq("id",id)
-  if(error){ showMsg("msgTable","❌ فشل الحذف","error"); return }
-  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success")
-  await loadStudents()
-}
-
-/* ===== LOAD STUDENTS ===== */
-async function loadStudents(){
-  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-  if(error){ console.log(error); return }
-
-  const table  = document.getElementById("studentsTable")
-  const total  = data.length
-  const badged = data.filter(s=>s.badge).length
-  const alerts = data.filter(s=>s.alert_text).length
-
-  document.getElementById("statsTotal").textContent  = total
-  document.getElementById("statsBadged").textContent = badged
-  document.getElementById("statsAlerts").textContent = alerts
-
-  if(total > 0){
-    const sorted = [...data].sort((a,b) => new Date(b.date) - new Date(a.date))
-    document.getElementById("statsLastReport").textContent = sorted[0].name
-  } else {
-    document.getElementById("statsLastReport").textContent = "—"
-  }
-
-  if(total===0){
-    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`
-    return
-  }
-
-  table.innerHTML = data.map((s,i) => {
-    const displayName = s.badge ? `${s.badge} ${s.name}` : s.name
-    const d = new Date(s.date)
-    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
-
-    // Alert cell
-    let alertCell = '<span style="color:rgba(255,255,255,0.25);font-size:0.8rem">—</span>'
-    if(s.alert_text){
-      const typeIcon = s.alert_type === 'public' ? '🌐' : '🔒'
-      alertCell = `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <span class="alert-table-badge" style="color:${s.alert_color||'#ff4444'};border-color:${s.alert_color||'#ff4444'}">
-          ⚠️ ${s.alert_text.slice(0,20)}${s.alert_text.length>20?'…':''}
-        </span>
-        <span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">${typeIcon} ${s.alert_type==='public'?'عام':'خاص'}</span>
-      </div>`
+    /* ===== Loader ===== */
+    window.addEventListener('load', ()=>{
+      setTimeout(()=>{
+        const loader = document.getElementById('loader');
+        loader.style.opacity='0'; loader.style.transform='scale(1.04)';
+        setTimeout(()=>{ loader.style.display='none'; triggerEntranceAnims(); }, 650);
+      }, 1250);
+    });
+    function triggerEntranceAnims(){
+      document.querySelectorAll('.input-group').forEach((el,i)=> setTimeout(()=> el.classList.add('anim-in'), i*85));
+      document.querySelectorAll('.btn-wrap').forEach((el,i)=> setTimeout(()=> el.classList.add('anim-in'), 220+i*70));
     }
 
-    return `<tr style="animation-delay:${i*0.05}s">
-      <td><span class="row-num">${i+1}</span></td>
-      <td class="student-name-cell" style="color:${s.color||'#e0e0f0'}">${displayName}</td>
-      <td>${s.title}</td>
-      <td><span class="subject-badge">${s.subject}</span></td>
-      <td class="date-cell">${dateStr}</td>
-      <td>${alertCell}</td>
-      <td>
-        <div class="action-btns">
-          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
-          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️ حذف</button>
-        </div>
-      </td>
-    </tr>`
-  }).join('')
-}
-window.loadStudents = loadStudents
+    /* ===== Card tilt ===== */
+    const card = document.getElementById('mainCard');
+    if(!reduceMotion && !isMobile){
+      let raf = 0;
+      card.addEventListener('mousemove', e=>{
+        if(raf) return;
+        raf = requestAnimationFrame(()=>{
+          raf = 0;
+          const r  = card.getBoundingClientRect();
+          const x  = (e.clientX - r.left) / r.width  - 0.5;
+          const y  = (e.clientY - r.top)  / r.height - 0.5;
+          const rx = (-y * 4.8).toFixed(2);
+          const ry = ( x * 7.0).toFixed(2);
+          card.style.transform = `translateY(0) scale(1) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+      });
+      card.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
+    }
 
-/* ===== SET BADGE ===== */
-async function setBadge(){
-  const idx    = parseInt(document.getElementById("badgeIndex").value)-1
-  const symbol = document.getElementById("badgeSymbol").value.trim()
-  if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return }
-  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-  if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return }
-  if(idx<0||idx>=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return }
-  const {error:ue} = await supabase.from("student_reports").update({badge:symbol}).eq("id",data[idx].id)
-  if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return }
-  showMsg("msgBadge","🎉 تم تمييز الطالب — سيظهر في لوحة الطلبة فوراً","success")
-  await loadStudents(); clearInputs()
-}
+    /* ===== Ripple ===== */
+    document.addEventListener('click', e=>{
+      const btn = e.target.closest('.btn-glass');
+      if(!btn) return;
+      const r = btn.getBoundingClientRect();
+      const s = Math.max(r.width, r.height);
+      const rip = document.createElement('span');
+      rip.className = 'ripple';
+      rip.style.width = rip.style.height = s+'px';
+      rip.style.left  = (e.clientX - r.left - s/2)+'px';
+      rip.style.top   = (e.clientY - r.top  - s/2)+'px';
+      btn.appendChild(rip);
+      setTimeout(()=> rip.remove(), 650);
+    });
 
-/* ===== SET COLOR ===== */
-async function setColor(){
-  const idx = parseInt(document.getElementById("colorIndex").value)-1
-  if(isNaN(idx)){ showMsg("msgColor","⚠️ أدخل رقم الطالب","error"); return }
-  if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return }
-  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-  if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return }
-  if(idx<0||idx>=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return }
-  const {error:ue} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",data[idx].id)
-  if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return }
-  showMsg("msgColor","🎨 تم تلوين الاسم — سيظهر في لوحة الطلبة فوراً","success")
-  await loadStudents(); clearInputs()
-}
+    /* ===== Toast ===== */
+    function showToast(msg, type='success'){
+      const t    = document.getElementById('toast');
+      const icon = document.getElementById('toast-icon');
+      const text = document.getElementById('toast-text');
+      icon.textContent = type==='success'?'✅':type==='error'?'❌':'ℹ️';
+      text.textContent = msg;
+      t.className = '';
+      t.classList.add('show', type==='success'?'success-toast':type==='error'?'error-toast':'info-toast');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(()=> t.className='', 2600);
+    }
 
-/* ===== ⚠️ SEND STUDENT ALERT (NEW) ===== */
-async function sendStudentAlert(){
-  const idx  = parseInt(document.getElementById('alertStudentIndex').value) - 1
-  const text = document.getElementById('alertStudentText').value.trim()
-  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
+    function setMsg(text, type='info'){
+      const m = document.getElementById('msg');
+      m.textContent = text; m.className = 'show '+type;
+      clearTimeout(m._t);
+      m._t = setTimeout(()=> m.className='', 4200);
+    }
 
-  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return }
-  if(!text){ showMsg('msgAlert','⚠️ أدخل نص التحذير','error'); return }
-  if(!selectedAlertColor){ showMsg('msgAlert','⚠️ اختر لوناً للتحذير','error'); return }
+    /* ===== Modal (supports input + textarea) ===== */
+    function showModal({ icon='✏️', title='', msg='', inputPlaceholder='', withInput=false,
+                         isTextarea=false, confirmText='تأكيد', cancelText='إلغاء' }){
+      return new Promise(resolve=>{
+        document.getElementById('modal-icon').textContent  = icon;
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-msg').textContent   = msg;
 
-  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
-  if(error){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
-  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return }
+        const inp = document.getElementById('modal-input');
+        const ta  = document.getElementById('modal-textarea');
+        inp.style.display = 'none';
+        ta.style.display  = 'none';
 
-  const student = data[idx]
-  const {error: ue} = await supabase.from('student_reports').update({
-    alert_text:  text,
-    alert_color: selectedAlertColor,
-    alert_type:  type
-  }).eq('id', student.id)
+        if(withInput){
+          const activeEl = isTextarea ? ta : inp;
+          activeEl.style.display = 'block';
+          activeEl.placeholder   = inputPlaceholder || '';
+          activeEl.value         = '';
+          setTimeout(()=> activeEl.focus(), 60);
+        }
 
-  if(ue){ showMsg('msgAlert','❌ فشل الإرسال: ' + (ue.message||''), 'error'); return }
-  showMsg('msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}" — سيظهر فوراً في لوحته`, 'success')
-  await loadStudents()
-}
-window.sendStudentAlert = sendStudentAlert
+        const btns    = document.getElementById('modal-btns');
+        btns.innerHTML = `
+          <button class="modal-btn modal-btn-cancel">${cancelText}</button>
+          <button class="modal-btn modal-btn-confirm">${confirmText}</button>
+        `;
+        const overlay = document.getElementById('modal-overlay');
+        overlay.classList.add('active');
 
-/* ===== ⚠️ CLEAR STUDENT ALERT (NEW) ===== */
-async function clearStudentAlert(){
-  const idx = parseInt(document.getElementById('alertStudentIndex').value) - 1
-  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return }
+        const activeEl = isTextarea ? ta : inp;
+        btns.querySelector('.modal-btn-confirm').onclick = ()=>{
+          overlay.classList.remove('active');
+          resolve(withInput ? activeEl.value : true);
+        };
+        btns.querySelector('.modal-btn-cancel').onclick = ()=>{
+          overlay.classList.remove('active');
+          resolve(null);
+        };
+      });
+    }
 
-  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
-  if(error || !data){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
-  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود','error'); return }
+    /* ===== Dismiss Notification ===== */
+    function dismissNotif(){
+      const banner = document.getElementById('notifBanner');
+      banner.classList.remove('visible');
+      setTimeout(()=>{ banner.style.display='none'; }, 400);
+      document.getElementById('pageWrap').classList.remove('has-notif');
+    }
+    window.dismissNotif = dismissNotif;
 
-  const student = data[idx]
-  const {error: ue} = await supabase.from('student_reports').update({
-    alert_text:  null,
-    alert_color: null,
-    alert_type:  null
-  }).eq('id', student.id)
+    /* ===== Countdown ===== */
+    let countdownInterval = null;
+    function startCountdown(targetDate){
+      const el = document.getElementById('deadlineCountdown');
+      function update(){
+        const diff = targetDate - new Date();
+        if(diff <= 0){
+          el.textContent  = '⚠️ انتهى موعد التسليم!';
+          el.style.color  = '#ff5c5c';
+          el.style.textShadow = '0 0 20px rgba(255,92,92,0.4)';
+          clearInterval(countdownInterval); return;
+        }
+        const days  = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins  = Math.floor((diff % 3600000)  / 60000);
+        const secs  = Math.floor((diff % 60000)    / 1000);
+        let str = '';
+        if(days > 0) str += `${days} يوم `;
+        str += `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        el.textContent = `⏱️  ${str}`;
+        el.style.color = diff < 3600000 ? '#ff5c5c' : 'rgba(245,200,66,0.95)';
+        el.style.textShadow = diff < 3600000
+          ? '0 0 20px rgba(255,92,92,0.35)'
+          : '0 0 20px rgba(245,200,66,0.25)';
+      }
+      update();
+      countdownInterval = setInterval(update, 1000);
+    }
 
-  if(ue){ showMsg('msgAlert','❌ فشل الحذف','error'); return }
-  showMsg('msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info')
-  document.getElementById('alertPreviewBox').style.display = 'none'
-  await loadStudents()
-}
-window.clearStudentAlert = clearStudentAlert
+    /* ===== Load Site Control (Notification + Deadline) ===== */
+    async function loadSiteControlData(){
+      const { data, error } = await supabase
+        .from("site_control").select("*").eq("id",1).single();
+      if(error || !data) return;
 
-/* ===== CLEAR INPUTS ===== */
-function clearInputs(){
-  ['studentName','reportTitle','subjectName','badgeIndex','badgeSymbol','colorIndex','notifInput'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = ''
-  })
-  selectedID = null
-  selectedColor = null
-  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
-  document.getElementById('selectedColorPreview').innerHTML = ''
-  document.getElementById('badgePreview').style.display = 'none'
-}
+      /* — Notification — */
+      const banner    = document.getElementById('notifBanner');
+      const notifText = document.getElementById('notifText');
+      if(data.notification && data.notification.trim()){
+        notifText.textContent = data.notification;
+        banner.classList.add('visible');
+        document.getElementById('pageWrap').classList.add('has-notif');
+      } else {
+        banner.classList.remove('visible');
+        banner.style.display = 'none';
+        document.getElementById('pageWrap').classList.remove('has-notif');
+      }
 
-/* ===== REALTIME ===== */
-function setupRealtime(){
-  supabase.channel("students_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents() })
-    .subscribe()
-  supabase.channel("visitors_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"visitors"},()=>{ loadVisitors() })
-    .subscribe()
-  supabase.channel("site_control_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"site_control"},()=>{ loadSiteStatus(); loadSiteSettings() })
-    .subscribe()
-}
+      /* — Deadline — */
+      const deadlinePanel = document.getElementById('deadlinePanel');
+      clearInterval(countdownInterval);
+      if(data.deadline && data.deadline_active){
+        const dt = new Date(data.deadline);
+        document.getElementById('deadlineDateDisplay').textContent =
+          dt.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric',
+                                           hour:'2-digit', minute:'2-digit', hour12: true });
+        deadlinePanel.style.display = 'block';
+        startCountdown(dt);
+      } else {
+        deadlinePanel.style.display = 'none';
+      }
+    }
 
-/* ===== EXPOSE ===== */
-window.addStudent    = addStudent
-window.updateStudent = updateStudent
-window.setBadge      = setBadge
-window.setColor      = setColor
-</script>
+    /* ===== Check Site Status ===== */
+    async function checkSiteStatus(){
+      const { data, error } = await supabase
+        .from("site_control").select("site_open").eq("id",1).single();
+      if(error){
+        document.body.innerHTML = `<h2 style="color:#fff;text-align:center;margin-top:120px;">حدث خطأ عند التحقق من حالة الموقع</h2>`;
+        return false;
+      }
+      if(!data.site_open){
+        document.body.innerHTML = `<h2 style="color:#fff;text-align:center;margin-top:120px;font-size:36px;">الموقع مغلق ❌</h2>`;
+        return false;
+      }
+      return true;
+    }
+
+    /* ===== Device Fingerprint ===== */
+    async function sha256(str){
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+    function canvasFp(){
+      try{
+        const c = document.createElement('canvas'); c.width=260; c.height=80;
+        const x = c.getContext('2d');
+        x.textBaseline='top'; x.font="16px Arial";
+        x.fillStyle="#f5c842"; x.fillRect(10,10,80,30);
+        x.fillStyle="#7dd3fc"; x.fillText("ONX-TAQE|Fingerprint",12,14);
+        x.fillStyle="rgba(255,255,255,0.6)"; x.fillText(navigator.userAgent,12,38);
+        return c.toDataURL();
+      } catch { return "no-canvas"; }
+    }
+    function webglFp(){
+      try{
+        const c  = document.createElement('canvas');
+        const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+        if(!gl) return "no-webgl";
+        const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+        return (dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : "v?")
+             + "|"
+             + (dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : "r?");
+      } catch { return "no-webgl"; }
+    }
+    const DEVICE_CODE_PROMISE = (async ()=>{
+      const parts = [
+        navigator.userAgent, navigator.platform||'', navigator.language||'',
+        Intl.DateTimeFormat().resolvedOptions().timeZone||'',
+        `${screen.width}x${screen.height}x${screen.colorDepth}`,
+        navigator.hardwareConcurrency||'', navigator.deviceMemory||'',
+        canvasFp(), webglFp(),
+      ].join("||");
+      return (await sha256(parts)).slice(0, 28);
+    })();
+
+    /* ===== Track Visitor ===== */
+    async function trackVisitor(){
+      const code = await DEVICE_CODE_PROMISE;
+      try {
+        const { data: sd } = await supabase
+          .from("student_reports").select("name").eq("code",code).single();
+        const name = sd?.name || null;
+
+        const { data: existing } = await supabase
+          .from("visitors").select("*").eq("code",code).single();
+
+        if(existing){
+          await supabase.from("visitors").update({
+            last_visit:  new Date().toISOString(),
+            visit_count: (existing.visit_count || 0) + 1,
+            name: name || existing.name
+          }).eq("code", code);
+        } else {
+          await supabase.from("visitors").insert([{
+            code,
+            name,
+            last_visit:  new Date().toISOString(),
+            visit_count: 1
+          }]);
+        }
+      } catch(e){ console.log("visitor track:", e); }
+    }
+
+    /* ===== Report Problem → Telegram ===== */
+    async function reportProblem(){
+      const code = await DEVICE_CODE_PROMISE;
+      const { data: me } = await supabase
+        .from("student_reports").select("name").eq("code",code).single();
+
+      const result = await showModal({
+        icon:             '🆘',
+        title:            'أرسل مشكلتك للمشرف',
+        msg:              'اكتب مشكلتك أو استفسارك بالتفصيل\nوسيتم إرسالها للمشرف مباشرة عبر تيليغرام',
+        withInput:        true,
+        isTextarea:       true,
+        inputPlaceholder: 'اكتب مشكلتك هنا…',
+        confirmText:      '📤 إرسال',
+        cancelText:       'إلغاء'
+      });
+
+      if(!result || !result.trim()) return;
+
+      const studentName = me?.name || 'طالب غير مسجل';
+      const msgText = `🆘 <b>مشكلة من طالب — ONX-TAQE</b>\n\n` +
+                      `👤 <b>الاسم:</b> ${studentName}\n` +
+                      `📝 <b>المشكلة:</b>\n${result.trim()}\n\n` +
+                      `🕐 <b>الوقت:</b> ${new Date().toLocaleString('ar-EG')}`;
+      try {
+        const res     = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msgText, parse_mode: 'HTML' })
+        });
+        const json = await res.json();
+        if(json.ok){
+          setMsg("✅ تم إرسال مشكلتك للمشرف بنجاح", "success");
+          showToast("تم الإرسال ✅", "success");
+        } else {
+          throw new Error(json.description || 'Telegram API error');
+        }
+      } catch(e){
+        console.error("Telegram:", e);
+        setMsg("❌ فشل الإرسال — تأكد من إعداد chat_id في الكود أو تواصل مع المشرف مباشرة", "error");
+        showToast("فشل الإرسال ❌", "error");
+      }
+    }
+    window.reportProblem = reportProblem;
+
+    /* ===== Helpers ===== */
+    function formatDate(ts){
+      if(!ts) return "";
+      const d = new Date(ts);
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')} (${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()})`;
+    }
+    function downloadBlob(filename, content, mime="application/octet-stream"){
+      const a = Object.assign(document.createElement('a'), {
+        href: URL.createObjectURL(new Blob([content], {type:mime})),
+        download: filename
+      });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=> URL.revokeObjectURL(a.href), 600);
+    }
+
+    /* ===== App State ===== */
+    let ALL_CACHE    = [];
+    let SEARCH_TIMER = 0;
+
+    /* ===== Save ===== */
+    async function saveData(){
+      const name    = document.getElementById("studentName").value.trim();
+      const title   = document.getElementById("reportTitle").value.trim();
+      const subject = document.getElementById("subjectName").value.trim();
+      const code    = await DEVICE_CODE_PROMISE;
+
+      if(name.split(/\s+/).length < 2){ setMsg("⚠️ الاسم لازم يكون ثنائي على الأقل","error"); showToast("الاسم لازم يكون ثنائي","error"); return; }
+      if(!name||!title||!subject){ setMsg("⚠️ املا كل الحقول الأول","error"); showToast("املا كل الحقول","error"); return; }
+
+      const { data:already, error:e0 } = await supabase.from("student_reports").select("id").eq("code",code).limit(1);
+      if(e0){ setMsg("❌ حصل خطأ أثناء التحقق","error"); showToast("خطأ في التحقق","error"); return; }
+      if(already && already.length){ setMsg("⛔ عندك بيانات محفوظة بالفعل. احذف بياناتك أولًا لو عايز تسجل من جديد.","error"); showToast("لا يمكن إضافة بيانات جديدة","error"); await showMyInfo(); return; }
+
+      const [{ data:nameUsed, error:err1 }, { data:titleUsed, error:err2 }] = await Promise.all([
+        supabase.from("student_reports").select("id").eq("name",name).limit(1),
+        supabase.from("student_reports").select("id").eq("title",title).limit(1)
+      ]);
+      if(err1||err2){ setMsg("❌ حصل خطأ في التحقق من البيانات","error"); showToast("خطأ في التحقق","error"); return; }
+      if((nameUsed&&nameUsed.length)||(titleUsed&&titleUsed.length)){ setMsg("❌ الاسم أو العنوان مستخدم مسبقاً","error"); showToast("الاسم/العنوان مستخدم","error"); return; }
+
+      const { error } = await supabase.from("student_reports")
+        .insert([{ name, title, subject, date: new Date().toISOString(), code }]);
+      if(error){ console.log(error); setMsg("❌ فشل الحفظ","error"); showToast("فشل الحفظ","error"); return; }
+
+      // تحديث اسم الزائر بعد الحفظ
+      await supabase.from("visitors").update({ name }).eq("code", code);
+
+      setMsg("✅ اتسجلت بياناتك بنجاح","success"); showToast("تم الحفظ بنجاح","success");
+      await showMyInfo(); await showAll();
+    }
+
+    /* ===== Change Title ===== */
+    async function changeTitle(){
+      const code = await DEVICE_CODE_PROMISE;
+      const { data:me, error:e } = await supabase.from("student_reports").select("id").eq("code",code).limit(1);
+      if(e||!me||!me.length){ setMsg("⚠️ مفيش بيانات محفوظة ليك","error"); showToast("لا توجد بيانات","error"); return; }
+
+      const newTitle = await showModal({ icon:'✏️', title:'تغيير عنوان التقرير', msg:'اكتب العنوان الجديد (لازم يكون فريد)', withInput:true, inputPlaceholder:'العنوان الجديد...', confirmText:'تغيير', cancelText:'إلغاء' });
+      if(!newTitle) return;
+      const clean = newTitle.trim();
+      if(!clean){ setMsg("⚠️ العنوان الجديد فاضي","error"); showToast("اكتب عنوان","error"); return; }
+
+      const { data:titleUsed } = await supabase.from("student_reports").select("id").eq("title",clean).limit(1);
+      if(titleUsed && titleUsed.length){ setMsg("❌ العنوان ده مستخدم قبل كده","error"); showToast("العنوان مستخدم","error"); return; }
+
+      const { error } = await supabase.from("student_reports")
+        .update({ title: clean, date: new Date().toISOString() }).eq("code", code);
+      if(error){ console.log(error); setMsg("❌ فشل التحديث","error"); showToast("فشل التحديث","error"); return; }
+
+      setMsg("✅ تم تغيير العنوان","success"); showToast("تم تغيير العنوان","success");
+      await showMyInfo(); await showAll();
+    }
+
+    /* ===== Show My Info (مع Badge + Color) ===== */
+    async function showMyInfo(){
+      const code    = await DEVICE_CODE_PROMISE;
+      const infoBox = document.getElementById("infoBox");
+      const { data, error } = await supabase
+        .from("student_reports").select("*").eq("code",code).single();
+      if(error||!data){ setMsg("⚠️ مش لاقي بياناتك","error"); showToast("لا توجد بيانات","error"); return; }
+
+      const nameColor = data.color || 'rgba(255,255,255,0.86)';
+      const badgeStr  = data.badge ? `${data.badge} ` : '';
+      infoBox.style.display = 'block';
+      infoBox.innerHTML = `
+        <h4>🎓 بيانات الطالب</h4>
+        <p><strong>👤 الاسم</strong>
+           <span style="color:${nameColor};font-weight:700">${badgeStr}${data.name}</span></p>
+        <p><strong>📄 العنوان</strong> ${data.title}</p>
+        <p><strong>📚 المادة</strong>  ${data.subject}</p>
+        <p><strong>🕐 آخر تحديث</strong> ${formatDate(data.date)}</p>
+      `;
+    }
+
+    /* ===== Show All (مع Badge + Color) ===== */
+    async function showAll(){
+      const allPanel  = document.getElementById("allPanel");
+      const allTitles = document.getElementById("allTitles");
+
+      const { data, error } = await supabase
+        .from("student_reports")
+        .select("id,name,title,subject,date,code,badge,color")
+        .order("id", { ascending:true });
+
+      if(error){ allPanel.style.display='block'; allTitles.innerHTML="❌ فشل تحميل البيانات"; return; }
+      ALL_CACHE = data || [];
+      allPanel.style.display = 'block';
+      document.getElementById("counterBadge").textContent = `${ALL_CACHE.length} طالب`;
+      renderAllList();
+    }
+
+    function renderAllList(){
+      const allTitles = document.getElementById("allTitles");
+      const q = (document.getElementById("searchInput")?.value || '').trim().toLowerCase();
+      const filtered = !q ? ALL_CACHE : ALL_CACHE.filter(d=>{
+        return `${d.name} ${d.title} ${d.subject}`.toLowerCase().includes(q);
+      });
+
+      DEVICE_CODE_PROMISE.then(myCode=>{
+        let html = '<ul>';
+        filtered.forEach((d,i)=>{
+          const highlight   = d.code === myCode ? "highlight" : "";
+          const displayName = d.badge ? `${d.badge} ${d.name}` : d.name;
+          const nameColor   = d.color || 'rgba(255,255,255,0.84)';
+          html += `
+            <li class="${highlight}">
+              <span class="row-num">${i+1}</span>
+              <span class="info">
+                <span style="color:${nameColor};font-weight:700">${displayName}</span>
+                — ${d.title}
+                — <em style="color:rgba(255,255,255,0.60)">${d.subject}</em>
+              </span>
+              <span class="time">${formatDate(d.date)}</span>
+            </li>`;
+        });
+        allTitles.innerHTML = html + '</ul>';
+      });
+    }
+
+    /* ===== Delete My Data ===== */
+    async function deleteMyData(){
+      const code = await DEVICE_CODE_PROMISE;
+      const { data:me, error:e } = await supabase.from("student_reports").select("id").eq("code",code).limit(1);
+      if(e||!me||!me.length){ setMsg("⚠️ مفيش بيانات محفوظة","error"); showToast("لا توجد بيانات","error"); return; }
+
+      const confirmed = await showModal({ icon:'🗑️', title:'تأكيد الحذف', msg:'هل أنت متأكد إنك عايز تحذف بياناتك؟\nالإجراء نهائي ولا يمكن التراجع عنه.', withInput:false, confirmText:'حذف', cancelText:'إلغاء' });
+      if(!confirmed) return;
+
+      const { error } = await supabase.from("student_reports").delete().eq("code",code);
+      if(error){ console.log(error); setMsg("❌ فشل الحذف","error"); showToast("فشل الحذف","error"); return; }
+
+      const infoBox = document.getElementById("infoBox");
+      infoBox.style.display='none'; infoBox.innerHTML='';
+      setMsg("✅ اتحذفت بياناتك","success"); showToast("تم حذف البيانات","success");
+      await showAll();
+    }
+
+    /* ===== Download My Data ===== */
+    async function downloadMyData(){
+      const code = await DEVICE_CODE_PROMISE;
+      const { data, error } = await supabase.from("student_reports").select("*").eq("code",code).single();
+      if(error||!data){ setMsg("⚠️ لازم تحفظ بياناتك الأول","error"); showToast("لا توجد بيانات","error"); return; }
+
+      const choice = await showModal({ icon:'⬇️', title:'تحميل بياناتي', msg:'اختار صيغة التحميل:\nاكتب: JSON أو TXT', withInput:true, inputPlaceholder:'اكتب JSON أو TXT', confirmText:'تحميل', cancelText:'إلغاء' });
+      if(!choice) return;
+
+      const format   = choice.trim().toUpperCase();
+      const safeName = (data.name||'student').replace(/[^\u0600-\u06FFa-zA-Z0-9_-]+/g,'_');
+
+      if(format==="JSON"){
+        downloadBlob(`ONX-TAQE_${safeName}_report.json`,
+          JSON.stringify({ brand:"ONX-TAQE", exported_at:new Date().toISOString(),
+            student:{ name:data.name, subject:data.subject, title:data.title, date:data.date }
+          }, null, 2), "application/json;charset=utf-8");
+        setMsg("✅ تم تحميل ملف JSON","success"); showToast("تم التحميل (JSON)","success"); return;
+      }
+      if(format==="TXT"){
+        downloadBlob(`ONX-TAQE_${safeName}_report.txt`,
+          `ONX-TAQE | Student Report Export\n--------------------------------\nName   : ${data.name}\nSubject: ${data.subject}\nTitle  : ${data.title}\nDate   : ${formatDate(data.date)}\n--------------------------------`,
+          "text/plain;charset=utf-8");
+        setMsg("✅ تم تحميل ملف TXT","success"); showToast("تم التحميل (TXT)","success"); return;
+      }
+      setMsg("⚠️ اكتب JSON أو TXT بس","error"); showToast("صيغة غير مدعومة","error");
+    }
+
+    /* ===== Search ===== */
+    document.getElementById("searchInput").addEventListener("input", ()=>{
+      clearTimeout(SEARCH_TIMER);
+      SEARCH_TIMER = setTimeout(renderAllList, 90);
+    });
+
+    /* ===== Realtime Subscriptions ===== */
+    function setupRealtime(){
+      // تغييرات لوحة التحكم (إشعار + موعد التسليم)
+      supabase.channel("site_ctrl_student")
+        .on("postgres_changes", { event:"*", schema:"public", table:"site_control" }, ()=>{
+          loadSiteControlData();
+        }).subscribe();
+
+      // تغييرات بيانات الطلبة
+      supabase.channel("reports_student")
+        .on("postgres_changes", { event:"*", schema:"public", table:"student_reports" }, ()=>{
+          showMyInfo().catch(()=>{});
+          const allPanel = document.getElementById("allPanel");
+          if(allPanel && allPanel.style.display !== 'none') showAll();
+        }).subscribe();
+    }
+
+    /* ===== Boot Sequence ===== */
+    checkSiteStatus().then(open => {
+      if(!open) return;
+
+      // Expose to window (onclick handlers)
+      window.saveData       = saveData;
+      window.changeTitle    = changeTitle;
+      window.showAll        = showAll;
+      window.showMyInfo     = showMyInfo;
+      window.deleteMyData   = deleteMyData;
+      window.downloadMyData = downloadMyData;
+
+      // Init features
+      trackVisitor().catch(()=>{});       // تسجيل الزيارة
+      loadSiteControlData();              // إشعار + موعد
+      setupRealtime();                    // مزامنة فورية
+
+      // تحميل معلومات الطالب تلقائياً
+      setTimeout(()=> showMyInfo().catch(()=>{}), 700);
+    });
+  </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
