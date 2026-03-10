@@ -122,6 +122,7 @@ body {
 .glass-card:nth-child(5){animation-delay:0.5s}
 .glass-card:nth-child(6){animation-delay:0.6s}
 .glass-card:nth-child(7){animation-delay:0.7s}
+.glass-card:nth-child(8){animation-delay:0.8s}
 @keyframes cardEntrance { from{transform:translateY(40px) rotateX(10deg);opacity:0} to{transform:translateY(0) rotateX(0deg);opacity:1} }
 .glass-card:hover { transform:translateY(-6px) rotateX(2deg); box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.1); }
 .glass-card::before { content:''; position:absolute; inset:0; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
@@ -130,6 +131,7 @@ body {
 .card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
 .card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
 .card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
+.card-glow-orange::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,140,0,0.12),transparent 70%); pointer-events:none; }
 
 /* ===== CARD HEADER ===== */
 .card-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
@@ -139,6 +141,7 @@ body {
 .icon-purple { background:linear-gradient(135deg,#7b2fff22,#7b2fff44); border:1px solid #7b2fff44; }
 .icon-gold   { background:linear-gradient(135deg,#f5c51822,#f5c51844); border:1px solid #f5c51844; }
 .icon-green  { background:linear-gradient(135deg,#00ff8822,#00ff8844); border:1px solid #00ff8844; }
+.icon-orange { background:linear-gradient(135deg,#ff8c0022,#ff8c0044); border:1px solid #ff8c0044; }
 .card-title { font-size:1.2rem; font-weight:700; color:#fff; }
 .card-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:2px; }
 
@@ -149,8 +152,6 @@ body {
 .styled-input::placeholder { color:rgba(255,255,255,0.3); }
 .styled-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1),0 4px 20px rgba(0,212,255,0.1); }
 .input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
-
-/* datetime-local fix */
 .styled-input[type="datetime-local"] { color-scheme: dark; padding-left: 14px; }
 
 /* ===== BUTTONS ===== */
@@ -163,11 +164,13 @@ body {
 .btn-danger   { background:linear-gradient(135deg,#e94560,#ff6b6b); color:#fff; box-shadow:0 6px 25px rgba(233,69,96,0.35); }
 .btn-success  { background:linear-gradient(135deg,#00c851,#00ff88); color:#fff; box-shadow:0 6px 25px rgba(0,200,81,0.35); }
 .btn-gold     { background:linear-gradient(135deg,#f5c518,#ff9500); color:#000; box-shadow:0 6px 25px rgba(245,197,24,0.35); }
+.btn-orange   { background:linear-gradient(135deg,#ff8c00,#ff5500); color:#fff; box-shadow:0 6px 25px rgba(255,140,0,0.35); }
 .btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
 .btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
 .btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
 .btn-success:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
 .btn-gold:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
+.btn-orange:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(255,140,0,0.5); }
 .btn:active { transform:translateY(1px) scale(0.98); }
 
 /* ===== COLOR PALETTE ===== */
@@ -178,6 +181,16 @@ body {
 .color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
 .color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
 .color-box.selected::after { opacity:1; }
+
+/* ===== ALERT TYPE RADIOS ===== */
+.alert-type-row { display:flex; gap:12px; align-items:stretch; flex-wrap:wrap; margin-bottom:16px; }
+.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:all 0.3s ease; flex:1; min-width:130px; }
+.alert-type-label.private-lbl { background:rgba(123,47,255,0.12); border:1px solid rgba(123,47,255,0.3); }
+.alert-type-label.public-lbl  { background:rgba(0,212,255,0.12);  border:1px solid rgba(0,212,255,0.3);  }
+.alert-type-label:hover { transform:translateY(-1px); filter:brightness(1.2); }
+.alert-type-label input { accent-color:#7b2fff; width:16px; height:16px; cursor:pointer; }
+.alert-type-label.public-lbl input { accent-color:#00d4ff; }
+.alert-type-text { color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:700; }
 
 /* ===== TOGGLE SWITCH ===== */
 .toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
@@ -213,11 +226,23 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:4px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; color:#00d4ff; }
 .date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
 .row-num { width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; }
-.action-btns { display:flex; gap:8px; justify-content:center; }
+.action-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
 .btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:all 0.3s ease; display:flex; align-items:center; gap:4px; }
 .btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
 .btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
 .btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
+
+/* Alert badge in table */
+.alert-table-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:3px 10px; border-radius:14px; font-size:0.75rem; font-weight:700;
+  border:1px solid; margin-top:4px;
+  animation: alertGlowSoft 2.5s ease-in-out infinite;
+}
+@keyframes alertGlowSoft {
+  0%,100%{opacity:0.85;} 50%{opacity:1;filter:brightness(1.2);}
+}
+.alert-badge-type { font-size:0.65rem; opacity:0.75; }
 
 /* ===== DIVIDER ===== */
 .divider { height:1px; margin:20px 0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
@@ -244,6 +269,22 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
 /* ===== BADGE PREVIEW ===== */
 .badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:all 0.3s; color:#f5c518; }
+
+/* ===== ALERT PREVIEW ===== */
+.alert-preview-box {
+  padding:10px 16px; border-radius:12px; margin-bottom:14px;
+  display:none; align-items:center; gap:10px;
+  font-size:0.9rem; font-weight:700;
+  position:relative; overflow:hidden;
+}
+.alert-preview-box.show { display:flex; }
+.alert-preview-box::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size:200% 100%;
+  animation:shimmerPrev 2s linear infinite;
+}
+@keyframes shimmerPrev { 0%{background-position:200% center} 100%{background-position:-200% center} }
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width:6px; height:6px; }
@@ -277,6 +318,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
   .table-card { grid-column:auto; }
   .header-title { font-size:1.6rem; }
   .login-card { padding:32px 24px 28px; }
+  .alert-type-row { flex-direction:column; }
 }
 </style>
 </head>
@@ -351,6 +393,10 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
     <div class="stat-badge">
       <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
       <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#ff8c00;box-shadow:0 0 8px #ff8c00"></div>
+      <span>التحذيرات النشطة: <strong id="statsAlerts">0</strong></span>
     </div>
   </div>
 
@@ -460,8 +506,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
         <span class="input-icon">🔢</span>
         <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
       </div>
-      <span class="palette-label">اختر لون</span>
-      <div class="color-palette">
+      <span class="palette-label">اختر لون الاسم</span>
+      <div class="color-palette" id="nameColorPalette">
         <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
         <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
         <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
@@ -533,7 +579,78 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <div class="msg-box" id="msgDeadline"></div>
     </div>
 
-    <!-- Card 7: Visitors (full width) -->
+    <!-- Card 7: ⚠️ Student Alert (NEW) -->
+    <div class="glass-card card-glow-orange" style="grid-column:1/-1">
+      <div class="card-header">
+        <div class="card-icon icon-orange">⚠️</div>
+        <div>
+          <div class="card-title">إرسال تحذير / تنبيه لطالب</div>
+          <div class="card-desc">Send Targeted Alert — يظهر في لوحة بيانات الطالب</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div>
+          <div class="input-group">
+            <label class="input-label">رقم الطالب في القائمة</label>
+            <span class="input-icon">🔢</span>
+            <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
+          </div>
+          <div class="input-group">
+            <label class="input-label">نص التحذير / التنبيه</label>
+            <span class="input-icon">✍️</span>
+            <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
+          </div>
+
+          <!-- Alert type -->
+          <div class="alert-type-row">
+            <label class="alert-type-label private-lbl">
+              <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
+              <span class="alert-type-text">🔒 خاص — فقط في معلوماتي</span>
+            </label>
+            <label class="alert-type-label public-lbl">
+              <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
+              <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
+            </label>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال التحذير</button>
+            <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف التحذير</button>
+          </div>
+          <div class="msg-box" id="msgAlert"></div>
+        </div>
+
+        <div>
+          <span class="palette-label">🎨 اختر لون التحذير</span>
+          <div class="color-palette" id="alertColorPalette">
+            <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#555,#222)" onclick="selectAlertColor('#444444',this)" data-tip="أسود"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#eee,#bbb)" onclick="selectAlertColor('#eeeeee',this)" data-tip="أبيض"></div>
+          </div>
+
+          <!-- Alert preview -->
+          <div class="divider" style="margin:12px 0"></div>
+          <span class="palette-label">معاينة التحذير</span>
+          <div id="alertPreviewBox" class="alert-preview-box">
+            <span>⚠️</span>
+            <span id="alertPreviewText">نص التحذير يظهر هنا</span>
+            <span id="alertPreviewType" class="alert-badge-type"></span>
+          </div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:8px;line-height:1.6">
+            💡 <strong>خاص:</strong> يظهر فقط في قسم "معلوماتي" للطالب المحدد<br>
+            💡 <strong>عام:</strong> يظهر أمام اسم الطالب في جدول جميع العناوين
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8: Visitors (full width) -->
     <div class="glass-card table-card card-glow-green">
       <div class="card-header">
         <div class="card-icon icon-green">👥</div>
@@ -563,7 +680,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       </div>
     </div>
 
-    <!-- Card 8: Students Table (full width) -->
+    <!-- Card 9: Students Table (full width) -->
     <div class="glass-card table-card">
       <div class="card-header">
         <div class="card-icon icon-blue">📊</div>
@@ -584,11 +701,12 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               <th>عنوان التقرير</th>
               <th>المادة</th>
               <th>التاريخ</th>
+              <th>التحذير</th>
               <th>إجراءات</th>
             </tr>
           </thead>
           <tbody id="studentsTable">
-            <tr><td colspan="6"><div class="empty-state"><div class="loader"></div></div></td></tr>
+            <tr><td colspan="7"><div class="empty-state"><div class="loader"></div></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -619,7 +737,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
   }
 })();
 
-/* ===== TOGGLE PASSWORD ===== */
 function togglePassView(){
   const inp = document.getElementById('loginPassword');
   const btn = document.getElementById('passToggleBtn');
@@ -759,12 +876,10 @@ async function toggleSite(){
 }
 window.toggleSite = toggleSite
 
-/* ===== LOAD SITE SETTINGS (notification + deadline) ===== */
+/* ===== LOAD SITE SETTINGS ===== */
 async function loadSiteSettings(){
   const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
   if(error || !data) return
-
-  // Notification
   const currentNotif = document.getElementById("currentNotif")
   const currentNotifText = document.getElementById("currentNotifText")
   if(data.notification && data.notification.trim()){
@@ -775,8 +890,6 @@ async function loadSiteSettings(){
     currentNotif.style.display = "none"
     document.getElementById("notifInput").value = ""
   }
-
-  // Deadline
   if(data.deadline){
     const dt = new Date(data.deadline)
     const localDt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0,16)
@@ -851,13 +964,42 @@ window.loadVisitors = loadVisitors
 /* ===== STATE ===== */
 let selectedID    = null
 let selectedColor = null
+let selectedAlertColor = '#ff4444'
 
+/* ===== SELECT NAME COLOR ===== */
 window.selectColor = function(color, el){
   selectedColor = color
-  document.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'))
+  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
   el.classList.add('selected')
   document.getElementById('selectedColorPreview').innerHTML =
     `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`
+}
+
+/* ===== SELECT ALERT COLOR ===== */
+window.selectAlertColor = function(color, el){
+  selectedAlertColor = color
+  document.querySelectorAll('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'))
+  el.classList.add('selected')
+  previewAlert()
+}
+
+/* ===== PREVIEW ALERT ===== */
+window.previewAlert = function(){
+  const text = document.getElementById('alertStudentText').value.trim()
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
+  const box  = document.getElementById('alertPreviewBox')
+  const ptext= document.getElementById('alertPreviewText')
+  const ptype= document.getElementById('alertPreviewType')
+  if(text){
+    box.style.display = 'flex'
+    box.style.color   = selectedAlertColor
+    box.style.borderLeft = `3px solid ${selectedAlertColor}`
+    box.style.background = `${selectedAlertColor}18`
+    ptext.textContent = text
+    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام'
+  } else {
+    box.style.display = 'none'
+  }
 }
 
 window.previewBadge = function(){
@@ -918,11 +1060,12 @@ async function loadStudents(){
   const table  = document.getElementById("studentsTable")
   const total  = data.length
   const badged = data.filter(s=>s.badge).length
+  const alerts = data.filter(s=>s.alert_text).length
 
   document.getElementById("statsTotal").textContent  = total
   document.getElementById("statsBadged").textContent = badged
+  document.getElementById("statsAlerts").textContent = alerts
 
-  // آخر إضافة/تعديل
   if(total > 0){
     const sorted = [...data].sort((a,b) => new Date(b.date) - new Date(a.date))
     document.getElementById("statsLastReport").textContent = sorted[0].name
@@ -931,7 +1074,7 @@ async function loadStudents(){
   }
 
   if(total===0){
-    table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`
+    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`
     return
   }
 
@@ -939,12 +1082,26 @@ async function loadStudents(){
     const displayName = s.badge ? `${s.badge} ${s.name}` : s.name
     const d = new Date(s.date)
     const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
+
+    // Alert cell
+    let alertCell = '<span style="color:rgba(255,255,255,0.25);font-size:0.8rem">—</span>'
+    if(s.alert_text){
+      const typeIcon = s.alert_type === 'public' ? '🌐' : '🔒'
+      alertCell = `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <span class="alert-table-badge" style="color:${s.alert_color||'#ff4444'};border-color:${s.alert_color||'#ff4444'}">
+          ⚠️ ${s.alert_text.slice(0,20)}${s.alert_text.length>20?'…':''}
+        </span>
+        <span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">${typeIcon} ${s.alert_type==='public'?'عام':'خاص'}</span>
+      </div>`
+    }
+
     return `<tr style="animation-delay:${i*0.05}s">
       <td><span class="row-num">${i+1}</span></td>
       <td class="student-name-cell" style="color:${s.color||'#e0e0f0'}">${displayName}</td>
       <td>${s.title}</td>
       <td><span class="subject-badge">${s.subject}</span></td>
       <td class="date-cell">${dateStr}</td>
+      <td>${alertCell}</td>
       <td>
         <div class="action-btns">
           <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
@@ -984,40 +1141,78 @@ async function setColor(){
   await loadStudents(); clearInputs()
 }
 
-/* ===== CLEAR ===== */
+/* ===== ⚠️ SEND STUDENT ALERT (NEW) ===== */
+async function sendStudentAlert(){
+  const idx  = parseInt(document.getElementById('alertStudentIndex').value) - 1
+  const text = document.getElementById('alertStudentText').value.trim()
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
+
+  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return }
+  if(!text){ showMsg('msgAlert','⚠️ أدخل نص التحذير','error'); return }
+  if(!selectedAlertColor){ showMsg('msgAlert','⚠️ اختر لوناً للتحذير','error'); return }
+
+  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
+  if(error){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
+  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return }
+
+  const student = data[idx]
+  const {error: ue} = await supabase.from('student_reports').update({
+    alert_text:  text,
+    alert_color: selectedAlertColor,
+    alert_type:  type
+  }).eq('id', student.id)
+
+  if(ue){ showMsg('msgAlert','❌ فشل الإرسال: ' + (ue.message||''), 'error'); return }
+  showMsg('msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}" — سيظهر فوراً في لوحته`, 'success')
+  await loadStudents()
+}
+window.sendStudentAlert = sendStudentAlert
+
+/* ===== ⚠️ CLEAR STUDENT ALERT (NEW) ===== */
+async function clearStudentAlert(){
+  const idx = parseInt(document.getElementById('alertStudentIndex').value) - 1
+  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return }
+
+  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
+  if(error || !data){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
+  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود','error'); return }
+
+  const student = data[idx]
+  const {error: ue} = await supabase.from('student_reports').update({
+    alert_text:  null,
+    alert_color: null,
+    alert_type:  null
+  }).eq('id', student.id)
+
+  if(ue){ showMsg('msgAlert','❌ فشل الحذف','error'); return }
+  showMsg('msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info')
+  document.getElementById('alertPreviewBox').style.display = 'none'
+  await loadStudents()
+}
+window.clearStudentAlert = clearStudentAlert
+
+/* ===== CLEAR INPUTS ===== */
 function clearInputs(){
   ['studentName','reportTitle','subjectName','badgeIndex','badgeSymbol','colorIndex','notifInput'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = ''
   })
   selectedID = null
   selectedColor = null
-  document.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'))
+  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
   document.getElementById('selectedColorPreview').innerHTML = ''
   document.getElementById('badgePreview').style.display = 'none'
 }
 
 /* ===== REALTIME ===== */
 function setupRealtime(){
-  // Student reports changes
   supabase.channel("students_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{
-      loadStudents()
-    })
+    .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents() })
     .subscribe()
-
-  // Visitors changes
   supabase.channel("visitors_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"visitors"},()=>{
-      loadVisitors()
-    })
+    .on("postgres_changes",{event:"*",schema:"public",table:"visitors"},()=>{ loadVisitors() })
     .subscribe()
-
-  // Site control changes
   supabase.channel("site_control_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"site_control"},()=>{
-      loadSiteStatus()
-      loadSiteSettings()
-    })
+    .on("postgres_changes",{event:"*",schema:"public",table:"site_control"},()=>{ loadSiteStatus(); loadSiteSettings() })
     .subscribe()
 }
 
@@ -1027,6 +1222,7 @@ window.updateStudent = updateStudent
 window.setBadge      = setBadge
 window.setColor      = setColor
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
 
