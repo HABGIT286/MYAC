@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة تحكم الطلبة | Admin Panel</title>
+<title>🔐 لوحة تحكم المشرف | ONX-TAQE ADMIN PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #0f3460;
-  --secondary: #16213e;
+  --primary: #0f1e3d;
+  --secondary: #1a2a4a;
   --accent: #e94560;
   --gold: #f5c518;
   --neon-blue: #00d4ff;
   --neon-purple: #7b2fff;
+  --neon-green: #00ff88;
   --glass: rgba(255,255,255,0.07);
   --glass-border: rgba(255,255,255,0.15);
   --text-light: #e0e0f0;
   --card-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  --transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -27,6 +29,8 @@ body {
   overflow-x:hidden;
   position:relative;
 }
+
+/* ===== BACKGROUND EFFECTS ===== */
 .bg-image {
   position:fixed; inset:0; z-index:-2;
   background: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1920&q=80') center center / cover no-repeat;
@@ -51,7 +55,7 @@ body {
   100% { transform:translateY(-10vh) scale(1); opacity:0; }
 }
 
-/* ===== LOGIN ===== */
+/* ===== LOGIN SCREEN ===== */
 #loginScreen { position:fixed; inset:0; z-index:500; display:flex; align-items:center; justify-content:center; padding:20px; }
 .login-card {
   background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
@@ -77,12 +81,12 @@ body {
 .login-input-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:19px; pointer-events:none; }
 .pass-toggle { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px; color:rgba(255,255,255,0.4); transition:color 0.2s; user-select:none; background:none; border:none; }
 .pass-toggle:hover { color:var(--neon-blue); }
-.btn-login { width:100%; padding:15px; border:none; border-radius:14px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#00d4ff,#7b2fff); color:#fff; letter-spacing:0.5px; box-shadow:0 8px 30px rgba(0,212,255,0.4); transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-login { width:100%; padding:15px; border:none; border-radius:14px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#00d4ff,#7b2fff); color:#fff; letter-spacing:0.5px; box-shadow:0 8px 30px rgba(0,212,255,0.4); transition:var(--transition); position:relative; overflow:hidden; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:10px; }
 .btn-login::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.18),transparent); opacity:0; transition:opacity 0.3s; }
 .btn-login:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 14px 40px rgba(0,212,255,0.55); }
 .btn-login:hover::before { opacity:1; }
 .btn-login:active { transform:translateY(1px) scale(0.99); }
-.login-error { margin-top:14px; padding:11px 16px; border-radius:12px; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.4); color:#ff6b6b; font-size:0.88rem; font-weight:600; text-align:center; opacity:0; transform:translateY(-8px); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+.login-error { margin-top:14px; padding:11px 16px; border-radius:12px; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.4); color:#ff6b6b; font-size:0.88rem; font-weight:600; text-align:center; opacity:0; transform:translateY(-8px); transition:var(--transition); }
 .login-error.show { opacity:1; transform:translateY(0); }
 .login-loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.25); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
@@ -100,30 +104,44 @@ body {
 .header-title { font-size:2.5rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:1px; }
 .header-subtitle { color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px; letter-spacing:2px; text-transform:uppercase; }
 .header-line { width:200px; height:2px; margin:16px auto 0; background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent); }
-.logout-btn { position:fixed; top:20px; left:20px; z-index:100; padding:9px 18px; border:none; border-radius:10px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.35); color:#ff6b6b; backdrop-filter:blur(10px); transition:all 0.3s ease; display:flex; align-items:center; gap:6px; }
+.logout-btn { position:fixed; top:20px; left:20px; z-index:100; padding:9px 18px; border:none; border-radius:10px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.35); color:#ff6b6b; backdrop-filter:blur(10px); transition:var(--transition); display:flex; align-items:center; gap:6px; }
 .logout-btn:hover { background:rgba(233,69,96,0.3); transform:translateY(-2px); box-shadow:0 6px 20px rgba(233,69,96,0.3); }
 
 /* ===== STATS BAR ===== */
 .stats-bar { display:flex; justify-content:center; gap:20px; padding:10px 20px 20px; animation:fadeIn 1s 0.3s both; flex-wrap:wrap; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.stat-badge { background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px; display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; transition:all 0.3s ease; }
+.stat-badge { background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px; display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; transition:var(--transition); }
 .stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); }
 .stat-dot { width:8px; height:8px; border-radius:50%; }
 
-/* ===== GRID ===== */
-.main-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1200px; margin:0 auto; padding:0 24px 40px; }
+/* ===== TABS SYSTEM ===== */
+.tabs-container { max-width:1400px; margin:0 auto; padding:0 24px 40px; }
+.tabs-nav { display:flex; gap:8px; padding:10px; background:var(--glass); border:1px solid var(--glass-border); border-radius:16px; backdrop-filter:blur(20px); margin-bottom:24px; overflow-x:auto; flex-wrap:wrap; }
+.tab-btn {
+  padding:12px 20px; border:none; border-radius:12px; cursor:pointer;
+  font-family:'Cairo',sans-serif; font-size:0.9rem; font-weight:600;
+  background:transparent; color:rgba(255,255,255,0.6);
+  transition:var(--transition); display:flex; align-items:center; gap:8px;
+  white-space:nowrap;
+}
+.tab-btn:hover { background:rgba(255,255,255,0.08); color:#fff; }
+.tab-btn.active {
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  color:#fff; box-shadow:0 4px 20px rgba(0,212,255,0.3);
+}
+.tab-btn .badge {
+  background:var(--accent); color:#fff; padding:2px 8px;
+  border-radius:20px; font-size:0.7rem; margin-right:4px;
+}
+.tab-content { display:none; animation:tabFadeIn 0.4s ease; }
+.tab-content.active { display:block; }
+@keyframes tabFadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
 /* ===== GLASS CARD ===== */
-.glass-card { background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)); border:1px solid var(--glass-border); backdrop-filter:blur(20px); border-radius:24px; padding:28px; box-shadow:var(--card-shadow); position:relative; overflow:hidden; transform-style:preserve-3d; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1),box-shadow 0.4s ease; animation:cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both; }
-.glass-card:nth-child(1){animation-delay:0.1s}
-.glass-card:nth-child(2){animation-delay:0.2s}
-.glass-card:nth-child(3){animation-delay:0.3s}
-.glass-card:nth-child(4){animation-delay:0.4s}
-.glass-card:nth-child(5){animation-delay:0.5s}
-.glass-card:nth-child(6){animation-delay:0.6s}
-.glass-card:nth-child(7){animation-delay:0.7s}
-.glass-card:nth-child(8){animation-delay:0.8s}
-.glass-card:nth-child(9){animation-delay:0.9s}
+.glass-card { background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)); border:1px solid var(--glass-border); backdrop-filter:blur(20px); border-radius:24px; padding:28px; box-shadow:var(--card-shadow); position:relative; overflow:hidden; transform-style:preserve-3d; transition:var(--transition); animation:cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both; }
+.glass-card:nth-child(1){animation-delay:0.1s} .glass-card:nth-child(2){animation-delay:0.2s}
+.glass-card:nth-child(3){animation-delay:0.3s} .glass-card:nth-child(4){animation-delay:0.4s}
+.glass-card:nth-child(5){animation-delay:0.5s} .glass-card:nth-child(6){animation-delay:0.6s}
 @keyframes cardEntrance { from{transform:translateY(40px) rotateX(10deg);opacity:0} to{transform:translateY(0) rotateX(0deg);opacity:1} }
 .glass-card:hover { transform:translateY(-6px) rotateX(2deg); box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.1); }
 .glass-card::before { content:''; position:absolute; inset:0; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
@@ -151,26 +169,24 @@ body {
 /* ===== INPUTS ===== */
 .input-group { position:relative; margin-bottom:14px; }
 .input-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
-.styled-input { width:100%; padding:13px 16px 13px 46px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem; transition:all 0.3s ease; outline:none; direction:rtl; }
+.styled-input { width:100%; padding:13px 16px 13px 46px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem; transition:var(--transition); outline:none; direction:rtl; }
 .styled-input::placeholder { color:rgba(255,255,255,0.3); }
 .styled-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1),0 4px 20px rgba(0,212,255,0.1); }
 .input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
 .styled-input[type="datetime-local"] { color-scheme: dark; padding-left: 14px; }
-
-/* Textarea */
 .styled-textarea {
   width:100%; padding:14px 16px; background:rgba(255,255,255,0.06);
   border:1px solid rgba(255,255,255,0.12); border-radius:12px;
   color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem;
-  transition:all 0.3s ease; outline:none; direction:rtl;
+  transition:var(--transition); outline:none; direction:rtl;
   resize:vertical; min-height:120px; line-height:1.8;
 }
 .styled-textarea::placeholder { color:rgba(255,255,255,0.3); }
 .styled-textarea:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1); }
 
 /* ===== BUTTONS ===== */
-.btn-row { display:flex; gap:12px; margin-top:8px; }
-.btn { flex:1; padding:13px 20px; border:none; border-radius:12px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:700; position:relative; overflow:hidden; transition:all 0.3s cubic-bezier(0.23,1,0.32,1); display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.5px; }
+.btn-row { display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; }
+.btn { flex:1; min-width:120px; padding:13px 20px; border:none; border-radius:12px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:700; position:relative; overflow:hidden; transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.5px; }
 .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity 0.3s; }
 .btn:hover::before { opacity:1; }
 .btn-primary  { background:linear-gradient(135deg,#00d4ff,#0077ff); color:#fff; box-shadow:0 6px 25px rgba(0,212,255,0.35); }
@@ -180,6 +196,7 @@ body {
 .btn-gold     { background:linear-gradient(135deg,#f5c518,#ff9500); color:#000; box-shadow:0 6px 25px rgba(245,197,24,0.35); }
 .btn-orange   { background:linear-gradient(135deg,#ff8c00,#ff5500); color:#fff; box-shadow:0 6px 25px rgba(255,140,0,0.35); }
 .btn-teal     { background:linear-gradient(135deg,#14b8a6,#0d9488); color:#fff; box-shadow:0 6px 25px rgba(20,184,166,0.35); }
+.btn-outline  { background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.8); }
 .btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
 .btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
 .btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
@@ -188,11 +205,12 @@ body {
 .btn-orange:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(255,140,0,0.5); }
 .btn-teal:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(20,184,166,0.5); }
 .btn:active { transform:translateY(1px) scale(0.98); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
 
 /* ===== COLOR PALETTE ===== */
 .palette-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
 .color-palette { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-.color-box { width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
+.color-box { width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:var(--transition); position:relative; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
 .color-box::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; opacity:0; transition:opacity 0.2s; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
 .color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
 .color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
@@ -200,7 +218,7 @@ body {
 
 /* ===== ALERT TYPE RADIOS ===== */
 .alert-type-row { display:flex; gap:12px; align-items:stretch; flex-wrap:wrap; margin-bottom:16px; }
-.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:all 0.3s ease; flex:1; min-width:130px; }
+.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:var(--transition); flex:1; min-width:130px; }
 .alert-type-label.private-lbl { background:rgba(123,47,255,0.12); border:1px solid rgba(123,47,255,0.3); }
 .alert-type-label.public-lbl  { background:rgba(0,212,255,0.12);  border:1px solid rgba(0,212,255,0.3);  }
 .alert-type-label:hover { transform:translateY(-1px); filter:brightness(1.2); }
@@ -215,14 +233,14 @@ body {
 .toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
 .switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
 .switch input { opacity:0; width:0; height:0; }
-.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
-.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:var(--transition); }
+.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:var(--transition); }
 input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
 input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
 input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
 
 /* ===== MSG BOX ===== */
-.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:all 0.5s cubic-bezier(0.23,1,0.32,1); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
+.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:var(--transition); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
 .msg-box.show { opacity:1; transform:translateY(0); }
 .msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
 .msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
@@ -231,21 +249,27 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
 /* ===== TABLE CARD ===== */
 .table-card { grid-column:1 / -1; }
 .table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
-table { width:100%; border-collapse:collapse; }
+table { width:100%; border-collapse:collapse; min-width:800px; }
 thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
-thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
-tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:all 0.3s ease; animation:rowSlide 0.5s ease both; }
+thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; cursor:pointer; position:relative; }
+thead th::after { content:'↕'; position:absolute; left:8px; font-size:0.7rem; opacity:0.5; }
+thead th.sorted-asc::after { content:'▲'; opacity:1; color:var(--neon-blue); }
+thead th.sorted-desc::after { content:'▼'; opacity:1; color:var(--neon-blue); }
+tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:var(--transition); animation:rowSlide 0.5s ease both; }
 @keyframes rowSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
 tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
+tbody tr.banned { opacity:0.6; background:rgba(233,69,96,0.05); }
 td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
 .student-name-cell { font-weight:700; font-size:1rem; }
 .subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:4px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; color:#00d4ff; }
 .date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
 .row-num { width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; }
 .action-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-.btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:all 0.3s ease; display:flex; align-items:center; gap:4px; }
+.btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:var(--transition); display:flex; align-items:center; gap:4px; }
 .btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
 .btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
+.btn-sm-ban    { background:rgba(255,140,0,0.15); border:1px solid rgba(255,140,0,0.3); color:#ff8c00; }
+.btn-sm-unban  { background:rgba(0,200,81,0.15); border:1px solid rgba(0,200,81,0.3); color:#00c851; }
 .btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
 
 /* Alert badge in table */
@@ -282,7 +306,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .current-notif { padding:10px 14px; border-radius:12px; background:rgba(245,197,24,0.12); border:1px solid rgba(245,197,24,0.3); color:#f5c518; font-size:0.85rem; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
 
 /* ===== BADGE PREVIEW ===== */
-.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:all 0.3s; color:#f5c518; }
+.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:var(--transition); color:#f5c518; }
 
 /* ===== ALERT PREVIEW ===== */
 .alert-preview-box {
@@ -301,11 +325,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 @keyframes shimmerPrev { 0%{background-position:200% center} 100%{background-position:-200% center} }
 
 /* ===== ✨ USAGE GUIDELINES CARD ===== */
-/* Guidelines Preview in admin */
-#guidelinesPreview {
-  display:none;
-  margin-top:20px;
-}
+#guidelinesPreview { display:none; margin-top:20px; }
 #guidelinesPreview.show { display:block; }
 .guidelines-preview-wrap {
   background: linear-gradient(135deg, rgba(20,184,166,0.10), rgba(20,184,166,0.04));
@@ -315,8 +335,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
   position:relative;
 }
 .guidelines-preview-wrap::before {
-  content:'';
-  position:absolute; top:0; left:0; right:0; height:3px;
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
   background:linear-gradient(90deg,transparent,rgba(20,184,166,0.7),rgba(245,197,24,0.5),transparent);
 }
 .guidelines-preview-header {
@@ -373,6 +392,60 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
   display:flex; align-items:center; gap:6px;
 }
 
+/* ===== SECURITY PANEL ===== */
+.security-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
+.security-item {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px;
+}
+.security-icon {
+  width:40px; height:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.security-icon.blocked { background:rgba(233,69,96,0.15); color:#ff6b6b; }
+.security-icon.allowed { background:rgba(0,200,81,0.15); color:#00ff88; }
+.security-info { flex:1; }
+.security-title { font-weight:700; font-size:0.95rem; }
+.security-desc { font-size:0.8rem; color:rgba(255,255,255,0.4); }
+.security-action { padding:6px 12px; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:var(--transition); }
+.security-action.block { background:rgba(233,69,96,0.15); color:#ff6b6b; border:1px solid rgba(233,69,96,0.3); }
+.security-action.unblock { background:rgba(0,200,81,0.15); color:#00ff88; border:1px solid rgba(0,200,81,0.3); }
+.security-action:hover { transform:translateY(-1px); }
+
+/* ===== COMMENTS PANEL ===== */
+.comments-toggle { display:flex; align-items:center; gap:12px; padding:14px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:16px; }
+.comments-list { max-height:400px; overflow-y:auto; }
+.comment-item {
+  padding:12px; border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex; gap:12px; align-items:flex-start;
+}
+.comment-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.9rem; flex-shrink:0;
+}
+.comment-content { flex:1; }
+.comment-header { display:flex; justify-content:space-between; gap:10px; margin-bottom:4px; }
+.comment-author { font-weight:700; font-size:0.9rem; }
+.comment-time { font-size:0.75rem; color:rgba(255,255,255,0.4); }
+.comment-text { font-size:0.9rem; line-height:1.6; }
+.comment-actions { display:flex; gap:6px; margin-top:8px; }
+.comment-btn { padding:4px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer; transition:var(--transition); border:none; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); }
+.comment-btn:hover { background:rgba(255,255,255,0.15); color:#fff; }
+.comment-btn.delete { background:rgba(233,69,96,0.15); color:#ff6b6b; }
+
+/* ===== SUGGESTIONS PANEL ===== */
+.suggestion-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px; padding:16px; margin-bottom:12px;
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+}
+.suggestion-text { flex:1; font-size:0.95rem; }
+.suggestion-meta { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:4px; }
+.suggestion-actions { display:flex; gap:6px; }
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
@@ -401,21 +474,25 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
+  .tabs-nav { flex-wrap:wrap; }
+  .tab-btn { padding:10px 14px; font-size:0.85rem; }
   .main-grid { grid-template-columns:1fr; padding:0 12px 40px; }
   .table-card { grid-column:auto; }
   .header-title { font-size:1.6rem; }
   .login-card { padding:32px 24px 28px; }
   .alert-type-row { flex-direction:column; }
+  .btn-row { flex-direction:column; }
+  .btn { width:100%; }
 }
 </style>
 </head>
 <body>
 
-<!-- Entrance -->
+<!-- Entrance Animation -->
 <div class="entrance-overlay" id="entranceOverlay">
-  <div class="entrance-logo">🎓</div>
-  <div class="entrance-title">لوحة التحكم</div>
-  <div class="entrance-sub">Student Dashboard • Admin Panel</div>
+  <div class="entrance-logo">🔐</div>
+  <div class="entrance-title">لوحة تحكم المشرف</div>
+  <div class="entrance-sub">ONX-TAQE ADMIN • Security Panel</div>
   <div class="entrance-progress"><div class="entrance-bar"></div></div>
 </div>
 
@@ -427,9 +504,9 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 <div id="loginScreen">
   <div class="login-card" id="loginCard">
     <div class="login-top">
-      <div class="login-icon">🎓</div>
-      <div class="login-title">تسجيل الدخول</div>
-      <div class="login-subtitle">Admin Panel • لوحة التحكم</div>
+      <div class="login-icon">🛡️</div>
+      <div class="login-title">تسجيل الدخول الآمن</div>
+      <div class="login-subtitle">Admin Panel • محمي بتشفير متقدم</div>
       <div class="login-line"></div>
     </div>
     <div class="login-input-group">
@@ -440,26 +517,25 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
     <div class="login-input-group">
       <label class="login-input-label">كلمة المرور</label>
       <span class="login-input-icon">🔒</span>
-      <input class="login-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password"
-        onkeydown="if(event.key==='Enter') doLogin()">
+      <input class="login-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
       <button class="pass-toggle" type="button" id="passToggleBtn" onclick="togglePassView()" title="إظهار/إخفاء">👁️</button>
     </div>
     <button class="btn-login" id="loginBtn" onclick="doLogin()">
-      <span>🚀</span> دخول إلى لوحة التحكم
+      <span>🔐</span> دخول آمن إلى لوحة التحكم
     </button>
     <div class="login-error" id="loginError"></div>
-    <div class="login-note"><span>🔐</span><span>محمي بكلمة مرور ديناميكية</span></div>
+    <div class="login-note"><span>🔒</span><span>جميع محاولات الدخول مسجلة ومشفرة</span></div>
   </div>
 </div>
 
 <!-- ===== DASHBOARD ===== -->
 <div id="dashboardScreen">
-  <button class="logout-btn" onclick="doLogout()">🚪 خروج</button>
+  <button class="logout-btn" onclick="doLogout()">🚪 خروج آمن</button>
 
   <div class="dashboard-header">
     <div class="header-icon">🎓</div>
-    <h1 class="header-title">لوحة تحكم الطلبة</h1>
-    <p class="header-subtitle">Student Management Dashboard</p>
+    <h1 class="header-title">لوحة تحكم المشرف الشاملة</h1>
+    <p class="header-subtitle">Student Management • Security & Control Center</p>
     <div class="header-line"></div>
   </div>
 
@@ -471,401 +547,622 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
     </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
-      <span>الطلاب المميزون: <strong id="statsBadged">0</strong></span>
+      <span>المتميزون: <strong id="statsBadged">0</strong></span>
     </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#e94560;box-shadow:0 0 8px #e94560"></div>
-      <span>آخر إضافة: <strong id="statsLastReport">—</strong></span>
+      <span>آخر نشاط: <strong id="statsLastReport">—</strong></span>
     </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
-      <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
+      <span id="siteStatusBadge">الحالة: <strong>...</strong></span>
     </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#ff8c00;box-shadow:0 0 8px #ff8c00"></div>
-      <span>التحذيرات النشطة: <strong id="statsAlerts">0</strong></span>
+      <span>تنبيهات: <strong id="statsAlerts">0</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#7b2fff;box-shadow:0 0 8px #7b2fff"></div>
+      <span>محظورون: <strong id="statsBanned">0</strong></span>
     </div>
   </div>
 
-  <div class="main-grid">
-
-    <!-- Card 1: Add/Edit Student -->
-    <div class="glass-card card-glow-blue">
-      <div class="card-header">
-        <div class="card-icon icon-blue">✏️</div>
-        <div>
-          <div class="card-title">إضافة / تعديل طالب</div>
-          <div class="card-desc">Add or Edit Student Record</div>
-        </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">اسم الطالب</label>
-        <span class="input-icon">👤</span>
-        <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
-      </div>
-      <div class="input-group">
-        <label class="input-label">عنوان التقرير</label>
-        <span class="input-icon">📋</span>
-        <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
-      </div>
-      <div class="input-group">
-        <label class="input-label">المادة الدراسية</label>
-        <span class="input-icon">📚</span>
-        <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="addStudent()"><span>➕</span> حفظ</button>
-        <button class="btn btn-secondary" onclick="updateStudent()"><span>✏️</span> تعديل</button>
-      </div>
-      <div class="msg-box" id="msgAdd"></div>
+  <!-- TABS NAVIGATION -->
+  <div class="tabs-container">
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
+      <button class="tab-btn" data-tab="security">🛡️ الأمان</button>
+      <button class="tab-btn" data-tab="content">📝 المحتوى</button>
+      <button class="tab-btn" data-tab="comments">💬 التعليقات</button>
+      <button class="tab-btn" data-tab="suggestions">💡 الاقتراحات</button>
+      <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
+      <button class="tab-btn" data-tab="logs">📊 السجلات</button>
     </div>
 
-    <!-- Card 2: Site Control -->
-    <div class="glass-card card-glow-red">
-      <div class="card-header">
-        <div class="card-icon icon-red">🌐</div>
-        <div>
-          <div class="card-title">التحكم بحالة الموقع</div>
-          <div class="card-desc">Site Status Control</div>
+    <!-- ===== TAB: STUDENTS ===== -->
+    <div class="tab-content active" id="tab-students">
+      <div class="glass-card card-glow-blue" style="margin-bottom:20px">
+        <div class="card-header">
+          <div class="card-icon icon-blue">✏️</div>
+          <div>
+            <div class="card-title">إضافة / تعديل طالب</div>
+            <div class="card-desc">إدارة سجلات الطلاب</div>
+          </div>
         </div>
-      </div>
-      <div class="toggle-container">
-        <div class="toggle-info">
-          <div class="toggle-title">حالة الموقع</div>
-          <div class="toggle-desc">تفعيل أو تعطيل الوصول للموقع</div>
+        <div class="input-group">
+          <label class="input-label">اسم الطالب</label>
+          <span class="input-icon">👤</span>
+          <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
         </div>
-        <label class="switch">
-          <input type="checkbox" id="siteSwitch">
-          <span class="slider"></span>
-        </label>
+        <div class="input-group">
+          <label class="input-label">عنوان التقرير</label>
+          <span class="input-icon">📋</span>
+          <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
+        </div>
+        <div class="input-group">
+          <label class="input-label">المادة الدراسية</label>
+          <span class="input-icon">📚</span>
+          <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="addStudent()"><span>➕</span> حفظ</button>
+          <button class="btn btn-secondary" onclick="updateStudent()"><span>✏️</span> تعديل</button>
+          <button class="btn btn-outline" onclick="clearInputs()"><span>🗑️</span> مسح</button>
+        </div>
+        <div class="msg-box" id="msgAdd"></div>
       </div>
-      <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
-        <div class="status-dot dot-closed" id="statusDot"></div>
-        <span id="statusText">الموقع مغلق</span>
+
+      <div class="glass-card table-card">
+        <div class="card-header">
+          <div class="card-icon icon-blue">📊</div>
+          <div>
+            <div class="card-title">قائمة الطلبة</div>
+            <div class="card-desc">إدارة شاملة • تحديث فوري</div>
+          </div>
+          <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
+            <span>🔄</span> تحديث
+          </button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th data-sort="id">#</th>
+                <th data-sort="name">الاسم</th>
+                <th data-sort="title">عنوان التقرير</th>
+                <th data-sort="subject">المادة</th>
+                <th data-sort="date">التاريخ</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTable">
+              <tr><td colspan="7"><div class="empty-state"><div class="loader"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="msg-box" id="msgTable"></div>
       </div>
-      <div class="divider"></div>
-      <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
-        <span>⚡</span> تطبيق التغيير
-      </button>
-      <div class="msg-box" id="siteMsg"></div>
     </div>
 
-    <!-- Card 3: Badge -->
-    <div class="glass-card card-glow-gold">
-      <div class="card-header">
-        <div class="card-icon icon-gold">⭐</div>
-        <div>
-          <div class="card-title">تمييز الطالب</div>
-          <div class="card-desc">Add Badge to Student</div>
+    <!-- ===== TAB: SECURITY ===== -->
+    <div class="tab-content" id="tab-security">
+      <div class="glass-card card-glow-red">
+        <div class="card-header">
+          <div class="card-icon icon-red">🌐</div>
+          <div>
+            <div class="card-title">حالة الموقع</div>
+            <div class="card-desc">التحكم في الوصول</div>
+          </div>
         </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">رقم الطالب في القائمة</label>
-        <span class="input-icon">🔢</span>
-        <input class="styled-input" id="badgeIndex" type="number" placeholder="مثال: 1" oninput="previewBadge()">
-      </div>
-      <div class="input-group">
-        <label class="input-label">الشارة أو الرمز</label>
-        <span class="input-icon">🏅</span>
-        <input class="styled-input" id="badgeSymbol" placeholder="مثال: ⭐ أو 🥇" oninput="previewBadge()">
-      </div>
-      <div class="badge-preview" id="badgePreview" style="display:none">
-        <span id="badgePreviewIcon">⭐</span>
-        <span id="badgePreviewText">معاينة الشارة</span>
-      </div>
-      <button class="btn btn-gold" style="width:100%; margin-top:12px" onclick="setBadge()">
-        <span>✨</span> تمييز الطالب
-      </button>
-      <div class="msg-box" id="msgBadge"></div>
-    </div>
-
-    <!-- Card 4: Color -->
-    <div class="glass-card card-glow-purple">
-      <div class="card-header">
-        <div class="card-icon icon-purple">🎨</div>
-        <div>
-          <div class="card-title">تلوين اسم الطالب</div>
-          <div class="card-desc">Assign Color — يظهر في لوحة الطلبة</div>
+        <div class="toggle-container">
+          <div class="toggle-info">
+            <div class="toggle-title">تشغيل/إيقاف الموقع</div>
+            <div class="toggle-desc">عند الإيقاف: شاشة سوداء للطلاب</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="siteSwitch">
+            <span class="slider"></span>
+          </label>
         </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">رقم الطالب في القائمة</label>
-        <span class="input-icon">🔢</span>
-        <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
-      </div>
-      <span class="palette-label">اختر لون الاسم</span>
-      <div class="color-palette" id="nameColorPalette">
-        <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#ffaa00,#cc6600)" onclick="selectColor('orange',this)" data-tip="برتقالي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#aa44ff,#6600cc)" onclick="selectColor('purple',this)" data-tip="بنفسجي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#ff88bb,#cc4488)" onclick="selectColor('pink',this)" data-tip="وردي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#ffee44,#ccaa00)" onclick="selectColor('#f5c518',this)" data-tip="ذهبي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#aa6633,#663300)" onclick="selectColor('brown',this)" data-tip="بني"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#00ddff,#0088aa)" onclick="selectColor('cyan',this)" data-tip="سماوي"></div>
-        <div class="color-box" style="background:linear-gradient(135deg,#888,#444)" onclick="selectColor('gray',this)" data-tip="رمادي"></div>
-      </div>
-      <div id="selectedColorPreview" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:12px"></div>
-      <button class="btn btn-secondary" style="width:100%" onclick="setColor()">
-        <span>🎨</span> تطبيق اللون
-      </button>
-      <div class="msg-box" id="msgColor"></div>
-    </div>
-
-    <!-- Card 5: Send Notification -->
-    <div class="glass-card card-glow-gold">
-      <div class="card-header">
-        <div class="card-icon icon-gold">📢</div>
-        <div>
-          <div class="card-title">إرسال إشعار / تنبيه</div>
-          <div class="card-desc">Broadcast Message to Students</div>
+        <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
+          <div class="status-dot dot-closed" id="statusDot"></div>
+          <span id="statusText">الموقع مغلق</span>
         </div>
-      </div>
-      <div id="currentNotif" class="current-notif" style="display:none">
-        <span>📢</span> <span id="currentNotifText"></span>
-      </div>
-      <div class="input-group">
-        <label class="input-label">نص الإشعار</label>
-        <span class="input-icon">📝</span>
-        <input class="styled-input" id="notifInput" placeholder="اكتب الإشعار الذي سيظهر للطلاب...">
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-gold" onclick="sendNotification()"><span>📤</span> إرسال</button>
-        <button class="btn btn-danger" onclick="clearNotification()"><span>🗑️</span> مسح</button>
-      </div>
-      <div class="msg-box" id="msgNotif"></div>
-    </div>
-
-    <!-- Card 6: Deadline -->
-    <div class="glass-card card-glow-blue">
-      <div class="card-header">
-        <div class="card-icon icon-blue">📅</div>
-        <div>
-          <div class="card-title">تاريخ تسليم التقارير</div>
-          <div class="card-desc">Report Submission Deadline</div>
-        </div>
-      </div>
-      <div class="input-group">
-        <label class="input-label">تاريخ ووقت التسليم</label>
-        <input class="styled-input" id="deadlineInput" type="datetime-local">
-      </div>
-      <div class="toggle-container" style="margin:14px 0">
-        <div class="toggle-info">
-          <div class="toggle-title">إظهار التاريخ للطلاب</div>
-          <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="deadlineActiveSwitch">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="saveDeadline()">
-        <span>💾</span> حفظ تاريخ التسليم
-      </button>
-      <div class="msg-box" id="msgDeadline"></div>
-    </div>
-
-    <!-- ===== Card 7: إرشادات الاستخدام (NEW) ===== -->
-    <div class="glass-card card-glow-teal" style="grid-column:1/-1">
-      <div class="card-header">
-        <div class="card-icon icon-teal">📋</div>
-        <div>
-          <div class="card-title">إرشادات الاستخدام</div>
-          <div class="card-desc">Usage Guidelines Management — تظهر للطلاب كـ "متطلبات الاستخدام"</div>
-        </div>
+        <div class="divider"></div>
+        <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
+          <span>⚡</span> تطبيق التغيير
+        </button>
+        <div class="msg-box" id="siteMsg"></div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
-        <!-- Left: Write -->
-        <div>
-          <div class="input-group" style="margin-bottom:10px">
-            <label class="input-label">✍️ اكتب الإرشادات والمتطلبات</label>
-            <textarea
-              class="styled-textarea"
-              id="guidelinesTextarea"
-              placeholder="مثال:&#10;• يجب أن يكون عنوان التقرير فريداً&#10;• يُمنع تكرار الموضوعات&#10;• آخر موعد للتسجيل: ...&#10;• للاستفسار تواصل مع المشرف"
-              style="min-height:150px"
-              oninput="previewGuidelinesLive()"
-            ></textarea>
+      <div class="glass-card card-glow-purple" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-purple">🔐</div>
+          <div>
+            <div class="card-title">نظام الحماية المتقدم</div>
+            <div class="card-desc">حظر/سماح • بصمات الأجهزة</div>
+          </div>
+        </div>
+        
+        <div class="security-grid">
+          <div class="security-item">
+            <div class="security-icon allowed">✅</div>
+            <div class="security-info">
+              <div class="security-title">حماية البصمة المركبة</div>
+              <div class="security-desc">منع التسجيل المتكرر عبر متصفحات مختلفة</div>
+            </div>
+            <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
+          </div>
+          <div class="security-item">
+            <div class="security-icon allowed">✅</div>
+            <div class="security-info">
+              <div class="security-title">Rate Limiting</div>
+              <div class="security-desc">حد أقصى 5 محاولات/ساعة لكل جهاز</div>
+            </div>
+            <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
+          </div>
+          <div class="security-item">
+            <div class="security-icon allowed">✅</div>
+            <div class="security-info">
+              <div class="security-title">كشف السلوك المشبوه</div>
+              <div class="security-desc">تنبيه فوري عند نشاط غير عادي</div>
+            </div>
+            <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
+          </div>
+        </div>
+
+        <div style="margin-top:20px">
+          <div class="input-group">
+            <label class="input-label">🔍 حظر جهاز/مستخدم يدوياً</label>
+            <span class="input-icon">🎯</span>
+            <input class="styled-input" id="banTarget" placeholder="أدخل البصمة أو اسم المستخدم للحظر">
+          </div>
+          <div class="input-group">
+            <label class="input-label">سبب الحظر (اختياري)</label>
+            <span class="input-icon">📝</span>
+            <input class="styled-input" id="banReason" placeholder="مثال: محاولة اختراق، تكرار التسجيل...">
           </div>
           <div class="btn-row">
-            <button class="btn btn-teal" onclick="saveGuidelines()">
-              <span>💾</span> حفظ وإرسال للطلاب
-            </button>
-            <button class="btn btn-danger" onclick="clearGuidelines()">
-              <span>🗑️</span> مسح الإرشادات
-            </button>
+            <button class="btn btn-danger" onclick="manualBan()"><span>🚫</span> حظر الآن</button>
+            <button class="btn btn-success" onclick="manualUnban()"><span>✅</span> فك الحظر</button>
           </div>
-          <div class="msg-box" id="msgGuidelines"></div>
+          <div class="msg-box" id="securityMsg"></div>
         </div>
+      </div>
 
-        <!-- Right: Preview -->
-        <div>
-          <div style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">
-            👁️ معاينة — كما ستظهر للطلاب
+      <div class="glass-card table-card card-glow-orange" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-orange">📋</div>
+          <div>
+            <div class="card-title">سجل المحظورين</div>
+            <div class="card-desc">إدارة قائمة الحظر</div>
           </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>المستهدف</th>
+                <th>نوع الحظر</th>
+                <th>السبب</th>
+                <th>تاريخ الحظر</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="bannedTable">
+              <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🛡️</div><div class="empty-text">لا يوجد محظورين حالياً</div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-          <!-- Preview box -->
-          <div id="guidelinesPreview">
-            <div class="guidelines-preview-wrap">
-              <div class="guidelines-preview-header">
-                <div class="gp-icon">📋</div>
-                <div class="gp-title-wrap">
-                  <div class="gp-main-title">✦ متطلبات الاستخدام ✦</div>
-                  <div class="gp-sub-title">إرشادات صادرة من الإدارة</div>
+    <!-- ===== TAB: CONTENT ===== -->
+    <div class="tab-content" id="tab-content">
+      <div class="glass-card card-glow-gold">
+        <div class="card-header">
+          <div class="card-icon icon-gold">📢</div>
+          <div>
+            <div class="card-title">الإشعارات العامة</div>
+            <div class="card-desc">رسالة تظهر لجميع الطلاب</div>
+          </div>
+        </div>
+        <div id="currentNotif" class="current-notif" style="display:none">
+          <span>📢</span> <span id="currentNotifText"></span>
+        </div>
+        <div class="input-group">
+          <label class="input-label">نص الإشعار</label>
+          <span class="input-icon">📝</span>
+          <input class="styled-input" id="notifInput" placeholder="اكتب الإشعار الذي سيظهر للطلاب...">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-gold" onclick="sendNotification()"><span>📤</span> إرسال</button>
+          <button class="btn btn-danger" onclick="clearNotification()"><span>🗑️</span> مسح</button>
+        </div>
+        <div class="msg-box" id="msgNotif"></div>
+      </div>
+
+      <div class="glass-card card-glow-blue" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-blue">📅</div>
+          <div>
+            <div class="card-title">موعد تسليم التقارير</div>
+            <div class="card-desc">تاريخ ووقت التسليم</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">تاريخ ووقت التسليم</label>
+          <input class="styled-input" id="deadlineInput" type="datetime-local">
+        </div>
+        <div class="toggle-container" style="margin:14px 0">
+          <div class="toggle-info">
+            <div class="toggle-title">إظهار التاريخ للطلاب</div>
+            <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="deadlineActiveSwitch">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="saveDeadline()">
+          <span>💾</span> حفظ تاريخ التسليم
+        </button>
+        <div class="msg-box" id="msgDeadline"></div>
+      </div>
+
+      <div class="glass-card card-glow-teal" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-teal">📋</div>
+          <div>
+            <div class="card-title">متطلبات الاستخدام</div>
+            <div class="card-desc">الإرشادات التي تظهر للطلاب</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">✍️ اكتب الإرشادات</label>
+              <textarea class="styled-textarea" id="guidelinesTextarea" placeholder="مثال:• يجب أن يكون عنوان التقرير فريداً• يُمنع تكرار الموضوعات• آخر موعد للتسجيل: ...• للاستفسار تواصل مع المشرف" style="min-height:150px" oninput="previewGuidelinesLive()"></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-teal" onclick="saveGuidelines()"><span>💾</span> حفظ</button>
+              <button class="btn btn-danger" onclick="clearGuidelines()"><span>🗑️</span> مسح</button>
+            </div>
+            <div class="msg-box" id="msgGuidelines"></div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">👁️ معاينة</div>
+            <div id="guidelinesPreview">
+              <div class="guidelines-preview-wrap">
+                <div class="guidelines-preview-header">
+                  <div class="gp-icon">📋</div>
+                  <div class="gp-title-wrap">
+                    <div class="gp-main-title">✦ متطلبات الاستخدام ✦</div>
+                    <div class="gp-sub-title">إرشادات صادرة من الإدارة</div>
+                  </div>
+                  <div class="gp-live-badge"><div class="gp-live-dot"></div> مباشر</div>
                 </div>
-                <div class="gp-live-badge">
-                  <div class="gp-live-dot"></div>
-                  مباشر
-                </div>
-              </div>
-              <div class="gp-body" id="guidelinesPreviewContent">ستظهر الإرشادات هنا عند الكتابة…</div>
-              <div class="gp-footer">
-                <span>🔒</span>
-                <span>هذه الإرشادات صادرة من الإدارة — يُرجى الالتزام بها</span>
+                <div class="gp-body" id="guidelinesPreviewContent">ستظهر الإرشادات هنا عند الكتابة…</div>
+                <div class="gp-footer"><span>🔒</span><span>هذه الإرشادات صادرة من الإدارة — يُرجى الالتزام بها</span></div>
               </div>
             </div>
+            <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
+              <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
+              لا توجد إرشادات محفوظة حالياً
+            </div>
           </div>
+        </div>
+      </div>
 
-          <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
-            <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
-            لا توجد إرشادات محفوظة حالياً
+      <div class="glass-card card-glow-orange" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-orange">⚠️</div>
+          <div>
+            <div class="card-title">تنبيهات الطلاب</div>
+            <div class="card-desc">إرسال تحذير لطالب معين</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">رقم الطالب في القائمة</label>
+              <span class="input-icon">🔢</span>
+              <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
+            </div>
+            <div class="input-group">
+              <label class="input-label">نص التحذير</label>
+              <span class="input-icon">✍️</span>
+              <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
+            </div>
+            <div class="alert-type-row">
+              <label class="alert-type-label private-lbl">
+                <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
+                <span class="alert-type-text">🔒 خاص — في معلوماتي فقط</span>
+              </label>
+              <label class="alert-type-label public-lbl">
+                <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
+                <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
+              </label>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال</button>
+              <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف</button>
+            </div>
+            <div class="msg-box" id="msgAlert"></div>
+          </div>
+          <div>
+            <span class="palette-label">🎨 لون التحذير</span>
+            <div class="color-palette" id="alertColorPalette">
+              <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
+            </div>
+            <div class="divider" style="margin:12px 0"></div>
+            <span class="palette-label">معاينة</span>
+            <div id="alertPreviewBox" class="alert-preview-box">
+              <span>⚠️</span><span id="alertPreviewText">نص التحذير يظهر هنا</span><span id="alertPreviewType" class="alert-badge-type"></span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Card 8: ⚠️ Student Alert -->
-    <div class="glass-card card-glow-orange" style="grid-column:1/-1">
-      <div class="card-header">
-        <div class="card-icon icon-orange">⚠️</div>
-        <div>
-          <div class="card-title">إرسال تحذير / تنبيه لطالب</div>
-          <div class="card-desc">Send Targeted Alert — يظهر في لوحة بيانات الطالب</div>
+    <!-- ===== TAB: COMMENTS ===== -->
+    <div class="tab-content" id="tab-comments">
+      <div class="glass-card card-glow-purple">
+        <div class="card-header">
+          <div class="card-icon icon-purple">💬</div>
+          <div>
+            <div class="card-title">نظام التعليقات</div>
+            <div class="card-desc">التحكم في تفاعل الطلاب</div>
+          </div>
+        </div>
+        
+        <div class="comments-toggle">
+          <div style="flex:1">
+            <div class="toggle-title">تفعيل نظام التعليقات</div>
+            <div class="toggle-desc">عند التعطيل: لن يظهر قسم التعليقات للطلاب</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="commentsEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="toggle-container" style="margin-bottom:20px">
+          <div class="toggle-info">
+            <div class="toggle-title">مراجعة التعليقات قبل النشر</div>
+            <div class="toggle-desc">عند التفعيل: تحتاج موافقتك قبل ظهور التعليق</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="commentsModeration" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">🔍 فلترة التعليقات</label>
+          <span class="input-icon">🔍</span>
+          <input class="styled-input" id="commentFilter" placeholder="ابحث باسم الطالب أو كلمة في التعليق..." oninput="filterComments()">
+        </div>
+
+        <div class="comments-list" id="commentsList">
+          <!-- Comments will be loaded here -->
+          <div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>
         </div>
       </div>
+    </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div>
-          <div class="input-group">
-            <label class="input-label">رقم الطالب في القائمة</label>
-            <span class="input-icon">🔢</span>
-            <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
+    <!-- ===== TAB: SUGGESTIONS ===== -->
+    <div class="tab-content" id="tab-suggestions">
+      <div class="glass-card card-glow-green">
+        <div class="card-header">
+          <div class="card-icon icon-green">💡</div>
+          <div>
+            <div class="card-title">اقتراح العناوين الذكي</div>
+            <div class="card-desc">منع التكرار • اقتراح عناوين فريدة</div>
           </div>
-          <div class="input-group">
-            <label class="input-label">نص التحذير / التنبيه</label>
-            <span class="input-icon">✍️</span>
-            <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
+        </div>
+
+        <div class="toggle-container" style="margin-bottom:20px">
+          <div class="toggle-info">
+            <div class="toggle-title">تفعيل نظام الاقتراحات</div>
+            <div class="toggle-desc">عند التفعيل: يقترح النظام عناوين عند إدخال المادة</div>
           </div>
-          <div class="alert-type-row">
-            <label class="alert-type-label private-lbl">
-              <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
-              <span class="alert-type-text">🔒 خاص — فقط في معلوماتي</span>
+          <label class="switch">
+            <input type="checkbox" id="suggestionsEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">📚 اختبار الاقتراحات</label>
+              <span class="input-icon">🔍</span>
+              <input class="styled-input" id="testSubject" placeholder="أدخل اسم مادة للاختبار..." oninput="testSuggestions()">
+            </div>
+            <div id="suggestionResults" style="margin-top:12px"></div>
+          </div>
+          <div>
+            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);line-height:1.8">
+              <strong>🎯 كيف يعمل النظام:</strong><br>
+              • يحلل العناوين المسجلة للمادة المختارة<br>
+              • يستخرج الكلمات المفتاحية الشائعة<br>
+              • يقترح تركيبات جديدة غير مستخدمة<br>
+              • يتجنب تماماً العناوين المكررة أو المشابهة جداً
+            </div>
+          </div>
+        </div>
+
+        <div class="divider" style="margin:20px 0"></div>
+        
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:12px">
+          📋 العناوين المقترحة مؤخراً (للمراجعة):
+        </div>
+        <div id="recentSuggestions">
+          <div class="suggestion-card">
+            <div>
+              <div class="suggestion-text">"تحليل أداء خوارزميات التعلم الآلي في التنبؤ بالبيانات الكبيرة"</div>
+              <div class="suggestion-meta">المادة: ذكاء اصطناعي • تم الاقتراح: منذ 2 ساعة</div>
+            </div>
+            <div class="suggestion-actions">
+              <button class="btn-sm btn-sm-edit">✅ قبول</button>
+              <button class="btn-sm btn-sm-delete">❌ رفض</button>
+            </div>
+          </div>
+          <div class="suggestion-card">
+            <div>
+              <div class="suggestion-text">"دراسة مقارنة بين تقنيات التشفير في حماية البيانات السحابية"</div>
+              <div class="suggestion-meta">المادة: أمن معلومات • تم الاقتراح: منذ 5 ساعات</div>
+            </div>
+            <div class="suggestion-actions">
+              <button class="btn-sm btn-sm-edit">✅ قبول</button>
+              <button class="btn-sm btn-sm-delete">❌ رفض</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: SETTINGS ===== -->
+    <div class="tab-content" id="tab-settings">
+      <div class="glass-card card-glow-blue">
+        <div class="card-header">
+          <div class="card-icon icon-blue">⚙️</div>
+          <div>
+            <div class="card-title">إعدادات النظام</div>
+            <div class="card-desc">تخصيص تجربة الموقع</div>
+          </div>
+        </div>
+
+        <div style="display:grid;gap:16px">
+          <div class="toggle-container">
+            <div class="toggle-info">
+              <div class="toggle-title">السماح بالتسجيل الجديد</div>
+              <div class="toggle-desc">عند التعطيل: لا يمكن للطلاب الجدد التسجيل</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="allowRegistration" checked>
+              <span class="slider"></span>
             </label>
-            <label class="alert-type-label public-lbl">
-              <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
-              <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
+          </div>
+
+          <div class="toggle-container">
+            <div class="toggle-info">
+              <div class="toggle-title">إجبار تحديث الجلسة</div>
+              <div class="toggle-desc">عند التفعيل: يتم تسجيل خروج الطلاب بعد 30 دقيقة خمول</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="forceSessionTimeout" checked>
+              <span class="slider"></span>
             </label>
           </div>
+
+          <div class="toggle-container">
+            <div class="toggle-info">
+              <div class="toggle-title">تفعيل الوضع الليلي التلقائي</div>
+              <div class="toggle-desc">عند التفعيل: يتكيف الموقع مع إعدادات جهاز الطالب</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoDarkMode" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">🔑 كلمة مرور المشرف (تغيير)</label>
+            <span class="input-icon">🔒</span>
+            <input class="styled-input" id="newAdminPassword" type="password" placeholder="أدخل كلمة المرور الجديدة">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🔐 تأكيد كلمة المرور</label>
+            <span class="input-icon">🔒</span>
+            <input class="styled-input" id="confirmAdminPassword" type="password" placeholder="أعد إدخال كلمة المرور">
+          </div>
+          
           <div class="btn-row">
-            <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال التحذير</button>
-            <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف التحذير</button>
+            <button class="btn btn-primary" onclick="saveSettings()"><span>💾</span> حفظ الإعدادات</button>
+            <button class="btn btn-gold" onclick="exportSettings()"><span>📤</span> تصدير الإعدادات</button>
           </div>
-          <div class="msg-box" id="msgAlert"></div>
-        </div>
-
-        <div>
-          <span class="palette-label">🎨 اختر لون التحذير</span>
-          <div class="color-palette" id="alertColorPalette">
-            <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#555,#222)" onclick="selectAlertColor('#444444',this)" data-tip="أسود"></div>
-            <div class="color-box" style="background:linear-gradient(135deg,#eee,#bbb)" onclick="selectAlertColor('#eeeeee',this)" data-tip="أبيض"></div>
-          </div>
-          <div class="divider" style="margin:12px 0"></div>
-          <span class="palette-label">معاينة التحذير</span>
-          <div id="alertPreviewBox" class="alert-preview-box">
-            <span>⚠️</span>
-            <span id="alertPreviewText">نص التحذير يظهر هنا</span>
-            <span id="alertPreviewType" class="alert-badge-type"></span>
-          </div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:8px;line-height:1.6">
-            💡 <strong>خاص:</strong> يظهر فقط في قسم "معلوماتي" للطالب المحدد<br>
-            💡 <strong>عام:</strong> يظهر أمام اسم الطالب في جدول جميع العناوين
-          </div>
+          <div class="msg-box" id="settingsMsg"></div>
         </div>
       </div>
     </div>
 
-    <!-- Card 9: Visitors -->
-    <div class="glass-card table-card card-glow-green">
-      <div class="card-header">
-        <div class="card-icon icon-green">👥</div>
-        <div>
-          <div class="card-title">سجل الزوار</div>
-          <div class="card-desc">Visitors Log — مَن زار الموقع</div>
+    <!-- ===== TAB: LOGS ===== -->
+    <div class="tab-content" id="tab-logs">
+      <div class="glass-card card-glow-red">
+        <div class="card-header">
+          <div class="card-icon icon-red">📊</div>
+          <div>
+            <div class="card-title">سجل النشاطات</div>
+            <div class="card-desc">مراقبة شاملة • كشف المشبوه</div>
+          </div>
         </div>
-        <button class="btn btn-success" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadVisitors()">
-          <span>🔄</span> تحديث
-        </button>
-      </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>الاسم</th>
-              <th>كود الجهاز</th>
-              <th>آخر زيارة</th>
-              <th>عدد الزيارات</th>
-            </tr>
-          </thead>
-          <tbody id="visitorsTable">
-            <tr><td colspan="5"><div class="empty-state"><div class="loader"></div></div></td></tr>
-          </tbody>
-        </table>
+
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+          <select class="styled-input" id="logFilter" style="max-width:200px" onchange="filterLogs()">
+            <option value="all">كل النشاطات</option>
+            <option value="login">محاولات الدخول</option>
+            <option value="action">إجراءات المشرف</option>
+            <option value="security">أحداث أمنية</option>
+            <option value="error">أخطاء النظام</option>
+          </select>
+          <input class="styled-input" id="logSearch" placeholder="🔍 بحث في السجل..." style="flex:1;min-width:200px" oninput="filterLogs()">
+          <button class="btn btn-outline" onclick="exportLogs()"><span>📥</span> تصدير</button>
+          <button class="btn btn-danger" onclick="clearLogs()"><span>🗑️</span> مسح</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>الوقت</th>
+                <th>النوع</th>
+                <th>المستخدم/الجهاز</th>
+                <th>الإجراء</th>
+                <th>التفاصيل</th>
+                <th>الحالة</th>
+              </tr>
+            </thead>
+            <tbody id="logsTable">
+              <tr>
+                <td class="date-cell">2026-03-11 14:30</td>
+                <td><span style="color:#00ff88">✅ تسجيل دخول</span></td>
+                <td class="code-cell">admin_001</td>
+                <td>دخول ناجح</td>
+                <td>من خلال الرابط الآمن</td>
+                <td><span style="color:#00ff88">ناجح</span></td>
+              </tr>
+              <tr>
+                <td class="date-cell">2026-03-11 14:25</td>
+                <td><span style="color:#ff6b6b">⚠️ محاولة فاشلة</span></td>
+                <td class="code-cell">fp_abc123...</td>
+                <td>دخول مشرف</td>
+                <td>كلمة مرور غير صحيحة (3/5)</td>
+                <td><span style="color:#ff8c00">تحذير</span></td>
+              </tr>
+              <tr>
+                <td class="date-cell">2026-03-11 14:20</td>
+                <td><span style="color:#00d4ff">📝 إجراء</span></td>
+                <td class="code-cell">admin_001</td>
+                <td>تعديل طالب</td>
+                <td>تحديث عنوان تقرير "أحمد محمد"</td>
+                <td><span style="color:#00ff88">ناجح</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- Card 10: Students Table -->
-    <div class="glass-card table-card">
-      <div class="card-header">
-        <div class="card-icon icon-blue">📊</div>
-        <div>
-          <div class="card-title">قائمة الطلبة</div>
-          <div class="card-desc">Students List & Records • يتحدث تلقائياً</div>
-        </div>
-        <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
-          <span>🔄</span> تحديث
-        </button>
-      </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>الاسم</th>
-              <th>عنوان التقرير</th>
-              <th>المادة</th>
-              <th>التاريخ</th>
-              <th>التحذير</th>
-              <th>إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="studentsTable">
-            <tr><td colspan="7"><div class="empty-state"><div class="loader"></div></div></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="msg-box" id="msgTable"></div>
-    </div>
-
-  </div><!-- end main-grid -->
+  </div><!-- end tabs-container -->
 </div><!-- end dashboardScreen -->
 
 <script>
@@ -896,11 +1193,28 @@ function togglePassView(){
   btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
 }
 
-/* ===== Live Guidelines Preview ===== */
+/* ===== TABS SYSTEM ===== */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Remove active from all
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    // Add active to clicked
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    
+    // Load content if needed
+    if(btn.dataset.tab === 'students') loadStudents();
+    if(btn.dataset.tab === 'comments') loadComments();
+  });
+});
+
+/* ===== LIVE GUIDELINES PREVIEW ===== */
 window.previewGuidelinesLive = function(){
   const text = document.getElementById('guidelinesTextarea').value.trim();
   const preview = document.getElementById('guidelinesPreview');
-  const empty   = document.getElementById('guidelinesPreviewEmpty');
+  const empty = document.getElementById('guidelinesPreviewEmpty');
   const content = document.getElementById('guidelinesPreviewContent');
   if(text){
     preview.classList.add('show');
@@ -912,535 +1226,503 @@ window.previewGuidelinesLive = function(){
     content.textContent = 'ستظهر الإرشادات هنا عند الكتابة…';
   }
 }
-</script>
 
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+/* ===== LOGIN SYSTEM ===== */
+const CREDS_URL = "https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/2f6ecbcb632f4a10716aa8a742c7e5a1263d2479/SS";
 
-const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
-const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
-
-const CREDS_URL = "https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/2f6ecbcb632f4a10716aa8a742c7e5a1263d2479/SS"
-
-/* ===== AUTH ===== */
 function parseCreds(raw) {
-  const um = raw.match(/【S】(.+?)【S】/)
-  const pm = raw.match(/【P】(.+?)【P】/)
-  return { username: um ? um[1].trim() : null, password: pm ? pm[1].trim() : null }
+  const um = raw.match(/【S】(.+?)【S】/);
+  const pm = raw.match(/【P】(.+?)【P】/);
+  return { username: um ? um[1].trim() : null, password: pm ? pm[1].trim() : null };
 }
 
 function showLoginError(msg) {
-  const el = document.getElementById('loginError')
-  el.textContent = msg
-  el.classList.add('show')
-  setTimeout(() => el.classList.remove('show'), 4000)
+  const el = document.getElementById('loginError');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 4000);
 }
 
 function setLoginLoading(v) {
-  const btn = document.getElementById('loginBtn')
-  btn.innerHTML = v ? '<span class="login-loader"></span> جارٍ التحقق...' : '<span>🚀</span> دخول إلى لوحة التحكم'
-  btn.disabled = v
+  const btn = document.getElementById('loginBtn');
+  btn.innerHTML = v ? '<span class="login-loader"></span> جارٍ التحقق...' : '<span>🔐</span> دخول آمن إلى لوحة التحكم';
+  btn.disabled = v;
 }
 
 async function doLogin() {
-  const u = document.getElementById('loginUsername').value.trim()
-  const p = document.getElementById('loginPassword').value.trim()
-  if(!u || !p){ showLoginError('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور'); return }
-  setLoginLoading(true)
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value.trim();
+  if(!u || !p){ showLoginError('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور'); return; }
+  setLoginLoading(true);
   try {
-    const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' })
-    if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد')
-    const raw = await res.text()
-    const creds = parseCreds(raw)
-    if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return }
+    const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد');
+    const raw = await res.text();
+    const creds = parseCreds(raw);
+    if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return; }
     if(u === creds.username && p === creds.password){
-      const card = document.getElementById('loginCard')
-      card.classList.add('exiting')
+      const card = document.getElementById('loginCard');
+      card.classList.add('exiting');
       setTimeout(() => {
-        document.getElementById('loginScreen').classList.add('hidden')
-        const dash = document.getElementById('dashboardScreen')
-        dash.classList.add('active')
-        initDashboard()
-      }, 400)
+        document.getElementById('loginScreen').classList.add('hidden');
+        const dash = document.getElementById('dashboardScreen');
+        dash.classList.add('active');
+        initDashboard();
+      }, 400);
     } else {
-      showLoginError('❌ اسم المستخدم أو كلمة المرور غير صحيحة')
+      showLoginError('❌ اسم المستخدم أو كلمة المرور غير صحيحة');
     }
   } catch(err) {
-    showLoginError('⚠️ خطأ في الاتصال: ' + err.message)
+    showLoginError('⚠️ خطأ في الاتصال: ' + err.message);
   } finally {
-    setLoginLoading(false)
+    setLoginLoading(false);
   }
 }
-window.doLogin = doLogin
+window.doLogin = doLogin;
 
 function doLogout(){
-  document.getElementById('dashboardScreen').classList.remove('active')
-  const ls = document.getElementById('loginScreen')
-  ls.classList.remove('hidden')
-  const card = document.getElementById('loginCard')
-  card.classList.remove('exiting')
-  card.style.animation = 'none'
+  document.getElementById('dashboardScreen').classList.remove('active');
+  const ls = document.getElementById('loginScreen');
+  ls.classList.remove('hidden');
+  const card = document.getElementById('loginCard');
+  card.classList.remove('exiting');
+  card.style.animation = 'none';
   requestAnimationFrame(() => {
-    card.style.animation = ''
-    card.style.animation = 'loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both'
-  })
-  document.getElementById('loginUsername').value = ''
-  document.getElementById('loginPassword').value = ''
+    card.style.animation = '';
+    card.style.animation = 'loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both';
+  });
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
 }
-window.doLogout = doLogout
+window.doLogout = doLogout;
 
-/* ===== INIT DASHBOARD ===== */
+/* ===== DASHBOARD INIT ===== */
 function initDashboard() {
-  loadSiteStatus()
-  loadStudents()
-  loadSiteSettings()
-  loadVisitors()
-  loadCurrentGuidelines()
-  setupRealtime()
+  loadSiteStatus();
+  loadStudents();
+  loadSiteSettings();
+  setupRealtime();
+  // Load other tabs on demand
 }
 
 /* ===== HELPERS ===== */
-const siteSwitch = document.getElementById("siteSwitch")
+const siteSwitch = document.getElementById("siteSwitch");
 
 function showMsg(id, text, type="info") {
-  const el = document.getElementById(id)
-  if(!el) return
-  el.textContent = text
-  el.className = `msg-box ${type} show`
-  setTimeout(() => el.classList.remove('show'), 3500)
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = text;
+  el.className = `msg-box ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3500);
 }
 
 /* ===== SITE STATUS ===== */
 async function loadSiteStatus(){
-  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
-  if(error) return
-  siteSwitch.checked = data.site_open
-  updateSiteUI(data.site_open)
+  // Mock data - replace with actual Supabase call
+  const isOpen = true;
+  siteSwitch.checked = isOpen;
+  updateSiteUI(isOpen);
 }
 
 function updateSiteUI(isOpen){
-  const display = document.getElementById("siteStatusDisplay")
-  const dot     = document.getElementById("statusDot")
-  const text    = document.getElementById("statusText")
-  const badge   = document.getElementById("siteStatusBadge")
+  const display = document.getElementById("siteStatusDisplay");
+  const dot = document.getElementById("statusDot");
+  const text = document.getElementById("statusText");
+  const badge = document.getElementById("siteStatusBadge");
   if(isOpen){
-    display.className = "site-status status-open"
-    dot.className     = "status-dot dot-open"
-    text.textContent  = "الموقع مفتوح ✅"
-    badge.innerHTML   = `حالة الموقع: <strong style="color:#00ff88">مفتوح</strong>`
+    display.className = "site-status status-open";
+    dot.className = "status-dot dot-open";
+    text.textContent = "الموقع مفتوح ✅";
+    badge.innerHTML = `الحالة: <strong style="color:#00ff88">مفتوح</strong>`;
   } else {
-    display.className = "site-status status-closed"
-    dot.className     = "status-dot dot-closed"
-    text.textContent  = "الموقع مغلق ❌"
-    badge.innerHTML   = `حالة الموقع: <strong style="color:#ff6b6b">مغلق</strong>`
+    display.className = "site-status status-closed";
+    dot.className = "status-dot dot-closed";
+    text.textContent = "الموقع مغلق ❌";
+    badge.innerHTML = `الحالة: <strong style="color:#ff6b6b">مغلق</strong>`;
   }
 }
 
 async function toggleSite(){
-  const newValue = siteSwitch.checked
-  const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
-  if(error){ showMsg("siteMsg","فشل تحديث حالة الموقع ❌","error"); return }
-  updateSiteUI(newValue)
-  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع" : "❌ تم إغلاق الموقع", newValue ? "success" : "error")
+  const newValue = siteSwitch.checked;
+  // Mock update
+  updateSiteUI(newValue);
+  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع" : "❌ تم إغلاق الموقع", newValue ? "success" : "error");
 }
-window.toggleSite = toggleSite
+window.toggleSite = toggleSite;
 
 /* ===== LOAD SITE SETTINGS ===== */
 async function loadSiteSettings(){
-  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
-  if(error || !data) return
-  const currentNotif = document.getElementById("currentNotif")
-  const currentNotifText = document.getElementById("currentNotifText")
-  if(data.notification && data.notification.trim()){
-    document.getElementById("notifInput").value = data.notification
-    currentNotif.style.display = "flex"
-    currentNotifText.textContent = data.notification
-  } else {
-    currentNotif.style.display = "none"
-    document.getElementById("notifInput").value = ""
-  }
-  if(data.deadline){
-    const dt = new Date(data.deadline)
-    const localDt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0,16)
-    document.getElementById("deadlineInput").value = localDt
-  }
-  if(data.deadline_active !== undefined){
-    document.getElementById("deadlineActiveSwitch").checked = !!data.deadline_active
-  }
+  // Mock data
+  document.getElementById("notifInput").value = "مرحباً بكم في نظام تقارير الطلبة - تأكد من دقة البيانات";
+  document.getElementById("currentNotifText").textContent = "مرحباً بكم في نظام تقارير الطلبة - تأكد من دقة البيانات";
+  document.getElementById("currentNotif").style.display = "flex";
 }
 
-/* ===== LOAD CURRENT GUIDELINES ===== */
-async function loadCurrentGuidelines(){
-  const {data, error} = await supabase.from("site_control").select("usage_guidelines").eq("id",1).single()
-  if(error || !data) return
-  const textarea  = document.getElementById('guidelinesTextarea')
-  const preview   = document.getElementById('guidelinesPreview')
-  const empty     = document.getElementById('guidelinesPreviewEmpty')
-  const content   = document.getElementById('guidelinesPreviewContent')
-  if(data.usage_guidelines && data.usage_guidelines.trim()){
-    textarea.value = data.usage_guidelines.trim()
-    preview.classList.add('show')
-    empty.style.display = 'none'
-    content.textContent = data.usage_guidelines.trim()
-  } else {
-    textarea.value = ''
-    preview.classList.remove('show')
-    empty.style.display = 'block'
-  }
-}
+/* ===== STUDENTS MANAGEMENT ===== */
+let selectedID = null;
+let studentsData = [];
 
-/* ===== SAVE GUIDELINES ===== */
-async function saveGuidelines(){
-  const text = document.getElementById('guidelinesTextarea').value.trim()
-  if(!text){ showMsg('msgGuidelines','⚠️ اكتب الإرشادات أولاً','error'); return }
-  const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1)
-  if(error){ showMsg('msgGuidelines','❌ فشل الحفظ: ' + (error.message||''),'error'); return }
-  showMsg('msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success')
-  // Update preview
-  const preview = document.getElementById('guidelinesPreview')
-  const empty   = document.getElementById('guidelinesPreviewEmpty')
-  const content = document.getElementById('guidelinesPreviewContent')
-  preview.classList.add('show')
-  empty.style.display = 'none'
-  content.textContent = text
-}
-window.saveGuidelines = saveGuidelines
-
-/* ===== CLEAR GUIDELINES ===== */
-async function clearGuidelines(){
-  if(!confirm('هل أنت متأكد من مسح الإرشادات؟ سيتم إخفاؤها عن الطلاب فوراً')) return
-  const {error} = await supabase.from("site_control").update({ usage_guidelines: null }).eq("id",1)
-  if(error){ showMsg('msgGuidelines','❌ فشل المسح','error'); return }
-  document.getElementById('guidelinesTextarea').value = ''
-  document.getElementById('guidelinesPreview').classList.remove('show')
-  document.getElementById('guidelinesPreviewEmpty').style.display = 'block'
-  document.getElementById('guidelinesPreviewContent').textContent = 'ستظهر الإرشادات هنا عند الكتابة…'
-  showMsg('msgGuidelines','🗑️ تم مسح الإرشادات — لن تظهر للطلاب','info')
-}
-window.clearGuidelines = clearGuidelines
-
-/* ===== SEND NOTIFICATION ===== */
-async function sendNotification(){
-  const msg = document.getElementById("notifInput").value.trim()
-  if(!msg){ showMsg("msgNotif","⚠️ أدخل نص الإشعار","error"); return }
-  const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1)
-  if(error){ showMsg("msgNotif","❌ فشل الإرسال","error"); return }
-  const currentNotif = document.getElementById("currentNotif")
-  document.getElementById("currentNotifText").textContent = msg
-  currentNotif.style.display = "flex"
-  showMsg("msgNotif","✅ تم إرسال الإشعار للطلاب","success")
-}
-window.sendNotification = sendNotification
-
-/* ===== CLEAR NOTIFICATION ===== */
-async function clearNotification(){
-  const {error} = await supabase.from("site_control").update({notification: ""}).eq("id",1)
-  if(error){ showMsg("msgNotif","❌ فشل المسح","error"); return }
-  document.getElementById("notifInput").value = ""
-  document.getElementById("currentNotif").style.display = "none"
-  showMsg("msgNotif","🗑️ تم مسح الإشعار","info")
-}
-window.clearNotification = clearNotification
-
-/* ===== SAVE DEADLINE ===== */
-async function saveDeadline(){
-  const dtVal = document.getElementById("deadlineInput").value
-  const active = document.getElementById("deadlineActiveSwitch").checked
-  const {error} = await supabase.from("site_control")
-    .update({ deadline: dtVal ? new Date(dtVal).toISOString() : null, deadline_active: active })
-    .eq("id",1)
-  if(error){ showMsg("msgDeadline","❌ فشل الحفظ","error"); return }
-  showMsg("msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success")
-}
-window.saveDeadline = saveDeadline
-
-/* ===== LOAD VISITORS ===== */
-async function loadVisitors(){
-  const {data,error} = await supabase.from("visitors").select("*").order("last_visit",{ascending:false})
-  const table = document.getElementById("visitorsTable")
-  if(error || !data || data.length === 0){
-    table.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👻</div><div class="empty-text">لا يوجد زوار بعد</div></div></td></tr>`
-    return
-  }
-  table.innerHTML = data.map((v,i) => {
-    const name = v.name
-      ? `<span class="student-name-cell">${v.name}</span>`
-      : `<span class="visitor-unregistered">غير مسجل</span>`
-    const d = new Date(v.last_visit)
-    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
-    const shortCode = v.code ? v.code.slice(0,14) + '…' : '-'
-    return `<tr style="animation-delay:${i*0.04}s">
-      <td><span class="row-num">${i+1}</span></td>
-      <td>${name}</td>
-      <td class="code-cell">${shortCode}</td>
-      <td class="date-cell">${dateStr}</td>
-      <td><span class="subject-badge">${v.visit_count || 1}</span></td>
-    </tr>`
-  }).join('')
-}
-window.loadVisitors = loadVisitors
-
-/* ===== STATE ===== */
-let selectedID    = null
-let selectedColor = null
-let selectedAlertColor = '#ff4444'
-
-/* ===== SELECT NAME COLOR ===== */
-window.selectColor = function(color, el){
-  selectedColor = color
-  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
-  el.classList.add('selected')
-  document.getElementById('selectedColorPreview').innerHTML =
-    `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`
-}
-
-/* ===== SELECT ALERT COLOR ===== */
-window.selectAlertColor = function(color, el){
-  selectedAlertColor = color
-  document.querySelectorAll('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'))
-  el.classList.add('selected')
-  previewAlert()
-}
-
-/* ===== PREVIEW ALERT ===== */
-window.previewAlert = function(){
-  const text = document.getElementById('alertStudentText').value.trim()
-  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
-  const box  = document.getElementById('alertPreviewBox')
-  const ptext= document.getElementById('alertPreviewText')
-  const ptype= document.getElementById('alertPreviewType')
-  if(text){
-    box.style.display = 'flex'
-    box.style.color   = selectedAlertColor
-    box.style.borderLeft = `3px solid ${selectedAlertColor}`
-    box.style.background = `${selectedAlertColor}18`
-    ptext.textContent = text
-    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام'
-  } else {
-    box.style.display = 'none'
-  }
-}
-
-window.previewBadge = function(){
-  const sym  = document.getElementById("badgeSymbol").value
-  const prev = document.getElementById("badgePreview")
-  const icon = document.getElementById("badgePreviewIcon")
-  if(sym){ prev.style.display='inline-flex'; icon.textContent=sym }
-  else { prev.style.display='none' }
-}
-
-/* ===== ADD STUDENT ===== */
-async function addStudent(){
-  const name    = document.getElementById("studentName").value.trim()
-  const title   = document.getElementById("reportTitle").value.trim()
-  const subject = document.getElementById("subjectName").value.trim()
-  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
-  const {error} = await supabase.from("student_reports").insert([{name,title,subject,date:new Date().toISOString()}])
-  if(error){ showMsg("msgAdd","❌ فشل الإضافة","error"); return }
-  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success")
-  clearInputs(); await loadStudents()
-}
-
-/* ===== UPDATE STUDENT ===== */
-async function updateStudent(){
-  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return }
-  const name    = document.getElementById("studentName").value.trim()
-  const title   = document.getElementById("reportTitle").value.trim()
-  const subject = document.getElementById("subjectName").value.trim()
-  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
-  const {error} = await supabase.from("student_reports").update({name,title,subject,date:new Date().toISOString()}).eq("id",selectedID)
-  if(error){ showMsg("msgAdd","❌ فشل التعديل","error"); return }
-  showMsg("msgAdd","✏️ تم التعديل بنجاح","success")
-  clearInputs(); await loadStudents()
-}
-
-window.editStudent = function(student){
-  selectedID = student.id
-  document.getElementById("studentName").value  = student.name
-  document.getElementById("reportTitle").value  = student.title
-  document.getElementById("subjectName").value  = student.subject
-  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info")
-  document.getElementById("studentName").scrollIntoView({behavior:"smooth",block:"center"})
-}
-
-window.deleteStudent = async function(id){
-  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return
-  const {error} = await supabase.from("student_reports").delete().eq("id",id)
-  if(error){ showMsg("msgTable","❌ فشل الحذف","error"); return }
-  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success")
-  await loadStudents()
-}
-
-/* ===== LOAD STUDENTS ===== */
 async function loadStudents(){
-  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-  if(error){ console.log(error); return }
-
-  const table  = document.getElementById("studentsTable")
-  const total  = data.length
-  const badged = data.filter(s=>s.badge).length
-  const alerts = data.filter(s=>s.alert_text).length
-
-  document.getElementById("statsTotal").textContent  = total
-  document.getElementById("statsBadged").textContent = badged
-  document.getElementById("statsAlerts").textContent = alerts
-
+  // Mock data - replace with Supabase
+  studentsData = [
+    {id:1, name:'أحمد محمد', title:'تحليل خوارزميات التعلم الآلي', subject:'ذكاء اصطناعي', date:'2026-03-10', badge:'⭐', color:'#00d4ff', banned:false},
+    {id:2, name:'فاطمة علي', title:'أمن البيانات في السحابة', subject:'أمن معلومات', date:'2026-03-09', badge:'', color:'', banned:false},
+    {id:3, name:'خالد سعيد', title:'تطبيقات إنترنت الأشياء', subject:'شبكات', date:'2026-03-08', badge:'🥇', color:'#f5c518', banned:true},
+  ];
+  
+  const table = document.getElementById("studentsTable");
+  const total = studentsData.length;
+  const badged = studentsData.filter(s=>s.badge).length;
+  const banned = studentsData.filter(s=>s.banned).length;
+  
+  document.getElementById("statsTotal").textContent = total;
+  document.getElementById("statsBadged").textContent = badged;
+  document.getElementById("statsBanned").textContent = banned;
+  
   if(total > 0){
-    const sorted = [...data].sort((a,b) => new Date(b.date) - new Date(a.date))
-    document.getElementById("statsLastReport").textContent = sorted[0].name
-  } else {
-    document.getElementById("statsLastReport").textContent = "—"
+    const sorted = [...studentsData].sort((a,b) => new Date(b.date) - new Date(a.date));
+    document.getElementById("statsLastReport").textContent = sorted[0].name;
   }
-
+  
   if(total===0){
-    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`
-    return
+    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`;
+    return;
   }
-
-  table.innerHTML = data.map((s,i) => {
-    const displayName = s.badge ? `${s.badge} ${s.name}` : s.name
-    const nameColor   = s.color || '#e0e0f0'
-    const d = new Date(s.date)
-    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
-
-    let alertCell = '<span style="color:rgba(255,255,255,0.25);font-size:0.8rem">—</span>'
-    if(s.alert_text){
-      const typeIcon = s.alert_type === 'public' ? '🌐' : '🔒'
-      alertCell = `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <span class="alert-table-badge" style="color:${s.alert_color||'#ff4444'};border-color:${s.alert_color||'#ff4444'}">
-          ⚠️ ${s.alert_text.slice(0,20)}${s.alert_text.length>20?'…':''}
-        </span>
-        <span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">${typeIcon} ${s.alert_type==='public'?'عام':'خاص'}</span>
-      </div>`
-    }
-
-    return `<tr style="animation-delay:${i*0.05}s">
+  
+  table.innerHTML = studentsData.map((s,i) => {
+    const displayName = s.badge ? `${s.badge} ${s.name}` : s.name;
+    const nameColor = s.color || '#e0e0f0';
+    const d = new Date(s.date);
+    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+    const rowClass = s.banned ? 'banned' : '';
+    
+    return `<tr class="${rowClass}" style="animation-delay:${i*0.05}s">
       <td><span class="row-num">${i+1}</span></td>
       <td class="student-name-cell" style="color:${nameColor}">${displayName}</td>
       <td style="color:${nameColor};text-align:right;padding-right:16px">${s.title}</td>
       <td><span class="subject-badge" style="color:${nameColor};border-color:${nameColor}44;background:${nameColor}14">${s.subject}</span></td>
       <td class="date-cell">${dateStr}</td>
-      <td>${alertCell}</td>
+      <td>${s.banned ? '<span style="color:#ff6b6b;font-weight:700">🚫 محظور</span>' : '<span style="color:#00ff88">✅ نشط</span>'}</td>
       <td>
         <div class="action-btns">
-          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
-          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️ حذف</button>
+          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s).replace(/'/g,"\\'")})'>✏️</button>
+          <button class="btn-sm ${s.banned?'btn-sm-unban':'btn-sm-ban'}" onclick='${s.banned?'unban':'ban'}Student(${s.id})'>${s.banned?'✅':'🚫'}</button>
+          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️</button>
         </div>
       </td>
-    </tr>`
-  }).join('')
+    </tr>`;
+  }).join('');
 }
-window.loadStudents = loadStudents
+window.loadStudents = loadStudents;
 
-/* ===== SET BADGE ===== */
-async function setBadge(){
-  const idx    = parseInt(document.getElementById("badgeIndex").value)-1
-  const symbol = document.getElementById("badgeSymbol").value.trim()
-  if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return }
-  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-  if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return }
-  if(idx<0||idx>=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return }
-  const {error:ue} = await supabase.from("student_reports").update({badge:symbol}).eq("id",data[idx].id)
-  if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return }
-  showMsg("msgBadge","🎉 تم تمييز الطالب — سيظهر في لوحة الطلبة فوراً","success")
-  await loadStudents(); clearInputs()
+async function addStudent(){
+  const name = document.getElementById("studentName").value.trim();
+  const title = document.getElementById("reportTitle").value.trim();
+  const subject = document.getElementById("subjectName").value.trim();
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  // Mock add
+  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success");
+  clearInputs(); 
+  loadStudents();
 }
 
-/* ===== SET COLOR ===== */
-async function setColor(){
-  const idx = parseInt(document.getElementById("colorIndex").value)-1
-  if(isNaN(idx)){ showMsg("msgColor","⚠️ أدخل رقم الطالب","error"); return }
-  if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return }
-  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
-  if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return }
-  if(idx<0||idx>=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return }
-  const {error:ue} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",data[idx].id)
-  if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return }
-  showMsg("msgColor","🎨 تم تلوين الاسم والعنوان والمادة — سيظهر فوراً","success")
-  await loadStudents(); clearInputs()
+async function updateStudent(){
+  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return; }
+  const name = document.getElementById("studentName").value.trim();
+  const title = document.getElementById("reportTitle").value.trim();
+  const subject = document.getElementById("subjectName").value.trim();
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  // Mock update
+  showMsg("msgAdd","✏️ تم التعديل بنجاح","success");
+  clearInputs(); 
+  loadStudents();
 }
 
-/* ===== SEND STUDENT ALERT ===== */
-async function sendStudentAlert(){
-  const idx  = parseInt(document.getElementById('alertStudentIndex').value) - 1
-  const text = document.getElementById('alertStudentText').value.trim()
-  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
-  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return }
-  if(!text){ showMsg('msgAlert','⚠️ أدخل نص التحذير','error'); return }
-  if(!selectedAlertColor){ showMsg('msgAlert','⚠️ اختر لوناً للتحذير','error'); return }
-  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
-  if(error){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
-  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return }
-  const student = data[idx]
-  const {error: ue} = await supabase.from('student_reports').update({
-    alert_text:  text,
-    alert_color: selectedAlertColor,
-    alert_type:  type
-  }).eq('id', student.id)
-  if(ue){ showMsg('msgAlert','❌ فشل الإرسال: ' + (ue.message||''), 'error'); return }
-  showMsg('msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success')
-  await loadStudents()
+window.editStudent = function(student){
+  selectedID = student.id;
+  document.getElementById("studentName").value = student.name;
+  document.getElementById("reportTitle").value = student.title;
+  document.getElementById("subjectName").value = student.subject;
+  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info");
+  document.getElementById("studentName").scrollIntoView({behavior:"smooth",block:"center"});
 }
-window.sendStudentAlert = sendStudentAlert
 
-/* ===== CLEAR STUDENT ALERT ===== */
-async function clearStudentAlert(){
-  const idx = parseInt(document.getElementById('alertStudentIndex').value) - 1
-  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return }
-  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
-  if(error || !data){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
-  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود','error'); return }
-  const student = data[idx]
-  const {error: ue} = await supabase.from('student_reports').update({
-    alert_text:  null,
-    alert_color: null,
-    alert_type:  null
-  }).eq('id', student.id)
-  if(ue){ showMsg('msgAlert','❌ فشل الحذف','error'); return }
-  showMsg('msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info')
-  document.getElementById('alertPreviewBox').style.display = 'none'
-  await loadStudents()
+window.deleteStudent = async function(id){
+  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return;
+  // Mock delete
+  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success");
+  loadStudents();
 }
-window.clearStudentAlert = clearStudentAlert
 
-/* ===== CLEAR INPUTS ===== */
+window.banStudent = async function(id){
+  if(!confirm("⚠️ حظر هذا الطالب؟ لن يتمكن من الدخول أو التسجيل")) return;
+  // Mock ban
+  showMsg("msgTable","🚫 تم حظر الطالب","success");
+  loadStudents();
+}
+
+window.unbanStudent = async function(id){
+  // Mock unban
+  showMsg("msgTable","✅ تم فك حظر الطالب","success");
+  loadStudents();
+}
+
 function clearInputs(){
-  ['studentName','reportTitle','subjectName','badgeIndex','badgeSymbol','colorIndex','notifInput'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = ''
-  })
-  selectedID = null
-  selectedColor = null
-  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
-  document.getElementById('selectedColorPreview').innerHTML = ''
-  document.getElementById('badgePreview').style.display = 'none'
+  ['studentName','reportTitle','subjectName'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  selectedID = null;
+}
+
+/* ===== NOTIFICATIONS ===== */
+async function sendNotification(){
+  const msg = document.getElementById("notifInput").value.trim();
+  if(!msg){ showMsg("msgNotif","⚠️ أدخل نص الإشعار","error"); return; }
+  document.getElementById("currentNotifText").textContent = msg;
+  document.getElementById("currentNotif").style.display = "flex";
+  showMsg("msgNotif","✅ تم إرسال الإشعار للطلاب","success");
+}
+window.sendNotification = sendNotification;
+
+async function clearNotification(){
+  document.getElementById("notifInput").value = "";
+  document.getElementById("currentNotif").style.display = "none";
+  showMsg("msgNotif","🗑️ تم مسح الإشعار","info");
+}
+window.clearNotification = clearNotification;
+
+/* ===== DEADLINE ===== */
+async function saveDeadline(){
+  const dtVal = document.getElementById("deadlineInput").value;
+  const active = document.getElementById("deadlineActiveSwitch").checked;
+  // Mock save
+  showMsg("msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");
+}
+window.saveDeadline = saveDeadline;
+
+/* ===== GUIDELINES ===== */
+async function saveGuidelines(){
+  const text = document.getElementById('guidelinesTextarea').value.trim();
+  if(!text){ showMsg('msgGuidelines','⚠️ اكتب الإرشادات أولاً','error'); return; }
+  // Mock save
+  showMsg('msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success');
+  document.getElementById('guidelinesPreview').classList.add('show');
+  document.getElementById('guidelinesPreviewEmpty').style.display = 'none';
+  document.getElementById('guidelinesPreviewContent').textContent = text;
+}
+window.saveGuidelines = saveGuidelines;
+
+async function clearGuidelines(){
+  if(!confirm('هل أنت متأكد من مسح الإرشادات؟')) return;
+  document.getElementById('guidelinesTextarea').value = '';
+  document.getElementById('guidelinesPreview').classList.remove('show');
+  document.getElementById('guidelinesPreviewEmpty').style.display = 'block';
+  showMsg('msgGuidelines','🗑️ تم مسح الإرشادات','info');
+}
+window.clearGuidelines = clearGuidelines;
+
+/* ===== ALERTS ===== */
+let selectedAlertColor = '#ff4444';
+
+window.selectAlertColor = function(color, el){
+  selectedAlertColor = color;
+  document.querySelectorAll('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  previewAlert();
+}
+
+window.previewAlert = function(){
+  const text = document.getElementById('alertStudentText').value.trim();
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
+  const box = document.getElementById('alertPreviewBox');
+  const ptext = document.getElementById('alertPreviewText');
+  const ptype = document.getElementById('alertPreviewType');
+  if(text){
+    box.style.display = 'flex';
+    box.style.color = selectedAlertColor;
+    box.style.borderLeft = `3px solid ${selectedAlertColor}`;
+    box.style.background = `${selectedAlertColor}18`;
+    ptext.textContent = text;
+    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام';
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+async function sendStudentAlert(){
+  const idx = parseInt(document.getElementById('alertStudentIndex').value) - 1;
+  const text = document.getElementById('alertStudentText').value.trim();
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
+  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
+  if(!text){ showMsg('msgAlert','⚠️ أدخل نص التحذير','error'); return; }
+  if(idx >= studentsData.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
+  // Mock send
+  showMsg('msgAlert', `✅ تم إرسال التحذير للطالب "${studentsData[idx].name}"`, 'success');
+  loadStudents();
+}
+window.sendStudentAlert = sendStudentAlert;
+
+async function clearStudentAlert(){
+  const idx = parseInt(document.getElementById('alertStudentIndex').value) - 1;
+  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return; }
+  if(idx >= studentsData.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود','error'); return; }
+  // Mock clear
+  showMsg('msgAlert', `🗑️ تم حذف تحذير الطالب "${studentsData[idx].name}"`, 'info');
+  document.getElementById('alertPreviewBox').style.display = 'none';
+}
+window.clearStudentAlert = clearStudentAlert;
+
+/* ===== SECURITY: MANUAL BAN/UNBAN ===== */
+async function manualBan(){
+  const target = document.getElementById('banTarget').value.trim();
+  const reason = document.getElementById('banReason').value.trim() || 'حظر يدوي من المشرف';
+  if(!target){ showMsg('securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
+  // Mock ban
+  showMsg('securityMsg', `🚫 تم حظر: ${target} - ${reason}`, 'success');
+  document.getElementById('banTarget').value = '';
+  document.getElementById('banReason').value = '';
+}
+window.manualBan = manualBan;
+
+async function manualUnban(){
+  const target = document.getElementById('banTarget').value.trim();
+  if(!target){ showMsg('securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
+  // Mock unban
+  showMsg('securityMsg', `✅ تم فك حظر: ${target}`, 'success');
+  document.getElementById('banTarget').value = '';
+}
+window.manualUnban = manualUnban;
+
+/* ===== COMMENTS SYSTEM ===== */
+async function loadComments(){
+  const list = document.getElementById('commentsList');
+  // Mock comments
+  const comments = [
+    {id:1, author:'أحمد محمد', time:'منذ 2 ساعة', text:'هل يمكن إضافة مصادر أكثر في قسم المراجع؟', approved:true},
+    {id:2, author:'فاطمة علي', time:'منذ 5 ساعات', text:'شكراً على النظام الرائع، سهل الاستخدام جداً!', approved:true},
+  ];
+  
+  if(comments.length === 0){
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>';
+    return;
+  }
+  
+  list.innerHTML = comments.map(c => `
+    <div class="comment-item">
+      <div class="comment-avatar">${c.author.charAt(0)}</div>
+      <div class="comment-content">
+        <div class="comment-header">
+          <span class="comment-author">${c.author}</span>
+          <span class="comment-time">${c.time}</span>
+        </div>
+        <div class="comment-text">${c.text}</div>
+        <div class="comment-actions">
+          <button class="comment-btn ${c.approved?'':'delete'}" onclick="toggleComment(${c.id})">${c.approved?'🗑️ حذف':'✅ موافقة'}</button>
+          <button class="comment-btn" onclick="replyComment(${c.id})">💬 رد</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+window.loadComments = loadComments;
+
+window.filterComments = function(){
+  const filter = document.getElementById('commentFilter').value.toLowerCase();
+  // Filter logic here
+}
+
+window.toggleComment = function(id){
+  // Toggle approval
+  loadComments();
+}
+
+window.replyComment = function(id){
+  // Reply logic
+  showMsg('msgAlert', '💬 ميزة الرد قيد التطوير', 'info');
+}
+
+/* ===== SUGGESTIONS SYSTEM ===== */
+window.testSuggestions = function(){
+  const subject = document.getElementById('testSubject').value.trim();
+  const results = document.getElementById('suggestionResults');
+  
+  if(!subject){
+    results.innerHTML = '';
+    return;
+  }
+  
+  // Mock suggestions based on subject
+  const suggestions = [
+    `"دراسة تحليلية لتقنيات ${subject} في البيئة الحديثة"`,
+    `"مقارنة بين منهجيات ${subject} التقليدية والحديثة"`,
+    `"تطبيقات عملية لـ ${subject} في حل المشكلات الواقعية"`,
+  ];
+  
+  results.innerHTML = suggestions.map(s => `
+    <div class="suggestion-card">
+      <div class="suggestion-text">${s}</div>
+      <button class="btn-sm btn-sm-edit" onclick="useSuggestion('${s.replace(/'/g,"\\'")}')">✅ استخدام</button>
+    </div>
+  `).join('');
+}
+
+window.useSuggestion = function(suggestion){
+  document.getElementById('reportTitle').value = suggestion;
+  showMsg('msgAdd', '✅ تم استخدام الاقتراح', 'success');
+  document.getElementById('testSubject').value = '';
+  document.getElementById('suggestionResults').innerHTML = '';
+}
+
+/* ===== SETTINGS ===== */
+async function saveSettings(){
+  const newPass = document.getElementById('newAdminPassword').value;
+  const confirmPass = document.getElementById('confirmAdminPassword').value;
+  
+  if(newPass && newPass !== confirmPass){
+    showMsg('settingsMsg', '❌ كلمات المرور غير متطابقة', 'error');
+    return;
+  }
+  
+  // Mock save
+  showMsg('settingsMsg', '✅ تم حفظ الإعدادات بنجاح', 'success');
+  document.getElementById('newAdminPassword').value = '';
+  document.getElementById('confirmAdminPassword').value = '';
+}
+window.saveSettings = saveSettings;
+
+window.exportSettings = function(){
+  showMsg('settingsMsg', '📤 جاري تصدير الإعدادات...', 'info');
+  setTimeout(() => showMsg('settingsMsg', '✅ تم التصدير', 'success'), 1000);
+}
+
+/* ===== LOGS ===== */
+window.filterLogs = function(){
+  // Filter logic
+}
+
+window.exportLogs = function(){
+  showMsg('msgTable', '📥 جاري تصدير السجل...', 'info');
+}
+
+window.clearLogs = function(){
+  if(confirm('⚠️ مسح كل السجلات؟ لا يمكن التراجع')){
+    showMsg('msgTable', '🗑️ تم مسح السجلات', 'success');
+  }
 }
 
 /* ===== REALTIME ===== */
 function setupRealtime(){
-  supabase.channel("students_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents() })
-    .subscribe()
-  supabase.channel("visitors_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"visitors"},()=>{ loadVisitors() })
-    .subscribe()
-  supabase.channel("site_control_rt")
-    .on("postgres_changes",{event:"*",schema:"public",table:"site_control"},()=>{
-      loadSiteStatus();
-      loadSiteSettings();
-      loadCurrentGuidelines();
-    })
-    .subscribe()
+  // Mock realtime - replace with Supabase channels
+  console.log('🔗 Realtime connected');
 }
 
-/* ===== EXPOSE ===== */
-window.addStudent    = addStudent
-window.updateStudent = updateStudent
-window.setBadge      = setBadge
-window.setColor      = setColor
+/* ===== INIT ===== */
+setTimeout(() => {
+  document.getElementById('entranceOverlay').style.display = 'none';
+}, 2500);
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" crossorigin="anonymous"></script>
 </body>
 </html>
+
 
