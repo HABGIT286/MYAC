@@ -255,7 +255,38 @@ tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:var(--tran
 tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
 tbody tr.banned { opacity:0.6; background:rgba(233,69,96,0.05); }
 td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
-.student-name-cell { font-weight:700; font-size:1rem; }
+.student-name-cell { font-weight:700; font-size:1rem; display:flex; align-items:center; gap:8px; justify-content:center; }
+
+/* ✨ BADGE STYLES - SHINY EFFECT */
+.student-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border-radius:50%;
+  font-size:16px; font-weight:900;
+  position:relative; overflow:hidden;
+  animation: badgeShine 2.5s ease-in-out infinite;
+  box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+}
+@keyframes badgeShine {
+  0%, 100% { filter: brightness(1); transform: scale(1); }
+  50% { filter: brightness(1.4); transform: scale(1.1); }
+}
+.student-badge::before {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.6) 45%, 
+    rgba(255,255,255,0) 55%, 
+    rgba(255,255,255,0) 100%);
+  transform: translateX(-100%);
+  animation: badgeShimmer 2s ease-in-out infinite;
+}
+@keyframes badgeShimmer {
+  0% { transform: translateX(-100%); }
+  50%, 100% { transform: translateX(100%); }
+}
+
 .subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:4px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; color:#00d4ff; }
 .date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
 .row-num { width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; }
@@ -769,6 +800,65 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
         <div class="msg-box" id="msgNotif"></div>
       </div>
 
+      <!-- ✨ BADGE ASSIGNMENT CARD - NEW FEATURE -->
+      <div class="glass-card card-glow-gold" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-gold">⭐</div>
+          <div>
+            <div class="card-title">✨ منح شارة التميز</div>
+            <div class="card-desc">إضافة شارة لامعة لطالب مميز</div>
+          </div>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">🔢 رقم الطالب التسلسلي</label>
+              <span class="input-icon">#</span>
+              <input class="styled-input" id="badgeStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewBadge()">
+            </div>
+            <div class="input-group">
+              <label class="input-label">🎭 اختر الشارة (إيموجي)</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('🏆',this)" data-tip="كأس">🏆</span>
+                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('⭐',this)" data-tip="نجمة">⭐</span>
+                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('🎖️',this)" data-tip="وسام">🎖️</span>
+                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('💎',this)" data-tip="ألماس">💎</span>
+                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('🔥',this)" data-tip="نار">🔥</span>
+                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('👑',this)" data-tip="تاج">👑</span>
+              </div>
+            </div>
+            <span class="palette-label">🎨 لون الشارة</span>
+            <div class="color-palette" id="badgeColorPalette">
+              <div class="color-box selected" style="background:linear-gradient(135deg,#ffd700,#ffaa00)" onclick="selectBadgeColor('#ffd700',this)" data-tip="ذهبي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00d4ff,#0077ff)" onclick="selectBadgeColor('#00d4ff',this)" data-tip="أزرق نيون"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectBadgeColor('#ff4444',this)" data-tip="أحمر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00ff88,#00aa55)" onclick="selectBadgeColor('#00ff88',this)" data-tip="أخضر نيون"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)" data-tip="بنفسجي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)" data-tip="وردي"></div>
+            </div>
+            <div class="btn-row" style="margin-top:16px">
+              <button class="btn btn-gold" onclick="assignBadge()"><span>⭐</span> منح الشارة</button>
+              <button class="btn btn-danger" onclick="removeBadge()"><span>❌</span> إزالة</button>
+            </div>
+            <div class="msg-box" id="msgBadge"></div>
+          </div>
+          <div>
+            <span class="palette-label">👁️ معاينة الشارة</span>
+            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:20px;text-align:center;margin-top:10px">
+              <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:12px">معاينة حية:</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:1.1rem;font-weight:700">
+                <span id="badgePreview" class="student-badge" style="background:#ffd700;color:#000;display:none">⭐</span>
+                <span id="badgePreviewName">اسم الطالب</span>
+              </div>
+              <div style="margin-top:16px;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+                ✨ ستضهر الشارة بشكل لامع مع تأثيرات متحركة في لوحة الطلاب
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="glass-card card-glow-blue" style="margin-top:20px">
         <div class="card-header">
           <div class="card-icon icon-blue">📅</div>
@@ -1125,12 +1215,15 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 /* ===== SUPABASE CONFIG ===== */
 const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co";
-const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI";const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* ===== GLOBAL STATE ===== */
 let studentsData = [];
 let selectedID = null;
 let selectedAlertColor = '#ff4444';
+let selectedBadge = '⭐';
+let selectedBadgeColor = '#ffd700';
 let currentSort = { column: 'date', direction: 'desc' };
 
 /* ===== PARTICLES ===== */
@@ -1223,7 +1316,8 @@ async function doLogin() {
       const card = $('#loginCard');
       card.classList.add('exiting');
       setTimeout(() => {
-        $('#loginScreen').classList.add('hidden');        $('#dashboardScreen').classList.add('active');
+        $('#loginScreen').classList.add('hidden');
+        $('#dashboardScreen').classList.add('active');
         initDashboard();
       }, 400);
     } else {
@@ -1272,7 +1366,8 @@ function doLogout(){
 window.doLogout = doLogout;
 
 /* ===== TABS SYSTEM ===== */
-$$('.tab-btn').forEach(btn => {  btn.addEventListener('click', () => {
+$$('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     $$('.tab-btn').forEach(b => b.classList.remove('active'));
     $$('.tab-content').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
@@ -1321,7 +1416,8 @@ function updateSiteUI(isOpen){
   }
 }
 
-async function toggleSite(){  const newValue = $('#siteSwitch').checked;
+async function toggleSite(){
+  const newValue = $('#siteSwitch').checked;
   const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1);
   if(error){ showMsg("#siteMsg","فشل تحديث حالة الموقع ❌","error"); return; }
   
@@ -1370,6 +1466,7 @@ async function loadSiteSettings(){
     $('#guidelinesPreviewContent').textContent = data.usage_guidelines.trim();
   }
 }
+
 /* ===== LIVE GUIDELINES PREVIEW ===== */
 window.previewGuidelinesLive = function(){
   const text = $('#guidelinesTextarea').value.trim();
@@ -1387,51 +1484,62 @@ window.previewGuidelinesLive = function(){
   }
 }
 
-/* ===== STUDENTS MANAGEMENT ===== */
+/* ===== STUDENTS MANAGEMENT - FIXED ===== */
 async function loadStudents(){
-  const {data, error} = await supabase.from("student_reports").select("*").order("id",{ascending:true});
-  if(error){ console.log(error); return; }
-  
-  studentsData = data || [];
-  
-  const table = $("#studentsTable");
-  const total = studentsData.length;
-  const badged = studentsData.filter(s=>s.badge).length;
-  
-  $("#statsTotal").textContent = total;
-  $("#statsBadged").textContent = badged;
-  
-  if(total > 0){
-    const sorted = [...studentsData].sort((a,b) => new Date(b.date) - new Date(a.date));
-    $("#statsLastReport").textContent = sorted[0].name;
-  }
-  
-  if(total===0){
-    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`;
-    return;
-  }
-  
-  table.innerHTML = studentsData.map((s,i) => {
-    const displayName = s.badge ? `${s.badge} ${s.name}` : s.name;
-    const nameColor = s.color || '#e0e0f0';
-    const d = new Date(s.date);
-    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+  try {
+    const {data, error} = await supabase.from("student_reports").select("*").order("id",{ascending:true});
+    if(error){ 
+      console.error("Error loading students:", error);
+      showMsg("#msgTable", "❌ فشل تحميل البيانات: " + error.message, "error");
+      return; 
+    }
     
-    return `<tr style="animation-delay:${i*0.05}s">
-      <td><span class="row-num">${i+1}</span></td>
-      <td class="student-name-cell" style="color:${nameColor}">${displayName}</td>      <td style="color:${nameColor};text-align:right;padding-right:16px">${s.title}</td>
-      <td><span class="subject-badge" style="color:${nameColor};border-color:${nameColor}44;background:${nameColor}14">${s.subject}</span></td>
-      <td class="date-cell">${dateStr}</td>
-      <td>${s.banned ? '<span style="color:#ff6b6b;font-weight:700">🚫 محظور</span>' : '<span style="color:#00ff88">✅ نشط</span>'}</td>
-      <td>
-        <div class="action-btns">
-          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s).replace(/'/g,"\\'")})'>✏️</button>
-          <button class="btn-sm ${s.banned?'btn-sm-unban':'btn-sm-ban'}" onclick='${s.banned?'unban':'ban'}Student(${s.id})'>${s.banned?'✅':'🚫'}</button>
-          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
+    studentsData = data || [];
+    
+    const table = $("#studentsTable");
+    const total = studentsData.length;
+    const badged = studentsData.filter(s => s.badge && s.badge.trim()).length;
+    
+    $("#statsTotal").textContent = total;
+    $("#statsBadged").textContent = badged;
+    
+    if(total > 0){
+      const sorted = [...studentsData].sort((a,b) => new Date(b.date) - new Date(a.date));
+      $("#statsLastReport").textContent = sorted[0].name;
+    }
+    
+    if(total===0){
+      table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`;
+      return;
+    }
+    
+    table.innerHTML = studentsData.map((s,i) => {
+      const displayName = s.badge && s.badge.trim() ? 
+        `<span class="student-badge" style="background:${s.badge_color || '#ffd700'};color:${s.badge_color === '#ffd700' ? '#000' : '#fff'}">${s.badge}</span><span style="color:${s.color || '#e0e0f0'}">${s.name}</span>` : 
+        `<span style="color:${s.color || '#e0e0f0'}">${s.name}</span>`;
+      const d = new Date(s.date);
+      const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+      
+      return `<tr style="animation-delay:${i*0.05}s">
+        <td><span class="row-num">${i+1}</span></td>
+        <td class="student-name-cell">${displayName}</td>
+        <td style="color:${s.color || '#e0e0f0'};text-align:right;padding-right:16px">${s.title}</td>
+        <td><span class="subject-badge" style="color:${s.color || '#00d4ff'};border-color:${(s.color || '#00d4ff')}44;background:${(s.color || '#00d4ff')}14">${s.subject}</span></td>
+        <td class="date-cell">${dateStr}</td>
+        <td>${s.banned ? '<span style="color:#ff6b6b;font-weight:700">🚫 محظور</span>' : '<span style="color:#00ff88">✅ نشط</span>'}</td>
+        <td>
+          <div class="action-btns">
+            <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s).replace(/'/g,"\\'")})'>✏️</button>
+            <button class="btn-sm ${s.banned?'btn-sm-unban':'btn-sm-ban'}" onclick='${s.banned?'unban':'ban'}Student(${s.id})'>${s.banned?'✅':'🚫'}</button>
+            <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch(err) {
+    console.error("Error in loadStudents:", err);
+    showMsg("#msgTable", "❌ خطأ غير متوقع: " + err.message, "error");
+  }
 }
 window.loadStudents = loadStudents;
 
@@ -1439,67 +1547,106 @@ async function addStudent(){
   const name = $('#studentName').value.trim();
   const title = $('#reportTitle').value.trim();
   const subject = $('#subjectName').value.trim();
-  if(!name||!title||!subject){ showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
   
-  // Check for duplicates
-  const { data: nameExists } = await supabase.from('student_reports').select('id').eq('name', name).limit(1);
-  const { data: titleExists } = await supabase.from('student_reports').select('id').eq('title', title).limit(1);
-  
-  if(nameExists?.length || titleExists?.length){
-    showMsg("#msgAdd","❌ الاسم أو العنوان مستخدم مسبقاً","error");
-    return;
+  if(!name || !title || !subject){ 
+    showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); 
+    return; 
   }
   
-  const {error} = await supabase.from("student_reports").insert([{
-    name, title, subject, date:new Date().toISOString(),
-    code: 'admin_added'
-  }]);
-  
-  if(error){ showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'add_student',
-    status: 'success',
-    details: `تم إضافة الطالب: ${name}`
-  }]);
-  
-  showMsg("#msgAdd","🎉 تم إضافة الطالب بنجاح","success");
-  clearInputs(); 
-  loadStudents();
+  try {
+    // Check for duplicates
+    const { data: nameExists } = await supabase.from('student_reports').select('id').eq('name', name).limit(1);
+    const { data: titleExists } = await supabase.from('student_reports').select('id').eq('title', title).limit(1);
+    
+    if(nameExists?.length || titleExists?.length){
+      showMsg("#msgAdd","❌ الاسم أو العنوان مستخدم مسبقاً","error");
+      return;
+    }
+    
+    const {error} = await supabase.from("student_reports").insert([{
+      name, 
+      title, 
+      subject, 
+      date: new Date().toISOString(),
+      code: 'admin_added',
+      badge: null,
+      badge_color: null
+    }]);
+    
+    if(error){ 
+      console.error("Add error:", error);
+      showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); 
+      return; 
+    }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'add_student',
+      status: 'success',
+      details: `تم إضافة الطالب: ${name}`
+    }]);
+    
+    showMsg("#msgAdd","🎉 تم إضافة الطالب بنجاح","success");
+    clearInputs(); 
+    loadStudents();
+  } catch(err) {
+    console.error("Error in addStudent:", err);
+    showMsg("#msgAdd","❌ خطأ: "+err.message,"error");
+  }
 }
+
 async function updateStudent(){
-  if(!selectedID){ showMsg("#msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return; }
+  if(!selectedID){ 
+    showMsg("#msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); 
+    return; 
+  }
+  
   const name = $('#studentName').value.trim();
   const title = $('#reportTitle').value.trim();
   const subject = $('#subjectName').value.trim();
-  if(!name||!title||!subject){ showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
   
-  const {error} = await supabase.from("student_reports").update({
-    name, title, subject, date:new Date().toISOString()
-  }).eq("id",selectedID);
+  if(!name || !title || !subject){ 
+    showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); 
+    return; 
+  }
   
-  if(error){ showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'update_student',
-    status: 'success',
-    details: `تم تعديل بيانات الطالب ID: ${selectedID}`
-  }]);
-  
-  showMsg("#msgAdd","✏️ تم التعديل بنجاح","success");
-  clearInputs(); 
-  loadStudents();
+  try {
+    const {error} = await supabase.from("student_reports").update({
+      name, 
+      title, 
+      subject, 
+      date: new Date().toISOString()
+    }).eq("id", selectedID);
+    
+    if(error){ 
+      console.error("Update error:", error);
+      showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); 
+      return; 
+    }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'update_student',
+      status: 'success',
+      details: `تم تعديل بيانات الطالب ID: ${selectedID}`
+    }]);
+    
+    showMsg("#msgAdd","✏️ تم التعديل بنجاح","success");
+    clearInputs(); 
+    loadStudents();
+  } catch(err) {
+    console.error("Error in updateStudent:", err);
+    showMsg("#msgAdd","❌ خطأ: "+err.message,"error");
+  }
 }
 
 window.editStudent = function(student){
   selectedID = student.id;
-  $('#studentName').value = student.name;
-  $('#reportTitle').value = student.title;
-  $('#subjectName').value = student.subject;
+  $('#studentName').value = student.name || '';
+  $('#reportTitle').value = student.title || '';
+  $('#subjectName').value = student.subject || '';
   showMsg("#msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info");
   $('#studentName').scrollIntoView({behavior:"smooth",block:"center"});
 }
@@ -1507,54 +1654,79 @@ window.editStudent = function(student){
 async function deleteStudent(id){
   if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return;
   
-  const {error} = await supabase.from("student_reports").delete().eq("id",id);
-  if(error){ showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'delete_student',
-    status: 'success',
-    details: `تم حذف الطالب ID: ${id}`
-  }]);
+  try {
+    const {error} = await supabase.from("student_reports").delete().eq("id",id);
+    if(error){ 
+      showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); 
+      return; 
+    }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'delete_student',
+      status: 'success',
+      details: `تم حذف الطالب ID: ${id}`
+    }]);
+    
     showMsg("#msgTable","🗑️ تم حذف الطالب بنجاح","success");
-  loadStudents();
+    loadStudents();
+  } catch(err) {
+    console.error("Error in deleteStudent:", err);
+    showMsg("#msgTable","❌ خطأ: "+err.message,"error");
+  }
 }
 window.deleteStudent = deleteStudent;
 
 async function banStudent(id){
   if(!confirm("⚠️ حظر هذا الطالب؟ لن يتمكن من الدخول أو التسجيل")) return;
   
-  const {error} = await supabase.from("student_reports").update({banned: true}).eq("id",id);
-  if(error){ showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'ban_student',
-    status: 'success',
-    details: `تم حظر الطالب ID: ${id}`
-  }]);
-  
-  showMsg("#msgTable","🚫 تم حظر الطالب","success");
-  loadStudents();
+  try {
+    const {error} = await supabase.from("student_reports").update({banned: true}).eq("id",id);
+    if(error){ 
+      showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); 
+      return; 
+    }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'ban_student',
+      status: 'success',
+      details: `تم حظر الطالب ID: ${id}`
+    }]);
+    
+    showMsg("#msgTable","🚫 تم حظر الطالب","success");
+    loadStudents();
+  } catch(err) {
+    console.error("Error in banStudent:", err);
+    showMsg("#msgTable","❌ خطأ: "+err.message,"error");
+  }
 }
 window.banStudent = banStudent;
 
 async function unbanStudent(id){
-  const {error} = await supabase.from("student_reports").update({banned: false}).eq("id",id);
-  if(error){ showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'unban_student',
-    status: 'success',
-    details: `تم فك حظر الطالب ID: ${id}`
-  }]);
-  
-  showMsg("#msgTable","✅ تم فك حظر الطالب","success");
-  loadStudents();
+  try {
+    const {error} = await supabase.from("student_reports").update({banned: false}).eq("id",id);
+    if(error){ 
+      showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); 
+      return; 
+    }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'unban_student',
+      status: 'success',
+      details: `تم فك حظر الطالب ID: ${id}`
+    }]);
+    
+    showMsg("#msgTable","✅ تم فك حظر الطالب","success");
+    loadStudents();
+  } catch(err) {
+    console.error("Error in unbanStudent:", err);
+    showMsg("#msgTable","❌ خطأ: "+err.message,"error");
+  }
 }
 window.unbanStudent = unbanStudent;
 
@@ -1565,34 +1737,156 @@ function clearInputs(){
   selectedID = null;
 }
 
+/* ===== ✨ BADGE ASSIGNMENT FUNCTIONS ===== */
+window.selectBadge = function(badge, el){
+  selectedBadge = badge;
+  $$('#badgeStudentIndex + div .color-box').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  previewBadge();
+}
+
+window.selectBadgeColor = function(color, el){
+  selectedBadgeColor = color;
+  $$('#badgeColorPalette .color-box').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  previewBadge();
+}
+
+window.previewBadge = function(){
+  const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  const previewBadge = $('#badgePreview');
+  const previewName = $('#badgePreviewName');
+  
+  if(!isNaN(idx) && idx >= 0 && idx < studentsData.length){
+    const student = studentsData[idx];
+    previewName.textContent = student.name;
+    previewBadge.textContent = selectedBadge;
+    previewBadge.style.background = selectedBadgeColor;
+    previewBadge.style.color = selectedBadgeColor === '#ffd700' ? '#000' : '#fff';
+    previewBadge.style.display = 'inline-flex';
+  } else {
+    previewName.textContent = 'اسم الطالب';
+    previewBadge.style.display = 'none';
+  }
+}
+
+async function assignBadge(){
+  const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  
+  if(isNaN(idx) || idx < 0){ 
+    showMsg('#msgBadge','⚠️ أدخل رقم الطالب الصحيح','error'); 
+    return; 
+  }
+  if(idx >= studentsData.length){ 
+    showMsg('#msgBadge','⚠️ رقم الطالب غير موجود في القائمة','error'); 
+    return; 
+  }
+  
+  const student = studentsData[idx];
+  
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      badge: selectedBadge,
+      badge_color: selectedBadgeColor
+    }).eq('id', student.id);
+    
+    if(error){ 
+      showMsg('#msgBadge','❌ فشل منح الشارة: ' + error.message, 'error'); 
+      return; 
+    }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'assign_badge',
+      status: 'success',
+      details: `تم منح شارة ${selectedBadge} للطالب: ${student.name}`
+    }]);
+    
+    showMsg('#msgBadge', `⭐ تم منح شارة "${selectedBadge}" للطالب "${student.name}"`, 'success');
+    loadStudents();
+    previewBadge();
+  } catch(err) {
+    console.error("Error in assignBadge:", err);
+    showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.assignBadge = assignBadge;
+
+async function removeBadge(){
+  const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  
+  if(isNaN(idx) || idx < 0){ 
+    showMsg('#msgBadge','⚠️ أدخل رقم الطالب أولاً','error'); 
+    return; 
+  }
+  if(idx >= studentsData.length){ 
+    showMsg('#msgBadge','⚠️ رقم الطالب غير موجود','error'); 
+    return; 
+  }
+  
+  const student = studentsData[idx];
+  
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      badge: null,
+      badge_color: null
+    }).eq('id', student.id);
+    
+    if(error){ 
+      showMsg('#msgBadge','❌ فشل إزالة الشارة: '+error.message,'error'); 
+      return; 
+    }
+    
+    showMsg('#msgBadge', `❌ تم إزالة شارة الطالب "${student.name}"`, 'info');
+    $('#badgePreview').style.display = 'none';
+    loadStudents();
+  } catch(err) {
+    console.error("Error in removeBadge:", err);
+    showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.removeBadge = removeBadge;
+
 /* ===== NOTIFICATIONS ===== */
-async function sendNotification(){  const msg = $('#notifInput').value.trim();
+async function sendNotification(){
+  const msg = $('#notifInput').value.trim();
   if(!msg){ showMsg("#msgNotif","⚠️ أدخل نص الإشعار","error"); return; }
   
-  const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1);
-  if(error){ showMsg("#msgNotif","❌ فشل الإرسال: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'send_notification',
-    status: 'success',
-    details: `تم إرسال إشعار عام: ${msg.slice(0,50)}...`
-  }]);
-  
-  $('#currentNotifText').textContent = msg;
-  $('#currentNotif').style.display = "flex";
-  showMsg("#msgNotif","✅ تم إرسال الإشعار للطلاب","success");
+  try {
+    const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1);
+    if(error){ showMsg("#msgNotif","❌ فشل الإرسال: "+error.message,"error"); return; }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'send_notification',
+      status: 'success',
+      details: `تم إرسال إشعار عام: ${msg.slice(0,50)}...`
+    }]);
+    
+    $('#currentNotifText').textContent = msg;
+    $('#currentNotif').style.display = "flex";
+    showMsg("#msgNotif","✅ تم إرسال الإشعار للطلاب","success");
+  } catch(err) {
+    console.error("Error in sendNotification:", err);
+    showMsg("#msgNotif","❌ خطأ: "+err.message,"error");
+  }
 }
 window.sendNotification = sendNotification;
 
 async function clearNotification(){
-  const {error} = await supabase.from("site_control").update({notification: ""}).eq("id",1);
-  if(error){ showMsg("#msgNotif","❌ فشل المسح: "+error.message,"error"); return; }
-  
-  $('#notifInput').value = "";
-  $('#currentNotif').style.display = "none";
-  showMsg("#msgNotif","🗑️ تم مسح الإشعار","info");
+  try {
+    const {error} = await supabase.from("site_control").update({notification: ""}).eq("id",1);
+    if(error){ showMsg("#msgNotif","❌ فشل المسح: "+error.message,"error"); return; }
+    
+    $('#notifInput').value = "";
+    $('#currentNotif').style.display = "none";
+    showMsg("#msgNotif","🗑️ تم مسح الإشعار","info");
+  } catch(err) {
+    console.error("Error in clearNotification:", err);
+    showMsg("#msgNotif","❌ خطأ: "+err.message,"error");
+  }
 }
 window.clearNotification = clearNotification;
 
@@ -1601,22 +1895,28 @@ async function saveDeadline(){
   const dtVal = $('#deadlineInput').value;
   const active = $('#deadlineActiveSwitch').checked;
   
-  const {error} = await supabase.from("site_control")
-    .update({ 
-      deadline: dtVal ? new Date(dtVal).toISOString() : null, 
-      deadline_active: active 
-    }).eq("id",1);
+  try {
+    const {error} = await supabase.from("site_control")
+      .update({ 
+        deadline: dtVal ? new Date(dtVal).toISOString() : null, 
+        deadline_active: active 
+      }).eq("id",1);
+      
+    if(error){ showMsg("#msgDeadline","❌ فشل الحفظ: "+error.message,"error"); return; }
     
-  if(error){ showMsg("#msgDeadline","❌ فشل الحفظ: "+error.message,"error"); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'update_deadline',
-    status: 'success',
-    details: `تم ${active ? 'تعيين' : 'إخفاء'} موعد التسليم: ${dtVal}`
-  }]);  
-  showMsg("#msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'update_deadline',
+      status: 'success',
+      details: `تم ${active ? 'تعيين' : 'إخفاء'} موعد التسليم: ${dtVal}`
+    }]);  
+    
+    showMsg("#msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");
+  } catch(err) {
+    console.error("Error in saveDeadline:", err);
+    showMsg("#msgDeadline","❌ خطأ: "+err.message,"error");
+  }
 }
 window.saveDeadline = saveDeadline;
 
@@ -1625,34 +1925,44 @@ async function saveGuidelines(){
   const text = $('#guidelinesTextarea').value.trim();
   if(!text){ showMsg('#msgGuidelines','⚠️ اكتب الإرشادات أولاً','error'); return; }
   
-  const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1);
-  if(error){ showMsg('#msgGuidelines','❌ فشل الحفظ: '+error.message,'error'); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'update_guidelines',
-    status: 'success',
-    details: 'تم تحديث متطلبات الاستخدام'
-  }]);
-  
-  showMsg('#msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success');
-  $('#guidelinesPreview').classList.add('show');
-  $('#guidelinesPreviewEmpty').style.display = 'none';
-  $('#guidelinesPreviewContent').textContent = text;
+  try {
+    const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1);
+    if(error){ showMsg('#msgGuidelines','❌ فشل الحفظ: '+error.message,'error'); return; }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'update_guidelines',
+      status: 'success',
+      details: 'تم تحديث متطلبات الاستخدام'
+    }]);
+    
+    showMsg('#msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success');
+    $('#guidelinesPreview').classList.add('show');
+    $('#guidelinesPreviewEmpty').style.display = 'none';
+    $('#guidelinesPreviewContent').textContent = text;
+  } catch(err) {
+    console.error("Error in saveGuidelines:", err);
+    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
+  }
 }
 window.saveGuidelines = saveGuidelines;
 
 async function clearGuidelines(){
   if(!confirm('هل أنت متأكد من مسح الإرشادات؟')) return;
   
-  const {error} = await supabase.from("site_control").update({ usage_guidelines: null }).eq("id",1);
-  if(error){ showMsg('#msgGuidelines','❌ فشل المسح: '+error.message,'error'); return; }
-  
-  $('#guidelinesTextarea').value = '';
-  $('#guidelinesPreview').classList.remove('show');
-  $('#guidelinesPreviewEmpty').style.display = 'block';
-  showMsg('#msgGuidelines','🗑️ تم مسح الإرشادات','info');
+  try {
+    const {error} = await supabase.from("site_control").update({ usage_guidelines: null }).eq("id",1);
+    if(error){ showMsg('#msgGuidelines','❌ فشل المسح: '+error.message,'error'); return; }
+    
+    $('#guidelinesTextarea').value = '';
+    $('#guidelinesPreview').classList.remove('show');
+    $('#guidelinesPreviewEmpty').style.display = 'block';
+    showMsg('#msgGuidelines','🗑️ تم مسح الإرشادات','info');
+  } catch(err) {
+    console.error("Error in clearGuidelines:", err);
+    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
+  }
 }
 window.clearGuidelines = clearGuidelines;
 
@@ -1664,7 +1974,8 @@ window.selectAlertColor = function(color, el){
   previewAlert();
 }
 
-window.previewAlert = function(){  const text = $('#alertStudentText').value.trim();
+window.previewAlert = function(){
+  const text = $('#alertStudentText').value.trim();
   const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
   const box = $('#alertPreviewBox');
   const ptext = $('#alertPreviewText');
@@ -1685,47 +1996,61 @@ async function sendStudentAlert(){
   const idx = parseInt($('#alertStudentIndex').value) - 1;
   const text = $('#alertStudentText').value.trim();
   const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
+  
   if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
   if(!text){ showMsg('#msgAlert','⚠️ أدخل نص التحذير','error'); return; }
   if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
   
   const student = studentsData[idx];
-  const {error} = await supabase.from('student_reports').update({
-    alert_text: text,
-    alert_color: selectedAlertColor,
-    alert_type: type
-  }).eq('id', student.id);
   
-  if(error){ showMsg('#msgAlert','❌ فشل الإرسال: ' + error.message, 'error'); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'send_alert',
-    status: 'success',
-    details: `تم إرسال تحذير ${type} للطالب: ${student.name}`
-  }]);
-  
-  showMsg('#msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success');
-  loadStudents();
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      alert_text: text,
+      alert_color: selectedAlertColor,
+      alert_type: type
+    }).eq('id', student.id);
+    
+    if(error){ showMsg('#msgAlert','❌ فشل الإرسال: ' + error.message, 'error'); return; }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'send_alert',
+      status: 'success',
+      details: `تم إرسال تحذير ${type} للطالب: ${student.name}`
+    }]);
+    
+    showMsg('#msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success');
+    loadStudents();
+  } catch(err) {
+    console.error("Error in sendStudentAlert:", err);
+    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 window.sendStudentAlert = sendStudentAlert;
 
 async function clearStudentAlert(){
   const idx = parseInt($('#alertStudentIndex').value) - 1;
-  if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return; }  if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود','error'); return; }
+  if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود','error'); return; }
   
   const student = studentsData[idx];
-  const {error} = await supabase.from('student_reports').update({
-    alert_text: null,
-    alert_color: null,
-    alert_type: null
-  }).eq('id', student.id);
   
-  if(error){ showMsg('#msgAlert','❌ فشل الحذف: '+error.message,'error'); return; }
-  
-  showMsg('#msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info');
-  $('#alertPreviewBox').style.display = 'none';
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      alert_text: null,
+      alert_color: null,
+      alert_type: null
+    }).eq('id', student.id);
+    
+    if(error){ showMsg('#msgAlert','❌ فشل الحذف: '+error.message,'error'); return; }
+    
+    showMsg('#msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info');
+    $('#alertPreviewBox').style.display = 'none';
+  } catch(err) {
+    console.error("Error in clearStudentAlert:", err);
+    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 window.clearStudentAlert = clearStudentAlert;
 
@@ -1735,116 +2060,141 @@ async function manualBan(){
   const reason = $('#banReason').value.trim() || 'حظر يدوي من المشرف';
   if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
   
-  // Add to banned_users table
-  const {error} = await supabase.from('banned_users').insert([{
-    target: target,
-    reason: reason,
-    banned_by: 'admin_001',
-    banned_at: new Date().toISOString()
-  }]);
-  
-  if(error){ showMsg('#securityMsg','❌ فشل الحظر: '+error.message,'error'); return; }
-  
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'manual_ban',
-    status: 'success',
-    details: `تم حظر: ${target} - ${reason}`
-  }]);
-  
-  showMsg('#securityMsg', `🚫 تم حظر: ${target} - ${reason}`, 'success');
-  $('#banTarget').value = '';
-  $('#banReason').value = '';
-  loadBannedList();
+  try {
+    // Add to banned_users table
+    const {error} = await supabase.from('banned_users').insert([{
+      target: target,
+      reason: reason,
+      banned_by: 'admin_001',
+      banned_at: new Date().toISOString()
+    }]);
+    
+    if(error){ showMsg('#securityMsg','❌ فشل الحظر: '+error.message,'error'); return; }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'manual_ban',
+      status: 'success',
+      details: `تم حظر: ${target} - ${reason}`
+    }]);
+    
+    showMsg('#securityMsg', `🚫 تم حظر: ${target} - ${reason}`, 'success');
+    $('#banTarget').value = '';
+    $('#banReason').value = '';
+    loadBannedList();
+  } catch(err) {
+    console.error("Error in manualBan:", err);
+    showMsg('#securityMsg', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 window.manualBan = manualBan;
 
 async function manualUnban(){
   const target = $('#banTarget').value.trim();
-  if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }  
-  const {error} = await supabase.from('banned_users').delete().eq('target', target);
-  if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
+  if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
   
-  // Log action
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'manual_unban',
-    status: 'success',
-    details: `تم فك حظر: ${target}`
-  }]);
-  
-  showMsg('#securityMsg', `✅ تم فك حظر: ${target}`, 'success');
-  $('#banTarget').value = '';
-  loadBannedList();
+  try {
+    const {error} = await supabase.from('banned_users').delete().eq('target', target);
+    if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
+    
+    // Log action
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'manual_unban',
+      status: 'success',
+      details: `تم فك حظر: ${target}`
+    }]);
+    
+    showMsg('#securityMsg', `✅ تم فك حظر: ${target}`, 'success');
+    $('#banTarget').value = '';
+    loadBannedList();
+  } catch(err) {
+    console.error("Error in manualUnban:", err);
+    showMsg('#securityMsg', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 window.manualUnban = manualUnban;
 
 /* ===== BANNED LIST ===== */
 async function loadBannedList(){
-  const {data, error} = await supabase.from('banned_users').select('*').order('banned_at', {ascending: false});
-  const table = $('#bannedTable');
-  
-  if(error || !data || data.length === 0){
-    table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🛡️</div><div class="empty-text">لا يوجد محظورين حالياً</div></div></td></tr>`;
-    return;
+  try {
+    const {data, error} = await supabase.from('banned_users').select('*').order('banned_at', {ascending: false});
+    const table = $('#bannedTable');
+    
+    if(error || !data || data.length === 0){
+      table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🛡️</div><div class="empty-text">لا يوجد محظورين حالياً</div></div></td></tr>`;
+      return;
+    }
+    
+    table.innerHTML = data.map((b,i) => `
+      <tr style="animation-delay:${i*0.05}s">
+        <td><span class="row-num">${i+1}</span></td>
+        <td class="code-cell">${b.target}</td>
+        <td><span class="subject-badge">جهاز/مستخدم</span></td>
+        <td>${b.reason || '—'}</td>
+        <td class="date-cell">${formatDate(b.banned_at)}</td>
+        <td>
+          <button class="btn-sm btn-sm-unban" onclick="manualUnbanTarget('${b.target.replace(/'/g,"\\'")}')">✅ فك الحظر</button>
+        </td>
+      </tr>
+    `).join('');
+    
+    // Update stats
+    $('#statsBanned').textContent = data.length;
+  } catch(err) {
+    console.error("Error in loadBannedList:", err);
   }
-  
-  table.innerHTML = data.map((b,i) => `
-    <tr style="animation-delay:${i*0.05}s">
-      <td><span class="row-num">${i+1}</span></td>
-      <td class="code-cell">${b.target}</td>
-      <td><span class="subject-badge">جهاز/مستخدم</span></td>
-      <td>${b.reason || '—'}</td>
-      <td class="date-cell">${formatDate(b.banned_at)}</td>
-      <td>
-        <button class="btn-sm btn-sm-unban" onclick="manualUnbanTarget('${b.target.replace(/'/g,"\\'")}')">✅ فك الحظر</button>
-      </td>
-    </tr>
-  `).join('');
-  
-  // Update stats
-  $('#statsBanned').textContent = data.length;
 }
 window.loadBannedList = loadBannedList;
 
 window.manualUnbanTarget = async function(target){
   if(!confirm(`✅ فك حظر: ${target}؟`)) return;
   
-  const {error} = await supabase.from('banned_users').delete().eq('target', target);  if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
-  
-  showMsg('#securityMsg', `✅ تم فك حظر: ${target}`, 'success');
-  loadBannedList();
+  try {
+    const {error} = await supabase.from('banned_users').delete().eq('target', target);
+    if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
+    
+    showMsg('#securityMsg', `✅ تم فك حظر: ${target}`, 'success');
+    loadBannedList();
+  } catch(err) {
+    console.error("Error in manualUnbanTarget:", err);
+    showMsg('#securityMsg', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 
 /* ===== COMMENTS SYSTEM ===== */
 async function loadComments(){
-  const {data, error} = await supabase.from('comments').select('*').order('created_at', {ascending: false});
-  const list = $('#commentsList');
-  
-  if(error || !data || data.length === 0){
-    list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>';
-    return;
-  }
-  
-  list.innerHTML = data.map(c => `
-    <div class="comment-item">
-      <div class="comment-avatar">${c.student_name?.charAt(0) || '؟'}</div>
-      <div class="comment-content">
-        <div class="comment-header">
-          <span class="comment-author">${c.student_name || 'طالب'}</span>
-          <span class="comment-time">${formatDate(c.created_at)}</span>
-        </div>
-        <div class="comment-text">${c.comment_text}</div>
-        <div class="comment-actions">
-          <button class="comment-btn ${c.approved ? 'delete' : ''}" onclick="toggleComment(${c.id}, ${c.approved})">
-            ${c.approved ? '🗑️ حذف' : '✅ موافقة'}
-          </button>
-          <button class="comment-btn" onclick="replyComment(${c.id})">💬 رد</button>
+  try {
+    const {data, error} = await supabase.from('comments').select('*').order('created_at', {ascending: false});
+    const list = $('#commentsList');
+    
+    if(error || !data || data.length === 0){
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>';
+      return;
+    }
+    
+    list.innerHTML = data.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar">${c.student_name?.charAt(0) || '؟'}</div>
+        <div class="comment-content">
+          <div class="comment-header">
+            <span class="comment-author">${c.student_name || 'طالب'}</span>
+            <span class="comment-time">${formatDate(c.created_at)}</span>
+          </div>
+          <div class="comment-text">${c.comment_text}</div>
+          <div class="comment-actions">
+            <button class="comment-btn ${c.approved ? 'delete' : ''}" onclick="toggleComment(${c.id}, ${c.approved})">
+              ${c.approved ? '🗑️ حذف' : '✅ موافقة'}
+            </button>
+            <button class="comment-btn" onclick="replyComment(${c.id})">💬 رد</button>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch(err) {
+    console.error("Error in loadComments:", err);
+  }
 }
 window.loadComments = loadComments;
 
@@ -1855,10 +2205,15 @@ window.filterComments = function(){
 }
 
 window.toggleComment = async function(id, currentlyApproved){
-  const newStatus = !currentlyApproved;
-  const {error} = await supabase.from('comments').update({approved: newStatus}).eq('id', id);
-  if(error){ showMsg('#msgAlert','❌ فشل التحديث','error'); return; }
-  loadComments();
+  try {
+    const newStatus = !currentlyApproved;
+    const {error} = await supabase.from('comments').update({approved: newStatus}).eq('id', id);
+    if(error){ showMsg('#msgAlert','❌ فشل التحديث','error'); return; }
+    loadComments();
+  } catch(err) {
+    console.error("Error in toggleComment:", err);
+    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 window.replyComment = function(id){
   showMsg('#msgAlert', '💬 ميزة الرد قيد التطوير', 'info');
@@ -1874,40 +2229,44 @@ window.testSuggestions = async function(){
     return;
   }
   
-  // Get existing titles for this subject
-  const {data} = await supabase.from('student_reports')
-    .select('title')
-    .eq('subject', subject);
-  
-  const existingTitles = data?.map(d => d.title.toLowerCase()) || [];
-  
-  // Generate suggestions (simple algorithm)
-  const prefixes = ['دراسة تحليلية لـ', 'مقارنة بين تقنيات ', 'تطبيقات عملية في ', 'مستقبل ', 'تحديات '];
-  const suffixes = [' في البيئة الحديثة', ' التقليدية والحديثة', ' لحل المشكلات الواقعية', ' والذكاء الاصطناعي'];
-  
-  const suggestions = [];
-  for(let i=0; i<3 && suggestions.length<3; i++){
-    const prefix = prefixes[Math.floor(Math.random()*prefixes.length)];
-    const suffix = suffixes[Math.floor(Math.random()*suffixes.length)];
-    const suggestion = `"${prefix}${subject}${suffix}"`;
+  try {
+    // Get existing titles for this subject
+    const {data} = await supabase.from('student_reports')
+      .select('title')
+      .eq('subject', subject);
     
-    // Check if not already used
-    if(!existingTitles.some(t => t.includes(suggestion.toLowerCase().slice(1,-1)))){
-      suggestions.push(suggestion);
+    const existingTitles = data?.map(d => d.title.toLowerCase()) || [];
+    
+    // Generate suggestions (simple algorithm)
+    const prefixes = ['دراسة تحليلية لـ', 'مقارنة بين تقنيات ', 'تطبيقات عملية في ', 'مستقبل ', 'تحديات '];
+    const suffixes = [' في البيئة الحديثة', ' التقليدية والحديثة', ' لحل المشكلات الواقعية', ' والذكاء الاصطناعي'];
+    
+    const suggestions = [];
+    for(let i=0; i<3 && suggestions.length<3; i++){
+      const prefix = prefixes[Math.floor(Math.random()*prefixes.length)];
+      const suffix = suffixes[Math.floor(Math.random()*suffixes.length)];
+      const suggestion = `"${prefix}${subject}${suffix}"`;
+      
+      // Check if not already used
+      if(!existingTitles.some(t => t.includes(suggestion.toLowerCase().slice(1,-1)))){
+        suggestions.push(suggestion);
+      }
     }
+    
+    if(suggestions.length === 0){
+      results.innerHTML = '<div style="color:rgba(255,255,255,0.5);padding:10px">لا توجد اقتراحات جديدة لهذه المادة حالياً</div>';
+      return;
+    }
+    
+    results.innerHTML = suggestions.map(s => `
+      <div class="suggestion-card">
+        <div class="suggestion-text">${s}</div>
+        <button class="btn-sm btn-sm-edit" onclick="useSuggestion('${s.replace(/'/g,"\\'")}')">✅ استخدام</button>
+      </div>
+    `).join('');
+  } catch(err) {
+    console.error("Error in testSuggestions:", err);
   }
-  
-  if(suggestions.length === 0){
-    results.innerHTML = '<div style="color:rgba(255,255,255,0.5);padding:10px">لا توجد اقتراحات جديدة لهذه المادة حالياً</div>';
-    return;
-  }
-  
-  results.innerHTML = suggestions.map(s => `
-    <div class="suggestion-card">
-      <div class="suggestion-text">${s}</div>
-      <button class="btn-sm btn-sm-edit" onclick="useSuggestion('${s.replace(/'/g,"\\'")}')">✅ استخدام</button>
-    </div>
-  `).join('');
 }
 window.useSuggestion = function(suggestion){
   $('#reportTitle').value = suggestion;
@@ -1926,75 +2285,90 @@ async function saveSettings(){
     return;
   }
   
-  // In production, hash password before saving
-  // For now, just log the action
-  if(newPass){
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'change_password',
-      status: 'success',
-      details: 'تم تغيير كلمة مرور المشرف'
-    }]);
+  try {
+    // In production, hash password before saving
+    // For now, just log the action
+    if(newPass){
+      await supabase.from('admin_logs').insert([{
+        admin_id: 'admin_001',
+        action: 'change_password',
+        status: 'success',
+        details: 'تم تغيير كلمة مرور المشرف'
+      }]);
+    }
+    
+    // Save other settings to site_control
+    const {error} = await supabase.from('site_control').update({
+      allow_registration: $('#allowRegistration').checked,
+      force_session_timeout: $('#forceSessionTimeout').checked,
+      auto_dark_mode: $('#autoDarkMode').checked
+    }).eq('id', 1);
+    
+    if(error){ showMsg('#settingsMsg', '❌ فشل الحفظ: '+error.message, 'error'); return; }
+    
+    showMsg('#settingsMsg', '✅ تم حفظ الإعدادات بنجاح', 'success');
+    $('#newAdminPassword').value = '';
+    $('#confirmAdminPassword').value = '';
+  } catch(err) {
+    console.error("Error in saveSettings:", err);
+    showMsg('#settingsMsg', '❌ خطأ: ' + err.message, 'error');
   }
-  
-  // Save other settings to site_control
-  const {error} = await supabase.from('site_control').update({
-    allow_registration: $('#allowRegistration').checked,
-    force_session_timeout: $('#forceSessionTimeout').checked,
-    auto_dark_mode: $('#autoDarkMode').checked
-  }).eq('id', 1);
-  
-  if(error){ showMsg('#settingsMsg', '❌ فشل الحفظ: '+error.message, 'error'); return; }
-  
-  showMsg('#settingsMsg', '✅ تم حفظ الإعدادات بنجاح', 'success');
-  $('#newAdminPassword').value = '';
-  $('#confirmAdminPassword').value = '';
 }
 window.saveSettings = saveSettings;
 
 window.exportSettings = async function(){
-  const {data} = await supabase.from('site_control').select('*').eq('id',1).single();
-  if(!data){ showMsg('#settingsMsg', '❌ فشل التصدير', 'error'); return; }
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');  a.href = url;
-  a.download = 'onx-taqe-settings.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  
-  showMsg('#settingsMsg', '📤 تم تصدير الإعدادات', 'success');
+  try {
+    const {data} = await supabase.from('site_control').select('*').eq('id',1).single();
+    if(!data){ showMsg('#settingsMsg', '❌ فشل التصدير', 'error'); return; }
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'onx-taqe-settings.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showMsg('#settingsMsg', '📤 تم تصدير الإعدادات', 'success');
+  } catch(err) {
+    console.error("Error in exportSettings:", err);
+    showMsg('#settingsMsg', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 
 /* ===== LOGS ===== */
 async function loadLogs(){
-  const {data, error} = await supabase.from('admin_logs')
-    .select('*')
-    .order('created_at', {ascending: false})
-    .limit(50);
+  try {
+    const {data, error} = await supabase.from('admin_logs')
+      .select('*')
+      .order('created_at', {ascending: false})
+      .limit(50);
+      
+    const table = $('#logsTable');
     
-  const table = $('#logsTable');
-  
-  if(error || !data || data.length === 0){
-    table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">لا توجد سجلات بعد</div></div></td></tr>`;
-    return;
+    if(error || !data || data.length === 0){
+      table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">لا توجد سجلات بعد</div></div></td></tr>`;
+      return;
+    }
+    
+    table.innerHTML = data.map(log => {
+      const statusColor = log.status === 'success' ? '#00ff88' : log.status === 'failed' ? '#ff6b6b' : '#ff8c00';
+      const actionIcon = log.action === 'login' ? '🔐' : log.action === 'add_student' ? '➕' : log.action === 'delete_student' ? '🗑️' : '📝';
+      
+      return `
+        <tr>
+          <td class="date-cell">${formatDate(log.created_at)}</td>
+          <td><span style="color:${statusColor}">${actionIcon} ${log.action}</span></td>
+          <td class="code-cell">${log.admin_id}</td>
+          <td>${log.status === 'success' ? '✅ ناجح' : '❌ فشل'}</td>
+          <td style="text-align:right;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${log.details}</td>
+          <td><span style="color:${statusColor}">${log.status}</span></td>
+        </tr>
+      `;
+    }).join('');
+  } catch(err) {
+    console.error("Error in loadLogs:", err);
   }
-  
-  table.innerHTML = data.map(log => {
-    const statusColor = log.status === 'success' ? '#00ff88' : log.status === 'failed' ? '#ff6b6b' : '#ff8c00';
-    const actionIcon = log.action === 'login' ? '🔐' : log.action === 'add_student' ? '➕' : log.action === 'delete_student' ? '🗑️' : '📝';
-    
-    return `
-      <tr>
-        <td class="date-cell">${formatDate(log.created_at)}</td>
-        <td><span style="color:${statusColor}">${actionIcon} ${log.action}</span></td>
-        <td class="code-cell">${log.admin_id}</td>
-        <td>${log.status === 'success' ? '✅ ناجح' : '❌ فشل'}</td>
-        <td style="text-align:right;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${log.details}</td>
-        <td><span style="color:${statusColor}">${log.status}</span></td>
-      </tr>
-    `;
-  }).join('');
 }
 window.loadLogs = loadLogs;
 
@@ -2004,27 +2378,38 @@ window.filterLogs = function(){
 }
 
 window.exportLogs = async function(){
-  const {data} = await supabase.from('admin_logs').select('*').order('created_at', {ascending: false});
-  if(!data){ showMsg('#msgTable', '❌ فشل التصدير', 'error'); return; }
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'onx-taqe-logs.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  
-  showMsg('#msgTable', '📥 تم تصدير السجل', 'success');
+  try {
+    const {data} = await supabase.from('admin_logs').select('*').order('created_at', {ascending: false});
+    if(!data){ showMsg('#msgTable', '❌ فشل التصدير', 'error'); return; }
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'onx-taqe-logs.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showMsg('#msgTable', '📥 تم تصدير السجل', 'success');
+  } catch(err) {
+    console.error("Error in exportLogs:", err);
+    showMsg('#msgTable', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 
 window.clearLogs = async function(){
   if(!confirm('⚠️ مسح كل السجلات؟ لا يمكن التراجع')) return;
   
-  const {error} = await supabase.from('admin_logs').delete().neq('id', '0');
-  if(error){ showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); return; }
-  
-  showMsg('#msgTable', '🗑️ تم مسح السجلات', 'success');
-  loadLogs();
+  try {
+    const {error} = await supabase.from('admin_logs').delete().neq('id', '0');
+    if(error){ showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); return; }
+    
+    showMsg('#msgTable', '🗑️ تم مسح السجلات', 'success');
+    loadLogs();
+  } catch(err) {
+    console.error("Error in clearLogs:", err);
+    showMsg('#msgTable', '❌ خطأ: ' + err.message, 'error');
+  }
 }
 
 /* ===== REALTIME SUBSCRIPTIONS ===== */
@@ -2056,7 +2441,8 @@ function setupRealtime(){
   supabase.channel('admin_logs_channel')
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'admin_logs'}, () => {
       loadLogs();
-    })    .subscribe();
+    })
+    .subscribe();
 }
 
 /* ===== INIT ===== */
@@ -2066,5 +2452,6 @@ setTimeout(() => {
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" crossorigin="anonymous"></script>
 </body>
-              </html>
+</html>
+
 
