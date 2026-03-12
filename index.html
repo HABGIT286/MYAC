@@ -1,4 +1,18 @@
-<!DOCTYPE html>
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body {
+                  background-color: white; /* Ensure the iframe has a white background */
+                }
+
+                
+              </style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -465,6 +479,16 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .suggestion-meta { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:4px; }
 .suggestion-actions { display:flex; gap:6px; }
 
+/* ===== VISITOR LOGS TABLE ===== */
+.visitor-table th, .visitor-table td { padding:12px 10px; text-align:center; font-size:0.85rem; }
+.visitor-table .visitor-code { font-family:monospace; font-size:0.75rem; color:var(--neon-blue); letter-spacing:1px; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.visitor-table .visitor-name { font-weight:600; }
+.visitor-table .visitor-phone { color:rgba(255,255,255,0.7); }
+.visitor-table .visitor-date { color:rgba(255,255,255,0.4); font-size:0.75rem; }
+.visitor-table .visitor-status { padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:600; }
+.visitor-status.active { background:rgba(0,200,81,0.15); color:#00ff88; }
+.visitor-status.banned { background:rgba(233,69,96,0.15); color:#ff6b6b; }
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
@@ -486,10 +510,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 /* ===== TOOLTIP ===== */
 [data-tip] { position:relative; }
 [data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
-
-/* ===== VISITORS TABLE CODE CELL ===== */
-.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
-.visitor-unregistered { color:rgba(255,255,255,0.3); font-style:italic; font-size:0.85rem; }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
@@ -583,6 +603,10 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <div class="stat-dot" style="background:#7b2fff;box-shadow:0 0 8px #7b2fff"></div>
       <span>محظورون: <strong id="statsBanned">0</strong></span>
     </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#14b8a6;box-shadow:0 0 8px #14b8a6"></div>
+      <span>الزوار: <strong id="statsVisitors">0</strong></span>
+    </div>
   </div>
 
   <!-- TABS NAVIGATION -->
@@ -591,6 +615,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
       <button class="tab-btn" data-tab="security">🛡️ الأمان</button>
       <button class="tab-btn" data-tab="content">📝 المحتوى</button>
+      <button class="tab-btn" data-tab="visitors">👁️ سجل الزيارات</button>
       <button class="tab-btn" data-tab="comments">💬 التعليقات</button>
       <button class="tab-btn" data-tab="suggestions">💡 الاقتراحات</button>
       <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
@@ -679,13 +704,13 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <div class="toggle-desc">عند الإيقاف: شاشة سوداء للطلاب</div>
           </div>
           <label class="switch">
-            <input type="checkbox" id="siteSwitch">
+            <input type="checkbox" id="siteSwitch" checked>
             <span class="slider"></span>
           </label>
         </div>
-        <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
-          <div class="status-dot dot-closed" id="statusDot"></div>
-          <span id="statusText">الموقع مغلق</span>
+        <div id="siteStatusDisplay" class="site-status status-open" style="margin-top:16px">
+          <div class="status-dot dot-open" id="statusDot"></div>
+          <span id="statusText">الموقع مفتوح ✅</span>
         </div>
         <div class="divider"></div>
         <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
@@ -699,39 +724,39 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <div class="card-icon icon-purple">🔐</div>
           <div>
             <div class="card-title">نظام الحماية المتقدم</div>
-            <div class="card-desc">حظر/سماح • بصمات الأجهزة • كشف المشبوه</div>
+            <div class="card-desc">⚠️ جميع الميزات معطلة افتراضياً - فعلها حسب حاجتك</div>
           </div>
         </div>
         
         <div class="security-grid">
           <!-- Rate Limiting -->
           <div class="security-item">
-            <div class="security-icon allowed" id="rlIcon">✅</div>
+            <div class="security-icon blocked" id="rlIcon">❌</div>
             <div class="security-info">
               <div class="security-title">Rate Limiting</div>
               <div class="security-desc">حد أقصى 5 محاولات/ساعة لكل جهاز</div>
             </div>
-            <button class="security-action active" id="rlBtn" onclick="toggleRateLimit()">مفعّل</button>
+            <button class="security-action" id="rlBtn" onclick="toggleRateLimit()">تعطيل</button>
           </div>
           
           <!-- Composite Fingerprint -->
           <div class="security-item">
-            <div class="security-icon allowed" id="fpIcon">✅</div>
+            <div class="security-icon blocked" id="fpIcon">❌</div>
             <div class="security-info">
               <div class="security-title">حماية البصمة المركبة</div>
               <div class="security-desc">منع التسجيل المتكرر من نفس الجهاز</div>
             </div>
-            <button class="security-action active" id="fpBtn" onclick="toggleFingerprint()">مفعّل</button>
+            <button class="security-action" id="fpBtn" onclick="toggleFingerprint()">تعطيل</button>
           </div>
           
           <!-- Suspicious Behavior Detection -->
           <div class="security-item">
-            <div class="security-icon allowed" id="bdIcon">✅</div>
+            <div class="security-icon blocked" id="bdIcon">❌</div>
             <div class="security-info">
               <div class="security-title">كشف السلوك المشبوه</div>
               <div class="security-desc">مراقبة أدوات المطور، الكونسول، النسخ المشبوه</div>
             </div>
-            <button class="security-action active" id="bdBtn" onclick="toggleBehaviorDetection()">مفعّل</button>
+            <button class="security-action" id="bdBtn" onclick="toggleBehaviorDetection()">تعطيل</button>
           </div>
         </div>
 
@@ -779,6 +804,54 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: VISITORS LOGS (NEW) ===== -->
+    <div class="tab-content" id="tab-visitors">
+      <div class="glass-card card-glow-teal">
+        <div class="card-header">
+          <div class="card-icon icon-teal">👁️</div>
+          <div>
+            <div class="card-title">سجل زيارات الموقع</div>
+            <div class="card-desc">تتبع جميع الزوار • حظر فوري • عرض التفاصيل</div>
+          </div>
+          <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadVisitors()">
+            <span>🔄</span> تحديث
+          </button>
+        </div>
+        
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+          <input class="styled-input" id="visitorSearch" placeholder="🔍 بحث بالاسم أو الكود أو الرقم..." style="flex:1;min-width:200px" oninput="filterVisitors()">
+          <select class="styled-input" id="visitorFilter" style="max-width:180px" onchange="filterVisitors()">
+            <option value="all">كل الزوار</option>
+            <option value="active">نشطون فقط</option>
+            <option value="banned">محظورون فقط</option>
+            <option value="students">طلاب مسجلين</option>
+          </select>
+          <button class="btn btn-outline" onclick="exportVisitors()"><span>📥</span> تصدير</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="visitor-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>كود الجهاز</th>
+                <th>الاسم</th>
+                <th>رقم الهاتف</th>
+                <th>آخر زيارة</th>
+                <th>عدد الزيارات</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="visitorsTable">
+              <tr><td colspan="8"><div class="empty-state"><div class="loader"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="msg-box" id="visitorMsg"></div>
       </div>
     </div>
 
@@ -1246,17 +1319,19 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* ===== GLOBAL STATE ===== */
 let studentsData = [];
+let visitorsData = [];
 let selectedID = null;
 let selectedAlertColor = '#ff4444';
 let selectedBadgeChar = '⭐';
 let selectedBadgeColor = '#ffd700';
 let currentSort = { column: 'date', direction: 'desc' };
+let isAdminLoggedIn = false; // ✅ مهم: لمنع حظر المشرف
 
-// ✅ إعدادات الحماية
+// ✅ إعدادات الحماية - جميعها معطلة افتراضياً
 let securitySettings = {
-  rateLimit: true,
-  fingerprint: true,
-  behaviorDetection: true
+  rateLimit: false,
+  fingerprint: false,
+  behaviorDetection: false
 };
 
 // ✅ نظام Rate Limiting
@@ -1409,7 +1484,7 @@ function toggleRateLimit() {
 async function checkFingerprintBan(deviceCode) {
   if (!securitySettings.fingerprint) return { blocked: false };
   
-  const { data: banned, error: banError } = await supabase
+  const {  banned, error: banError } = await supabase
     .from('banned_users')
     .select('target, reason')
     .eq('target', deviceCode)
@@ -1424,7 +1499,7 @@ async function checkFingerprintBan(deviceCode) {
     return { blocked: true, reason: banned.reason || 'جهاز محظور' };
   }
   
-  const { data: existing, error: existError } = await supabase
+  const {  existing, error: existError } = await supabase
     .from('student_reports')
     .select('id, name')
     .eq('code', deviceCode)
@@ -1467,7 +1542,7 @@ function toggleFingerprint() {
   saveSecuritySettings();
 }
 
-/* ===== SUSPICIOUS BEHAVIOR DETECTION ===== */
+/* ===== SUSPICIOUS BEHAVIOR DETECTION - FIXED ===== */
 class SuspiciousBehaviorDetector {
   constructor() {
     this.detections = [];
@@ -1475,18 +1550,18 @@ class SuspiciousBehaviorDetector {
   }
   
   init() {
-    if (!securitySettings.behaviorDetection) return;
+    // ✅ لا تفعل الكشف إذا لم يكن مفعلاً أو إذا كان المستخدم مشرف
+    if (!securitySettings.behaviorDetection || isAdminLoggedIn) return;
     
     this.detectDevTools();
     this.detectConsoleAccess();
     this.detectCopyBehavior();
-    this.detectVisibilityChange();
   }
   
   detectDevTools() {
     let threshold = 160;
     const check = () => {
-      if (!securitySettings.behaviorDetection) return;
+      if (!securitySettings.behaviorDetection || isAdminLoggedIn) return;
       
       const widthDiff = window.outerWidth - window.innerWidth > threshold;
       const heightDiff = window.outerHeight - window.innerHeight > threshold;
@@ -1501,7 +1576,7 @@ class SuspiciousBehaviorDetector {
   }
   
   detectConsoleAccess() {
-    if (!securitySettings.behaviorDetection) return;
+    if (!securitySettings.behaviorDetection || isAdminLoggedIn) return;
     
     const devtools = /./;
     devtools.toString = function() {
@@ -1512,13 +1587,13 @@ class SuspiciousBehaviorDetector {
   }
   
   detectCopyBehavior() {
-    if (!securitySettings.behaviorDetection) return;
+    if (!securitySettings.behaviorDetection || isAdminLoggedIn) return;
     
     let copyCount = 0;
     let lastCopy = 0;
     
     document.addEventListener('copy', (e) => {
-      if (!securitySettings.behaviorDetection) return;
+      if (!securitySettings.behaviorDetection || isAdminLoggedIn) return;
       
       const now = Date.now();
       copyCount++;
@@ -1531,21 +1606,10 @@ class SuspiciousBehaviorDetector {
     });
   }
   
-  detectVisibilityChange() {
-    if (!securitySettings.behaviorDetection) return;
-    
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        this.detections.push({
-          type: 'visibility_hidden',
-          time: Date.now(),
-          deviceCode: DEVICE_CODE_CACHE
-        });
-      }
-    });
-  }
-  
   async reportSuspicious(type, details) {
+    // ✅ لا ترسل تنبيه إذا كان المشرف
+    if (isAdminLoggedIn) return;
+    
     if (!securitySettings.behaviorDetection) return;
     
     const deviceCode = await DEVICE_CODE_PROMISE;
@@ -1573,6 +1637,7 @@ class SuspiciousBehaviorDetector {
       console.error('Failed to send alert:', e);
     }
     
+    // حظر تلقائي للسلوكيات الخطيرة فقط
     if (['devtools_open', 'console_access'].includes(type)) {
       await this.autoBan(deviceCode, `سلوك مشبوه: ${type} - ${details}`);
     }
@@ -1667,17 +1732,6 @@ async function doLogin() {
   setLoginLoading(true);
   
   try {
-    // ✅ فحص Rate Limiting أولاً
-    if (securitySettings.rateLimit) {
-      const deviceCode = await DEVICE_CODE_PROMISE;
-      const rateCheck = await checkRateLimit(deviceCode);
-      if (!rateCheck.allowed) {
-        showLoginError(`⚠️ تجاوزت الحد المسموح! انتظر ${rateCheck.retryAfter} ثانية`);
-        setLoginLoading(false);
-        return;
-      }
-    }
-    
     const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' });
     if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد');
     const raw = await res.text();
@@ -1689,6 +1743,9 @@ async function doLogin() {
     }
     
     if(u === creds.username && p === creds.password){
+      // ✅ تعيين أن المشرف مسجل دخول
+      isAdminLoggedIn = true;
+      
       await supabase.from('admin_logs').insert([{
         admin_id: 'admin_001',
         action: 'login',
@@ -1723,6 +1780,9 @@ async function doLogin() {
 window.doLogin = doLogin;
 
 function doLogout(){
+  // ✅ إعادة تعيين حالة المشرف
+  isAdminLoggedIn = false;
+  
   $('#dashboardScreen').classList.remove('active');
   const ls = $('#loginScreen');
   ls.classList.remove('hidden');
@@ -1748,6 +1808,7 @@ $$('.tab-btn').forEach(btn => {
     
     if(btn.dataset.tab === 'students') loadStudents();
     if(btn.dataset.tab === 'security') loadBannedList();
+    if(btn.dataset.tab === 'visitors') loadVisitors();
     if(btn.dataset.tab === 'comments') loadComments();
     if(btn.dataset.tab === 'logs') loadLogs();
   });
@@ -1759,10 +1820,11 @@ async function initDashboard() {
   await loadStudents();
   await loadSiteSettings();
   await loadBannedList();
+  await loadVisitors();
   setupRealtime();
   
-  // ✅ تفعيل كاشف السلوك المشبوه إذا كان مفعلاً
-  if (securitySettings.behaviorDetection) {
+  // ✅ تفعيل كاشف السلوك المشبوه فقط إذا كان مفعلاً والمشرف غير مسجل
+  if (securitySettings.behaviorDetection && !isAdminLoggedIn) {
     behaviorDetector = new SuspiciousBehaviorDetector();
   }
 }
@@ -1969,9 +2031,8 @@ async function addStudent(){
   }
   
   try {
-    // التحقق من التكرار
-    const { data: nameExists } = await supabase.from('student_reports').select('id').eq('name', name).limit(1);
-    const { data: titleExists } = await supabase.from('student_reports').select('id').eq('title', title).limit(1);
+    const {  nameExists } = await supabase.from('student_reports').select('id').eq('name', name).limit(1);
+    const {  titleExists } = await supabase.from('student_reports').select('id').eq('title', title).limit(1);
     
     if(nameExists?.length || titleExists?.length){
       showMsg("#msgAdd","❌ الاسم أو العنوان مستخدم مسبقاً","error");
@@ -2140,7 +2201,6 @@ function clearInputs(){
 }
 
 /* ===== ✨ BADGE ASSIGNMENT FUNCTIONS ===== */
-
 window.selectBadgeColor = function(color, el){
   selectedBadgeColor = color;
   $$('#badgeColorPalette .color-box').forEach(b => b.classList.remove('selected'));
@@ -2566,6 +2626,207 @@ window.manualUnbanTarget = async function(target){
   }
 }
 
+/* ===== 👁️ VISITOR LOGS SYSTEM (NEW) ===== */
+async function loadVisitors(){
+  try {
+    // جلب الزوار من جدول الزيارات أو من الطلاب المسجلين
+    const {data: visitors, error: vError} = await supabase
+      .from('student_reports')
+      .select('id, name, phone, code, created_at, last_visit, visit_count, banned')
+      .order('last_visit', {ascending: false})
+      .limit(100);
+    
+    const table = $('#visitorsTable');
+    
+    if(vError || !visitors || visitors.length === 0){
+      table.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">👁️</div><div class="empty-text">لا توجد زيارات مسجلة بعد</div></div></td></tr>`;
+      $('#statsVisitors').textContent = '0';
+      return;
+    }
+    
+    visitorsData = visitors;
+    $('#statsVisitors').textContent = visitors.length;
+    
+    table.innerHTML = visitors.map((v,i) => {
+      const statusClass = v.banned ? 'banned' : 'active';
+      const statusText = v.banned ? '🚫 محظور' : '✅ نشط';
+      const codeDisplay = v.code ? v.code.slice(0,16) + '...' : 'غير معروف';
+      
+      return `
+        <tr style="animation-delay:${i*0.03}s">
+          <td><span class="row-num">${i+1}</span></td>
+          <td class="visitor-code" title="${v.code || '—'}">${codeDisplay}</td>
+          <td class="visitor-name">${v.name || '—'}</td>
+          <td class="visitor-phone">${v.phone || '—'}</td>
+          <td class="visitor-date">${formatDate(v.last_visit || v.created_at)}</td>
+          <td>${v.visit_count || 1}</td>
+          <td><span class="visitor-status ${statusClass}">${statusText}</span></td>
+          <td>
+            <div class="action-btns">
+              ${v.banned 
+                ? `<button class="btn-sm btn-sm-unban" onclick="unbanVisitor('${v.code}')">✅ فك الحظر</button>`
+                : `<button class="btn-sm btn-sm-ban" onclick="banVisitor('${v.code}', '${(v.name||'').replace(/'/g,"\\'")}')">🚫 حظر</button>`
+              }
+              <button class="btn-sm btn-sm-edit" onclick="viewVisitorDetails('${v.code}')">👁️ تفاصيل</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+    
+  } catch(err) {
+    console.error("Error in loadVisitors:", err);
+  }
+}
+window.loadVisitors = loadVisitors;
+
+window.filterVisitors = function(){
+  const search = $('#visitorSearch').value.toLowerCase();
+  const filter = $('#visitorFilter').value;
+  
+  let filtered = visitorsData.filter(v => {
+    const matchesSearch = !search || 
+      (v.name && v.name.toLowerCase().includes(search)) ||
+      (v.code && v.code.toLowerCase().includes(search)) ||
+      (v.phone && v.phone.includes(search));
+    
+    if(!matchesSearch) return false;
+    
+    if(filter === 'active') return !v.banned;
+    if(filter === 'banned') return v.banned;
+    if(filter === 'students') return v.name && v.name.trim();
+    return true;
+  });
+  
+  const table = $('#visitorsTable');
+  if(filtered.length === 0){
+    table.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">لا توجد نتائج للبحث</div></div></td></tr>`;
+    return;
+  }
+  
+  table.innerHTML = filtered.map((v,i) => {
+    const statusClass = v.banned ? 'banned' : 'active';
+    const statusText = v.banned ? '🚫 محظور' : '✅ نشط';
+    const codeDisplay = v.code ? v.code.slice(0,16) + '...' : 'غير معروف';
+    
+    return `
+      <tr style="animation-delay:${i*0.03}s">
+        <td><span class="row-num">${i+1}</span></td>
+        <td class="visitor-code" title="${v.code || '—'}">${codeDisplay}</td>
+        <td class="visitor-name">${v.name || '—'}</td>
+        <td class="visitor-phone">${v.phone || '—'}</td>
+        <td class="visitor-date">${formatDate(v.last_visit || v.created_at)}</td>
+        <td>${v.visit_count || 1}</td>
+        <td><span class="visitor-status ${statusClass}">${statusText}</span></td>
+        <td>
+          <div class="action-btns">
+            ${v.banned 
+              ? `<button class="btn-sm btn-sm-unban" onclick="unbanVisitor('${v.code}')">✅ فك الحظر</button>`
+              : `<button class="btn-sm btn-sm-ban" onclick="banVisitor('${v.code}', '${(v.name||'').replace(/'/g,"\\'")}')">🚫 حظر</button>`
+            }
+            <button class="btn-sm btn-sm-edit" onclick="viewVisitorDetails('${v.code}')">👁️ تفاصيل</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.banVisitor = async function(code, name){
+  if(!confirm(`🚫 حظر الزائر "${name || code.slice(0,10)}..."؟`)) return;
+  
+  try {
+    // إضافة للحظر
+    await supabase.from('banned_users').upsert([{
+      target: code,
+      reason: 'حظر من سجل الزيارات',
+      banned_by: 'admin_001',
+      banned_at: new Date().toISOString()
+    }], { onConflict: 'target' });
+    
+    // تحديث حالة الطالب إذا كان مسجلاً
+    await supabase.from('student_reports').update({ banned: true }).eq('code', code);
+    
+    showMsg('#visitorMsg', `🚫 تم حظر: ${name || code}`, 'success');
+    loadVisitors();
+    loadBannedList();
+  } catch(err) {
+    console.error("Error in banVisitor:", err);
+    showMsg('#visitorMsg', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+
+window.unbanVisitor = async function(code){
+  try {
+    await supabase.from('banned_users').delete().eq('target', code);
+    await supabase.from('student_reports').update({ banned: false }).eq('code', code);
+    
+    showMsg('#visitorMsg', `✅ تم فك حظر: ${code}`, 'success');
+    loadVisitors();
+    loadBannedList();
+  } catch(err) {
+    console.error("Error in unbanVisitor:", err);
+    showMsg('#visitorMsg', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+
+window.viewVisitorDetails = async function(code){
+  try {
+    const {data} = await supabase
+      .from('student_reports')
+      .select('*')
+      .eq('code', code)
+      .single();
+    
+    if(!data){
+      showMsg('#visitorMsg', '❌ لم يتم العثور على تفاصيل', 'error');
+      return;
+    }
+    
+    const details = `
+📋 تفاصيل الزائر:
+━━━━━━━━━━━━━━
+👤 الاسم: ${data.name || '—'}
+📱 الهاتف: ${data.phone || '—'}
+🔐 كود الجهاز: ${data.code}
+📚 المادة: ${data.subject || '—'}
+📝 التقرير: ${data.title || '—'}
+🕐 التسجيل: ${formatDate(data.created_at)}
+🔄 آخر زيارة: ${formatDate(data.last_visit || data.created_at)}
+🔢 عدد الزيارات: ${data.visit_count || 1}
+⭐ الشارة: ${data.badge || 'لا توجد'}
+🚫 الحالة: ${data.banned ? 'محظور' : 'نشط'}
+    `;
+    
+    alert(details);
+  } catch(err) {
+    console.error("Error in viewVisitorDetails:", err);
+  }
+}
+
+window.exportVisitors = async function(){
+  try {
+    const {data} = await supabase.from('student_reports').select('*').order('created_at', {ascending: false});
+    if(!data){ 
+      showMsg('#visitorMsg', '❌ فشل التصدير', 'error'); 
+      return; 
+    }
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'onx-taqe-visitors.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showMsg('#visitorMsg', '📥 تم تصدير سجل الزوار', 'success');
+  } catch(err) {
+    console.error("Error in exportVisitors:", err);
+    showMsg('#visitorMsg', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+
 /* ===== COMMENTS SYSTEM ===== */
 async function loadComments(){
   try {
@@ -2804,6 +3065,7 @@ function setupRealtime(){
     .on('postgres_changes', {event:'*', schema:'public', table:'student_reports'}, () => {
       loadStudents();
       loadBannedList();
+      loadVisitors();
     })
     .subscribe();
   
@@ -2862,18 +3124,26 @@ setTimeout(() => {
 }, 2500);
 
 window.addEventListener('DOMContentLoaded', async () => {
+  // تحميل إعدادات الحماية - جميعها معطلة افتراضياً
   const savedSettings = localStorage.getItem('onx_security_settings');
   if (savedSettings) {
     try {
       const parsed = JSON.parse(savedSettings);
       securitySettings = { ...securitySettings, ...parsed };
       
-      if (!securitySettings.rateLimit) toggleRateLimit();
-      if (!securitySettings.fingerprint) toggleFingerprint();
-      if (!securitySettings.behaviorDetection) toggleBehaviorDetection();
+      // تحديث واجهة الأزرار حسب الإعدادات المحفوظة
+      if (securitySettings.rateLimit) toggleRateLimit();
+      if (securitySettings.fingerprint) toggleFingerprint();
+      if (securitySettings.behaviorDetection) toggleBehaviorDetection();
     } catch(e) {
       console.error('Error loading security settings:', e);
     }
+  }
+  
+  // ✅ التأكد أن الموقع مفتوح افتراضياً للطلاب
+  const {data: siteData} = await supabase.from("site_control").select("site_open").eq("id",1).single();
+  if(!siteData || siteData.site_open === undefined){
+    await supabase.from("site_control").upsert({id: 1, site_open: true});
   }
 });
 </script>
@@ -2882,3 +3152,33 @@ window.addEventListener('DOMContentLoaded', async () => {
 </html>
 
 
+
+              <script>
+                              // ✅ متغير للتحقق إذا كان المستخدم مشرف
+let isAdminLoggedIn = false;
+
+// ✅ عند تسجيل الدخول
+isAdminLoggedIn = true;
+
+// ✅ عند تسجيل الخروج
+isAdminLoggedIn = false;
+
+// ✅ في كشف السلوك المشبوه - تجاهل المشرف
+if (isAdminLoggedIn) return; // لا تفعل أي حظر
+
+let securitySettings = {
+  rateLimit: false,        // ❌ معطل
+  fingerprint: false,      // ❌ معطل  
+  behaviorDetection: false // ❌ معطل
+};
+
+// ✅ التأكد أن الموقع مفتوح افتراضياً
+if(!siteData || siteData.site_open === undefined){
+  await supabase.from("site_control").upsert({id: 1, site_open: true});
+}
+
+
+              </script>
+                        </body>
+                        </html>
+                    
