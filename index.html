@@ -7,27 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #0f1e3d;
-  --secondary: #1a2a4a;
-  --accent: #e94560;
-  --gold: #f5c518;
-  --neon-blue: #00d4ff;
-  --neon-purple: #7b2fff;
-  --neon-green: #00ff88;
-  --glass: rgba(255,255,255,0.07);
-  --glass-border: rgba(255,255,255,0.15);
-  --text-light: #e0e0f0;
+  --primary: #0f1e3d; --secondary: #1a2a4a; --accent: #e94560;
+  --gold: #f5c518; --neon-blue: #00d4ff; --neon-purple: #7b2fff;
+  --neon-green: #00ff88; --glass: rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.15); --text-light: #e0e0f0;
   --card-shadow: 0 20px 60px rgba(0,0,0,0.5);
   --transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family:'Cairo',sans-serif;
-  background:#050b1a;
-  color:var(--text-light);
-  min-height:100vh;
-  overflow-x:hidden;
-  position:relative;
+  font-family:'Cairo',sans-serif; background:#050b1a; color:var(--text-light);
+  min-height:100vh; overflow-x:hidden; position:relative;
 }
 
 /* ===== BACKGROUND EFFECTS ===== */
@@ -49,8 +39,7 @@ body {
   animation: floatUp linear infinite; opacity:0;
 }@keyframes floatUp {
   0%   { transform:translateY(100vh) scale(0); opacity:0; }
-  10%  { opacity:0.6; }
-  90%  { opacity:0.3; }
+  10%  { opacity:0.6; } 90%  { opacity:0.3; }
   100% { transform:translateY(-10vh) scale(1); opacity:0; }
 }
 
@@ -206,44 +195,27 @@ body {
 .btn:active { transform:translateY(1px) scale(0.98); }
 .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
 
-/* ===== COLOR PALETTE ===== */
-.palette-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
-.color-palette { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-.color-box { width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:var(--transition); position:relative; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
-.color-box::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; opacity:0; transition:opacity 0.2s; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
-.color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
-.color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
-.color-box.selected::after { opacity:1; }
-
-/* ===== ALERT TYPE RADIOS ===== */
-.alert-type-row { display:flex; gap:12px; align-items:stretch; flex-wrap:wrap; margin-bottom:16px; }
-.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:var(--transition); flex:1; min-width:130px; }
-.alert-type-label.private-lbl { background:rgba(123,47,255,0.12); border:1px solid rgba(123,47,255,0.3); }
-.alert-type-label.public-lbl  { background:rgba(0,212,255,0.12);  border:1px solid rgba(0,212,255,0.3);  }
-.alert-type-label:hover { transform:translateY(-1px); filter:brightness(1.2); }
-.alert-type-label input { accent-color:#7b2fff; width:16px; height:16px; cursor:pointer; }
-.alert-type-label.public-lbl input { accent-color:#00d4ff; }
-.alert-type-text { color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:700; }
-
-/* ===== TOGGLE SWITCH ===== */
-.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
-.toggle-info { flex:1; }
-.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
-.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
-.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
-.switch input { opacity:0; width:0; height:0; }
-.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:var(--transition); }
-.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:var(--transition); }
-input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
-input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
-input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
-
-/* ===== MSG BOX ===== */
-.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:var(--transition); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
-.msg-box.show { opacity:1; transform:translateY(0); }
-.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
-.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
-.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
+/* ===== SECURITY PANEL ===== */
+.security-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
+.security-item {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px;
+}
+.security-icon {
+  width:40px; height:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.security-icon.blocked { background:rgba(233,69,96,0.15); color:#ff6b6b; }
+.security-icon.allowed { background:rgba(0,200,81,0.15); color:#00ff88; }
+.security-info { flex:1; }
+.security-title { font-weight:700; font-size:0.95rem; }
+.security-desc { font-size:0.8rem; color:rgba(255,255,255,0.4); }
+.security-action { padding:6px 12px; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:var(--transition); border:none; background:transparent; color:inherit; font-family:'Cairo',sans-serif; font-weight:600; }
+.security-action.block { background:rgba(233,69,96,0.15); color:#ff6b6b; border:1px solid rgba(233,69,96,0.3); }
+.security-action.unblock { background:rgba(0,200,81,0.15); color:#00ff88; border:1px solid rgba(0,200,81,0.3); }
+.security-action:hover { transform:translateY(-1px); }
+.security-action.active { background:rgba(0,212,255,0.15); color:#00d4ff; border:1px solid rgba(0,212,255,0.3); }
 
 /* ===== TABLE CARD ===== */
 .table-card { grid-column:1 / -1; }
@@ -261,7 +233,7 @@ tbody tr.banned { opacity:0.6; background:rgba(233,69,96,0.05); }
 td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
 .student-name-cell { font-weight:700; font-size:1rem; display:flex; align-items:center; gap:8px; justify-content:center; flex-wrap:wrap; }
 
-/* ✨ BADGE STYLES - SHINY EFFECT */
+/* ✨ BADGE STYLES */
 .student-badge {
   display:inline-flex; align-items:center; justify-content:center;
   width:28px; height:28px; border-radius:50%;
@@ -302,184 +274,25 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .btn-sm-unban  { background:rgba(0,200,81,0.15); border:1px solid rgba(0,200,81,0.3); color:#00c851; }
 .btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
 
-/* Alert badge in table */
-.alert-table-badge {
-  display:inline-flex; align-items:center; gap:4px;
-  padding:3px 10px; border-radius:14px; font-size:0.75rem; font-weight:700;
-  border:1px solid; margin-top:4px;
-  animation: alertGlowSoft 2.5s ease-in-out infinite;
-}
-@keyframes alertGlowSoft { 0%,100%{opacity:0.85;} 50%{opacity:1;filter:brightness(1.2);} }
-.alert-badge-type { font-size:0.65rem; opacity:0.75; }
+/* ===== MSG BOX ===== */
+.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:var(--transition); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
+.msg-box.show { opacity:1; transform:translateY(0); }
+.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
+.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
+.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
 
-/* ===== DIVIDER ===== */
-.divider { height:1px; margin:20px 0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
-
-/* ===== SITE STATUS ===== */
-.site-status { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:20px; font-weight:700; font-size:0.85rem; margin-top:12px; }
-.status-open   { background:rgba(0,200,81,0.15); border:1px solid #00c851; color:#00ff88; }
-.status-closed { background:rgba(233,69,96,0.15); border:1px solid #e94560; color:#ff6b6b; }
-.status-dot { width:8px; height:8px; border-radius:50%; animation:pulse-dot 1.5s ease-in-out infinite; }
-@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
-.dot-open   { background:#00ff88; box-shadow:0 0 8px #00ff88; }
-.dot-closed { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
-
-/* ===== LOADER ===== */
-.loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.2); border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
-
-/* ===== EMPTY STATE ===== */
-.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
-.empty-icon  { font-size:48px; margin-bottom:12px; opacity:0.5; }
-.empty-text  { font-size:1rem; }
-
-/* ===== CURRENT NOTIF ===== */
-.current-notif { padding:10px 14px; border-radius:12px; background:rgba(245,197,24,0.12); border:1px solid rgba(245,197,24,0.3); color:#f5c518; font-size:0.85rem; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-
-/* ===== BADGE PREVIEW ===== */
-.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:var(--transition); color:#f5c518; }
-
-/* ===== ALERT PREVIEW ===== */
-.alert-preview-box {
-  padding:10px 16px; border-radius:12px; margin-bottom:14px;
-  display:none; align-items:center; gap:10px;
-  font-size:0.9rem; font-weight:700;
-  position:relative; overflow:hidden;
-}
-.alert-preview-box.show { display:flex; }
-.alert-preview-box::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  background-size:200% 100%;
-  animation:shimmerPrev 2s linear infinite;
-}
-@keyframes shimmerPrev { 0%{background-position:200% center} 100%{background-position:-200% center} }
-
-/* ===== ✨ USAGE GUIDELINES CARD ===== */
-#guidelinesPreview { display:none; margin-top:20px; }
-#guidelinesPreview.show { display:block; }
-.guidelines-preview-wrap {
-  background: linear-gradient(135deg, rgba(20,184,166,0.10), rgba(20,184,166,0.04));
-  border: 1.5px solid rgba(20,184,166,0.30);
-  border-radius:18px; overflow:hidden;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.3), 0 0 25px rgba(20,184,166,0.07);
-  position:relative;
-}
-.guidelines-preview-wrap::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,transparent,rgba(20,184,166,0.7),rgba(245,197,24,0.5),transparent);
-}
-.guidelines-preview-header {
-  display:flex; align-items:center; gap:12px;
-  padding:16px 20px 12px;
-  border-bottom:1px solid rgba(20,184,166,0.15);
-  background: linear-gradient(135deg,rgba(20,184,166,0.08),transparent);
-}
-.gp-icon {
-  width:42px; height:42px; border-radius:12px;
-  background:linear-gradient(135deg,rgba(20,184,166,0.25),rgba(20,184,166,0.10));
-  border:1px solid rgba(20,184,166,0.35);  display:flex; align-items:center; justify-content:center;
-  font-size:20px; flex-shrink:0;
-  box-shadow:0 0 18px rgba(20,184,166,0.18);
-  animation:tealPulse 3s ease-in-out infinite;
-}
-@keyframes tealPulse {
-  0%,100%{box-shadow:0 0 15px rgba(20,184,166,0.15);}
-  50%{box-shadow:0 0 28px rgba(20,184,166,0.40);}
-}
-.gp-title-wrap { flex:1; }
-.gp-main-title {
-  font-size:14px; font-weight:800;
-  color:rgba(20,184,166,0.95);
-  letter-spacing:2px;
-  text-shadow:0 0 16px rgba(20,184,166,0.3);
-}
-.gp-sub-title { font-size:11px; color:rgba(255,255,255,0.40); margin-top:2px; }
-.gp-live-badge {
-  display:inline-flex; align-items:center; gap:5px;
-  padding:4px 10px; border-radius:20px;
-  background:rgba(20,184,166,0.12);
-  border:1px solid rgba(20,184,166,0.28);
-  font-size:10px; font-weight:700;
-  color:rgba(20,184,166,0.90);
-}
-.gp-live-dot { width:6px; height:6px; border-radius:50%; background:#14b8a6; animation:pulse-dot 1.5s ease-in-out infinite; }
-.gp-body {
-  padding:16px 20px 18px;
-  font-size:13.5px; line-height:2;
-  color:rgba(255,255,255,0.85);
-  white-space:pre-wrap;
-  position:relative;
-}
-.gp-body::before {
-  content:'📋'; position:absolute; left:10px; bottom:8px;
-  font-size:55px; opacity:0.04; pointer-events:none;
-}
-.gp-footer {
-  padding:8px 20px 12px;
-  border-top:1px solid rgba(20,184,166,0.10);
-  font-size:11px; color:rgba(255,255,255,0.32);
-  display:flex; align-items:center; gap:6px;
-}
-
-/* ===== SECURITY PANEL ===== */
-.security-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
-.security-item {
-  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
-  border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px;
-}
-.security-icon {
-  width:40px; height:40px; border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:18px; flex-shrink:0;
-}
-.security-icon.blocked { background:rgba(233,69,96,0.15); color:#ff6b6b; }
-.security-icon.allowed { background:rgba(0,200,81,0.15); color:#00ff88; }
-.security-info { flex:1; }
-.security-title { font-weight:700; font-size:0.95rem; }
-.security-desc { font-size:0.8rem; color:rgba(255,255,255,0.4); }
-.security-action { padding:6px 12px; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:var(--transition); }
-.security-action.block { background:rgba(233,69,96,0.15); color:#ff6b6b; border:1px solid rgba(233,69,96,0.3); }
-.security-action.unblock { background:rgba(0,200,81,0.15); color:#00ff88; border:1px solid rgba(0,200,81,0.3); }
-.security-action:hover { transform:translateY(-1px); }
-
-/* ===== COMMENTS PANEL ===== */
-.comments-toggle { display:flex; align-items:center; gap:12px; padding:14px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:16px; }
-.comments-list { max-height:400px; overflow-y:auto; }
-.comment-item {
-  padding:12px; border-bottom:1px solid rgba(255,255,255,0.05);
-  display:flex; gap:12px; align-items:flex-start;
-}
-.comment-avatar {
-  width:36px; height:36px; border-radius:50%;
-  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
-  display:flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:0.9rem; flex-shrink:0;
-}
-.comment-content { flex:1; }
-.comment-header { display:flex; justify-content:space-between; gap:10px; margin-bottom:4px; }
-.comment-author { font-weight:700; font-size:0.9rem; }
-.comment-time { font-size:0.75rem; color:rgba(255,255,255,0.4); }
-.comment-text { font-size:0.9rem; line-height:1.6; }
-.comment-actions { display:flex; gap:6px; margin-top:8px; }
-.comment-btn { padding:4px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer; transition:var(--transition); border:none; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); }
-.comment-btn:hover { background:rgba(255,255,255,0.15); color:#fff; }
-.comment-btn.delete { background:rgba(233,69,96,0.15); color:#ff6b6b; }
-
-/* ===== SUGGESTIONS PANEL ===== */
-.suggestion-card {
-  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
-  border-radius:14px; padding:16px; margin-bottom:12px;
-  display:flex; justify-content:space-between; align-items:center; gap:12px;
-}
-.suggestion-text { flex:1; font-size:0.95rem; }
-.suggestion-meta { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:4px; }
-.suggestion-actions { display:flex; gap:6px; }
-
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width:6px; height:6px; }
-::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
-::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
+/* ===== TOGGLE SWITCH ===== */
+.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+.toggle-info { flex:1; }
+.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
+.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
+.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:var(--transition); }
+.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:var(--transition); }
+input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
+input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
+input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
 
 /* ===== ENTRANCE ANIMATION ===== */
 .entrance-overlay { position:fixed; inset:0; z-index:1000; background:linear-gradient(135deg,#050b1a,#0f1a2e); display:flex; flex-direction:column; align-items:center; justify-content:center; animation:overlayFade 0.8s 1.8s forwards; }
@@ -493,13 +306,11 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .entrance-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple)); animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both; box-shadow:0 0 10px rgba(0,212,255,0.8); }
 @keyframes progressFill { from{width:0} to{width:100%} }
 
-/* ===== TOOLTIP ===== */
-[data-tip] { position:relative; }
-[data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
-
-/* ===== VISITORS TABLE CODE CELL ===== */
-.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
-.visitor-unregistered { color:rgba(255,255,255,0.3); font-style:italic; font-size:0.85rem; }
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
+::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
@@ -509,7 +320,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
   .table-card { grid-column:auto; }
   .header-title { font-size:1.6rem; }
   .login-card { padding:32px 24px 28px; }
-  .alert-type-row { flex-direction:column; }
   .btn-row { flex-direction:column; }
   .btn { width:100%; }
 }
@@ -601,9 +411,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
       <button class="tab-btn" data-tab="security">🛡️ الأمان</button>
       <button class="tab-btn" data-tab="content">📝 المحتوى</button>
-      <button class="tab-btn" data-tab="comments">💬 التعليقات</button>
-      <button class="tab-btn" data-tab="suggestions">💡 الاقتراحات</button>
-      <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
       <button class="tab-btn" data-tab="logs">📊 السجلات</button>
     </div>
 
@@ -709,34 +516,39 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <div class="card-icon icon-purple">🔐</div>
           <div>
             <div class="card-title">نظام الحماية المتقدم</div>
-            <div class="card-desc">حظر/سماح • بصمات الأجهزة</div>
+            <div class="card-desc">حظر/سماح • بصمات الأجهزة • كشف المشبوه</div>
           </div>
         </div>
         
         <div class="security-grid">
+          <!-- Rate Limiting -->
           <div class="security-item">
-            <div class="security-icon allowed">✅</div>
-            <div class="security-info">
-              <div class="security-title">حماية البصمة المركبة</div>
-              <div class="security-desc">منع التسجيل المتكرر عبر متصفحات مختلفة</div>
-            </div>
-            <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
-          </div>
-          <div class="security-item">
-            <div class="security-icon allowed">✅</div>
+            <div class="security-icon allowed" id="rlIcon">✅</div>
             <div class="security-info">
               <div class="security-title">Rate Limiting</div>
               <div class="security-desc">حد أقصى 5 محاولات/ساعة لكل جهاز</div>
             </div>
-            <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
+            <button class="security-action active" id="rlBtn" onclick="toggleRateLimit()">مفعّل</button>
           </div>
+          
+          <!-- Composite Fingerprint -->
           <div class="security-item">
-            <div class="security-icon allowed">✅</div>
+            <div class="security-icon allowed" id="fpIcon">✅</div>
+            <div class="security-info">
+              <div class="security-title">حماية البصمة المركبة</div>
+              <div class="security-desc">منع التسجيل المتكرر من نفس الجهاز</div>
+            </div>
+            <button class="security-action active" id="fpBtn" onclick="toggleFingerprint()">مفعّل</button>
+          </div>
+          
+          <!-- Suspicious Behavior Detection -->
+          <div class="security-item">
+            <div class="security-icon allowed" id="bdIcon">✅</div>
             <div class="security-info">
               <div class="security-title">كشف السلوك المشبوه</div>
-              <div class="security-desc">تنبيه فوري عند نشاط غير عادي</div>
+              <div class="security-desc">مراقبة أدوات المطور، الكونسول، النسخ المشبوه</div>
             </div>
-            <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
+            <button class="security-action active" id="bdBtn" onclick="toggleBehaviorDetection()">مفعّل</button>
           </div>
         </div>
 
@@ -811,385 +623,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
         </div>
         <div class="msg-box" id="msgNotif"></div>
       </div>
-
-      <!-- ✨ BADGE ASSIGNMENT CARD - MODIFIED -->
-      <div class="glass-card card-glow-gold" style="margin-top:20px">
-        <div class="card-header">
-          <div class="card-icon icon-gold">⭐</div>
-          <div>
-            <div class="card-title">✨ منح شارة التميز</div>
-            <div class="card-desc">أضف أي رمز أو إيموجي كشارة مميزة</div>
-          </div>
-        </div>
-        
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
-          <div>
-            <div class="input-group">
-              <label class="input-label">🔢 رقم الطالب التسلسلي</label>
-              <span class="input-icon">#</span>
-              <input class="styled-input" id="badgeStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewBadge()">
-            </div>
-            
-            <!-- ✨ Custom Badge Input -->
-            <div class="input-group">
-              <label class="input-label">✏️ اكتب شارة التميز (إيموجي/رمز)</label>
-              <span class="input-icon">✨</span>
-              <input class="styled-input" id="badgeTextInput" type="text" maxlength="3" placeholder="مثال: 🏆 أو ⭐ أو 💎" oninput="previewBadge()" style="text-align:center;font-size:1.3rem;letter-spacing:4px">
-              <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:5px;text-align:center">
-                💡 انسخ أي إيموجي من هنا: 🏆 ⭐ 🎖️ 💎 🔥 👑 🌟 🥇 ✨ 🎯 🚀
-              </div>
-            </div>
-            
-            <!-- ✨ Color Palette - No Text Labels -->
-            <span class="palette-label">🎨 اختر لون الشارة</span>
-            <div class="color-palette" id="badgeColorPalette" style="justify-content:center">
-              <div class="color-box selected" style="background:linear-gradient(135deg,#ffd700,#ffaa00)" onclick="selectBadgeColor('#ffd700',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00d4ff,#0077ff)" onclick="selectBadgeColor('#00d4ff',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectBadgeColor('#ff4444',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00ff88,#00aa55)" onclick="selectBadgeColor('#00ff88',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ffffff,#dddddd)" onclick="selectBadgeColor('#ffffff',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff8c00,#cc5500)" onclick="selectBadgeColor('#ff8c00',this)"></div>
-            </div>
-            
-            <div class="btn-row" style="margin-top:16px">
-              <button class="btn btn-gold" onclick="assignBadge()"><span>⭐</span> منح الشارة</button>
-              <button class="btn btn-danger" onclick="removeBadge()"><span>❌</span> إزالة</button>
-            </div>
-            <div class="msg-box" id="msgBadge"></div>
-          </div>
-          
-          <!-- ✨ Live Preview -->
-          <div>
-            <span class="palette-label">👁️ المعاينة الحية</span>
-            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:25px;text-align:center;margin-top:10px">
-              <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:15px">كيف ستظهر الشارة:</div>
-              
-              <!-- Preview Display -->
-              <div style="display:flex;align-items:center;justify-content:center;gap:12px;font-size:1.1rem;font-weight:700;padding:15px;background:rgba(0,0,0,0.2);border-radius:12px">
-                <span id="badgePreview" class="student-badge" style="display:none">⭐</span>
-                <span id="badgePreviewName" style="color:rgba(255,255,255,0.7)">اسم الطالب</span>
-              </div>
-              
-              <!-- Info Box -->
-              <div style="margin-top:20px;padding:12px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.3);border-radius:10px;font-size:0.8rem;color:#f5c518">
-                ✨ ستضهر الشارة بشكل لامع مع تأثيرات متحركة في:<br>
-                • لوحة تحكم المشرف • لوحة بيانات الطلاب
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass-card card-glow-blue" style="margin-top:20px">
-        <div class="card-header">
-          <div class="card-icon icon-blue">📅</div>
-          <div>
-            <div class="card-title">موعد تسليم التقارير</div>
-            <div class="card-desc">تاريخ ووقت التسليم</div>
-          </div>
-        </div>
-        <div class="input-group">
-          <label class="input-label">تاريخ ووقت التسليم</label>
-          <input class="styled-input" id="deadlineInput" type="datetime-local">
-        </div>
-        <div class="toggle-container" style="margin:14px 0">
-          <div class="toggle-info">
-            <div class="toggle-title">إظهار التاريخ للطلاب</div>
-            <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="deadlineActiveSwitch">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <button class="btn btn-primary" style="width:100%" onclick="saveDeadline()">
-          <span>💾</span> حفظ تاريخ التسليم
-        </button>
-        <div class="msg-box" id="msgDeadline"></div>
-      </div>
-
-      <div class="glass-card card-glow-teal" style="margin-top:20px">
-        <div class="card-header">
-          <div class="card-icon icon-teal">📋</div>
-          <div>
-            <div class="card-title">متطلبات الاستخدام</div>
-            <div class="card-desc">الإرشادات التي تظهر للطلاب</div>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
-          <div>
-            <div class="input-group">
-              <label class="input-label">✍️ اكتب الإرشادات</label>
-              <textarea class="styled-textarea" id="guidelinesTextarea" placeholder="مثال:• يجب أن يكون عنوان التقرير فريداً• يُمنع تكرار الموضوعات• آخر موعد للتسجيل: ...• للاستفسار تواصل مع المشرف" style="min-height:150px" oninput="previewGuidelinesLive()"></textarea>
-            </div>
-            <div class="btn-row">
-              <button class="btn btn-teal" onclick="saveGuidelines()"><span>💾</span> حفظ</button>
-              <button class="btn btn-danger" onclick="clearGuidelines()"><span>🗑️</span> مسح</button>
-            </div>
-            <div class="msg-box" id="msgGuidelines"></div>
-          </div>
-          <div>
-            <div style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">👁️ معاينة</div>
-            <div id="guidelinesPreview">
-              <div class="guidelines-preview-wrap">
-                <div class="guidelines-preview-header">
-                  <div class="gp-icon">📋</div>
-                  <div class="gp-title-wrap">
-                    <div class="gp-main-title">✦ متطلبات الاستخدام ✦</div>
-                    <div class="gp-sub-title">إرشادات صادرة من الإدارة</div>
-                  </div>
-                  <div class="gp-live-badge"><div class="gp-live-dot"></div> مباشر</div>
-                </div>
-                <div class="gp-body" id="guidelinesPreviewContent">ستظهر الإرشادات هنا عند الكتابة…</div>
-                <div class="gp-footer"><span>🔒</span><span>هذه الإرشادات صادرة من الإدارة — يُرجى الالتزام بها</span></div>
-              </div>
-            </div>
-            <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
-              <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
-              لا توجد إرشادات محفوظة حالياً
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass-card card-glow-orange" style="margin-top:20px">
-        <div class="card-header">
-          <div class="card-icon icon-orange">⚠️</div>
-          <div>
-            <div class="card-title">تنبيهات الطلاب</div>
-            <div class="card-desc">إرسال تحذير لطالب معين</div>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-          <div>
-            <div class="input-group">
-              <label class="input-label">رقم الطالب في القائمة</label>
-              <span class="input-icon">🔢</span>
-              <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
-            </div>
-            <div class="input-group">
-              <label class="input-label">نص التحذير</label>
-              <span class="input-icon">✍️</span>
-              <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
-            </div>
-            <div class="alert-type-row">
-              <label class="alert-type-label private-lbl">
-                <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
-                <span class="alert-type-text">🔒 خاص — في معلوماتي فقط</span>
-              </label>
-              <label class="alert-type-label public-lbl">
-                <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
-                <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
-              </label>
-            </div>
-            <div class="btn-row">
-              <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال</button>
-              <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف</button>
-            </div>
-            <div class="msg-box" id="msgAlert"></div>
-          </div>
-          <div>
-            <span class="palette-label">🎨 لون التحذير</span>
-            <div class="color-palette" id="alertColorPalette">
-              <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
-            </div>
-            <div class="divider" style="margin:12px 0"></div>
-            <span class="palette-label">معاينة</span>
-            <div id="alertPreviewBox" class="alert-preview-box">
-              <span>⚠️</span><span id="alertPreviewText">نص التحذير يظهر هنا</span><span id="alertPreviewType" class="alert-badge-type"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: COMMENTS ===== -->
-    <div class="tab-content" id="tab-comments">
-      <div class="glass-card card-glow-purple">
-        <div class="card-header">
-          <div class="card-icon icon-purple">💬</div>
-          <div>
-            <div class="card-title">نظام التعليقات</div>
-            <div class="card-desc">التحكم في تفاعل الطلاب</div>
-          </div>
-        </div>
-        
-        <div class="comments-toggle">
-          <div style="flex:1">
-            <div class="toggle-title">تفعيل نظام التعليقات</div>
-            <div class="toggle-desc">عند التعطيل: لن يظهر قسم التعليقات للطلاب</div>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="commentsEnabled" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
-        
-        <div class="toggle-container" style="margin-bottom:20px">
-          <div class="toggle-info">
-            <div class="toggle-title">مراجعة التعليقات قبل النشر</div>
-            <div class="toggle-desc">عند التفعيل: تحتاج موافقتك قبل ظهور التعليق</div>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="commentsModeration" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label">🔍 فلترة التعليقات</label>
-          <span class="input-icon">🔍</span>
-          <input class="styled-input" id="commentFilter" placeholder="ابحث باسم الطالب أو كلمة في التعليق..." oninput="filterComments()">
-        </div>
-
-        <div class="comments-list" id="commentsList">
-          <div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: SUGGESTIONS ===== -->
-    <div class="tab-content" id="tab-suggestions">
-      <div class="glass-card card-glow-green">
-        <div class="card-header">
-          <div class="card-icon icon-green">💡</div>
-          <div>
-            <div class="card-title">اقتراح العناوين الذكي</div>
-            <div class="card-desc">منع التكرار • اقتراح عناوين فريدة</div>
-          </div>
-        </div>
-
-        <div class="toggle-container" style="margin-bottom:20px">
-          <div class="toggle-info">
-            <div class="toggle-title">تفعيل نظام الاقتراحات</div>
-            <div class="toggle-desc">عند التفعيل: يقترح النظام عناوين عند إدخال المادة</div>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="suggestionsEnabled" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-          <div>
-            <div class="input-group">
-              <label class="input-label">📚 اختبار الاقتراحات</label>
-              <span class="input-icon">🔍</span>
-              <input class="styled-input" id="testSubject" placeholder="أدخل اسم مادة للاختبار..." oninput="testSuggestions()">
-            </div>
-            <div id="suggestionResults" style="margin-top:12px"></div>
-          </div>
-          <div>
-            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);line-height:1.8">
-              <strong>🎯 كيف يعمل النظام:</strong><br>
-              • يحلل العناوين المسجلة للمادة المختارة<br>
-              • يستخرج الكلمات المفتاحية الشائعة<br>
-              • يقترح تركيبات جديدة غير مستخدمة<br>
-              • يتجنب تماماً العناوين المكررة أو المشابهة جداً
-            </div>
-          </div>
-        </div>
-
-        <div class="divider" style="margin:20px 0"></div>
-        
-        <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:12px">
-          📋 العناوين المقترحة مؤخراً (للمراجعة):
-        </div>
-        <div id="recentSuggestions">
-          <div class="suggestion-card">
-            <div>
-              <div class="suggestion-text">"تحليل أداء خوارزميات التعلم الآلي في التنبؤ بالبيانات الكبيرة"</div>
-              <div class="suggestion-meta">المادة: ذكاء اصطناعي • تم الاقتراح: منذ 2 ساعة</div>
-            </div>
-            <div class="suggestion-actions">
-              <button class="btn-sm btn-sm-edit">✅ قبول</button>
-              <button class="btn-sm btn-sm-delete">❌ رفض</button>
-            </div>
-          </div>
-          <div class="suggestion-card">
-            <div>
-              <div class="suggestion-text">"دراسة مقارنة بين تقنيات التشفير في حماية البيانات السحابية"</div>
-              <div class="suggestion-meta">المادة: أمن معلومات • تم الاقتراح: منذ 5 ساعات</div>
-            </div>
-            <div class="suggestion-actions">
-              <button class="btn-sm btn-sm-edit">✅ قبول</button>
-              <button class="btn-sm btn-sm-delete">❌ رفض</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: SETTINGS ===== -->
-    <div class="tab-content" id="tab-settings">
-      <div class="glass-card card-glow-blue">
-        <div class="card-header">
-          <div class="card-icon icon-blue">⚙️</div>
-          <div>
-            <div class="card-title">إعدادات النظام</div>
-            <div class="card-desc">تخصيص تجربة الموقع</div>
-          </div>
-        </div>
-
-        <div style="display:grid;gap:16px">
-          <div class="toggle-container">
-            <div class="toggle-info">
-              <div class="toggle-title">السماح بالتسجيل الجديد</div>
-              <div class="toggle-desc">عند التعطيل: لا يمكن للطلاب الجدد التسجيل</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="allowRegistration" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="toggle-container">
-            <div class="toggle-info">
-              <div class="toggle-title">إجبار تحديث الجلسة</div>
-              <div class="toggle-desc">عند التفعيل: يتم تسجيل خروج الطلاب بعد 30 دقيقة خمول</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="forceSessionTimeout" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="toggle-container">
-            <div class="toggle-info">
-              <div class="toggle-title">تفعيل الوضع الليلي التلقائي</div>
-              <div class="toggle-desc">عند التفعيل: يتكيف الموقع مع إعدادات جهاز الطالب</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="autoDarkMode" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="input-group">
-            <label class="input-label">🔑 كلمة مرور المشرف (تغيير)</label>
-            <span class="input-icon">🔒</span>
-            <input class="styled-input" id="newAdminPassword" type="password" placeholder="أدخل كلمة المرور الجديدة">
-          </div>
-          <div class="input-group">
-            <label class="input-label">🔐 تأكيد كلمة المرور</label>
-            <span class="input-icon">🔒</span>
-            <input class="styled-input" id="confirmAdminPassword" type="password" placeholder="أعد إدخال كلمة المرور">
-          </div>
-          
-          <div class="btn-row">
-            <button class="btn btn-primary" onclick="saveSettings()"><span>💾</span> حفظ الإعدادات</button>
-            <button class="btn btn-gold" onclick="exportSettings()"><span>📤</span> تصدير الإعدادات</button>
-          </div>
-          <div class="msg-box" id="settingsMsg"></div>
-        </div>
-      </div>
     </div>
 
     <!-- ===== TAB: LOGS ===== -->
@@ -1202,7 +635,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <div class="card-desc">مراقبة شاملة • كشف المشبوه</div>
           </div>
         </div>
-
         <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
           <select class="styled-input" id="logFilter" style="max-width:200px" onchange="filterLogs()">
             <option value="all">كل النشاطات</option>
@@ -1215,7 +647,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <button class="btn btn-outline" onclick="exportLogs()"><span>📥</span> تصدير</button>
           <button class="btn btn-danger" onclick="clearLogs()"><span>🗑️</span> مسح</button>
         </div>
-
         <div class="table-wrapper">
           <table>
             <thead>
@@ -1245,34 +676,46 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 /* ===== SUPABASE CONFIG ===== */
 const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co";
 const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI";
+const TELEGRAM_BOT_TOKEN = "7769329974:AAHEwfIzPDZ1-KCSAKsxepmNtC35lYXvlMs";
+const TELEGRAM_CHAT_ID = "910624538";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* ===== GLOBAL STATE ===== */
 let studentsData = [];
 let selectedID = null;
-let selectedAlertColor = '#ff4444';
-let selectedBadgeChar = '⭐';
-let selectedBadgeColor = '#ffd700';
 let currentSort = { column: 'date', direction: 'desc' };
 
-/* ===== PARTICLES ===== */
-(function(){
-  const container = document.getElementById('particles');
-  const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
-  for(let i=0;i<25;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random()*4+2;
-    p.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${Math.random()*100}%;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      animation-duration:${Math.random()*15+10}s;
-      animation-delay:${Math.random()*10}s;
-      box-shadow:0 0 ${size*3}px currentColor;
-    `;
-    container.appendChild(p);
-  }
+// ✅ إعدادات الحماية
+let securitySettings = {
+  rateLimit: true,
+  fingerprint: true,
+  behaviorDetection: true
+};
+
+// ✅ نظام Rate Limiting
+const RATE_LIMIT = {
+  maxAttempts: 5,
+  windowMs: 60 * 60 * 1000,
+  attempts: new Map()
+};
+
+// ✅ كاش لكود الجهاز
+let DEVICE_CODE_CACHE = null;
+const DEVICE_CODE_PROMISE = (async () => {
+  if (DEVICE_CODE_CACHE) return DEVICE_CODE_CACHE;
+  const parts = [
+    navigator.userAgent,
+    navigator.platform || '',
+    navigator.language || '',
+    Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+    `${screen.width}x${screen.height}x${screen.colorDepth}`,
+    navigator.hardwareConcurrency || '',
+    navigator.deviceMemory || '',
+    canvasFp(),
+    webglFp()
+  ].join('||');
+  DEVICE_CODE_CACHE = (await sha256(parts)).slice(0, 28);
+  return DEVICE_CODE_CACHE;
 })();
 
 /* ===== UI HELPERS ===== */
@@ -1301,7 +744,321 @@ function formatDate(ts){
 }
 
 function isLightColor(color) {
-  return ['#ffd700','#ffaa00','#ffffff','#ffcc00','#ffff00'].includes(color.toLowerCase());
+  return ['#ffd700','#ffaa00','#ffffff','#ffcc00','#ffff00'].includes(color?.toLowerCase());
+}
+
+/* ===== PARTICLES ===== */
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
+  for(let i=0;i<25;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+      box-shadow:0 0 ${size*3}px currentColor;
+    `;
+    container.appendChild(p);
+  }
+})();
+
+/* ===== FINGERPRINT FUNCTIONS ===== */
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function canvasFp(){
+  try{
+    const c = document.createElement('canvas'); c.width=260; c.height=80;
+    const x = c.getContext('2d');
+    x.textBaseline='top'; x.font='16px Arial';
+    x.fillStyle='#f5c842'; x.fillRect(10,10,80,30);
+    x.fillStyle='#7dd3fc'; x.fillText('ONX-TAQE|Fingerprint',12,14);
+    x.fillStyle='rgba(255,255,255,0.6)'; x.fillText(navigator.userAgent,12,38);
+    return c.toDataURL();
+  } catch { return 'no-canvas'; }
+}
+
+function webglFp(){
+  try{
+    const c = document.createElement('canvas'), gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    if(!gl) return 'no-webgl';
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    return (dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : 'v?') + '|' + (dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'r?');
+  } catch { return 'no-webgl'; }
+}
+
+/* ===== RATE LIMITING ===== */
+async function checkRateLimit(deviceCode) {
+  const now = Date.now();
+  const record = RATE_LIMIT.attempts.get(deviceCode);
+  
+  if (!record || (now - record.startTime) > RATE_LIMIT.windowMs) {
+    RATE_LIMIT.attempts.set(deviceCode, { count: 1, startTime: now });
+    return { allowed: true, remaining: RATE_LIMIT.maxAttempts - 1 };
+  }
+  
+  if (record.count >= RATE_LIMIT.maxAttempts) {
+    const remaining = RATE_LIMIT.windowMs - (now - record.startTime);
+    return { 
+      allowed: false, 
+      remaining: 0,
+      retryAfter: Math.ceil(remaining / 1000)
+    };
+  }
+  
+  record.count++;
+  return { allowed: true, remaining: RATE_LIMIT.maxAttempts - record.count };
+}
+
+function toggleRateLimit() {
+  securitySettings.rateLimit = !securitySettings.rateLimit;
+  const btn = $('#rlBtn');
+  const icon = $('#rlIcon');
+  
+  if (securitySettings.rateLimit) {
+    btn.textContent = 'مفعّل';
+    btn.className = 'security-action active';
+    icon.className = 'security-icon allowed';
+    icon.textContent = '✅';
+    showToast('✅ تم تفعيل Rate Limiting', 'success');
+  } else {
+    btn.textContent = 'معطّل';
+    btn.className = 'security-action';
+    icon.className = 'security-icon blocked';
+    icon.textContent = '❌';
+    showToast('⚠️ تم تعطيل Rate Limiting', 'info');
+  }
+}
+
+/* ===== FINGERPRINT PROTECTION ===== */
+async function checkFingerprintBan(deviceCode) {
+  if (!securitySettings.fingerprint) return { blocked: false };
+  
+  // التحقق من جدول banned_users
+  const { data: banned, error: banError } = await supabase
+    .from('banned_users')
+    .select('target, reason')
+    .eq('target', deviceCode)
+    .single();
+  
+  if (banError && banError.code !== 'PGRST116') {
+    console.error('Error checking ban:', banError);
+    return { blocked: false };
+  }
+  
+  if (banned) {
+    return { blocked: true, reason: banned.reason || 'جهاز محظور' };
+  }
+  
+  // التحقق من وجود تسجيل سابق بنفس الكود
+  const { data: existing, error: existError } = await supabase
+    .from('student_reports')
+    .select('id, name')
+    .eq('code', deviceCode)
+    .single();
+  
+  if (existError && existError.code !== 'PGRST116') {
+    console.error('Error checking existing:', existError);
+    return { blocked: false };
+  }
+  
+  if (existing) {
+    return { 
+      blocked: true, 
+      reason: 'هذا الجهاز مسجل مسبقاً',
+      existingName: existing.name
+    };
+  }
+  
+  return { blocked: false };
+}
+
+function toggleFingerprint() {
+  securitySettings.fingerprint = !securitySettings.fingerprint;
+  const btn = $('#fpBtn');
+  const icon = $('#fpIcon');
+  
+  if (securitySettings.fingerprint) {
+    btn.textContent = 'مفعّل';
+    btn.className = 'security-action active';
+    icon.className = 'security-icon allowed';
+    icon.textContent = '✅';
+    showToast('✅ تم تفعيل حماية البصمة المركبة', 'success');
+  } else {
+    btn.textContent = 'معطّل';
+    btn.className = 'security-action';
+    icon.className = 'security-icon blocked';
+    icon.textContent = '❌';
+    showToast('⚠️ تم تعطيل حماية البصمة', 'info');
+  }
+}
+
+/* ===== SUSPICIOUS BEHAVIOR DETECTION ===== */
+class SuspiciousBehaviorDetector {
+  constructor() {
+    this.detections = [];
+    this.init();
+  }
+  
+  init() {
+    if (!securitySettings.behaviorDetection) return;
+    
+    this.detectDevTools();
+    this.detectConsoleAccess();
+    this.detectCopyBehavior();
+    this.detectVisibilityChange();
+  }
+  
+  detectDevTools() {
+    let threshold = 160;
+    const check = () => {
+      if (!securitySettings.behaviorDetection) return;
+      
+      const widthDiff = window.outerWidth - window.innerWidth > threshold;
+      const heightDiff = window.outerHeight - window.innerHeight > threshold;
+      
+      if (widthDiff || heightDiff) {
+        this.reportSuspicious('devtools_open', 'تم فتح أدوات المطور (اختلاف أبعاد النافذة)');
+      }
+      
+      requestAnimationFrame(check);
+    };
+    check();
+  }
+  
+  detectConsoleAccess() {
+    if (!securitySettings.behaviorDetection) return;
+    
+    const devtools = /./;
+    devtools.toString = function() {
+      this.reportSuspicious('console_access', 'تم الوصول إلى console.log');
+      return '';
+    }.bind(this);
+    console.log(devtools);
+  }
+  
+  detectCopyBehavior() {
+    if (!securitySettings.behaviorDetection) return;
+    
+    let copyCount = 0;
+    let lastCopy = 0;
+    
+    document.addEventListener('copy', (e) => {
+      if (!securitySettings.behaviorDetection) return;
+      
+      const now = Date.now();
+      copyCount++;
+      
+      if (now - lastCopy < 10000 && copyCount > 3) {
+        this.reportSuspicious('excessive_copy', 'نسخ متكرر مشبوه (3+ مرات في 10 ثواني)');
+        copyCount = 0;
+      }
+      lastCopy = now;
+    });
+  }
+  
+  detectVisibilityChange() {
+    if (!securitySettings.behaviorDetection) return;
+    
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.detections.push({
+          type: 'visibility_hidden',
+          time: Date.now(),
+          deviceCode: DEVICE_CODE_CACHE
+        });
+      }
+    });
+  }
+  
+  async reportSuspicious(type, details) {
+    if (!securitySettings.behaviorDetection) return;
+    
+    const deviceCode = await DEVICE_CODE_PROMISE;
+    const report = {
+      type,
+      details,
+      deviceCode,
+      userAgent: navigator.userAgent,
+      timestamp: new Date().toISOString()
+    };
+    
+    this.detections.push(report);
+    
+    // إرسال تنبيه للمشرف
+    try {
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: `🚨 <b>تنبيه أمني!</b>\n\n📋 النوع: ${type}\n📝 التفاصيل: ${details}\n🔐 كود الجهاز: \`${deviceCode}\`\n🕐 الوقت: ${report.timestamp}`,
+          parse_mode: 'HTML'
+        })
+      });
+    } catch(e) {
+      console.error('Failed to send alert:', e);
+    }
+    
+    // حظر تلقائي للسلوكيات الخطيرة
+    if (['devtools_open', 'console_access'].includes(type)) {
+      await this.autoBan(deviceCode, `سلوك مشبوه: ${type} - ${details}`);
+    }
+  }
+  
+  async autoBan(deviceCode, reason) {
+    try {
+      await supabase.from('banned_users').insert([{
+        target: deviceCode,
+        reason: reason,
+        banned_by: 'auto_system',
+        banned_at: new Date().toISOString()
+      }]);
+      
+      await supabase.from('admin_logs').insert([{
+        admin_id: 'auto_system',
+        action: 'auto_ban',
+        status: 'success',
+        details: `حظر تلقائي للجهاز ${deviceCode.slice(0,10)}...: ${reason}`
+      }]);
+      
+      showToast(`🚫 تم حظر الجهاز تلقائياً: ${reason}`, 'error');
+      loadBannedList();
+    } catch(e) {
+      console.error('Auto-ban failed:', e);
+    }
+  }
+}
+
+let behaviorDetector = null;
+
+function toggleBehaviorDetection() {
+  securitySettings.behaviorDetection = !securitySettings.behaviorDetection;
+  const btn = $('#bdBtn');
+  const icon = $('#bdIcon');
+  
+  if (securitySettings.behaviorDetection) {
+    btn.textContent = 'مفعّل';
+    btn.className = 'security-action active';
+    icon.className = 'security-icon allowed';
+    icon.textContent = '✅';
+    behaviorDetector = new SuspiciousBehaviorDetector();
+    showToast('✅ تم تفعيل كشف السلوك المشبوه', 'success');
+  } else {
+    btn.textContent = 'معطّل';
+    btn.className = 'security-action';
+    icon.className = 'security-icon blocked';
+    icon.textContent = '❌';
+    behaviorDetector = null;
+    showToast('⚠️ تم تعطيل كشف السلوك المشبوه', 'info');
+  }
 }
 
 /* ===== LOGIN SYSTEM ===== */
@@ -1326,17 +1083,34 @@ function setLoginLoading(v) {
   btn.disabled = v;
 }
 
+async function getIPAddress() {
+  try {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    return data.ip;
+  } catch {
+    return 'unknown';
+  }
+}
+
 async function doLogin() {
   const u = $('#loginUsername').value.trim();
   const p = $('#loginPassword').value.trim();
   if(!u || !p){ showLoginError('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور'); return; }
+  
   setLoginLoading(true);
+  
   try {
     const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' });
     if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد');
     const raw = await res.text();
     const creds = parseCreds(raw);
-    if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return; }
+    
+    if(!creds.username || !creds.password){ 
+      showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); 
+      return; 
+    }
+    
     if(u === creds.username && p === creds.password){
       await supabase.from('admin_logs').insert([{
         admin_id: 'admin_001',
@@ -1371,16 +1145,6 @@ async function doLogin() {
 }
 window.doLogin = doLogin;
 
-async function getIPAddress() {
-  try {
-    const res = await fetch('https://api.ipify.org?format=json');
-    const data = await res.json();
-    return data.ip;
-  } catch {
-    return 'unknown';
-  }
-}
-
 function doLogout(){
   $('#dashboardScreen').classList.remove('active');
   const ls = $('#loginScreen');
@@ -1407,7 +1171,6 @@ $$('.tab-btn').forEach(btn => {
     
     if(btn.dataset.tab === 'students') loadStudents();
     if(btn.dataset.tab === 'security') loadBannedList();
-    if(btn.dataset.tab === 'comments') loadComments();
     if(btn.dataset.tab === 'logs') loadLogs();
   });
 });
@@ -1419,12 +1182,20 @@ async function initDashboard() {
   await loadSiteSettings();
   await loadBannedList();
   setupRealtime();
+  
+  // ✅ تفعيل كاشف السلوك المشبوه إذا كان مفعلاً
+  if (securitySettings.behaviorDetection) {
+    behaviorDetector = new SuspiciousBehaviorDetector();
+  }
 }
 
 /* ===== SITE STATUS ===== */
 async function loadSiteStatus(){
   const {data, error} = await supabase.from("site_control").select("site_open").eq("id",1).single();
-  if(error) return;
+  if(error) {
+    console.error('Error loading site status:', error);
+    return;
+  }
   $('#siteSwitch').checked = data.site_open;
   updateSiteUI(data.site_open);
 }
@@ -1450,7 +1221,10 @@ function updateSiteUI(isOpen){
 async function toggleSite(){
   const newValue = $('#siteSwitch').checked;
   const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1);
-  if(error){ showMsg("#siteMsg","فشل تحديث حالة الموقع ❌","error"); return; }
+  if(error){ 
+    showMsg("#siteMsg","فشل تحديث حالة الموقع ❌","error"); 
+    return; 
+  }
   
   await supabase.from('admin_logs').insert([{
     admin_id: 'admin_001',
@@ -1467,7 +1241,10 @@ window.toggleSite = toggleSite;
 /* ===== LOAD SITE SETTINGS ===== */
 async function loadSiteSettings(){
   const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single();
-  if(error || !data) return;
+  if(error || !data) {
+    console.error('Error loading site settings:', error);
+    return;
+  }
   
   if(data.notification && data.notification.trim()){
     $('#notifInput').value = data.notification;
@@ -1485,82 +1262,77 @@ async function loadSiteSettings(){
   if(data.deadline_active !== undefined){
     $('#deadlineActiveSwitch').checked = !!data.deadline_active;
   }
-  
-  if(data.usage_guidelines && data.usage_guidelines.trim()){
-    $('#guidelinesTextarea').value = data.usage_guidelines.trim();
-    $('#guidelinesPreview').classList.add('show');
-    $('#guidelinesPreviewEmpty').style.display = 'none';
-    $('#guidelinesPreviewContent').textContent = data.usage_guidelines.trim();
-  }
 }
 
-window.previewGuidelinesLive = function(){
-  const text = $('#guidelinesTextarea').value.trim();
-  const preview = $('#guidelinesPreview');
-  const empty = $('#guidelinesPreviewEmpty');
-  const content = $('#guidelinesPreviewContent');
-  if(text){
-    preview.classList.add('show');
-    empty.style.display = 'none';
-    content.textContent = text;
-  } else {
-    preview.classList.remove('show');
-    empty.style.display = 'block';
-    content.textContent = 'ستظهر الإرشادات هنا عند الكتابة…';
-  }
-}
-
-/* ===== STUDENTS MANAGEMENT ===== */
+/* ===== STUDENTS MANAGEMENT - FIXED ===== */
 async function loadStudents(){
   try {
-    const {data, error} = await supabase.from("student_reports").select("*").order("id",{ascending:true});
-    if(error){ console.error("Error loading students:", error); return; }
+    const {data, error} = await supabase
+      .from("student_reports")
+      .select("*")
+      .order("id",{ascending:true});
+    
+    if(error){ 
+      console.error("Error loading students:", error);
+      $("#studentsTable").innerHTML = `<tr><td colspan="7"><div class="empty-state"><div style="color:#ff6b6b">❌ خطأ: ${error.message}</div></div></td></tr>`;
+      return; 
+    }
     
     studentsData = data || [];
     
     const table = $("#studentsTable");
     const total = studentsData.length;
     const badged = studentsData.filter(s => s.badge && s.badge.trim()).length;
+    const alerts = studentsData.filter(s => s.alert_text && s.alert_text.trim()).length;
     
     $("#statsTotal").textContent = total;
     $("#statsBadged").textContent = badged;
+    $("#statsAlerts").textContent = alerts;
     
     if(total > 0){
       const sorted = [...studentsData].sort((a,b) => new Date(b.date) - new Date(a.date));
-      $("#statsLastReport").textContent = sorted[0].name;
+      const nameParts = (sorted[0].name||'').split(' ');
+      const shortName = nameParts.length >= 2 ? nameParts[0] : (sorted[0].name||'—');
+      $("#statsLastReport").textContent = shortName;
     }
     
     if(total===0){
-      table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`;
+      table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلين بعد</div></div></td></tr>`;
       return;
     }
     
     table.innerHTML = studentsData.map((s,i) => {
-      // ✨ Badge display logic
-      const badgeHTML = s.badge && s.badge.trim() ? 
-        `<span class="student-badge" style="background:${s.badge_color || '#ffd700'};color:${isLightColor(s.badge_color) ? '#000' : '#fff'}">${s.badge}</span>` : '';
-      
-      const d = new Date(s.date);
-      const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
-      
-      return `<tr style="animation-delay:${i*0.05}s">
-        <td><span class="row-num">${i+1}</span></td>
-        <td class="student-name-cell">${badgeHTML}<span style="color:${s.color || '#e0e0f0'}">${s.name}</span></td>
-        <td style="color:${s.color || '#e0e0f0'};text-align:right;padding-right:16px">${s.title}</td>
-        <td><span class="subject-badge" style="color:${s.color || '#00d4ff'};border-color:${(s.color || '#00d4ff')}44;background:${(s.color || '#00d4ff')}14">${s.subject}</span></td>
-        <td class="date-cell">${dateStr}</td>
-        <td>${s.banned ? '<span style="color:#ff6b6b;font-weight:700">🚫 محظور</span>' : '<span style="color:#00ff88">✅ نشط</span>'}</td>
-        <td>
-          <div class="action-btns">
-            <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s).replace(/'/g,"\\'")})'>✏️</button>
-            <button class="btn-sm ${s.banned?'btn-sm-unban':'btn-sm-ban'}" onclick='${s.banned?'unban':'ban'}Student(${s.id})'>${s.banned?'✅':'🚫'}</button>
-            <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️</button>
-          </div>
-        </td>
-      </tr>`;
+      try {
+        const badgeHTML = s.badge && s.badge.trim() ? 
+          `<span class="student-badge" style="background:${s.badge_color || '#ffd700'};color:${isLightColor(s.badge_color) ? '#000' : '#fff'}">${s.badge}</span>` : '';
+        
+        const d = s.date ? new Date(s.date) : new Date();
+        const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+        
+        return `<tr style="animation-delay:${i*0.05}s">
+          <td><span class="row-num">${i+1}</span></td>
+          <td class="student-name-cell">${badgeHTML}<span style="color:${s.color || '#e0e0f0'}">${s.name || '—'}</span></td>
+          <td style="color:${s.color || '#e0e0f0'};text-align:right;padding-right:16px">${s.title || '—'}</td>
+          <td><span class="subject-badge" style="color:${s.color || '#00d4ff'};border-color:${(s.color || '#00d4ff')}44;background:${(s.color || '#00d4ff')}14">${s.subject || '—'}</span></td>
+          <td class="date-cell">${dateStr}</td>
+          <td>${s.banned ? '<span style="color:#ff6b6b;font-weight:700">🚫 محظور</span>' : '<span style="color:#00ff88">✅ نشط</span>'}</td>
+          <td>
+            <div class="action-btns">
+              <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s).replace(/'/g,"\\'")})'>✏️</button>
+              <button class="btn-sm ${s.banned?'btn-sm-unban':'btn-sm-ban'}" onclick='${s.banned?'unban':'ban'}Student(${s.id})'>${s.banned?'✅':'🚫'}</button>
+              <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️</button>
+            </div>
+          </td>
+        </tr>`;
+      } catch(e) {
+        console.error("Error rendering row:", e, s);
+        return '';
+      }
     }).join('');
+    
   } catch(err) {
-    console.error("Error in loadStudents:", err);
+    console.error("Critical Error in loadStudents:", err);
+    $("#studentsTable").innerHTML = `<tr><td colspan="7"><div class="empty-state">❌ فشل تحميل البيانات</div></td></tr>`;
   }
 }
 window.loadStudents = loadStudents;
@@ -1570,9 +1342,33 @@ async function addStudent(){
   const title = $('#reportTitle').value.trim();
   const subject = $('#subjectName').value.trim();
   
-  if(!name || !title || !subject){ showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  if(!name || !title || !subject){ 
+    showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); 
+    return; 
+  }
+  
+  // ✅ فحص Rate Limiting أولاً
+  if (securitySettings.rateLimit) {
+    const deviceCode = await DEVICE_CODE_PROMISE;
+    const rateCheck = await checkRateLimit(deviceCode);
+    if (!rateCheck.allowed) {
+      showMsg(`#msgAdd`, `⚠️ تجاوزت الحد المسموح! انتظر ${rateCheck.retryAfter} ثانية`, 'error');
+      return;
+    }
+  }
+  
+  // ✅ فحص البصمة المركبة
+  if (securitySettings.fingerprint) {
+    const deviceCode = await DEVICE_CODE_PROMISE;
+    const fpCheck = await checkFingerprintBan(deviceCode);
+    if (fpCheck.blocked) {
+      showMsg("#msgAdd", `❌ ${fpCheck.reason}${fpCheck.existingName ? ` (باسم: ${fpCheck.existingName})` : ''}`, "error");
+      return;
+    }
+  }
   
   try {
+    // التحقق من التكرار
     const { data: nameExists } = await supabase.from('student_reports').select('id').eq('name', name).limit(1);
     const { data: titleExists } = await supabase.from('student_reports').select('id').eq('title', title).limit(1);
     
@@ -1581,12 +1377,17 @@ async function addStudent(){
       return;
     }
     
+    const deviceCode = await DEVICE_CODE_PROMISE;
+    
     const {error} = await supabase.from("student_reports").insert([{
       name, title, subject, date:new Date().toISOString(),
-      code: 'admin_added', badge: null, badge_color: null
+      code: deviceCode, badge: null, badge_color: null
     }]);
     
-    if(error){ showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -1605,20 +1406,29 @@ async function addStudent(){
 }
 
 async function updateStudent(){
-  if(!selectedID){ showMsg("#msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return; }
+  if(!selectedID){ 
+    showMsg("#msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); 
+    return; 
+  }
   
   const name = $('#studentName').value.trim();
   const title = $('#reportTitle').value.trim();
   const subject = $('#subjectName').value.trim();
   
-  if(!name || !title || !subject){ showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
+  if(!name || !title || !subject){ 
+    showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); 
+    return; 
+  }
   
   try {
     const {error} = await supabase.from("student_reports").update({
       name, title, subject, date:new Date().toISOString()
     }).eq("id", selectedID);
     
-    if(error){ showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -1650,7 +1460,10 @@ async function deleteStudent(id){
   
   try {
     const {error} = await supabase.from("student_reports").delete().eq("id",id);
-    if(error){ showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -1673,7 +1486,10 @@ async function banStudent(id){
   
   try {
     const {error} = await supabase.from("student_reports").update({banned: true}).eq("id",id);
-    if(error){ showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -1694,7 +1510,10 @@ window.banStudent = banStudent;
 async function unbanStudent(id){
   try {
     const {error} = await supabase.from("student_reports").update({banned: false}).eq("id",id);
-    if(error){ showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -1719,109 +1538,20 @@ function clearInputs(){
   selectedID = null;
 }
 
-/* ===== ✨ BADGE ASSIGNMENT FUNCTIONS - MODIFIED ===== */
-
-window.selectBadgeColor = function(color, el){
-  selectedBadgeColor = color;
-  $$('#badgeColorPalette .color-box').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  previewBadge();
-}
-
-window.previewBadge = function(){
-  const idx = parseInt($('#badgeStudentIndex').value) - 1;
-  const badgeChar = $('#badgeTextInput').value.trim() || '⭐';
-  const previewBadgeEl = $('#badgePreview');
-  const previewName = $('#badgePreviewName');
-  
-  selectedBadgeChar = badgeChar;
-  
-  if(!isNaN(idx) && idx >= 0 && idx < studentsData.length){
-    const student = studentsData[idx];
-    previewName.textContent = student.name;
-    previewBadgeEl.textContent = badgeChar;
-    previewBadgeEl.style.background = selectedBadgeColor;
-    previewBadgeEl.style.color = isLightColor(selectedBadgeColor) ? '#000' : '#fff';
-    previewBadgeEl.style.display = 'inline-flex';
-  } else {
-    previewName.textContent = 'اسم الطالب';
-    previewBadgeEl.textContent = badgeChar;
-    previewBadgeEl.style.background = selectedBadgeColor;
-    previewBadgeEl.style.color = isLightColor(selectedBadgeColor) ? '#000' : '#fff';
-    previewBadgeEl.style.display = idx >= 0 ? 'inline-flex' : 'none';
-  }
-}
-
-async function assignBadge(){
-  const idx = parseInt($('#badgeStudentIndex').value) - 1;
-  const badgeChar = $('#badgeTextInput').value.trim();
-  
-  if(isNaN(idx) || idx < 0){ showMsg('#msgBadge','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
-  if(!badgeChar){ showMsg('#msgBadge','⚠️ اكتب رمز أو إيموجي للشارة','error'); return; }
-  if(idx >= studentsData.length){ showMsg('#msgBadge','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
-  
-  const student = studentsData[idx];
-  
-  try {
-    const {error} = await supabase.from('student_reports').update({
-      badge: badgeChar,
-      badge_color: selectedBadgeColor
-    }).eq('id', student.id);
-    
-    if(error){ showMsg('#msgBadge','❌ فشل منح الشارة: ' + error.message, 'error'); return; }
-    
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'assign_badge',
-      status: 'success',
-      details: `تم منح شارة "${badgeChar}" باللون ${selectedBadgeColor} للطالب: ${student.name}`
-    }]);
-    
-    showMsg('#msgBadge', `⭐ تم منح شارة "${badgeChar}" للطالب "${student.name}"`, 'success');
-    loadStudents();
-    previewBadge();
-  } catch(err) {
-    console.error("Error in assignBadge:", err);
-    showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-window.assignBadge = assignBadge;
-
-async function removeBadge(){
-  const idx = parseInt($('#badgeStudentIndex').value) - 1;
-  
-  if(isNaN(idx) || idx < 0){ showMsg('#msgBadge','⚠️ أدخل رقم الطالب أولاً','error'); return; }
-  if(idx >= studentsData.length){ showMsg('#msgBadge','⚠️ رقم الطالب غير موجود','error'); return; }
-  
-  const student = studentsData[idx];
-  
-  try {
-    const {error} = await supabase.from('student_reports').update({
-      badge: null,
-      badge_color: null
-    }).eq('id', student.id);
-    
-    if(error){ showMsg('#msgBadge','❌ فشل إزالة الشارة: '+error.message,'error'); return; }
-    
-    showMsg('#msgBadge', `❌ تم إزالة شارة الطالب "${student.name}"`, 'info');
-    $('#badgePreview').style.display = 'none';
-    $('#badgeTextInput').value = '';
-    loadStudents();
-  } catch(err) {
-    console.error("Error in removeBadge:", err);
-    showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-window.removeBadge = removeBadge;
-
 /* ===== NOTIFICATIONS ===== */
 async function sendNotification(){
   const msg = $('#notifInput').value.trim();
-  if(!msg){ showMsg("#msgNotif","⚠️ أدخل نص الإشعار","error"); return; }
+  if(!msg){ 
+    showMsg("#msgNotif","⚠️ أدخل نص الإشعار","error"); 
+    return; 
+  }
   
   try {
     const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1);
-    if(error){ showMsg("#msgNotif","❌ فشل الإرسال: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgNotif","❌ فشل الإرسال: "+error.message,"error"); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -1843,7 +1573,10 @@ window.sendNotification = sendNotification;
 async function clearNotification(){
   try {
     const {error} = await supabase.from("site_control").update({notification: ""}).eq("id",1);
-    if(error){ showMsg("#msgNotif","❌ فشل المسح: "+error.message,"error"); return; }
+    if(error){ 
+      showMsg("#msgNotif","❌ فشل المسح: "+error.message,"error"); 
+      return; 
+    }
     
     $('#notifInput').value = "";
     $('#currentNotif').style.display = "none";
@@ -1855,172 +1588,14 @@ async function clearNotification(){
 }
 window.clearNotification = clearNotification;
 
-/* ===== DEADLINE ===== */
-async function saveDeadline(){
-  const dtVal = $('#deadlineInput').value;
-  const active = $('#deadlineActiveSwitch').checked;
-  
-  try {
-    const {error} = await supabase.from("site_control")
-      .update({ 
-        deadline: dtVal ? new Date(dtVal).toISOString() : null, 
-        deadline_active: active 
-      }).eq("id",1);
-      
-    if(error){ showMsg("#msgDeadline","❌ فشل الحفظ: "+error.message,"error"); return; }
-    
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'update_deadline',
-      status: 'success',
-      details: `تم ${active ? 'تعيين' : 'إخفاء'} موعد التسليم: ${dtVal}`
-    }]);  
-    
-    showMsg("#msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");
-  } catch(err) {
-    console.error("Error in saveDeadline:", err);
-    showMsg("#msgDeadline","❌ خطأ: "+err.message,"error");
-  }
-}
-window.saveDeadline = saveDeadline;
-
-/* ===== GUIDELINES ===== */
-async function saveGuidelines(){
-  const text = $('#guidelinesTextarea').value.trim();
-  if(!text){ showMsg('#msgGuidelines','⚠️ اكتب الإرشادات أولاً','error'); return; }
-  
-  try {
-    const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1);
-    if(error){ showMsg('#msgGuidelines','❌ فشل الحفظ: '+error.message,'error'); return; }
-    
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'update_guidelines',
-      status: 'success',
-      details: 'تم تحديث متطلبات الاستخدام'
-    }]);
-    
-    showMsg('#msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success');
-    $('#guidelinesPreview').classList.add('show');
-    $('#guidelinesPreviewEmpty').style.display = 'none';
-    $('#guidelinesPreviewContent').textContent = text;
-  } catch(err) {
-    console.error("Error in saveGuidelines:", err);
-    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
-  }
-}
-window.saveGuidelines = saveGuidelines;
-
-async function clearGuidelines(){
-  if(!confirm('هل أنت متأكد من مسح الإرشادات؟')) return;
-  
-  try {
-    const {error} = await supabase.from("site_control").update({ usage_guidelines: null }).eq("id",1);
-    if(error){ showMsg('#msgGuidelines','❌ فشل المسح: '+error.message,'error'); return; }
-    
-    $('#guidelinesTextarea').value = '';
-    $('#guidelinesPreview').classList.remove('show');
-    $('#guidelinesPreviewEmpty').style.display = 'block';
-    showMsg('#msgGuidelines','🗑️ تم مسح الإرشادات','info');
-  } catch(err) {
-    console.error("Error in clearGuidelines:", err);
-    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
-  }
-}
-window.clearGuidelines = clearGuidelines;
-
-/* ===== ALERTS ===== */
-window.selectAlertColor = function(color, el){
-  selectedAlertColor = color;
-  $$('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  previewAlert();
-}
-
-window.previewAlert = function(){
-  const text = $('#alertStudentText').value.trim();
-  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
-  const box = $('#alertPreviewBox');
-  const ptext = $('#alertPreviewText');
-  const ptype = $('#alertPreviewType');
-  if(text){
-    box.style.display = 'flex';
-    box.style.color = selectedAlertColor;
-    box.style.borderLeft = `3px solid ${selectedAlertColor}`;
-    box.style.background = `${selectedAlertColor}18`;
-    ptext.textContent = text;
-    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام';
-  } else {
-    box.style.display = 'none';
-  }
-}
-
-async function sendStudentAlert(){
-  const idx = parseInt($('#alertStudentIndex').value) - 1;
-  const text = $('#alertStudentText').value.trim();
-  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
-  
-  if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
-  if(!text){ showMsg('#msgAlert','⚠️ أدخل نص التحذير','error'); return; }
-  if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
-  
-  const student = studentsData[idx];
-  
-  try {
-    const {error} = await supabase.from('student_reports').update({
-      alert_text: text,
-      alert_color: selectedAlertColor,
-      alert_type: type
-    }).eq('id', student.id);
-    
-    if(error){ showMsg('#msgAlert','❌ فشل الإرسال: ' + error.message, 'error'); return; }
-    
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'send_alert',
-      status: 'success',
-      details: `تم إرسال تحذير ${type} للطالب: ${student.name}`
-    }]);
-    
-    showMsg('#msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success');
-    loadStudents();
-  } catch(err) {
-    console.error("Error in sendStudentAlert:", err);
-    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-window.sendStudentAlert = sendStudentAlert;
-
-async function clearStudentAlert(){
-  const idx = parseInt($('#alertStudentIndex').value) - 1;
-  if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return; }
-  if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود','error'); return; }
-  
-  const student = studentsData[idx];
-  
-  try {
-    const {error} = await supabase.from('student_reports').update({
-      alert_text: null,
-      alert_color: null,
-      alert_type: null
-    }).eq('id', student.id);
-    
-    if(error){ showMsg('#msgAlert','❌ فشل الحذف: '+error.message,'error'); return; }
-    
-    showMsg('#msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info');
-    $('#alertPreviewBox').style.display = 'none';
-  } catch(err) {
-    console.error("Error in clearStudentAlert:", err);
-    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-window.clearStudentAlert = clearStudentAlert;
-
 /* ===== SECURITY: MANUAL BAN/UNBAN ===== */
 async function manualBan(){
   const target = $('#banTarget').value.trim();
   const reason = $('#banReason').value.trim() || 'حظر يدوي من المشرف';
-  if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
+  if(!target){ 
+    showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); 
+    return; 
+  }
   
   try {
     const {error} = await supabase.from('banned_users').insert([{
@@ -2030,7 +1605,10 @@ async function manualBan(){
       banned_at: new Date().toISOString()
     }]);
     
-    if(error){ showMsg('#securityMsg','❌ فشل الحظر: '+error.message,'error'); return; }
+    if(error){ 
+      showMsg('#securityMsg','❌ فشل الحظر: '+error.message,'error'); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -2052,11 +1630,17 @@ window.manualBan = manualBan;
 
 async function manualUnban(){
   const target = $('#banTarget').value.trim();
-  if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
+  if(!target){ 
+    showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); 
+    return; 
+  }
   
   try {
     const {error} = await supabase.from('banned_users').delete().eq('target', target);
-    if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
+    if(error){ 
+      showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); 
+      return; 
+    }
     
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
@@ -2083,13 +1667,14 @@ async function loadBannedList(){
     
     if(error || !data || data.length === 0){
       table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🛡️</div><div class="empty-text">لا يوجد محظورين حالياً</div></div></td></tr>`;
+      $('#statsBanned').textContent = '0';
       return;
     }
     
     table.innerHTML = data.map((b,i) => `
       <tr style="animation-delay:${i*0.05}s">
         <td><span class="row-num">${i+1}</span></td>
-        <td class="code-cell">${b.target}</td>
+        <td class="code-cell">${b.target?.slice(0,20)}${b.target?.length>20?'...':''}</td>
         <td><span class="subject-badge">جهاز/مستخدم</span></td>
         <td>${b.reason || '—'}</td>
         <td class="date-cell">${formatDate(b.banned_at)}</td>
@@ -2111,172 +1696,16 @@ window.manualUnbanTarget = async function(target){
   
   try {
     const {error} = await supabase.from('banned_users').delete().eq('target', target);
-    if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
+    if(error){ 
+      showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); 
+      return; 
+    }
     
     showMsg('#securityMsg', `✅ تم فك حظر: ${target}`, 'success');
     loadBannedList();
   } catch(err) {
     console.error("Error in manualUnbanTarget:", err);
     showMsg('#securityMsg', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-
-/* ===== COMMENTS SYSTEM ===== */
-async function loadComments(){
-  try {
-    const {data, error} = await supabase.from('comments').select('*').order('created_at', {ascending: false});
-    const list = $('#commentsList');
-    
-    if(error || !data || data.length === 0){
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>';
-      return;
-    }
-    
-    list.innerHTML = data.map(c => `
-      <div class="comment-item">
-        <div class="comment-avatar">${c.student_name?.charAt(0) || '؟'}</div>
-        <div class="comment-content">
-          <div class="comment-header">
-            <span class="comment-author">${c.student_name || 'طالب'}</span>
-            <span class="comment-time">${formatDate(c.created_at)}</span>
-          </div>
-          <div class="comment-text">${c.comment_text}</div>
-          <div class="comment-actions">
-            <button class="comment-btn ${c.approved ? 'delete' : ''}" onclick="toggleComment(${c.id}, ${c.approved})">
-              ${c.approved ? '🗑️ حذف' : '✅ موافقة'}
-            </button>
-            <button class="comment-btn" onclick="replyComment(${c.id})">💬 رد</button>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  } catch(err) {
-    console.error("Error in loadComments:", err);
-  }
-}
-window.loadComments = loadComments;
-
-window.filterComments = function(){
-  const filter = $('#commentFilter').value.toLowerCase();
-  loadComments();
-}
-
-window.toggleComment = async function(id, currentlyApproved){
-  try {
-    const newStatus = !currentlyApproved;
-    const {error} = await supabase.from('comments').update({approved: newStatus}).eq('id', id);
-    if(error){ showMsg('#msgAlert','❌ فشل التحديث','error'); return; }
-    loadComments();
-  } catch(err) {
-    console.error("Error in toggleComment:", err);
-    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-window.replyComment = function(id){
-  showMsg('#msgAlert', '💬 ميزة الرد قيد التطوير', 'info');
-}
-
-/* ===== SUGGESTIONS SYSTEM ===== */
-window.testSuggestions = async function(){
-  const subject = $('#testSubject').value.trim();
-  const results = $('#suggestionResults');
-  
-  if(!subject){ results.innerHTML = ''; return; }
-  
-  try {
-    const {data} = await supabase.from('student_reports').select('title').eq('subject', subject);
-    const existingTitles = data?.map(d => d.title.toLowerCase()) || [];
-    
-    const prefixes = ['دراسة تحليلية لـ', 'مقارنة بين تقنيات ', 'تطبيقات عملية في ', 'مستقبل ', 'تحديات '];
-    const suffixes = [' في البيئة الحديثة', ' التقليدية والحديثة', ' لحل المشكلات الواقعية', ' والذكاء الاصطناعي'];
-    
-    const suggestions = [];
-    for(let i=0; i<3 && suggestions.length<3; i++){
-      const prefix = prefixes[Math.floor(Math.random()*prefixes.length)];
-      const suffix = suffixes[Math.floor(Math.random()*suffixes.length)];
-      const suggestion = `"${prefix}${subject}${suffix}"`;
-      if(!existingTitles.some(t => t.includes(suggestion.toLowerCase().slice(1,-1)))){
-        suggestions.push(suggestion);
-      }
-    }
-    
-    if(suggestions.length === 0){
-      results.innerHTML = '<div style="color:rgba(255,255,255,0.5);padding:10px">لا توجد اقتراحات جديدة لهذه المادة حالياً</div>';
-      return;
-    }
-    
-    results.innerHTML = suggestions.map(s => `
-      <div class="suggestion-card">
-        <div class="suggestion-text">${s}</div>
-        <button class="btn-sm btn-sm-edit" onclick="useSuggestion('${s.replace(/'/g,"\\'")}')">✅ استخدام</button>
-      </div>
-    `).join('');
-  } catch(err) {
-    console.error("Error in testSuggestions:", err);
-  }
-}
-window.useSuggestion = function(suggestion){
-  $('#reportTitle').value = suggestion;
-  showMsg('#msgAdd', '✅ تم استخدام الاقتراح', 'success');
-  $('#testSubject').value = '';
-  $('#suggestionResults').innerHTML = '';
-}
-
-/* ===== SETTINGS ===== */
-async function saveSettings(){
-  const newPass = $('#newAdminPassword').value;
-  const confirmPass = $('#confirmAdminPassword').value;
-  
-  if(newPass && newPass !== confirmPass){
-    showMsg('#settingsMsg', '❌ كلمات المرور غير متطابقة', 'error');
-    return;
-  }
-  
-  try {
-    if(newPass){
-      await supabase.from('admin_logs').insert([{
-        admin_id: 'admin_001',
-        action: 'change_password',
-        status: 'success',
-        details: 'تم تغيير كلمة مرور المشرف'
-      }]);
-    }
-    
-    const {error} = await supabase.from('site_control').update({
-      allow_registration: $('#allowRegistration').checked,
-      force_session_timeout: $('#forceSessionTimeout').checked,
-      auto_dark_mode: $('#autoDarkMode').checked
-    }).eq('id', 1);
-    
-    if(error){ showMsg('#settingsMsg', '❌ فشل الحفظ: '+error.message, 'error'); return; }
-    
-    showMsg('#settingsMsg', '✅ تم حفظ الإعدادات بنجاح', 'success');
-    $('#newAdminPassword').value = '';
-    $('#confirmAdminPassword').value = '';
-  } catch(err) {
-    console.error("Error in saveSettings:", err);
-    showMsg('#settingsMsg', '❌ خطأ: ' + err.message, 'error');
-  }
-}
-window.saveSettings = saveSettings;
-
-window.exportSettings = async function(){
-  try {
-    const {data} = await supabase.from('site_control').select('*').eq('id',1).single();
-    if(!data){ showMsg('#settingsMsg', '❌ فشل التصدير', 'error'); return; }
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'onx-taqe-settings.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    
-    showMsg('#settingsMsg', '📤 تم تصدير الإعدادات', 'success');
-  } catch(err) {
-    console.error("Error in exportSettings:", err);
-    showMsg('#settingsMsg', '❌ خطأ: ' + err.message, 'error');
   }
 }
 
@@ -2321,7 +1750,10 @@ window.filterLogs = function(){ loadLogs(); }
 window.exportLogs = async function(){
   try {
     const {data} = await supabase.from('admin_logs').select('*').order('created_at', {ascending: false});
-    if(!data){ showMsg('#msgTable', '❌ فشل التصدير', 'error'); return; }
+    if(!data){ 
+      showMsg('#msgTable', '❌ فشل التصدير', 'error'); 
+      return; 
+    }
     
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
     const url = URL.createObjectURL(blob);
@@ -2343,7 +1775,10 @@ window.clearLogs = async function(){
   
   try {
     const {error} = await supabase.from('admin_logs').delete().neq('id', '0');
-    if(error){ showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); return; }
+    if(error){ 
+      showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); 
+      return; 
+    }
     
     showMsg('#msgTable', '🗑️ تم مسح السجلات', 'success');
     loadLogs();
@@ -2369,12 +1804,6 @@ function setupRealtime(){
     })
     .subscribe();
   
-  supabase.channel('admin_comments')
-    .on('postgres_changes', {event:'*', schema:'public', table:'comments'}, () => {
-      loadComments();
-    })
-    .subscribe();
-  
   supabase.channel('admin_logs_channel')
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'admin_logs'}, () => {
       loadLogs();
@@ -2382,10 +1811,79 @@ function setupRealtime(){
     .subscribe();
 }
 
+/* ===== TOAST NOTIFICATIONS ===== */
+function showToast(msg, type='success'){
+  // إنشاء عنصر toast مؤقت
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: ${type==='success'?'rgba(0,200,81,0.95)':type==='error'?'rgba(233,69,96,0.95)':'rgba(0,212,255,0.95)'};
+    color: #fff; padding: 12px 24px; border-radius: 12px;
+    font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 0.9rem;
+    z-index: 10000; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+  `;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  
+  // إضافة أنيميشن
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes toastIn { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+    @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+  `;
+  document.head.appendChild(style);
+  
+  setTimeout(() => toast.remove(), 3000);
+}
+
 /* ===== INIT ===== */
 setTimeout(() => {
   $('#entranceOverlay').style.display = 'none';
 }, 2500);
+
+// ✅ تهيئة النظام عند التحميل
+window.addEventListener('DOMContentLoaded', async () => {
+  // تحميل إعدادات الحماية من التخزين المحلي إذا وجدت
+  const savedSettings = localStorage.getItem('onx_security_settings');
+  if (savedSettings) {
+    try {
+      const parsed = JSON.parse(savedSettings);
+      securitySettings = { ...securitySettings, ...parsed };
+      
+      // تحديث واجهة الأزرار
+      if (!securitySettings.rateLimit) toggleRateLimit();
+      if (!securitySettings.fingerprint) toggleFingerprint();
+      if (!securitySettings.behaviorDetection) toggleBehaviorDetection();
+    } catch(e) {
+      console.error('Error loading security settings:', e);
+    }
+  }
+});
+
+// ✅ حفظ إعدادات الحماية عند التغيير
+function saveSecuritySettings() {
+  localStorage.setItem('onx_security_settings', JSON.stringify(securitySettings));
+}
+
+// إعادة تعريف دوال التبديل لحفظ الإعدادات
+const originalToggleRateLimit = toggleRateLimit;
+toggleRateLimit = function() {
+  originalToggleRateLimit();
+  saveSecuritySettings();
+};
+
+const originalToggleFingerprint = toggleFingerprint;
+toggleFingerprint = function() {
+  originalToggleFingerprint();
+  saveSecuritySettings();
+};
+
+const originalToggleBehaviorDetection = toggleBehaviorDetection;
+toggleBehaviorDetection = function() {
+  originalToggleBehaviorDetection();
+  saveSecuritySettings();
+};
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" crossorigin="anonymous"></script>
 </body>
