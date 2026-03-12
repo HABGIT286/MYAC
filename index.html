@@ -195,27 +195,44 @@ body {
 .btn:active { transform:translateY(1px) scale(0.98); }
 .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
 
-/* ===== SECURITY PANEL ===== */
-.security-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
-.security-item {
-  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
-  border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px;
-}
-.security-icon {
-  width:40px; height:40px; border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:18px; flex-shrink:0;
-}
-.security-icon.blocked { background:rgba(233,69,96,0.15); color:#ff6b6b; }
-.security-icon.allowed { background:rgba(0,200,81,0.15); color:#00ff88; }
-.security-info { flex:1; }
-.security-title { font-weight:700; font-size:0.95rem; }
-.security-desc { font-size:0.8rem; color:rgba(255,255,255,0.4); }
-.security-action { padding:6px 12px; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:var(--transition); border:none; background:transparent; color:inherit; font-family:'Cairo',sans-serif; font-weight:600; }
-.security-action.block { background:rgba(233,69,96,0.15); color:#ff6b6b; border:1px solid rgba(233,69,96,0.3); }
-.security-action.unblock { background:rgba(0,200,81,0.15); color:#00ff88; border:1px solid rgba(0,200,81,0.3); }
-.security-action:hover { transform:translateY(-1px); }
-.security-action.active { background:rgba(0,212,255,0.15); color:#00d4ff; border:1px solid rgba(0,212,255,0.3); }
+/* ===== COLOR PALETTE ===== */
+.palette-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
+.color-palette { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.color-box { width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:var(--transition); position:relative; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
+.color-box::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; opacity:0; transition:opacity 0.2s; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+.color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
+.color-box.selected::after { opacity:1; }
+
+/* ===== ALERT TYPE RADIOS ===== */
+.alert-type-row { display:flex; gap:12px; align-items:stretch; flex-wrap:wrap; margin-bottom:16px; }
+.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:var(--transition); flex:1; min-width:130px; }
+.alert-type-label.private-lbl { background:rgba(123,47,255,0.12); border:1px solid rgba(123,47,255,0.3); }
+.alert-type-label.public-lbl  { background:rgba(0,212,255,0.12);  border:1px solid rgba(0,212,255,0.3);  }
+.alert-type-label:hover { transform:translateY(-1px); filter:brightness(1.2); }
+.alert-type-label input { accent-color:#7b2fff; width:16px; height:16px; cursor:pointer; }
+.alert-type-label.public-lbl input { accent-color:#00d4ff; }
+.alert-type-text { color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:700; }
+
+/* ===== TOGGLE SWITCH ===== */
+.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+.toggle-info { flex:1; }
+.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
+.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
+.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:var(--transition); }
+.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:var(--transition); }
+input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
+input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
+input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
+
+/* ===== MSG BOX ===== */
+.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:var(--transition); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
+.msg-box.show { opacity:1; transform:translateY(0); }
+.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
+.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
+.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
 
 /* ===== TABLE CARD ===== */
 .table-card { grid-column:1 / -1; }
@@ -274,25 +291,185 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .btn-sm-unban  { background:rgba(0,200,81,0.15); border:1px solid rgba(0,200,81,0.3); color:#00c851; }
 .btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
 
-/* ===== MSG BOX ===== */
-.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:var(--transition); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
-.msg-box.show { opacity:1; transform:translateY(0); }
-.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
-.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
-.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
+/* Alert badge in table */
+.alert-table-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:3px 10px; border-radius:14px; font-size:0.75rem; font-weight:700;
+  border:1px solid; margin-top:4px;
+  animation: alertGlowSoft 2.5s ease-in-out infinite;
+}
+@keyframes alertGlowSoft { 0%,100%{opacity:0.85;} 50%{opacity:1;filter:brightness(1.2);} }
+.alert-badge-type { font-size:0.65rem; opacity:0.75; }
 
-/* ===== TOGGLE SWITCH ===== */
-.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
-.toggle-info { flex:1; }
-.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
-.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
-.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
-.switch input { opacity:0; width:0; height:0; }
-.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:var(--transition); }
-.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:var(--transition); }
-input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
-input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
-input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
+/* ===== DIVIDER ===== */
+.divider { height:1px; margin:20px 0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
+
+/* ===== SITE STATUS ===== */
+.site-status { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:20px; font-weight:700; font-size:0.85rem; margin-top:12px; }
+.status-open   { background:rgba(0,200,81,0.15); border:1px solid #00c851; color:#00ff88; }
+.status-closed { background:rgba(233,69,96,0.15); border:1px solid #e94560; color:#ff6b6b; }
+.status-dot { width:8px; height:8px; border-radius:50%; animation:pulse-dot 1.5s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
+.dot-open   { background:#00ff88; box-shadow:0 0 8px #00ff88; }
+.dot-closed { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
+
+/* ===== LOADER ===== */
+.loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.2); border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
+.empty-icon  { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.empty-text  { font-size:1rem; }
+
+/* ===== CURRENT NOTIF ===== */
+.current-notif { padding:10px 14px; border-radius:12px; background:rgba(245,197,24,0.12); border:1px solid rgba(245,197,24,0.3); color:#f5c518; font-size:0.85rem; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+
+/* ===== BADGE PREVIEW ===== */
+.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:var(--transition); color:#f5c518; }
+
+/* ===== ALERT PREVIEW ===== */
+.alert-preview-box {
+  padding:10px 16px; border-radius:12px; margin-bottom:14px;
+  display:none; align-items:center; gap:10px;
+  font-size:0.9rem; font-weight:700;
+  position:relative; overflow:hidden;
+}
+.alert-preview-box.show { display:flex; }
+.alert-preview-box::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size:200% 100%;
+  animation:shimmerPrev 2s linear infinite;
+}
+@keyframes shimmerPrev { 0%{background-position:200% center} 100%{background-position:-200% center} }
+
+/* ===== ✨ USAGE GUIDELINES CARD ===== */
+#guidelinesPreview { display:none; margin-top:20px; }
+#guidelinesPreview.show { display:block; }
+.guidelines-preview-wrap {
+  background: linear-gradient(135deg, rgba(20,184,166,0.10), rgba(20,184,166,0.04));
+  border: 1.5px solid rgba(20,184,166,0.30);
+  border-radius:18px; overflow:hidden;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.3), 0 0 25px rgba(20,184,166,0.07);
+  position:relative;
+}
+.guidelines-preview-wrap::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,transparent,rgba(20,184,166,0.7),rgba(245,197,24,0.5),transparent);
+}
+.guidelines-preview-header {
+  display:flex; align-items:center; gap:12px;
+  padding:16px 20px 12px;
+  border-bottom:1px solid rgba(20,184,166,0.15);
+  background: linear-gradient(135deg,rgba(20,184,166,0.08),transparent);
+}
+.gp-icon {
+  width:42px; height:42px; border-radius:12px;
+  background:linear-gradient(135deg,rgba(20,184,166,0.25),rgba(20,184,166,0.10));
+  border:1px solid rgba(20,184,166,0.35);  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+  box-shadow:0 0 18px rgba(20,184,166,0.18);
+  animation:tealPulse 3s ease-in-out infinite;
+}
+@keyframes tealPulse {
+  0%,100%{box-shadow:0 0 15px rgba(20,184,166,0.15);}
+  50%{box-shadow:0 0 28px rgba(20,184,166,0.40);}
+}
+.gp-title-wrap { flex:1; }
+.gp-main-title {
+  font-size:14px; font-weight:800;
+  color:rgba(20,184,166,0.95);
+  letter-spacing:2px;
+  text-shadow:0 0 16px rgba(20,184,166,0.3);
+}
+.gp-sub-title { font-size:11px; color:rgba(255,255,255,0.40); margin-top:2px; }
+.gp-live-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px; border-radius:20px;
+  background:rgba(20,184,166,0.12);
+  border:1px solid rgba(20,184,166,0.28);
+  font-size:10px; font-weight:700;
+  color:rgba(20,184,166,0.90);
+}
+.gp-live-dot { width:6px; height:6px; border-radius:50%; background:#14b8a6; animation:pulse-dot 1.5s ease-in-out infinite; }
+.gp-body {
+  padding:16px 20px 18px;
+  font-size:13.5px; line-height:2;
+  color:rgba(255,255,255,0.85);
+  white-space:pre-wrap;
+  position:relative;
+}
+.gp-body::before {
+  content:'📋'; position:absolute; left:10px; bottom:8px;
+  font-size:55px; opacity:0.04; pointer-events:none;
+}
+.gp-footer {
+  padding:8px 20px 12px;
+  border-top:1px solid rgba(20,184,166,0.10);
+  font-size:11px; color:rgba(255,255,255,0.32);
+  display:flex; align-items:center; gap:6px;
+}
+
+/* ===== SECURITY PANEL ===== */
+.security-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
+.security-item {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px;
+}
+.security-icon {
+  width:40px; height:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.security-icon.blocked { background:rgba(233,69,96,0.15); color:#ff6b6b; }
+.security-icon.allowed { background:rgba(0,200,81,0.15); color:#00ff88; }
+.security-info { flex:1; }
+.security-title { font-weight:700; font-size:0.95rem; }
+.security-desc { font-size:0.8rem; color:rgba(255,255,255,0.4); }
+.security-action { padding:6px 12px; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:var(--transition); border:none; background:transparent; color:inherit; font-family:'Cairo',sans-serif; font-weight:600; }
+.security-action.block { background:rgba(233,69,96,0.15); color:#ff6b6b; border:1px solid rgba(233,69,96,0.3); }
+.security-action.unblock { background:rgba(0,200,81,0.15); color:#00ff88; border:1px solid rgba(0,200,81,0.3); }
+.security-action:hover { transform:translateY(-1px); }
+.security-action.active { background:rgba(0,212,255,0.15); color:#00d4ff; border:1px solid rgba(0,212,255,0.3); }
+
+/* ===== COMMENTS PANEL ===== */
+.comments-toggle { display:flex; align-items:center; gap:12px; padding:14px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:16px; }
+.comments-list { max-height:400px; overflow-y:auto; }
+.comment-item {
+  padding:12px; border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex; gap:12px; align-items:flex-start;
+}
+.comment-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.9rem; flex-shrink:0;
+}
+.comment-content { flex:1; }
+.comment-header { display:flex; justify-content:space-between; gap:10px; margin-bottom:4px; }
+.comment-author { font-weight:700; font-size:0.9rem; }
+.comment-time { font-size:0.75rem; color:rgba(255,255,255,0.4); }
+.comment-text { font-size:0.9rem; line-height:1.6; }
+.comment-actions { display:flex; gap:6px; margin-top:8px; }
+.comment-btn { padding:4px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer; transition:var(--transition); border:none; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); }
+.comment-btn:hover { background:rgba(255,255,255,0.15); color:#fff; }
+.comment-btn.delete { background:rgba(233,69,96,0.15); color:#ff6b6b; }
+
+/* ===== SUGGESTIONS PANEL ===== */
+.suggestion-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px; padding:16px; margin-bottom:12px;
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+}
+.suggestion-text { flex:1; font-size:0.95rem; }
+.suggestion-meta { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:4px; }
+.suggestion-actions { display:flex; gap:6px; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
+::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
 
 /* ===== ENTRANCE ANIMATION ===== */
 .entrance-overlay { position:fixed; inset:0; z-index:1000; background:linear-gradient(135deg,#050b1a,#0f1a2e); display:flex; flex-direction:column; align-items:center; justify-content:center; animation:overlayFade 0.8s 1.8s forwards; }
@@ -306,11 +483,13 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
 .entrance-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple)); animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both; box-shadow:0 0 10px rgba(0,212,255,0.8); }
 @keyframes progressFill { from{width:0} to{width:100%} }
 
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width:6px; height:6px; }
-::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
-::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
+/* ===== TOOLTIP ===== */
+[data-tip] { position:relative; }
+[data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
+
+/* ===== VISITORS TABLE CODE CELL ===== */
+.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
+.visitor-unregistered { color:rgba(255,255,255,0.3); font-style:italic; font-size:0.85rem; }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
@@ -320,6 +499,7 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
   .table-card { grid-column:auto; }
   .header-title { font-size:1.6rem; }
   .login-card { padding:32px 24px 28px; }
+  .alert-type-row { flex-direction:column; }
   .btn-row { flex-direction:column; }
   .btn { width:100%; }
 }
@@ -411,6 +591,9 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
       <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
       <button class="tab-btn" data-tab="security">🛡️ الأمان</button>
       <button class="tab-btn" data-tab="content">📝 المحتوى</button>
+      <button class="tab-btn" data-tab="comments">💬 التعليقات</button>
+      <button class="tab-btn" data-tab="suggestions">💡 الاقتراحات</button>
+      <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
       <button class="tab-btn" data-tab="logs">📊 السجلات</button>
     </div>
 
@@ -623,6 +806,385 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
         </div>
         <div class="msg-box" id="msgNotif"></div>
       </div>
+
+      <!-- ✨ BADGE ASSIGNMENT CARD -->
+      <div class="glass-card card-glow-gold" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-gold">⭐</div>
+          <div>
+            <div class="card-title">✨ منح شارة التميز</div>
+            <div class="card-desc">أضف أي رمز أو إيموجي كشارة مميزة</div>
+          </div>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">🔢 رقم الطالب التسلسلي</label>
+              <span class="input-icon">#</span>
+              <input class="styled-input" id="badgeStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewBadge()">
+            </div>
+            
+            <!-- ✨ Custom Badge Input -->
+            <div class="input-group">
+              <label class="input-label">✏️ اكتب شارة التميز (إيموجي/رمز)</label>
+              <span class="input-icon">✨</span>
+              <input class="styled-input" id="badgeTextInput" type="text" maxlength="3" placeholder="مثال: 🏆 أو ⭐ أو 💎" oninput="previewBadge()" style="text-align:center;font-size:1.3rem;letter-spacing:4px">
+              <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:5px;text-align:center">
+                💡 انسخ أي إيموجي من هنا: 🏆 ⭐ 🎖️ 💎 🔥 👑 🌟 🥇 ✨ 🎯 🚀
+              </div>
+            </div>
+            
+            <!-- ✨ Color Palette -->
+            <span class="palette-label">🎨 اختر لون الشارة</span>
+            <div class="color-palette" id="badgeColorPalette" style="justify-content:center">
+              <div class="color-box selected" style="background:linear-gradient(135deg,#ffd700,#ffaa00)" onclick="selectBadgeColor('#ffd700',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00d4ff,#0077ff)" onclick="selectBadgeColor('#00d4ff',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectBadgeColor('#ff4444',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00ff88,#00aa55)" onclick="selectBadgeColor('#00ff88',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ffffff,#dddddd)" onclick="selectBadgeColor('#ffffff',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff8c00,#cc5500)" onclick="selectBadgeColor('#ff8c00',this)"></div>
+            </div>
+            
+            <div class="btn-row" style="margin-top:16px">
+              <button class="btn btn-gold" onclick="assignBadge()"><span>⭐</span> منح الشارة</button>
+              <button class="btn btn-danger" onclick="removeBadge()"><span>❌</span> إزالة</button>
+            </div>
+            <div class="msg-box" id="msgBadge"></div>
+          </div>
+          
+          <!-- ✨ Live Preview -->
+          <div>
+            <span class="palette-label">👁️ المعاينة الحية</span>
+            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:25px;text-align:center;margin-top:10px">
+              <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:15px">كيف ستظهر الشارة:</div>
+              
+              <!-- Preview Display -->
+              <div style="display:flex;align-items:center;justify-content:center;gap:12px;font-size:1.1rem;font-weight:700;padding:15px;background:rgba(0,0,0,0.2);border-radius:12px">
+                <span id="badgePreview" class="student-badge" style="display:none">⭐</span>
+                <span id="badgePreviewName" style="color:rgba(255,255,255,0.7)">اسم الطالب</span>
+              </div>
+              
+              <!-- Info Box -->
+              <div style="margin-top:20px;padding:12px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.3);border-radius:10px;font-size:0.8rem;color:#f5c518">
+                ✨ ستضهر الشارة بشكل لامع مع تأثيرات متحركة في:<br>
+                • لوحة تحكم المشرف • لوحة بيانات الطلاب
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card card-glow-blue" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-blue">📅</div>
+          <div>
+            <div class="card-title">موعد تسليم التقارير</div>
+            <div class="card-desc">تاريخ ووقت التسليم</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">تاريخ ووقت التسليم</label>
+          <input class="styled-input" id="deadlineInput" type="datetime-local">
+        </div>
+        <div class="toggle-container" style="margin:14px 0">
+          <div class="toggle-info">
+            <div class="toggle-title">إظهار التاريخ للطلاب</div>
+            <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="deadlineActiveSwitch">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="saveDeadline()">
+          <span>💾</span> حفظ تاريخ التسليم
+        </button>
+        <div class="msg-box" id="msgDeadline"></div>
+      </div>
+
+      <div class="glass-card card-glow-teal" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-teal">📋</div>
+          <div>
+            <div class="card-title">متطلبات الاستخدام</div>
+            <div class="card-desc">الإرشادات التي تظهر للطلاب</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">✍️ اكتب الإرشادات</label>
+              <textarea class="styled-textarea" id="guidelinesTextarea" placeholder="مثال:• يجب أن يكون عنوان التقرير فريداً• يُمنع تكرار الموضوعات• آخر موعد للتسجيل: ...• للاستفسار تواصل مع المشرف" style="min-height:150px" oninput="previewGuidelinesLive()"></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-teal" onclick="saveGuidelines()"><span>💾</span> حفظ</button>
+              <button class="btn btn-danger" onclick="clearGuidelines()"><span>🗑️</span> مسح</button>
+            </div>
+            <div class="msg-box" id="msgGuidelines"></div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">👁️ معاينة</div>
+            <div id="guidelinesPreview">
+              <div class="guidelines-preview-wrap">
+                <div class="guidelines-preview-header">
+                  <div class="gp-icon">📋</div>
+                  <div class="gp-title-wrap">
+                    <div class="gp-main-title">✦ متطلبات الاستخدام ✦</div>
+                    <div class="gp-sub-title">إرشادات صادرة من الإدارة</div>
+                  </div>
+                  <div class="gp-live-badge"><div class="gp-live-dot"></div> مباشر</div>
+                </div>
+                <div class="gp-body" id="guidelinesPreviewContent">ستظهر الإرشادات هنا عند الكتابة…</div>
+                <div class="gp-footer"><span>🔒</span><span>هذه الإرشادات صادرة من الإدارة — يُرجى الالتزام بها</span></div>
+              </div>
+            </div>
+            <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
+              <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
+              لا توجد إرشادات محفوظة حالياً
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card card-glow-orange" style="margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-orange">⚠️</div>
+          <div>
+            <div class="card-title">تنبيهات الطلاب</div>
+            <div class="card-desc">إرسال تحذير لطالب معين</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">رقم الطالب في القائمة</label>
+              <span class="input-icon">🔢</span>
+              <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
+            </div>
+            <div class="input-group">
+              <label class="input-label">نص التحذير</label>
+              <span class="input-icon">✍️</span>
+              <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
+            </div>
+            <div class="alert-type-row">
+              <label class="alert-type-label private-lbl">
+                <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
+                <span class="alert-type-text">🔒 خاص — في معلوماتي فقط</span>
+              </label>
+              <label class="alert-type-label public-lbl">
+                <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
+                <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
+              </label>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال</button>
+              <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف</button>
+            </div>
+            <div class="msg-box" id="msgAlert"></div>
+          </div>
+          <div>
+            <span class="palette-label">🎨 لون التحذير</span>
+            <div class="color-palette" id="alertColorPalette">
+              <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
+            </div>
+            <div class="divider" style="margin:12px 0"></div>
+            <span class="palette-label">معاينة</span>
+            <div id="alertPreviewBox" class="alert-preview-box">
+              <span>⚠️</span><span id="alertPreviewText">نص التحذير يظهر هنا</span><span id="alertPreviewType" class="alert-badge-type"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: COMMENTS ===== -->
+    <div class="tab-content" id="tab-comments">
+      <div class="glass-card card-glow-purple">
+        <div class="card-header">
+          <div class="card-icon icon-purple">💬</div>
+          <div>
+            <div class="card-title">نظام التعليقات</div>
+            <div class="card-desc">التحكم في تفاعل الطلاب</div>
+          </div>
+        </div>
+        
+        <div class="comments-toggle">
+          <div style="flex:1">
+            <div class="toggle-title">تفعيل نظام التعليقات</div>
+            <div class="toggle-desc">عند التعطيل: لن يظهر قسم التعليقات للطلاب</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="commentsEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="toggle-container" style="margin-bottom:20px">
+          <div class="toggle-info">
+            <div class="toggle-title">مراجعة التعليقات قبل النشر</div>
+            <div class="toggle-desc">عند التفعيل: تحتاج موافقتك قبل ظهور التعليق</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="commentsModeration" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">🔍 فلترة التعليقات</label>
+          <span class="input-icon">🔍</span>
+          <input class="styled-input" id="commentFilter" placeholder="ابحث باسم الطالب أو كلمة في التعليق..." oninput="filterComments()">
+        </div>
+
+        <div class="comments-list" id="commentsList">
+          <div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: SUGGESTIONS ===== -->
+    <div class="tab-content" id="tab-suggestions">
+      <div class="glass-card card-glow-green">
+        <div class="card-header">
+          <div class="card-icon icon-green">💡</div>
+          <div>
+            <div class="card-title">اقتراح العناوين الذكي</div>
+            <div class="card-desc">منع التكرار • اقتراح عناوين فريدة</div>
+          </div>
+        </div>
+
+        <div class="toggle-container" style="margin-bottom:20px">
+          <div class="toggle-info">
+            <div class="toggle-title">تفعيل نظام الاقتراحات</div>
+            <div class="toggle-desc">عند التفعيل: يقترح النظام عناوين عند إدخال المادة</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="suggestionsEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div>
+            <div class="input-group">
+              <label class="input-label">📚 اختبار الاقتراحات</label>
+              <span class="input-icon">🔍</span>
+              <input class="styled-input" id="testSubject" placeholder="أدخل اسم مادة للاختبار..." oninput="testSuggestions()">
+            </div>
+            <div id="suggestionResults" style="margin-top:12px"></div>
+          </div>
+          <div>
+            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);line-height:1.8">
+              <strong>🎯 كيف يعمل النظام:</strong><br>
+              • يحلل العناوين المسجلة للمادة المختارة<br>
+              • يستخرج الكلمات المفتاحية الشائعة<br>
+              • يقترح تركيبات جديدة غير مستخدمة<br>
+              • يتجنب تماماً العناوين المكررة أو المشابهة جداً
+            </div>
+          </div>
+        </div>
+
+        <div class="divider" style="margin:20px 0"></div>
+        
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:12px">
+          📋 العناوين المقترحة مؤخراً (للمراجعة):
+        </div>
+        <div id="recentSuggestions">
+          <div class="suggestion-card">
+            <div>
+              <div class="suggestion-text">"تحليل أداء خوارزميات التعلم الآلي في التنبؤ بالبيانات الكبيرة"</div>
+              <div class="suggestion-meta">المادة: ذكاء اصطناعي • تم الاقتراح: منذ 2 ساعة</div>
+            </div>
+            <div class="suggestion-actions">
+              <button class="btn-sm btn-sm-edit">✅ قبول</button>
+              <button class="btn-sm btn-sm-delete">❌ رفض</button>
+            </div>
+          </div>
+          <div class="suggestion-card">
+            <div>
+              <div class="suggestion-text">"دراسة مقارنة بين تقنيات التشفير في حماية البيانات السحابية"</div>
+              <div class="suggestion-meta">المادة: أمن معلومات • تم الاقتراح: منذ 5 ساعات</div>
+            </div>
+            <div class="suggestion-actions">
+              <button class="btn-sm btn-sm-edit">✅ قبول</button>
+              <button class="btn-sm btn-sm-delete">❌ رفض</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: SETTINGS ===== -->
+    <div class="tab-content" id="tab-settings">
+      <div class="glass-card card-glow-blue">
+        <div class="card-header">
+          <div class="card-icon icon-blue">⚙️</div>
+          <div>
+            <div class="card-title">إعدادات النظام</div>
+            <div class="card-desc">تخصيص تجربة الموقع</div>
+          </div>
+        </div>
+
+        <div style="display:grid;gap:16px">
+          <div class="toggle-container">
+            <div class="toggle-info">
+              <div class="toggle-title">السماح بالتسجيل الجديد</div>
+              <div class="toggle-desc">عند التعطيل: لا يمكن للطلاب الجدد التسجيل</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="allowRegistration" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-container">
+            <div class="toggle-info">
+              <div class="toggle-title">إجبار تحديث الجلسة</div>
+              <div class="toggle-desc">عند التفعيل: يتم تسجيل خروج الطلاب بعد 30 دقيقة خمول</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="forceSessionTimeout" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-container">
+            <div class="toggle-info">
+              <div class="toggle-title">تفعيل الوضع الليلي التلقائي</div>
+              <div class="toggle-desc">عند التفعيل: يتكيف الموقع مع إعدادات جهاز الطالب</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoDarkMode" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">🔑 كلمة مرور المشرف (تغيير)</label>
+            <span class="input-icon">🔒</span>
+            <input class="styled-input" id="newAdminPassword" type="password" placeholder="أدخل كلمة المرور الجديدة">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🔐 تأكيد كلمة المرور</label>
+            <span class="input-icon">🔒</span>
+            <input class="styled-input" id="confirmAdminPassword" type="password" placeholder="أعد إدخال كلمة المرور">
+          </div>
+          
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="saveSettings()"><span>💾</span> حفظ الإعدادات</button>
+            <button class="btn btn-gold" onclick="exportSettings()"><span>📤</span> تصدير الإعدادات</button>
+          </div>
+          <div class="msg-box" id="settingsMsg"></div>
+        </div>
+      </div>
     </div>
 
     <!-- ===== TAB: LOGS ===== -->
@@ -635,6 +1197,7 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
             <div class="card-desc">مراقبة شاملة • كشف المشبوه</div>
           </div>
         </div>
+
         <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
           <select class="styled-input" id="logFilter" style="max-width:200px" onchange="filterLogs()">
             <option value="all">كل النشاطات</option>
@@ -647,6 +1210,7 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
           <button class="btn btn-outline" onclick="exportLogs()"><span>📥</span> تصدير</button>
           <button class="btn btn-danger" onclick="clearLogs()"><span>🗑️</span> مسح</button>
         </div>
+
         <div class="table-wrapper">
           <table>
             <thead>
@@ -683,6 +1247,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 /* ===== GLOBAL STATE ===== */
 let studentsData = [];
 let selectedID = null;
+let selectedAlertColor = '#ff4444';
+let selectedBadgeChar = '⭐';
+let selectedBadgeColor = '#ffd700';
 let currentSort = { column: 'date', direction: 'desc' };
 
 // ✅ إعدادات الحماية
@@ -835,13 +1402,13 @@ function toggleRateLimit() {
     icon.textContent = '❌';
     showToast('⚠️ تم تعطيل Rate Limiting', 'info');
   }
+  saveSecuritySettings();
 }
 
 /* ===== FINGERPRINT PROTECTION ===== */
 async function checkFingerprintBan(deviceCode) {
   if (!securitySettings.fingerprint) return { blocked: false };
   
-  // التحقق من جدول banned_users
   const { data: banned, error: banError } = await supabase
     .from('banned_users')
     .select('target, reason')
@@ -857,7 +1424,6 @@ async function checkFingerprintBan(deviceCode) {
     return { blocked: true, reason: banned.reason || 'جهاز محظور' };
   }
   
-  // التحقق من وجود تسجيل سابق بنفس الكود
   const { data: existing, error: existError } = await supabase
     .from('student_reports')
     .select('id, name')
@@ -898,6 +1464,7 @@ function toggleFingerprint() {
     icon.textContent = '❌';
     showToast('⚠️ تم تعطيل حماية البصمة', 'info');
   }
+  saveSecuritySettings();
 }
 
 /* ===== SUSPICIOUS BEHAVIOR DETECTION ===== */
@@ -992,7 +1559,6 @@ class SuspiciousBehaviorDetector {
     
     this.detections.push(report);
     
-    // إرسال تنبيه للمشرف
     try {
       await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
@@ -1007,7 +1573,6 @@ class SuspiciousBehaviorDetector {
       console.error('Failed to send alert:', e);
     }
     
-    // حظر تلقائي للسلوكيات الخطيرة
     if (['devtools_open', 'console_access'].includes(type)) {
       await this.autoBan(deviceCode, `سلوك مشبوه: ${type} - ${details}`);
     }
@@ -1059,6 +1624,7 @@ function toggleBehaviorDetection() {
     behaviorDetector = null;
     showToast('⚠️ تم تعطيل كشف السلوك المشبوه', 'info');
   }
+  saveSecuritySettings();
 }
 
 /* ===== LOGIN SYSTEM ===== */
@@ -1101,6 +1667,17 @@ async function doLogin() {
   setLoginLoading(true);
   
   try {
+    // ✅ فحص Rate Limiting أولاً
+    if (securitySettings.rateLimit) {
+      const deviceCode = await DEVICE_CODE_PROMISE;
+      const rateCheck = await checkRateLimit(deviceCode);
+      if (!rateCheck.allowed) {
+        showLoginError(`⚠️ تجاوزت الحد المسموح! انتظر ${rateCheck.retryAfter} ثانية`);
+        setLoginLoading(false);
+        return;
+      }
+    }
+    
     const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' });
     if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد');
     const raw = await res.text();
@@ -1171,6 +1748,7 @@ $$('.tab-btn').forEach(btn => {
     
     if(btn.dataset.tab === 'students') loadStudents();
     if(btn.dataset.tab === 'security') loadBannedList();
+    if(btn.dataset.tab === 'comments') loadComments();
     if(btn.dataset.tab === 'logs') loadLogs();
   });
 });
@@ -1262,9 +1840,32 @@ async function loadSiteSettings(){
   if(data.deadline_active !== undefined){
     $('#deadlineActiveSwitch').checked = !!data.deadline_active;
   }
+  
+  if(data.usage_guidelines && data.usage_guidelines.trim()){
+    $('#guidelinesTextarea').value = data.usage_guidelines.trim();
+    $('#guidelinesPreview').classList.add('show');
+    $('#guidelinesPreviewEmpty').style.display = 'none';
+    $('#guidelinesPreviewContent').textContent = data.usage_guidelines.trim();
+  }
 }
 
-/* ===== STUDENTS MANAGEMENT - FIXED ===== */
+window.previewGuidelinesLive = function(){
+  const text = $('#guidelinesTextarea').value.trim();
+  const preview = $('#guidelinesPreview');
+  const empty = $('#guidelinesPreviewEmpty');
+  const content = $('#guidelinesPreviewContent');
+  if(text){
+    preview.classList.add('show');
+    empty.style.display = 'none';
+    content.textContent = text;
+  } else {
+    preview.classList.remove('show');
+    empty.style.display = 'block';
+    content.textContent = 'ستظهر الإرشادات هنا عند الكتابة…';
+  }
+}
+
+/* ===== STUDENTS MANAGEMENT ===== */
 async function loadStudents(){
   try {
     const {data, error} = await supabase
@@ -1538,6 +2139,101 @@ function clearInputs(){
   selectedID = null;
 }
 
+/* ===== ✨ BADGE ASSIGNMENT FUNCTIONS ===== */
+
+window.selectBadgeColor = function(color, el){
+  selectedBadgeColor = color;
+  $$('#badgeColorPalette .color-box').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  previewBadge();
+}
+
+window.previewBadge = function(){
+  const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  const badgeChar = $('#badgeTextInput').value.trim() || '⭐';
+  const previewBadgeEl = $('#badgePreview');
+  const previewName = $('#badgePreviewName');
+  
+  selectedBadgeChar = badgeChar;
+  
+  if(!isNaN(idx) && idx >= 0 && idx < studentsData.length){
+    const student = studentsData[idx];
+    previewName.textContent = student.name;
+    previewBadgeEl.textContent = badgeChar;
+    previewBadgeEl.style.background = selectedBadgeColor;
+    previewBadgeEl.style.color = isLightColor(selectedBadgeColor) ? '#000' : '#fff';
+    previewBadgeEl.style.display = 'inline-flex';
+  } else {
+    previewName.textContent = 'اسم الطالب';
+    previewBadgeEl.textContent = badgeChar;
+    previewBadgeEl.style.background = selectedBadgeColor;
+    previewBadgeEl.style.color = isLightColor(selectedBadgeColor) ? '#000' : '#fff';
+    previewBadgeEl.style.display = idx >= 0 ? 'inline-flex' : 'none';
+  }
+}
+
+async function assignBadge(){
+  const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  const badgeChar = $('#badgeTextInput').value.trim();
+  
+  if(isNaN(idx) || idx < 0){ showMsg('#msgBadge','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
+  if(!badgeChar){ showMsg('#msgBadge','⚠️ اكتب رمز أو إيموجي للشارة','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgBadge','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
+  
+  const student = studentsData[idx];
+  
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      badge: badgeChar,
+      badge_color: selectedBadgeColor
+    }).eq('id', student.id);
+    
+    if(error){ showMsg('#msgBadge','❌ فشل منح الشارة: ' + error.message, 'error'); return; }
+    
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'assign_badge',
+      status: 'success',
+      details: `تم منح شارة "${badgeChar}" باللون ${selectedBadgeColor} للطالب: ${student.name}`
+    }]);
+    
+    showMsg('#msgBadge', `⭐ تم منح شارة "${badgeChar}" للطالب "${student.name}"`, 'success');
+    loadStudents();
+    previewBadge();
+  } catch(err) {
+    console.error("Error in assignBadge:", err);
+    showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.assignBadge = assignBadge;
+
+async function removeBadge(){
+  const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  
+  if(isNaN(idx) || idx < 0){ showMsg('#msgBadge','⚠️ أدخل رقم الطالب أولاً','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgBadge','⚠️ رقم الطالب غير موجود','error'); return; }
+  
+  const student = studentsData[idx];
+  
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      badge: null,
+      badge_color: null
+    }).eq('id', student.id);
+    
+    if(error){ showMsg('#msgBadge','❌ فشل إزالة الشارة: '+error.message,'error'); return; }
+    
+    showMsg('#msgBadge', `❌ تم إزالة شارة الطالب "${student.name}"`, 'info');
+    $('#badgePreview').style.display = 'none';
+    $('#badgeTextInput').value = '';
+    loadStudents();
+  } catch(err) {
+    console.error("Error in removeBadge:", err);
+    showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.removeBadge = removeBadge;
+
 /* ===== NOTIFICATIONS ===== */
 async function sendNotification(){
   const msg = $('#notifInput').value.trim();
@@ -1587,6 +2283,167 @@ async function clearNotification(){
   }
 }
 window.clearNotification = clearNotification;
+
+/* ===== DEADLINE ===== */
+async function saveDeadline(){
+  const dtVal = $('#deadlineInput').value;
+  const active = $('#deadlineActiveSwitch').checked;
+  
+  try {
+    const {error} = await supabase.from("site_control")
+      .update({ 
+        deadline: dtVal ? new Date(dtVal).toISOString() : null, 
+        deadline_active: active 
+      }).eq("id",1);
+      
+    if(error){ showMsg("#msgDeadline","❌ فشل الحفظ: "+error.message,"error"); return; }
+    
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'update_deadline',
+      status: 'success',
+      details: `تم ${active ? 'تعيين' : 'إخفاء'} موعد التسليم: ${dtVal}`
+    }]);  
+    
+    showMsg("#msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");
+  } catch(err) {
+    console.error("Error in saveDeadline:", err);
+    showMsg("#msgDeadline","❌ خطأ: "+err.message,"error");
+  }
+}
+window.saveDeadline = saveDeadline;
+
+/* ===== GUIDELINES ===== */
+async function saveGuidelines(){
+  const text = $('#guidelinesTextarea').value.trim();
+  if(!text){ showMsg('#msgGuidelines','⚠️ اكتب الإرشادات أولاً','error'); return; }
+  
+  try {
+    const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1);
+    if(error){ showMsg('#msgGuidelines','❌ فشل الحفظ: '+error.message,'error'); return; }
+    
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'update_guidelines',
+      status: 'success',
+      details: 'تم تحديث متطلبات الاستخدام'
+    }]);
+    
+    showMsg('#msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success');
+    $('#guidelinesPreview').classList.add('show');
+    $('#guidelinesPreviewEmpty').style.display = 'none';
+    $('#guidelinesPreviewContent').textContent = text;
+  } catch(err) {
+    console.error("Error in saveGuidelines:", err);
+    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
+  }
+}
+window.saveGuidelines = saveGuidelines;
+
+async function clearGuidelines(){
+  if(!confirm('هل أنت متأكد من مسح الإرشادات؟')) return;
+  
+  try {
+    const {error} = await supabase.from("site_control").update({ usage_guidelines: null }).eq("id",1);
+    if(error){ showMsg('#msgGuidelines','❌ فشل المسح: '+error.message,'error'); return; }
+    
+    $('#guidelinesTextarea').value = '';
+    $('#guidelinesPreview').classList.remove('show');
+    $('#guidelinesPreviewEmpty').style.display = 'block';
+    showMsg('#msgGuidelines','🗑️ تم مسح الإرشادات','info');
+  } catch(err) {
+    console.error("Error in clearGuidelines:", err);
+    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
+  }
+}
+window.clearGuidelines = clearGuidelines;
+
+/* ===== ALERTS ===== */
+window.selectAlertColor = function(color, el){
+  selectedAlertColor = color;
+  $$('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  previewAlert();
+}
+
+window.previewAlert = function(){
+  const text = $('#alertStudentText').value.trim();
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
+  const box = $('#alertPreviewBox');
+  const ptext = $('#alertPreviewText');
+  const ptype = $('#alertPreviewType');
+  if(text){
+    box.style.display = 'flex';
+    box.style.color = selectedAlertColor;
+    box.style.borderLeft = `3px solid ${selectedAlertColor}`;
+    box.style.background = `${selectedAlertColor}18`;
+    ptext.textContent = text;
+    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام';
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+async function sendStudentAlert(){
+  const idx = parseInt($('#alertStudentIndex').value) - 1;
+  const text = $('#alertStudentText').value.trim();
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private';
+  
+  if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
+  if(!text){ showMsg('#msgAlert','⚠️ أدخل نص التحذير','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
+  
+  const student = studentsData[idx];
+  
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      alert_text: text,
+      alert_color: selectedAlertColor,
+      alert_type: type
+    }).eq('id', student.id);
+    
+    if(error){ showMsg('#msgAlert','❌ فشل الإرسال: ' + error.message, 'error'); return; }
+    
+    await supabase.from('admin_logs').insert([{
+      admin_id: 'admin_001',
+      action: 'send_alert',
+      status: 'success',
+      details: `تم إرسال تحذير ${type} للطالب: ${student.name}`
+    }]);
+    
+    showMsg('#msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success');
+    loadStudents();
+  } catch(err) {
+    console.error("Error in sendStudentAlert:", err);
+    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.sendStudentAlert = sendStudentAlert;
+
+async function clearStudentAlert(){
+  const idx = parseInt($('#alertStudentIndex').value) - 1;
+  if(isNaN(idx) || idx < 0){ showMsg('#msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgAlert','⚠️ رقم الطالب غير موجود','error'); return; }
+  
+  const student = studentsData[idx];
+  
+  try {
+    const {error} = await supabase.from('student_reports').update({
+      alert_text: null,
+      alert_color: null,
+      alert_type: null
+    }).eq('id', student.id);
+    
+    if(error){ showMsg('#msgAlert','❌ فشل الحذف: '+error.message,'error'); return; }
+    
+    showMsg('#msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info');
+    $('#alertPreviewBox').style.display = 'none';
+  } catch(err) {
+    console.error("Error in clearStudentAlert:", err);
+    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.clearStudentAlert = clearStudentAlert;
 
 /* ===== SECURITY: MANUAL BAN/UNBAN ===== */
 async function manualBan(){
@@ -1709,6 +2566,165 @@ window.manualUnbanTarget = async function(target){
   }
 }
 
+/* ===== COMMENTS SYSTEM ===== */
+async function loadComments(){
+  try {
+    const {data, error} = await supabase.from('comments').select('*').order('created_at', {ascending: false});
+    const list = $('#commentsList');
+    
+    if(error || !data || data.length === 0){
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>';
+      return;
+    }
+    
+    list.innerHTML = data.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar">${c.student_name?.charAt(0) || '؟'}</div>
+        <div class="comment-content">
+          <div class="comment-header">
+            <span class="comment-author">${c.student_name || 'طالب'}</span>
+            <span class="comment-time">${formatDate(c.created_at)}</span>
+          </div>
+          <div class="comment-text">${c.comment_text}</div>
+          <div class="comment-actions">
+            <button class="comment-btn ${c.approved ? 'delete' : ''}" onclick="toggleComment(${c.id}, ${c.approved})">
+              ${c.approved ? '🗑️ حذف' : '✅ موافقة'}
+            </button>
+            <button class="comment-btn" onclick="replyComment(${c.id})">💬 رد</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(err) {
+    console.error("Error in loadComments:", err);
+  }
+}
+window.loadComments = loadComments;
+
+window.filterComments = function(){
+  const filter = $('#commentFilter').value.toLowerCase();
+  loadComments();
+}
+
+window.toggleComment = async function(id, currentlyApproved){
+  try {
+    const newStatus = !currentlyApproved;
+    const {error} = await supabase.from('comments').update({approved: newStatus}).eq('id', id);
+    if(error){ showMsg('#msgAlert','❌ فشل التحديث','error'); return; }
+    loadComments();
+  } catch(err) {
+    console.error("Error in toggleComment:", err);
+    showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.replyComment = function(id){
+  showMsg('#msgAlert', '💬 ميزة الرد قيد التطوير', 'info');
+}
+
+/* ===== SUGGESTIONS SYSTEM ===== */
+window.testSuggestions = async function(){
+  const subject = $('#testSubject').value.trim();
+  const results = $('#suggestionResults');
+  
+  if(!subject){ results.innerHTML = ''; return; }
+  
+  try {
+    const {data} = await supabase.from('student_reports').select('title').eq('subject', subject);
+    const existingTitles = data?.map(d => d.title.toLowerCase()) || [];
+    
+    const prefixes = ['دراسة تحليلية لـ', 'مقارنة بين تقنيات ', 'تطبيقات عملية في ', 'مستقبل ', 'تحديات '];
+    const suffixes = [' في البيئة الحديثة', ' التقليدية والحديثة', ' لحل المشكلات الواقعية', ' والذكاء الاصطناعي'];
+    
+    const suggestions = [];
+    for(let i=0; i<3 && suggestions.length<3; i++){
+      const prefix = prefixes[Math.floor(Math.random()*prefixes.length)];
+      const suffix = suffixes[Math.floor(Math.random()*suffixes.length)];
+      const suggestion = `"${prefix}${subject}${suffix}"`;
+      if(!existingTitles.some(t => t.includes(suggestion.toLowerCase().slice(1,-1)))){
+        suggestions.push(suggestion);
+      }
+    }
+    
+    if(suggestions.length === 0){
+      results.innerHTML = '<div style="color:rgba(255,255,255,0.5);padding:10px">لا توجد اقتراحات جديدة لهذه المادة حالياً</div>';
+      return;
+    }
+    
+    results.innerHTML = suggestions.map(s => `
+      <div class="suggestion-card">
+        <div class="suggestion-text">${s}</div>
+        <button class="btn-sm btn-sm-edit" onclick="useSuggestion('${s.replace(/'/g,"\\'")}')">✅ استخدام</button>
+      </div>
+    `).join('');
+  } catch(err) {
+    console.error("Error in testSuggestions:", err);
+  }
+}
+window.useSuggestion = function(suggestion){
+  $('#reportTitle').value = suggestion;
+  showMsg('#msgAdd', '✅ تم استخدام الاقتراح', 'success');
+  $('#testSubject').value = '';
+  $('#suggestionResults').innerHTML = '';
+}
+
+/* ===== SETTINGS ===== */
+async function saveSettings(){
+  const newPass = $('#newAdminPassword').value;
+  const confirmPass = $('#confirmAdminPassword').value;
+  
+  if(newPass && newPass !== confirmPass){
+    showMsg('#settingsMsg', '❌ كلمات المرور غير متطابقة', 'error');
+    return;
+  }
+  
+  try {
+    if(newPass){
+      await supabase.from('admin_logs').insert([{
+        admin_id: 'admin_001',
+        action: 'change_password',
+        status: 'success',
+        details: 'تم تغيير كلمة مرور المشرف'
+      }]);
+    }
+    
+    const {error} = await supabase.from('site_control').update({
+      allow_registration: $('#allowRegistration').checked,
+      force_session_timeout: $('#forceSessionTimeout').checked,
+      auto_dark_mode: $('#autoDarkMode').checked
+    }).eq('id', 1);
+    
+    if(error){ showMsg('#settingsMsg', '❌ فشل الحفظ: '+error.message, 'error'); return; }
+    
+    showMsg('#settingsMsg', '✅ تم حفظ الإعدادات بنجاح', 'success');
+    $('#newAdminPassword').value = '';
+    $('#confirmAdminPassword').value = '';
+  } catch(err) {
+    console.error("Error in saveSettings:", err);
+    showMsg('#settingsMsg', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+window.saveSettings = saveSettings;
+
+window.exportSettings = async function(){
+  try {
+    const {data} = await supabase.from('site_control').select('*').eq('id',1).single();
+    if(!data){ showMsg('#settingsMsg', '❌ فشل التصدير', 'error'); return; }
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'onx-taqe-settings.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showMsg('#settingsMsg', '📤 تم تصدير الإعدادات', 'success');
+  } catch(err) {
+    console.error("Error in exportSettings:", err);
+    showMsg('#settingsMsg', '❌ خطأ: ' + err.message, 'error');
+  }
+}
+
 /* ===== LOGS ===== */
 async function loadLogs(){
   try {
@@ -1750,10 +2766,7 @@ window.filterLogs = function(){ loadLogs(); }
 window.exportLogs = async function(){
   try {
     const {data} = await supabase.from('admin_logs').select('*').order('created_at', {ascending: false});
-    if(!data){ 
-      showMsg('#msgTable', '❌ فشل التصدير', 'error'); 
-      return; 
-    }
+    if(!data){ showMsg('#msgTable', '❌ فشل التصدير', 'error'); return; }
     
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
     const url = URL.createObjectURL(blob);
@@ -1775,10 +2788,7 @@ window.clearLogs = async function(){
   
   try {
     const {error} = await supabase.from('admin_logs').delete().neq('id', '0');
-    if(error){ 
-      showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); 
-      return; 
-    }
+    if(error){ showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); return; }
     
     showMsg('#msgTable', '🗑️ تم مسح السجلات', 'success');
     loadLogs();
@@ -1804,6 +2814,12 @@ function setupRealtime(){
     })
     .subscribe();
   
+  supabase.channel('admin_comments')
+    .on('postgres_changes', {event:'*', schema:'public', table:'comments'}, () => {
+      loadComments();
+    })
+    .subscribe();
+  
   supabase.channel('admin_logs_channel')
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'admin_logs'}, () => {
       loadLogs();
@@ -1813,7 +2829,6 @@ function setupRealtime(){
 
 /* ===== TOAST NOTIFICATIONS ===== */
 function showToast(msg, type='success'){
-  // إنشاء عنصر toast مؤقت
   const toast = document.createElement('div');
   toast.style.cssText = `
     position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -1826,7 +2841,6 @@ function showToast(msg, type='success'){
   toast.textContent = msg;
   document.body.appendChild(toast);
   
-  // إضافة أنيميشن
   const style = document.createElement('style');
   style.textContent = `
     @keyframes toastIn { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
@@ -1837,21 +2851,23 @@ function showToast(msg, type='success'){
   setTimeout(() => toast.remove(), 3000);
 }
 
+/* ===== SAVE/LOAD SECURITY SETTINGS ===== */
+function saveSecuritySettings() {
+  localStorage.setItem('onx_security_settings', JSON.stringify(securitySettings));
+}
+
 /* ===== INIT ===== */
 setTimeout(() => {
   $('#entranceOverlay').style.display = 'none';
 }, 2500);
 
-// ✅ تهيئة النظام عند التحميل
 window.addEventListener('DOMContentLoaded', async () => {
-  // تحميل إعدادات الحماية من التخزين المحلي إذا وجدت
   const savedSettings = localStorage.getItem('onx_security_settings');
   if (savedSettings) {
     try {
       const parsed = JSON.parse(savedSettings);
       securitySettings = { ...securitySettings, ...parsed };
       
-      // تحديث واجهة الأزرار
       if (!securitySettings.rateLimit) toggleRateLimit();
       if (!securitySettings.fingerprint) toggleFingerprint();
       if (!securitySettings.behaviorDetection) toggleBehaviorDetection();
@@ -1860,30 +2876,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }
 });
-
-// ✅ حفظ إعدادات الحماية عند التغيير
-function saveSecuritySettings() {
-  localStorage.setItem('onx_security_settings', JSON.stringify(securitySettings));
-}
-
-// إعادة تعريف دوال التبديل لحفظ الإعدادات
-const originalToggleRateLimit = toggleRateLimit;
-toggleRateLimit = function() {
-  originalToggleRateLimit();
-  saveSecuritySettings();
-};
-
-const originalToggleFingerprint = toggleFingerprint;
-toggleFingerprint = function() {
-  originalToggleFingerprint();
-  saveSecuritySettings();
-};
-
-const originalToggleBehaviorDetection = toggleBehaviorDetection;
-toggleBehaviorDetection = function() {
-  originalToggleBehaviorDetection();
-  saveSecuritySettings();
-};
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" crossorigin="anonymous"></script>
 </body>
