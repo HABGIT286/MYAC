@@ -96,7 +96,8 @@ body {
 @keyframes loginExit { to{transform:scale(1.05);opacity:0} }
 .login-card.exiting { animation:loginExit 0.4s cubic-bezier(0.23,1,0.32,1) forwards; }
 
-/* ===== DASHBOARD ===== */.dashboard-header { text-align:center; padding:40px 20px 20px; position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; }
+/* ===== DASHBOARD ===== */
+.dashboard-header { text-align:center; padding:40px 20px 20px; position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; }
 @keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
 .header-icon { width:80px; height:80px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:24px; display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); animation:pulse-glow 3s ease-in-out infinite; }
 .header-title { font-size:2.5rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:1px; }
@@ -145,7 +146,8 @@ body {
 .glass-card::before { content:''; position:absolute; inset:0; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
 .card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(233,69,96,0.15),transparent 70%); pointer-events:none; }
 .card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); pointer-events:none; }
-.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
+.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
+.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
 .card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
 .card-glow-orange::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,140,0,0.12),transparent 70%); pointer-events:none; }
 .card-glow-teal::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(20,184,166,0.15),transparent 70%); pointer-events:none; }
@@ -194,7 +196,8 @@ body {
 .btn-orange   { background:linear-gradient(135deg,#ff8c00,#ff5500); color:#fff; box-shadow:0 6px 25px rgba(255,140,0,0.35); }
 .btn-teal     { background:linear-gradient(135deg,#14b8a6,#0d9488); color:#fff; box-shadow:0 6px 25px rgba(20,184,166,0.35); }
 .btn-outline  { background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.8); }
-.btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
+.btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
+.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
 .btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
 .btn-success:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
 .btn-gold:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
@@ -243,7 +246,8 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
 .msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
 
 /* ===== TABLE CARD ===== */
-.table-card { grid-column:1 / -1; }.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
+.table-card { grid-column:1 / -1; }
+.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
 table { width:100%; border-collapse:collapse; min-width:800px; }
 thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
 thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; cursor:pointer; position:relative; }
@@ -255,7 +259,7 @@ tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:var(--tran
 tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
 tbody tr.banned { opacity:0.6; background:rgba(233,69,96,0.05); }
 td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
-.student-name-cell { font-weight:700; font-size:1rem; display:flex; align-items:center; gap:8px; justify-content:center; }
+.student-name-cell { font-weight:700; font-size:1rem; display:flex; align-items:center; gap:8px; justify-content:center; flex-wrap:wrap; }
 
 /* ✨ BADGE STYLES - SHINY EFFECT */
 .student-badge {
@@ -323,7 +327,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 /* ===== LOADER ===== */
 .loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.2); border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
 
-/* ===== EMPTY STATE ===== */.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
 .empty-icon  { font-size:48px; margin-bottom:12px; opacity:0.5; }
 .empty-text  { font-size:1rem; }
 
@@ -421,7 +426,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .security-item {
   background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
   border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px;
-}.security-icon {
+}
+.security-icon {
   width:40px; height:40px; border-radius:10px;
   display:flex; align-items:center; justify-content:center;
   font-size:18px; flex-shrink:0;
@@ -470,7 +476,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .suggestion-actions { display:flex; gap:6px; }
 
 /* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width:6px; height:6px; }::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
 ::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
 ::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
 
@@ -568,7 +575,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
     </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
-      <span>المتميزون: <strong id="statsBadged">0</strong></span>    </div>
+      <span>المتميزون: <strong id="statsBadged">0</strong></span>
+    </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#e94560;box-shadow:0 0 8px #e94560"></div>
       <span>آخر نشاط: <strong id="statsLastReport">—</strong></span>
@@ -617,7 +625,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
         <div class="input-group">
           <label class="input-label">عنوان التقرير</label>
           <span class="input-icon">📋</span>
-          <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">        </div>
+          <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
+        </div>
         <div class="input-group">
           <label class="input-label">المادة الدراسية</label>
           <span class="input-icon">📚</span>
@@ -666,7 +675,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
     <!-- ===== TAB: SECURITY ===== -->
     <div class="tab-content" id="tab-security">
-      <div class="glass-card card-glow-red">        <div class="card-header">
+      <div class="glass-card card-glow-red">
+        <div class="card-header">
           <div class="card-icon icon-red">🌐</div>
           <div>
             <div class="card-title">حالة الموقع</div>
@@ -715,7 +725,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <div class="security-item">
             <div class="security-icon allowed">✅</div>
             <div class="security-info">
-              <div class="security-title">Rate Limiting</div>              <div class="security-desc">حد أقصى 5 محاولات/ساعة لكل جهاز</div>
+              <div class="security-title">Rate Limiting</div>
+              <div class="security-desc">حد أقصى 5 محاولات/ساعة لكل جهاز</div>
             </div>
             <span class="security-action" style="background:rgba(0,200,81,0.15);color:#00ff88">مفعّل</span>
           </div>
@@ -764,7 +775,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
                 <th>المستهدف</th>
                 <th>نوع الحظر</th>
                 <th>السبب</th>
-                <th>تاريخ الحظر</th>                <th>إجراءات</th>
+                <th>تاريخ الحظر</th>
+                <th>إجراءات</th>
               </tr>
             </thead>
             <tbody id="bannedTable">
@@ -800,13 +812,13 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
         <div class="msg-box" id="msgNotif"></div>
       </div>
 
-      <!-- ✨ BADGE ASSIGNMENT CARD - NEW FEATURE -->
+      <!-- ✨ BADGE ASSIGNMENT CARD - MODIFIED -->
       <div class="glass-card card-glow-gold" style="margin-top:20px">
         <div class="card-header">
           <div class="card-icon icon-gold">⭐</div>
           <div>
             <div class="card-title">✨ منح شارة التميز</div>
-            <div class="card-desc">إضافة شارة لامعة لطالب مميز</div>
+            <div class="card-desc">أضف أي رمز أو إيموجي كشارة مميزة</div>
           </div>
         </div>
         
@@ -817,42 +829,53 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               <span class="input-icon">#</span>
               <input class="styled-input" id="badgeStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewBadge()">
             </div>
+            
+            <!-- ✨ Custom Badge Input -->
             <div class="input-group">
-              <label class="input-label">🎭 اختر الشارة (إيموجي)</label>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
-                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('🏆',this)" data-tip="كأس">🏆</span>
-                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('⭐',this)" data-tip="نجمة">⭐</span>
-                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('🎖️',this)" data-tip="وسام">🎖️</span>
-                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('💎',this)" data-tip="ألماس">💎</span>
-                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('🔥',this)" data-tip="نار">🔥</span>
-                <span class="color-box" style="width:40px;height:40px;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="selectBadge('👑',this)" data-tip="تاج">👑</span>
+              <label class="input-label">✏️ اكتب شارة التميز (إيموجي/رمز)</label>
+              <span class="input-icon">✨</span>
+              <input class="styled-input" id="badgeTextInput" type="text" maxlength="3" placeholder="مثال: 🏆 أو ⭐ أو 💎" oninput="previewBadge()" style="text-align:center;font-size:1.3rem;letter-spacing:4px">
+              <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:5px;text-align:center">
+                💡 انسخ أي إيموجي من هنا: 🏆 ⭐ 🎖️ 💎 🔥 👑 🌟 🥇 ✨ 🎯 🚀
               </div>
             </div>
-            <span class="palette-label">🎨 لون الشارة</span>
-            <div class="color-palette" id="badgeColorPalette">
-              <div class="color-box selected" style="background:linear-gradient(135deg,#ffd700,#ffaa00)" onclick="selectBadgeColor('#ffd700',this)" data-tip="ذهبي"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00d4ff,#0077ff)" onclick="selectBadgeColor('#00d4ff',this)" data-tip="أزرق نيون"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectBadgeColor('#ff4444',this)" data-tip="أحمر"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00ff88,#00aa55)" onclick="selectBadgeColor('#00ff88',this)" data-tip="أخضر نيون"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)" data-tip="بنفسجي"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)" data-tip="وردي"></div>
+            
+            <!-- ✨ Color Palette - No Text Labels -->
+            <span class="palette-label">🎨 اختر لون الشارة</span>
+            <div class="color-palette" id="badgeColorPalette" style="justify-content:center">
+              <div class="color-box selected" style="background:linear-gradient(135deg,#ffd700,#ffaa00)" onclick="selectBadgeColor('#ffd700',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00d4ff,#0077ff)" onclick="selectBadgeColor('#00d4ff',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectBadgeColor('#ff4444',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00ff88,#00aa55)" onclick="selectBadgeColor('#00ff88',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ffffff,#dddddd)" onclick="selectBadgeColor('#ffffff',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff8c00,#cc5500)" onclick="selectBadgeColor('#ff8c00',this)"></div>
             </div>
+            
             <div class="btn-row" style="margin-top:16px">
               <button class="btn btn-gold" onclick="assignBadge()"><span>⭐</span> منح الشارة</button>
               <button class="btn btn-danger" onclick="removeBadge()"><span>❌</span> إزالة</button>
             </div>
             <div class="msg-box" id="msgBadge"></div>
           </div>
+          
+          <!-- ✨ Live Preview -->
           <div>
-            <span class="palette-label">👁️ معاينة الشارة</span>
-            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:20px;text-align:center;margin-top:10px">
-              <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:12px">معاينة حية:</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:1.1rem;font-weight:700">
-                <span id="badgePreview" class="student-badge" style="background:#ffd700;color:#000;display:none">⭐</span>
-                <span id="badgePreviewName">اسم الطالب</span>
+            <span class="palette-label">👁️ المعاينة الحية</span>
+            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:25px;text-align:center;margin-top:10px">
+              <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:15px">كيف ستظهر الشارة:</div>
+              
+              <!-- Preview Display -->
+              <div style="display:flex;align-items:center;justify-content:center;gap:12px;font-size:1.1rem;font-weight:700;padding:15px;background:rgba(0,0,0,0.2);border-radius:12px">
+                <span id="badgePreview" class="student-badge" style="display:none">⭐</span>
+                <span id="badgePreviewName" style="color:rgba(255,255,255,0.7)">اسم الطالب</span>
               </div>
-              <div style="margin-top:16px;font-size:0.8rem;color:rgba(255,255,255,0.4)">
-                ✨ ستضهر الشارة بشكل لامع مع تأثيرات متحركة في لوحة الطلاب
+              
+              <!-- Info Box -->
+              <div style="margin-top:20px;padding:12px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.3);border-radius:10px;font-size:0.8rem;color:#f5c518">
+                ✨ ستضهر الشارة بشكل لامع مع تأثيرات متحركة في:<br>
+                • لوحة تحكم المشرف • لوحة بيانات الطلاب
               </div>
             </div>
           </div>
@@ -872,7 +895,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <input class="styled-input" id="deadlineInput" type="datetime-local">
         </div>
         <div class="toggle-container" style="margin:14px 0">
-          <div class="toggle-info">            <div class="toggle-title">إظهار التاريخ للطلاب</div>
+          <div class="toggle-info">
+            <div class="toggle-title">إظهار التاريخ للطلاب</div>
             <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
           </div>
           <label class="switch">
@@ -921,7 +945,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
                 <div class="gp-body" id="guidelinesPreviewContent">ستظهر الإرشادات هنا عند الكتابة…</div>
                 <div class="gp-footer"><span>🔒</span><span>هذه الإرشادات صادرة من الإدارة — يُرجى الالتزام بها</span></div>
               </div>
-            </div>            <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
+            </div>
+            <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
               <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
               لا توجد إرشادات محفوظة حالياً
             </div>
@@ -970,7 +995,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <div class="color-palette" id="alertColorPalette">
               <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
             </div>
@@ -1019,11 +1045,11 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
         <div class="input-group">
           <label class="input-label">🔍 فلترة التعليقات</label>
-          <span class="input-icon">🔍</span>          <input class="styled-input" id="commentFilter" placeholder="ابحث باسم الطالب أو كلمة في التعليق..." oninput="filterComments()">
+          <span class="input-icon">🔍</span>
+          <input class="styled-input" id="commentFilter" placeholder="ابحث باسم الطالب أو كلمة في التعليق..." oninput="filterComments()">
         </div>
 
         <div class="comments-list" id="commentsList">
-          <!-- Comments will be loaded here -->
           <div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>
         </div>
       </div>
@@ -1068,7 +1094,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               • يقترح تركيبات جديدة غير مستخدمة<br>
               • يتجنب تماماً العناوين المكررة أو المشابهة جداً
             </div>
-          </div>        </div>
+          </div>
+        </div>
 
         <div class="divider" style="margin:20px 0"></div>
         
@@ -1117,7 +1144,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               <div class="toggle-title">السماح بالتسجيل الجديد</div>
               <div class="toggle-desc">عند التعطيل: لا يمكن للطلاب الجدد التسجيل</div>
             </div>
-            <label class="switch">              <input type="checkbox" id="allowRegistration" checked>
+            <label class="switch">
+              <input type="checkbox" id="allowRegistration" checked>
               <span class="slider"></span>
             </label>
           </div>
@@ -1166,7 +1194,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
     <!-- ===== TAB: LOGS ===== -->
     <div class="tab-content" id="tab-logs">
-      <div class="glass-card card-glow-red">        <div class="card-header">
+      <div class="glass-card card-glow-red">
+        <div class="card-header">
           <div class="card-icon icon-red">📊</div>
           <div>
             <div class="card-title">سجل النشاطات</div>
@@ -1207,8 +1236,8 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       </div>
     </div>
 
-  </div><!-- end tabs-container -->
-</div><!-- end dashboardScreen -->
+  </div>
+</div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -1222,7 +1251,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 let studentsData = [];
 let selectedID = null;
 let selectedAlertColor = '#ff4444';
-let selectedBadge = '⭐';
+let selectedBadgeChar = '⭐';
 let selectedBadgeColor = '#ffd700';
 let currentSort = { column: 'date', direction: 'desc' };
 
@@ -1267,7 +1296,12 @@ function showMsg(id, text, type="info") {
 
 function formatDate(ts){
   if(!ts) return '';
-  const d = new Date(ts);  return d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+  const d = new Date(ts);
+  return d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+}
+
+function isLightColor(color) {
+  return ['#ffd700','#ffaa00','#ffffff','#ffcc00','#ffff00'].includes(color.toLowerCase());
 }
 
 /* ===== LOGIN SYSTEM ===== */
@@ -1304,7 +1338,6 @@ async function doLogin() {
     const creds = parseCreds(raw);
     if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return; }
     if(u === creds.username && p === creds.password){
-      // Log successful login
       await supabase.from('admin_logs').insert([{
         admin_id: 'admin_001',
         action: 'login',
@@ -1321,7 +1354,6 @@ async function doLogin() {
         initDashboard();
       }, 400);
     } else {
-      // Log failed login
       await supabase.from('admin_logs').insert([{
         admin_id: 'unknown',
         action: 'login',
@@ -1373,7 +1405,6 @@ $$('.tab-btn').forEach(btn => {
     btn.classList.add('active');
     $('#tab-' + btn.dataset.tab).classList.add('active');
     
-    // Load content based on tab
     if(btn.dataset.tab === 'students') loadStudents();
     if(btn.dataset.tab === 'security') loadBannedList();
     if(btn.dataset.tab === 'comments') loadComments();
@@ -1421,7 +1452,6 @@ async function toggleSite(){
   const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1);
   if(error){ showMsg("#siteMsg","فشل تحديث حالة الموقع ❌","error"); return; }
   
-  // Log the action
   await supabase.from('admin_logs').insert([{
     admin_id: 'admin_001',
     action: 'toggle_site',
@@ -1439,7 +1469,6 @@ async function loadSiteSettings(){
   const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single();
   if(error || !data) return;
   
-  // Notification
   if(data.notification && data.notification.trim()){
     $('#notifInput').value = data.notification;
     $('#currentNotifText').textContent = data.notification;
@@ -1448,7 +1477,6 @@ async function loadSiteSettings(){
     $('#currentNotif').style.display = "none";
   }
   
-  // Deadline
   if(data.deadline){
     const dt = new Date(data.deadline);
     const localDt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0,16);
@@ -1458,7 +1486,6 @@ async function loadSiteSettings(){
     $('#deadlineActiveSwitch').checked = !!data.deadline_active;
   }
   
-  // Guidelines
   if(data.usage_guidelines && data.usage_guidelines.trim()){
     $('#guidelinesTextarea').value = data.usage_guidelines.trim();
     $('#guidelinesPreview').classList.add('show');
@@ -1467,7 +1494,6 @@ async function loadSiteSettings(){
   }
 }
 
-/* ===== LIVE GUIDELINES PREVIEW ===== */
 window.previewGuidelinesLive = function(){
   const text = $('#guidelinesTextarea').value.trim();
   const preview = $('#guidelinesPreview');
@@ -1484,15 +1510,11 @@ window.previewGuidelinesLive = function(){
   }
 }
 
-/* ===== STUDENTS MANAGEMENT - FIXED ===== */
+/* ===== STUDENTS MANAGEMENT ===== */
 async function loadStudents(){
   try {
     const {data, error} = await supabase.from("student_reports").select("*").order("id",{ascending:true});
-    if(error){ 
-      console.error("Error loading students:", error);
-      showMsg("#msgTable", "❌ فشل تحميل البيانات: " + error.message, "error");
-      return; 
-    }
+    if(error){ console.error("Error loading students:", error); return; }
     
     studentsData = data || [];
     
@@ -1514,15 +1536,16 @@ async function loadStudents(){
     }
     
     table.innerHTML = studentsData.map((s,i) => {
-      const displayName = s.badge && s.badge.trim() ? 
-        `<span class="student-badge" style="background:${s.badge_color || '#ffd700'};color:${s.badge_color === '#ffd700' ? '#000' : '#fff'}">${s.badge}</span><span style="color:${s.color || '#e0e0f0'}">${s.name}</span>` : 
-        `<span style="color:${s.color || '#e0e0f0'}">${s.name}</span>`;
+      // ✨ Badge display logic
+      const badgeHTML = s.badge && s.badge.trim() ? 
+        `<span class="student-badge" style="background:${s.badge_color || '#ffd700'};color:${isLightColor(s.badge_color) ? '#000' : '#fff'}">${s.badge}</span>` : '';
+      
       const d = new Date(s.date);
       const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
       
       return `<tr style="animation-delay:${i*0.05}s">
         <td><span class="row-num">${i+1}</span></td>
-        <td class="student-name-cell">${displayName}</td>
+        <td class="student-name-cell">${badgeHTML}<span style="color:${s.color || '#e0e0f0'}">${s.name}</span></td>
         <td style="color:${s.color || '#e0e0f0'};text-align:right;padding-right:16px">${s.title}</td>
         <td><span class="subject-badge" style="color:${s.color || '#00d4ff'};border-color:${(s.color || '#00d4ff')}44;background:${(s.color || '#00d4ff')}14">${s.subject}</span></td>
         <td class="date-cell">${dateStr}</td>
@@ -1538,7 +1561,6 @@ async function loadStudents(){
     }).join('');
   } catch(err) {
     console.error("Error in loadStudents:", err);
-    showMsg("#msgTable", "❌ خطأ غير متوقع: " + err.message, "error");
   }
 }
 window.loadStudents = loadStudents;
@@ -1548,13 +1570,9 @@ async function addStudent(){
   const title = $('#reportTitle').value.trim();
   const subject = $('#subjectName').value.trim();
   
-  if(!name || !title || !subject){ 
-    showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); 
-    return; 
-  }
+  if(!name || !title || !subject){ showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
   
   try {
-    // Check for duplicates
     const { data: nameExists } = await supabase.from('student_reports').select('id').eq('name', name).limit(1);
     const { data: titleExists } = await supabase.from('student_reports').select('id').eq('title', title).limit(1);
     
@@ -1564,22 +1582,12 @@ async function addStudent(){
     }
     
     const {error} = await supabase.from("student_reports").insert([{
-      name, 
-      title, 
-      subject, 
-      date: new Date().toISOString(),
-      code: 'admin_added',
-      badge: null,
-      badge_color: null
+      name, title, subject, date:new Date().toISOString(),
+      code: 'admin_added', badge: null, badge_color: null
     }]);
     
-    if(error){ 
-      console.error("Add error:", error);
-      showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); 
-      return; 
-    }
+    if(error){ showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'add_student',
@@ -1597,35 +1605,21 @@ async function addStudent(){
 }
 
 async function updateStudent(){
-  if(!selectedID){ 
-    showMsg("#msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); 
-    return; 
-  }
+  if(!selectedID){ showMsg("#msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return; }
   
   const name = $('#studentName').value.trim();
   const title = $('#reportTitle').value.trim();
   const subject = $('#subjectName').value.trim();
   
-  if(!name || !title || !subject){ 
-    showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); 
-    return; 
-  }
+  if(!name || !title || !subject){ showMsg("#msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return; }
   
   try {
     const {error} = await supabase.from("student_reports").update({
-      name, 
-      title, 
-      subject, 
-      date: new Date().toISOString()
+      name, title, subject, date:new Date().toISOString()
     }).eq("id", selectedID);
     
-    if(error){ 
-      console.error("Update error:", error);
-      showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); 
-      return; 
-    }
+    if(error){ showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'update_student',
@@ -1656,12 +1650,8 @@ async function deleteStudent(id){
   
   try {
     const {error} = await supabase.from("student_reports").delete().eq("id",id);
-    if(error){ 
-      showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); 
-      return; 
-    }
+    if(error){ showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'delete_student',
@@ -1683,12 +1673,8 @@ async function banStudent(id){
   
   try {
     const {error} = await supabase.from("student_reports").update({banned: true}).eq("id",id);
-    if(error){ 
-      showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); 
-      return; 
-    }
+    if(error){ showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'ban_student',
@@ -1708,12 +1694,8 @@ window.banStudent = banStudent;
 async function unbanStudent(id){
   try {
     const {error} = await supabase.from("student_reports").update({banned: false}).eq("id",id);
-    if(error){ 
-      showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); 
-      return; 
-    }
+    if(error){ showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'unban_student',
@@ -1737,13 +1719,7 @@ function clearInputs(){
   selectedID = null;
 }
 
-/* ===== ✨ BADGE ASSIGNMENT FUNCTIONS ===== */
-window.selectBadge = function(badge, el){
-  selectedBadge = badge;
-  $$('#badgeStudentIndex + div .color-box').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  previewBadge();
-}
+/* ===== ✨ BADGE ASSIGNMENT FUNCTIONS - MODIFIED ===== */
 
 window.selectBadgeColor = function(color, el){
   selectedBadgeColor = color;
@@ -1754,56 +1730,54 @@ window.selectBadgeColor = function(color, el){
 
 window.previewBadge = function(){
   const idx = parseInt($('#badgeStudentIndex').value) - 1;
-  const previewBadge = $('#badgePreview');
+  const badgeChar = $('#badgeTextInput').value.trim() || '⭐';
+  const previewBadgeEl = $('#badgePreview');
   const previewName = $('#badgePreviewName');
+  
+  selectedBadgeChar = badgeChar;
   
   if(!isNaN(idx) && idx >= 0 && idx < studentsData.length){
     const student = studentsData[idx];
     previewName.textContent = student.name;
-    previewBadge.textContent = selectedBadge;
-    previewBadge.style.background = selectedBadgeColor;
-    previewBadge.style.color = selectedBadgeColor === '#ffd700' ? '#000' : '#fff';
-    previewBadge.style.display = 'inline-flex';
+    previewBadgeEl.textContent = badgeChar;
+    previewBadgeEl.style.background = selectedBadgeColor;
+    previewBadgeEl.style.color = isLightColor(selectedBadgeColor) ? '#000' : '#fff';
+    previewBadgeEl.style.display = 'inline-flex';
   } else {
     previewName.textContent = 'اسم الطالب';
-    previewBadge.style.display = 'none';
+    previewBadgeEl.textContent = badgeChar;
+    previewBadgeEl.style.background = selectedBadgeColor;
+    previewBadgeEl.style.color = isLightColor(selectedBadgeColor) ? '#000' : '#fff';
+    previewBadgeEl.style.display = idx >= 0 ? 'inline-flex' : 'none';
   }
 }
 
 async function assignBadge(){
   const idx = parseInt($('#badgeStudentIndex').value) - 1;
+  const badgeChar = $('#badgeTextInput').value.trim();
   
-  if(isNaN(idx) || idx < 0){ 
-    showMsg('#msgBadge','⚠️ أدخل رقم الطالب الصحيح','error'); 
-    return; 
-  }
-  if(idx >= studentsData.length){ 
-    showMsg('#msgBadge','⚠️ رقم الطالب غير موجود في القائمة','error'); 
-    return; 
-  }
+  if(isNaN(idx) || idx < 0){ showMsg('#msgBadge','⚠️ أدخل رقم الطالب الصحيح','error'); return; }
+  if(!badgeChar){ showMsg('#msgBadge','⚠️ اكتب رمز أو إيموجي للشارة','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgBadge','⚠️ رقم الطالب غير موجود في القائمة','error'); return; }
   
   const student = studentsData[idx];
   
   try {
     const {error} = await supabase.from('student_reports').update({
-      badge: selectedBadge,
+      badge: badgeChar,
       badge_color: selectedBadgeColor
     }).eq('id', student.id);
     
-    if(error){ 
-      showMsg('#msgBadge','❌ فشل منح الشارة: ' + error.message, 'error'); 
-      return; 
-    }
+    if(error){ showMsg('#msgBadge','❌ فشل منح الشارة: ' + error.message, 'error'); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'assign_badge',
       status: 'success',
-      details: `تم منح شارة ${selectedBadge} للطالب: ${student.name}`
+      details: `تم منح شارة "${badgeChar}" باللون ${selectedBadgeColor} للطالب: ${student.name}`
     }]);
     
-    showMsg('#msgBadge', `⭐ تم منح شارة "${selectedBadge}" للطالب "${student.name}"`, 'success');
+    showMsg('#msgBadge', `⭐ تم منح شارة "${badgeChar}" للطالب "${student.name}"`, 'success');
     loadStudents();
     previewBadge();
   } catch(err) {
@@ -1816,14 +1790,8 @@ window.assignBadge = assignBadge;
 async function removeBadge(){
   const idx = parseInt($('#badgeStudentIndex').value) - 1;
   
-  if(isNaN(idx) || idx < 0){ 
-    showMsg('#msgBadge','⚠️ أدخل رقم الطالب أولاً','error'); 
-    return; 
-  }
-  if(idx >= studentsData.length){ 
-    showMsg('#msgBadge','⚠️ رقم الطالب غير موجود','error'); 
-    return; 
-  }
+  if(isNaN(idx) || idx < 0){ showMsg('#msgBadge','⚠️ أدخل رقم الطالب أولاً','error'); return; }
+  if(idx >= studentsData.length){ showMsg('#msgBadge','⚠️ رقم الطالب غير موجود','error'); return; }
   
   const student = studentsData[idx];
   
@@ -1833,13 +1801,11 @@ async function removeBadge(){
       badge_color: null
     }).eq('id', student.id);
     
-    if(error){ 
-      showMsg('#msgBadge','❌ فشل إزالة الشارة: '+error.message,'error'); 
-      return; 
-    }
+    if(error){ showMsg('#msgBadge','❌ فشل إزالة الشارة: '+error.message,'error'); return; }
     
     showMsg('#msgBadge', `❌ تم إزالة شارة الطالب "${student.name}"`, 'info');
     $('#badgePreview').style.display = 'none';
+    $('#badgeTextInput').value = '';
     loadStudents();
   } catch(err) {
     console.error("Error in removeBadge:", err);
@@ -1857,7 +1823,6 @@ async function sendNotification(){
     const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1);
     if(error){ showMsg("#msgNotif","❌ فشل الإرسال: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'send_notification',
@@ -1904,7 +1869,6 @@ async function saveDeadline(){
       
     if(error){ showMsg("#msgDeadline","❌ فشل الحفظ: "+error.message,"error"); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'update_deadline',
@@ -1929,7 +1893,6 @@ async function saveGuidelines(){
     const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1);
     if(error){ showMsg('#msgGuidelines','❌ فشل الحفظ: '+error.message,'error'); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'update_guidelines',
@@ -2012,7 +1975,6 @@ async function sendStudentAlert(){
     
     if(error){ showMsg('#msgAlert','❌ فشل الإرسال: ' + error.message, 'error'); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'send_alert',
@@ -2061,7 +2023,6 @@ async function manualBan(){
   if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
   
   try {
-    // Add to banned_users table
     const {error} = await supabase.from('banned_users').insert([{
       target: target,
       reason: reason,
@@ -2071,7 +2032,6 @@ async function manualBan(){
     
     if(error){ showMsg('#securityMsg','❌ فشل الحظر: '+error.message,'error'); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'manual_ban',
@@ -2098,7 +2058,6 @@ async function manualUnban(){
     const {error} = await supabase.from('banned_users').delete().eq('target', target);
     if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
     
-    // Log action
     await supabase.from('admin_logs').insert([{
       admin_id: 'admin_001',
       action: 'manual_unban',
@@ -2140,7 +2099,6 @@ async function loadBannedList(){
       </tr>
     `).join('');
     
-    // Update stats
     $('#statsBanned').textContent = data.length;
   } catch(err) {
     console.error("Error in loadBannedList:", err);
@@ -2200,7 +2158,6 @@ window.loadComments = loadComments;
 
 window.filterComments = function(){
   const filter = $('#commentFilter').value.toLowerCase();
-  // Filter logic would go here with Supabase query
   loadComments();
 }
 
@@ -2224,20 +2181,12 @@ window.testSuggestions = async function(){
   const subject = $('#testSubject').value.trim();
   const results = $('#suggestionResults');
   
-  if(!subject){
-    results.innerHTML = '';
-    return;
-  }
+  if(!subject){ results.innerHTML = ''; return; }
   
   try {
-    // Get existing titles for this subject
-    const {data} = await supabase.from('student_reports')
-      .select('title')
-      .eq('subject', subject);
-    
+    const {data} = await supabase.from('student_reports').select('title').eq('subject', subject);
     const existingTitles = data?.map(d => d.title.toLowerCase()) || [];
     
-    // Generate suggestions (simple algorithm)
     const prefixes = ['دراسة تحليلية لـ', 'مقارنة بين تقنيات ', 'تطبيقات عملية في ', 'مستقبل ', 'تحديات '];
     const suffixes = [' في البيئة الحديثة', ' التقليدية والحديثة', ' لحل المشكلات الواقعية', ' والذكاء الاصطناعي'];
     
@@ -2246,8 +2195,6 @@ window.testSuggestions = async function(){
       const prefix = prefixes[Math.floor(Math.random()*prefixes.length)];
       const suffix = suffixes[Math.floor(Math.random()*suffixes.length)];
       const suggestion = `"${prefix}${subject}${suffix}"`;
-      
-      // Check if not already used
       if(!existingTitles.some(t => t.includes(suggestion.toLowerCase().slice(1,-1)))){
         suggestions.push(suggestion);
       }
@@ -2286,8 +2233,6 @@ async function saveSettings(){
   }
   
   try {
-    // In production, hash password before saving
-    // For now, just log the action
     if(newPass){
       await supabase.from('admin_logs').insert([{
         admin_id: 'admin_001',
@@ -2297,7 +2242,6 @@ async function saveSettings(){
       }]);
     }
     
-    // Save other settings to site_control
     const {error} = await supabase.from('site_control').update({
       allow_registration: $('#allowRegistration').checked,
       force_session_timeout: $('#forceSessionTimeout').checked,
@@ -2372,10 +2316,7 @@ async function loadLogs(){
 }
 window.loadLogs = loadLogs;
 
-window.filterLogs = function(){
-  // Filter logic would use Supabase query with filters
-  loadLogs();
-}
+window.filterLogs = function(){ loadLogs(); }
 
 window.exportLogs = async function(){
   try {
@@ -2414,7 +2355,6 @@ window.clearLogs = async function(){
 
 /* ===== REALTIME SUBSCRIPTIONS ===== */
 function setupRealtime(){
-  // Students realtime
   supabase.channel('admin_students')
     .on('postgres_changes', {event:'*', schema:'public', table:'student_reports'}, () => {
       loadStudents();
@@ -2422,7 +2362,6 @@ function setupRealtime(){
     })
     .subscribe();
   
-  // Site control realtime
   supabase.channel('admin_site_control')
     .on('postgres_changes', {event:'*', schema:'public', table:'site_control'}, () => {
       loadSiteStatus();
@@ -2430,14 +2369,12 @@ function setupRealtime(){
     })
     .subscribe();
   
-  // Comments realtime
   supabase.channel('admin_comments')
     .on('postgres_changes', {event:'*', schema:'public', table:'comments'}, () => {
       loadComments();
     })
     .subscribe();
   
-  // Logs realtime
   supabase.channel('admin_logs_channel')
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'admin_logs'}, () => {
       loadLogs();
