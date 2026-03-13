@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔐 لوحة تحكم المشرف | ONX-TAQE ADMIN PRO</title>
+<title>🔐 لوحة تحكم المشرف الشاملة | ONX-TAQE ADMIN PRO MAX</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -97,8 +97,8 @@ body {
 /* ===== STATS BAR ===== */
 .stats-bar { display:flex; justify-content:center; gap:20px; padding:10px 20px 20px; animation:fadeIn 1s 0.3s both; flex-wrap:wrap; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.stat-badge { background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px; display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; transition:var(--transition); }
-.stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); }
+.stat-badge { background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px; display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; transition:var(--transition); cursor:pointer; }
+.stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); box-shadow:0 0 20px rgba(0,212,255,0.3); }
 .stat-dot { width:8px; height:8px; border-radius:50%; }
 
 /* ===== TABS SYSTEM ===== */
@@ -474,6 +474,17 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .visitor-status.active { background:rgba(0,200,81,0.15); color:#00ff88; }
 .visitor-status.banned { background:rgba(233,69,96,0.15); color:#ff6b6b; }
 
+/* ===== DIAGNOSTICS PANEL ===== */
+.diagnostic-section { margin-bottom:20px; }
+.diagnostic-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); border-radius:12px; margin-bottom:12px; cursor:pointer; }
+.diagnostic-header:hover { background:rgba(0,212,255,0.15); }
+.diagnostic-title { display:flex; align-items:center; gap:8px; font-weight:700; }
+.diagnostic-toggle { font-size:1.2rem; transition:transform 0.3s; }
+.diagnostic-toggle.active { transform:rotate(180deg); }
+.diagnostic-content { display:none; padding:16px; background:rgba(0,0,0,0.2); border-radius:0 0 12px 12px; }
+.diagnostic-content.show { display:block; animation:slideIn 0.3s ease; }
+@keyframes slideIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
@@ -540,31 +551,27 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
   <!-- Stats Bar -->
   <div class="stats-bar">
-    <div class="stat-badge">
+    <div class="stat-badge" onclick="quickFilter('students')">
       <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
-      <span>إجمالي الطلاب: <strong id="statsTotal">0</strong></span>
+      <span>الطلاب: <strong id="statsTotal">0</strong></span>
     </div>
-    <div class="stat-badge">
+    <div class="stat-badge" onclick="quickFilter('badged')">
       <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
       <span>المتميزون: <strong id="statsBadged">0</strong></span>
     </div>
-    <div class="stat-badge">
+    <div class="stat-badge" onclick="quickFilter('alerts')">
       <div class="stat-dot" style="background:#e94560;box-shadow:0 0 8px #e94560"></div>
-      <span>آخر نشاط: <strong id="statsLastReport">—</strong></span>
+      <span>تنبيهات: <strong id="statsAlerts">0</strong></span>
     </div>
     <div class="stat-badge">
       <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
       <span id="siteStatusBadge">الحالة: <strong>...</strong></span>
     </div>
-    <div class="stat-badge">
-      <div class="stat-dot" style="background:#ff8c00;box-shadow:0 0 8px #ff8c00"></div>
-      <span>تنبيهات: <strong id="statsAlerts">0</strong></span>
-    </div>
-    <div class="stat-badge">
+    <div class="stat-badge" onclick="quickFilter('banned')">
       <div class="stat-dot" style="background:#7b2fff;box-shadow:0 0 8px #7b2fff"></div>
       <span>محظورون: <strong id="statsBanned">0</strong></span>
     </div>
-    <div class="stat-badge">
+    <div class="stat-badge" onclick="quickFilter('visitors')">
       <div class="stat-dot" style="background:#14b8a6;box-shadow:0 0 8px #14b8a6"></div>
       <span>الزوار: <strong id="statsVisitors">0</strong></span>
     </div>
@@ -576,9 +583,10 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
       <button class="tab-btn" data-tab="security">🛡️ الأمان</button>
       <button class="tab-btn" data-tab="content">📝 المحتوى</button>
-      <button class="tab-btn" data-tab="visitors">👁️ سجل الزيارات</button>
+      <button class="tab-btn" data-tab="visitors">👁️ الزوار</button>
       <button class="tab-btn" data-tab="comments">💬 التعليقات</button>
       <button class="tab-btn" data-tab="suggestions">💡 الاقتراحات</button>
+      <button class="tab-btn" data-tab="diagnostics">🔍 التشخيص</button>
       <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
       <button class="tab-btn" data-tab="logs">📊 السجلات</button>
     </div>
@@ -1156,6 +1164,49 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       </div>
     </div>
 
+    <!-- ===== TAB: DIAGNOSTICS ===== -->
+    <div class="tab-content" id="tab-diagnostics">
+      <div class="glass-card card-glow-blue">
+        <div class="card-header">
+          <div class="card-icon icon-blue">🔍</div>
+          <div>
+            <div class="card-title">نظام التشخيص الشامل</div>
+            <div class="card-desc">تحليل قاعدة البيانات • سياسات • جداول • متغيرات • بيانات</div>
+          </div>
+        </div>
+        
+        <div id="diagnosticStatus" class="status pending" style="margin-bottom:20px">
+          <span class="status-icon">⏳</span>
+          <span>جاهز لبدء التحليل...</span>
+        </div>
+        
+        <div class="progress" style="margin-bottom:20px"><div class="progress-bar" id="diagnosticProgress"></div></div>
+        
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+          <button class="btn btn-primary" onclick="startFullDiagnosis()">🚀 بدء التحليل الشامل</button>
+          <button class="btn btn-success" onclick="sendDiagnosticReport()">📤 إرسال لـ Telegram</button>
+          <button class="btn btn-outline" onclick="copyDiagnosticReport()">📋 نسخ التقرير</button>
+        </div>
+        
+        <div class="log" id="diagnosticLog"></div>
+      </div>
+      
+      <!-- أقسام التشخيص القابلة للطي -->
+      <div id="diagnosticSections"></div>
+      
+      <!-- نتيجة التقرير -->
+      <div class="glass-card card-glow-purple" id="diagnosticResultCard" style="display:none;margin-top:20px">
+        <div class="card-header">
+          <div class="card-icon icon-purple">📋</div>
+          <div>
+            <div class="card-title">التقرير الكامل</div>
+            <div class="card-desc">جميع المعلومات مجمعة ومنسقة</div>
+          </div>
+        </div>
+        <div class="result-box" id="diagnosticReportContent" style="background:rgba(0,0,0,0.3);border-radius:14px;padding:20px;max-height:500px;overflow:auto;font-size:0.8rem"></div>
+      </div>
+    </div>
+
     <!-- ===== TAB: SETTINGS ===== -->
     <div class="tab-content" id="tab-settings">
       <div class="glass-card card-glow-blue">
@@ -1287,6 +1338,7 @@ let selectedBadgeChar = '⭐';
 let selectedBadgeColor = '#ffd700';
 let currentSort = { column: 'date', direction: 'desc' };
 let isAdminLoggedIn = false;
+let fullDiagnosticReport = null;
 
 // ✅ إعدادات الحماية - جميعها معطلة افتراضياً
 let securitySettings = {
@@ -1350,6 +1402,29 @@ function isLightColor(color) {
   return ['#ffd700','#ffaa00','#ffffff','#ffcc00','#ffff00'].includes(color?.toLowerCase());
 }
 
+function showToast(msg, type='success'){
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: ${type==='success'?'rgba(0,200,81,0.95)':type==='error'?'rgba(233,69,96,0.95)':'rgba(0,212,255,0.95)'};
+    color: #fff; padding: 12px 24px; border-radius: 12px;
+    font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 0.9rem;
+    z-index: 10000; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+  `;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes toastIn { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+    @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+  `;
+  document.head.appendChild(style);
+  
+  setTimeout(() => toast.remove(), 3000);
+}
+
 /* ===== PARTICLES ===== */
 (function(){
   const container = document.getElementById('particles');
@@ -1395,112 +1470,6 @@ function webglFp(){
     const dbg = gl.getExtension('WEBGL_debug_renderer_info');
     return (dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : 'v?') + '|' + (dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'r?');
   } catch { return 'no-webgl'; }
-}
-
-/* ===== RATE LIMITING ===== */
-async function checkRateLimit(deviceCode) {
-  const now = Date.now();
-  const record = RATE_LIMIT.attempts.get(deviceCode);
-  
-  if (!record || (now - record.startTime) > RATE_LIMIT.windowMs) {
-    RATE_LIMIT.attempts.set(deviceCode, { count: 1, startTime: now });
-    return { allowed: true, remaining: RATE_LIMIT.maxAttempts - 1 };
-  }
-  
-  if (record.count >= RATE_LIMIT.maxAttempts) {
-    const remaining = RATE_LIMIT.windowMs - (now - record.startTime);
-    return { 
-      allowed: false, 
-      remaining: 0,
-      retryAfter: Math.ceil(remaining / 1000)
-    };
-  }
-  
-  record.count++;
-  return { allowed: true, remaining: RATE_LIMIT.maxAttempts - record.count };
-}
-
-function toggleRateLimit() {
-  securitySettings.rateLimit = !securitySettings.rateLimit;
-  const btn = $('#rlBtn');
-  const icon = $('#rlIcon');
-  
-  if (securitySettings.rateLimit) {
-    btn.textContent = 'مفعّل';
-    btn.className = 'security-action active';
-    icon.className = 'security-icon allowed';
-    icon.textContent = '✅';
-    showToast('✅ تم تفعيل Rate Limiting', 'success');
-  } else {
-    btn.textContent = 'معطّل';
-    btn.className = 'security-action';
-    icon.className = 'security-icon blocked';
-    icon.textContent = '❌';
-    showToast('⚠️ تم تعطيل Rate Limiting', 'info');
-  }
-  saveSecuritySettings();
-}
-
-/* ===== FINGERPRINT PROTECTION ===== */
-async function checkFingerprintBan(deviceCode) {
-  if (!securitySettings.fingerprint) return { blocked: false };
-  
-  const { data: banned, error: banError } = await supabase
-    .from('banned_users')
-    .select('target, reason')
-    .eq('target', deviceCode)
-    .single();
-  
-  if (banError && banError.code !== 'PGRST116') {
-    console.error('Error checking ban:', banError);
-    return { blocked: false };
-  }
-  
-  if (banned) {
-    return { blocked: true, reason: banned.reason || 'جهاز محظور' };
-  }
-  
-  const {  existing, error: existError } = await supabase
-    .from('student_reports')
-    .select('id, name')
-    .eq('code', deviceCode)
-    .single();
-  
-  if (existError && existError.code !== 'PGRST116') {
-    console.error('Error checking existing:', existError);
-    return { blocked: false };
-  }
-  
-  if (existing) {
-    return { 
-      blocked: true, 
-      reason: 'هذا الجهاز مسجل مسبقاً',
-      existingName: existing.name
-    };
-  }
-  
-  return { blocked: false };
-}
-
-function toggleFingerprint() {
-  securitySettings.fingerprint = !securitySettings.fingerprint;
-  const btn = $('#fpBtn');
-  const icon = $('#fpIcon');
-  
-  if (securitySettings.fingerprint) {
-    btn.textContent = 'مفعّل';
-    btn.className = 'security-action active';
-    icon.className = 'security-icon allowed';
-    icon.textContent = '✅';
-    showToast('✅ تم تفعيل حماية البصمة المركبة', 'success');
-  } else {
-    btn.textContent = 'معطّل';
-    btn.className = 'security-action';
-    icon.className = 'security-icon blocked';
-    icon.textContent = '❌';
-    showToast('⚠️ تم تعطيل حماية البصمة', 'info');
-  }
-  saveSecuritySettings();
 }
 
 /* ===== LOGIN SYSTEM ===== */
@@ -1698,7 +1667,7 @@ window.previewGuidelinesLive = function(){
   }
 }
 
-/* ===== STUDENTS MANAGEMENT - FIXED ===== */
+/* ===== STUDENTS MANAGEMENT ===== */
 async function loadStudents(){
   try {
     const {data, error} = await supabase
@@ -1934,6 +1903,60 @@ function clearInputs(){
   selectedID = null;
 }
 
+/* ===== QUICK FILTER ===== */
+window.quickFilter = function(type) {
+  if(type === 'students') {
+    setActiveTab('students');
+    loadStudents();
+  } else if(type === 'badged') {
+    setActiveTab('students');
+    const filtered = studentsData.filter(s => s.badge && s.badge.trim());
+    renderFilteredStudents(filtered);
+  } else if(type === 'alerts') {
+    setActiveTab('students');
+    const filtered = studentsData.filter(s => s.alert_text && s.alert_text.trim());
+    renderFilteredStudents(filtered);
+  } else if(type === 'banned') {
+    setActiveTab('security');
+    loadBannedList();
+  } else if(type === 'visitors') {
+    setActiveTab('visitors');
+    loadVisitors();
+  }
+}
+
+function renderFilteredStudents(filtered) {
+  const table = $("#studentsTable");
+  if(filtered.length === 0){
+    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">لا توجد نتائج</div></div></td></tr>`;
+    return;
+  }
+  
+  table.innerHTML = filtered.map((s,i) => {
+    const badgeHTML = s.badge && s.badge.trim() ? 
+      `<span class="student-badge" style="background:${s.badge_color || '#ffd700'};color:${isLightColor(s.badge_color) ? '#000' : '#fff'}">${s.badge}</span>` : '';
+    
+    const d = s.date ? new Date(s.date) : new Date();
+    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+    
+    return `<tr style="animation-delay:${i*0.05}s">
+      <td><span class="row-num">${i+1}</span></td>
+      <td class="student-name-cell">${badgeHTML}<span style="color:${s.color || '#e0e0f0'}">${s.name || '—'}</span></td>
+      <td style="color:${s.color || '#e0e0f0'};text-align:right;padding-right:16px">${s.title || '—'}</td>
+      <td><span class="subject-badge" style="color:${s.color || '#00d4ff'};border-color:${(s.color || '#00d4ff')}44;background:${(s.color || '#00d4ff')}14">${s.subject || '—'}</span></td>
+      <td class="date-cell">${dateStr}</td>
+      <td>${s.banned ? '<span style="color:#ff6b6b;font-weight:700">🚫 محظور</span>' : '<span style="color:#00ff88">✅ نشط</span>'}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s).replace(/'/g,"\\'")})'>✏️</button>
+          <button class="btn-sm ${s.banned?'btn-sm-unban':'btn-sm-ban'}" onclick='${s.banned?'unban':'ban'}Student(${s.id})'>${s.banned?'✅':'🚫'}</button>
+          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
 /* ===== ✨ BADGE ASSIGNMENT FUNCTIONS ===== */
 window.selectBadgeColor = function(color, el){
   selectedBadgeColor = color;
@@ -2064,7 +2087,7 @@ async function clearNotification(){
 }
 window.clearNotification = clearNotification;
 
-/* ===== DEADLINE - FIXED ===== */
+/* ===== DEADLINE ===== */
 async function saveDeadline(){
   const dtVal = $('#deadlineInput').value;
   const active = $('#deadlineActiveSwitch').checked;
@@ -2134,7 +2157,7 @@ async function clearGuidelines(){
 }
 window.clearGuidelines = clearGuidelines;
 
-/* ===== ALERTS - FIXED ===== */
+/* ===== ALERTS ===== */
 window.selectAlertColor = function(color, el){
   selectedAlertColor = color;
   $$('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'));
@@ -2776,30 +2799,6 @@ function setupRealtime(){
     .subscribe();
 }
 
-/* ===== TOAST NOTIFICATIONS ===== */
-function showToast(msg, type='success'){
-  const toast = document.createElement('div');
-  toast.style.cssText = `
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: ${type==='success'?'rgba(0,200,81,0.95)':type==='error'?'rgba(233,69,96,0.95)':'rgba(0,212,255,0.95)'};
-    color: #fff; padding: 12px 24px; border-radius: 12px;
-    font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 0.9rem;
-    z-index: 10000; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
-  `;
-  toast.textContent = msg;
-  document.body.appendChild(toast);
-  
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes toastIn { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
-    @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
-  `;
-  document.head.appendChild(style);
-  
-  setTimeout(() => toast.remove(), 3000);
-}
-
 /* ===== SAVE/LOAD SECURITY SETTINGS ===== */
 function saveSecuritySettings() {
   localStorage.setItem('onx_security_settings', JSON.stringify(securitySettings));
@@ -2820,6 +2819,283 @@ async function generateDeviceCode(){
   
   const hash = await sha256(parts);
   return hash.slice(0, 28);
+}
+
+/* ===== DIAGNOSTICS SYSTEM ===== */
+const EXPECTED_TABLES = [
+  'student_reports', 'site_control', 'banned_users',
+  'comments', 'admin_logs', 'bot_config',
+  'security_logs', 'telegram_settings', 'visitors', 'visitor_logs'
+];
+
+async function getTables() {
+  const existing = [];
+  for(const tableName of EXPECTED_TABLES) {
+    try {
+      const { count, error } = await supabase.from(tableName).select('*', { count: 'exact', head: true });
+      if(!error) existing.push(tableName);
+    } catch(e) {}
+  }
+  return existing;
+}
+
+async function getColumns(tableName) {
+  const { data, error } = await supabase.from(tableName).select('*').limit(1);
+  if(error || !data || data.length === 0) return [];
+  return Object.keys(data[0]).map(col => ({
+    name: col,
+    type: getValueType(data[0][col]),
+    sampleValue: data[0][col] !== null ? String(data[0][col]).substring(0, 50) : 'NULL'
+  }));
+}
+
+async function getRowCount(tableName) {
+  try {
+    const { count } = await supabase.from(tableName).select('*', { count: 'exact', head: true });
+    return count || 0;
+  } catch { return '?'; }
+}
+
+async function getPolicies(tableName) {
+  try {
+    const { data } = await supabase.from('pg_policies').select('policyname, cmd, qual, with_check, roles').eq('tablename', tableName).eq('schemaname', 'public');
+    return data || [];
+  } catch { return []; }
+}
+
+async function getSampleData(tableName) {
+  try {
+    const { data } = await supabase.from(tableName).select('*').limit(3);
+    return data || [];
+  } catch { return null; }
+}
+
+function getValueType(value) {
+  if(value === null) return 'NULL';
+  if(typeof value === 'boolean') return 'boolean';
+  if(typeof value === 'number') return Number.isInteger(value) ? 'integer' : 'numeric';
+  if(typeof value === 'string') {
+    if(value.match(/^\d{4}-\d{2}-\d{2}/)) return 'timestamp';
+    if(value.match(/^[0-9a-f]{8}-/i)) return 'uuid';
+    return 'text';
+  }
+  return typeof value;
+}
+
+function formatDiagnosticReport(tables) {
+  let msg = `🔍 *التقرير الشامل - ONX-TAQE*\n`;
+  msg += `══════════════════════════════\n\n`;
+  msg += `📊 *ملخص:*\n`;
+  msg += `• الوقت: ${new Date().toLocaleString('ar-EG')}\n`;
+  msg += `• الجداول: ${tables.length}\n\n`;
+  
+  for(const t of tables) {
+    msg += `══════════════════════════════\n\n`;
+    msg += `📁 *جدول: \`${t.name}\`*\n`;
+    msg += `📈 السجلات: ${t.rowCount}\n`;
+    msg += `📝 الأعمدة: ${t.columns.length}\n\n`;
+    
+    msg += `*تفاصيل الأعمدة:*\n\`\`\`\n`;
+    t.columns.forEach((col, idx) => {
+      msg += `${(idx+1).toString().padStart(2)}. ${col.name.padEnd(25)} ${col.type.padEnd(12)} ${col.sampleValue}\n`;
+    });
+    msg += `\`\`\`\n\n`;
+    
+    if(t.policies.length > 0) {
+      msg += `🔐 *سياسات:*\n`;
+      t.policies.forEach(p => msg += `• \`${p.policyname}\` - ${p.cmd}\n`);
+      msg += `\n`;
+    }
+    
+    if(t.sampleData && t.sampleData.length > 0) {
+      msg += `💾 *عينة:*\n\`\`\`\n`;
+      msg += JSON.stringify(t.sampleData[0], null, 2).substring(0, 800);
+      msg += `\n\`\`\`\n\n`;
+    }
+  }
+  
+  msg += `══════════════════════════════\n✅ نهاية التقرير`;
+  return msg;
+}
+
+function createDiagnosticAccordion(title, icon, content, defaultOpen = false) {
+  const div = document.createElement('div');
+  div.className = 'diagnostic-section';
+  div.innerHTML = `
+    <div class="diagnostic-header ${defaultOpen ? 'active' : ''}" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show');this.querySelector('.diagnostic-toggle').classList.toggle('active')">
+      <div class="diagnostic-title">
+        <span>${icon}</span>
+        <span>${title}</span>
+      </div>
+      <span class="diagnostic-toggle ${defaultOpen ? 'active' : ''}">▼</span>
+    </div>
+    <div class="diagnostic-content ${defaultOpen ? 'show' : ''}">${content}</div>
+  `;
+  return div;
+}
+
+window.startFullDiagnosis = async function() {
+  $('#diagnosticProgress').style.width = '0%';
+  $('#diagnosticLog').innerHTML = '';
+  $('#diagnosticResultCard').style.display = 'none';
+  
+  try {
+    setStatus('pending', '⏳', 'جاري التحليل...', 'diagnostic');
+    log('🚀 بدء التحليل الشامل...', 'diagnostic');
+    
+    setProgress(5, 'diagnostic');
+    log('📊 فحص الجداول...', 'diagnostic');
+    const tables = await getTables();
+    log(`✅ ${tables.length} جدول`, 'diagnostic');
+    
+    const fullReport = [];
+    let step = 10;
+    
+    for(const tableName of tables) {
+      setProgress(step, 'diagnostic');
+      log(`📁 فحص: ${tableName}...`, 'diagnostic');
+      
+      const columns = await getColumns(tableName);
+      const rowCount = await getRowCount(tableName);
+      const policies = await getPolicies(tableName);
+      const sampleData = await getSampleData(tableName);
+      
+      fullReport.push({ name: tableName, columns, rowCount, policies, sampleData });
+      
+      log(`  • الأعمدة: ${columns.length} | السجلات: ${rowCount}`, 'diagnostic');
+      step += 85 / tables.length;
+    }
+    
+    setProgress(95, 'diagnostic');
+    fullDiagnosticReport = formatDiagnosticReport(fullReport);
+    
+    // عرض الأقسام
+    const sections = $('#diagnosticSections');
+    sections.innerHTML = '';
+    
+    for(const t of fullReport) {
+      let content = `<div style="margin-bottom:16px">`;
+      content += `<strong>📈 الإحصائيات:</strong><br>`;
+      content += `• السجلات: ${t.rowCount}<br>`;
+      content += `• الأعمدة: ${t.columns.length}<br>`;
+      content += `• السياسات: ${t.policies.length}<br><br>`;
+      
+      content += `<strong>📝 الأعمدة:</strong><br><pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;font-size:0.75rem;overflow:auto">`;
+      t.columns.forEach((col, idx) => {
+        content += `${(idx+1)}. ${col.name.padEnd(20)} ${col.type.padEnd(10)} ${col.sampleValue}\n`;
+      });
+      content += `</pre></div>`;
+      
+      if(t.policies.length > 0) {
+        content += `<strong>🔐 السياسات:</strong><br>`;
+        t.policies.forEach(p => content += `• ${p.policyname} - ${p.cmd}<br>`);
+      }
+      
+      sections.appendChild(createDiagnosticAccordion(
+        `📁 ${t.name} <span style="color:rgba(255,255,255,0.4)">(${t.rowCount} سجل)</span>`,
+        '🗄️',
+        content,
+        false
+      ));
+    }
+    
+    $('#diagnosticReportContent').innerHTML = `<pre>${fullDiagnosticReport}</pre>`;
+    $('#diagnosticResultCard').style.display = 'block';
+    
+    setProgress(100, 'diagnostic');
+    setStatus('success', '✅', 'تم التحليل! يمكنك الإرسال الآن', 'diagnostic');
+    log('✅ اكتمل التحليل', 'diagnostic');
+    
+  } catch(err) {
+    console.error(err);
+    setStatus('error', '❌', 'خطأ: ' + err.message, 'diagnostic');
+    log('❌ ' + err.message, 'diagnostic');
+  }
+};
+
+window.sendDiagnosticReport = async function() {
+  if(!fullDiagnosticReport) {
+    alert('⚠️ يرجى تشغيل التحليل أولاً');
+    return;
+  }
+  
+  try {
+    setStatus('pending', '📤', 'جاري الإرسال...', 'diagnostic');
+    
+    const chunks = splitMessage(fullDiagnosticReport, 4000);
+    for(let i = 0; i < chunks.length; i++) {
+      const msg = chunks.length > 1 ? `**(جزء ${i+1}/${chunks.length})**\n\n${chunks[i]}` : chunks[i];
+      await sendToTelegram(msg);
+      log(`  • جزء ${i+1}/${chunks.length}`, 'diagnostic');
+    }
+    
+    setStatus('success', '✅', 'تم الإرسال! تحقق من Telegram', 'diagnostic');
+    log('✅ اكتمل الإرسال', 'diagnostic');
+    
+  } catch(err) {
+    setStatus('error', '❌', 'فشل الإرسال: ' + err.message, 'diagnostic');
+    log('❌ ' + err.message, 'diagnostic');
+  }
+};
+
+window.copyDiagnosticReport = function() {
+  if(!fullDiagnosticReport) {
+    alert('⚠️ يرجى تشغيل التحليل أولاً');
+    return;
+  }
+  navigator.clipboard.writeText(fullDiagnosticReport);
+  alert('✅ تم نسخ التقرير!');
+};
+
+function setStatus(status, icon, text, prefix = '') {
+  const el = prefix ? $(`#${prefix}Status`) : $('#mainStatus');
+  if(!el) return;
+  el.className = `status ${status}`;
+  el.innerHTML = `<span class="status-icon">${icon}</span><span>${text}</span>`;
+}
+
+function setProgress(p, prefix = '') {
+  const el = prefix ? $(`#${prefix}Progress`) : $('#progressBar');
+  if(el) el.style.width = p + '%';
+}
+
+function log(msg, prefix = '') {
+  const el = prefix ? $(`#${prefix}Log`) : $('#log');
+  if(!el) return;
+  const time = new Date().toLocaleTimeString('ar-EG');
+  el.innerHTML += `<div>[${time}] ${msg}</div>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+function splitMessage(message, maxLength) {
+  const chunks = [];
+  let current = '';
+  for(const line of message.split('\n')) {
+    if((current + line + '\n').length > maxLength) {
+      chunks.push(current);
+      current = line + '\n';
+    } else {
+      current += line + '\n';
+    }
+  }
+  if(current) chunks.push(current);
+  return chunks;
+}
+
+async function sendToTelegram(message) {
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TELEGRAM_CHAT_ID,
+      text: message,
+      parse_mode: 'Markdown'
+    })
+  });
+  const result = await response.json();
+  if(!result.ok) throw new Error(result.description || 'Telegram error');
+  return result;
 }
 
 /* ===== INIT ===== */
@@ -2848,8 +3124,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     await supabase.from("site_control").upsert({id: 1, site_open: true});
   }
 });
+
+function setActiveTab(key){
+  $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab===key));
+  $$('.tab-content').forEach(c => c.classList.toggle('active', c.id===`tab-${key}`));
+}
 </script>
 </body>
 </html>
-
 
