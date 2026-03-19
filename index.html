@@ -47,8 +47,7 @@ body {
 .particle {
   position:absolute; border-radius:50%;
   animation: floatUp linear infinite; opacity:0;
-}@keyframes floatUp {
-  0%   { transform:translateY(100vh) scale(0); opacity:0; }
+}@keyframes floatUp {  0%   { transform:translateY(100vh) scale(0); opacity:0; }
   10%  { opacity:0.6; }
   90%  { opacity:0.3; }
   100% { transform:translateY(-10vh) scale(1); opacity:0; }
@@ -97,8 +96,7 @@ body {
 .login-card.exiting { animation:loginExit 0.4s cubic-bezier(0.23,1,0.32,1) forwards; }
 
 /* ===== DASHBOARD ===== */
-.dashboard-header { text-align:center; padding:40px 20px 20px; position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; }
-@keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
+.dashboard-header { text-align:center; padding:40px 20px 20px; position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; }@keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
 .header-icon { width:80px; height:80px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:24px; display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); animation:pulse-glow 3s ease-in-out infinite; }
 .header-title { font-size:2.5rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:1px; }
 .header-subtitle { color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px; letter-spacing:2px; text-transform:uppercase; }
@@ -147,8 +145,7 @@ body {
 .card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(233,69,96,0.15),transparent 70%); pointer-events:none; }
 .card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); pointer-events:none; }
 .card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
-.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
-.card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
+.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }.card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
 .card-glow-orange::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,140,0,0.12),transparent 70%); pointer-events:none; }
 .card-glow-teal::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(20,184,166,0.15),transparent 70%); pointer-events:none; }
 
@@ -197,8 +194,7 @@ body {
 .btn-teal     { background:linear-gradient(135deg,#14b8a6,#0d9488); color:#fff; box-shadow:0 6px 25px rgba(20,184,166,0.35); }
 .btn-outline  { background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.8); }
 .btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
-.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
-.btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
+.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }.btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
 .btn-success:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
 .btn-gold:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
 .btn-orange:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(255,140,0,0.5); }
@@ -247,8 +243,7 @@ input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff404
 
 /* ===== TABLE CARD ===== */
 .table-card { grid-column:1 / -1; }
-.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
-table { width:100%; border-collapse:collapse; min-width:800px; }
+.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }table { width:100%; border-collapse:collapse; min-width:800px; }
 thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
 thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; cursor:pointer; position:relative; }
 thead th::after { content:'↕'; position:absolute; left:8px; font-size:0.7rem; opacity:0.5; }
@@ -297,8 +292,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .action-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
 .btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:var(--transition); display:flex; align-items:center; gap:4px; }
 .btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
-.btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
-.btn-sm-ban    { background:rgba(255,140,0,0.15); border:1px solid rgba(255,140,0,0.3); color:#ff8c00; }
+.btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }.btn-sm-ban    { background:rgba(255,140,0,0.15); border:1px solid rgba(255,140,0,0.3); color:#ff8c00; }
 .btn-sm-unban  { background:rgba(0,200,81,0.15); border:1px solid rgba(0,200,81,0.3); color:#00c851; }
 .btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
 
@@ -347,8 +341,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 }
 .alert-preview-box.show { display:flex; }
 .alert-preview-box::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  content:''; position:absolute; inset:0;  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
   background-size:200% 100%;
   animation:shimmerPrev 2s linear infinite;
 }
@@ -397,8 +390,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .gp-live-badge {
   display:inline-flex; align-items:center; gap:5px;
   padding:4px 10px; border-radius:20px;
-  background:rgba(20,184,166,0.12);
-  border:1px solid rgba(20,184,166,0.28);
+  background:rgba(20,184,166,0.12);  border:1px solid rgba(20,184,166,0.28);
   font-size:10px; font-weight:700;
   color:rgba(20,184,166,0.90);
 }
@@ -447,8 +439,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 .comments-list { max-height:400px; overflow-y:auto; }
 .comment-item {
   padding:12px; border-bottom:1px solid rgba(255,255,255,0.05);
-  display:flex; gap:12px; align-items:flex-start;
-}
+  display:flex; gap:12px; align-items:flex-start;}
 .comment-avatar {
   width:36px; height:36px; border-radius:50%;
   background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
@@ -497,8 +488,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 [data-tip] { position:relative; }
 [data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
 
-/* ===== VISITORS TABLE CODE CELL ===== */
-.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
+/* ===== VISITORS TABLE CODE CELL ===== */.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
 .visitor-unregistered { color:rgba(255,255,255,0.3); font-style:italic; font-size:0.85rem; }
 
 /* ===== RESPONSIVE ===== */
@@ -547,8 +537,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <span class="login-input-icon">🔒</span>
       <input class="login-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
       <button class="pass-toggle" type="button" id="passToggleBtn" onclick="togglePassView()" title="إظهار/إخفاء">👁️</button>
-    </div>
-    <button class="btn-login" id="loginBtn" onclick="doLogin()">
+    </div>    <button class="btn-login" id="loginBtn" onclick="doLogin()">
       <span>🔐</span> دخول آمن إلى لوحة التحكم
     </button>
     <div class="login-error" id="loginError"></div>
@@ -597,8 +586,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
 
   <!-- TABS NAVIGATION -->
   <div class="tabs-container">
-    <div class="tabs-nav">
-      <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
+    <div class="tabs-nav">      <button class="tab-btn active" data-tab="students">👥 الطلاب</button>
       <button class="tab-btn" data-tab="security">🛡️ الأمان</button>
       <button class="tab-btn" data-tab="content">📝 المحتوى</button>
       <button class="tab-btn" data-tab="comments">💬 التعليقات</button>
@@ -647,8 +635,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <div class="card-title">قائمة الطلبة</div>
             <div class="card-desc">إدارة شاملة • تحديث فوري</div>
           </div>
-          <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
-            <span>🔄</span> تحديث
+          <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">            <span>🔄</span> تحديث
           </button>
         </div>
         <div class="table-wrapper">
@@ -697,8 +684,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <div class="status-dot dot-closed" id="statusDot"></div>
           <span id="statusText">الموقع مغلق</span>
         </div>
-        <div class="divider"></div>
-        <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
+        <div class="divider"></div>        <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
           <span>⚡</span> تطبيق التغيير
         </button>
         <div class="msg-box" id="siteMsg"></div>
@@ -747,8 +733,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <input class="styled-input" id="banTarget" placeholder="أدخل البصمة أو اسم المستخدم للحظر">
           </div>
           <div class="input-group">
-            <label class="input-label">سبب الحظر (اختياري)</label>
-            <span class="input-icon">📝</span>
+            <label class="input-label">سبب الحظر (اختياري)</label>            <span class="input-icon">📝</span>
             <input class="styled-input" id="banReason" placeholder="مثال: محاولة اختراق، تكرار التسجيل...">
           </div>
           <div class="btn-row">
@@ -797,8 +782,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <div class="card-desc">رسالة تظهر لجميع الطلاب</div>
           </div>
         </div>
-        <div id="currentNotif" class="current-notif" style="display:none">
-          <span>📢</span> <span id="currentNotifText"></span>
+        <div id="currentNotif" class="current-notif" style="display:none">          <span>📢</span> <span id="currentNotifText"></span>
         </div>
         <div class="input-group">
           <label class="input-label">نص الإشعار</label>
@@ -847,8 +831,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               <div class="color-box" style="background:linear-gradient(135deg,#00d4ff,#0077ff)" onclick="selectBadgeColor('#00d4ff',this)"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectBadgeColor('#ff4444',this)"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#00ff88,#00aa55)" onclick="selectBadgeColor('#00ff88',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectBadgeColor('#9b59b6',this)"></div>              <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectBadgeColor('#ff69b4',this)"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#ffffff,#dddddd)" onclick="selectBadgeColor('#ffffff',this)"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#ff8c00,#cc5500)" onclick="selectBadgeColor('#ff8c00',this)"></div>
             </div>
@@ -897,8 +880,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
         <div class="toggle-container" style="margin:14px 0">
           <div class="toggle-info">
             <div class="toggle-title">إظهار التاريخ للطلاب</div>
-            <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
-          </div>
+            <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>          </div>
           <label class="switch">
             <input type="checkbox" id="deadlineActiveSwitch">
             <span class="slider"></span>
@@ -947,8 +929,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               </div>
             </div>
             <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
-              <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
-              لا توجد إرشادات محفوظة حالياً
+              <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>              لا توجد إرشادات محفوظة حالياً
             </div>
           </div>
         </div>
@@ -997,8 +978,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
               <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
               <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
-              <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
+              <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>              <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
             </div>
             <div class="divider" style="margin:12px 0"></div>
             <span class="palette-label">معاينة</span>
@@ -1048,7 +1028,6 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           <span class="input-icon">🔍</span>
           <input class="styled-input" id="commentFilter" placeholder="ابحث باسم الطالب أو كلمة في التعليق..." oninput="filterComments()">
         </div>
-
         <div class="comments-list" id="commentsList">
           <div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">لا توجد تعليقات بعد</div></div>
         </div>
@@ -1097,8 +1076,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
           </div>
         </div>
 
-        <div class="divider" style="margin:20px 0"></div>
-        
+        <div class="divider" style="margin:20px 0"></div>        
         <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:12px">
           📋 العناوين المقترحة مؤخراً (للمراجعة):
         </div>
@@ -1147,8 +1125,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
             <label class="switch">
               <input type="checkbox" id="allowRegistration" checked>
               <span class="slider"></span>
-            </label>
-          </div>
+            </label>          </div>
 
           <div class="toggle-container">
             <div class="toggle-info">
@@ -1197,8 +1174,7 @@ td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light);
       <div class="glass-card card-glow-red">
         <div class="card-header">
           <div class="card-icon icon-red">📊</div>
-          <div>
-            <div class="card-title">سجل النشاطات</div>
+          <div>            <div class="card-title">سجل النشاطات</div>
             <div class="card-desc">مراقبة شاملة • كشف المشبوه</div>
           </div>
         </div>
@@ -1247,8 +1223,7 @@ const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co";
 const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* ===== GLOBAL STATE ===== */
-let studentsData = [];
+/* ===== GLOBAL STATE ===== */let studentsData = [];
 let selectedID = null;
 let selectedAlertColor = '#ff4444';
 let selectedBadgeChar = '⭐';
@@ -1297,8 +1272,7 @@ function showMsg(id, text, type="info") {
 function formatDate(ts){
   if(!ts) return '';
   const d = new Date(ts);
-  return d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
-}
+  return d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});}
 
 function isLightColor(color) {
   return ['#ffd700','#ffaa00','#ffffff','#ffcc00','#ffff00'].includes(color.toLowerCase());
@@ -1338,15 +1312,16 @@ async function doLogin() {
     const creds = parseCreds(raw);
     if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return; }
     if(u === creds.username && p === creds.password){
-      await supabase.from('admin_logs').insert([{
-        admin_id: 'admin_001',
-        action: 'login',
-        status: 'success',
-        ip_address: await getIPAddress(),
-        details: 'دخول ناجح من لوحة التحكم'
+      // ✅ Updated: Use security_logs instead of admin_logs
+      await supabase.from('security_logs').insert([{
+        timestamp: new Date().toISOString(),
+        type: 'login',
+        message: 'دخول ناجح من لوحة التحكم',
+        student_code: 'admin_001',
+        ip: await getIPAddress(),
+        fingerprint: 'admin_panel'
       }]);
-      
-      const card = $('#loginCard');
+            const card = $('#loginCard');
       card.classList.add('exiting');
       setTimeout(() => {
         $('#loginScreen').classList.add('hidden');
@@ -1354,12 +1329,13 @@ async function doLogin() {
         initDashboard();
       }, 400);
     } else {
-      await supabase.from('admin_logs').insert([{
-        admin_id: 'unknown',
-        action: 'login',
-        status: 'failed',
-        ip_address: await getIPAddress(),
-        details: `محاولة دخول فاشلة للمستخدم: ${u}`
+      await supabase.from('security_logs').insert([{
+        timestamp: new Date().toISOString(),
+        type: 'login_failed',
+        message: `محاولة دخول فاشلة للمستخدم: ${u}`,
+        student_code: 'unknown',
+        ip: await getIPAddress(),
+        fingerprint: 'admin_panel'
       }]);
       showLoginError('❌ اسم المستخدم أو كلمة المرور غير صحيحة');
     }
@@ -1394,8 +1370,7 @@ function doLogout(){
   });
   $('#loginUsername').value = '';
   $('#loginPassword').value = '';
-}
-window.doLogout = doLogout;
+}window.doLogout = doLogout;
 
 /* ===== TABS SYSTEM ===== */
 $$('.tab-btn').forEach(btn => {
@@ -1444,19 +1419,20 @@ function updateSiteUI(isOpen){
     dot.className = "status-dot dot-closed";
     text.textContent = "الموقع مغلق ❌";
     badge.innerHTML = `الحالة: <strong style="color:#ff6b6b">مغلق</strong>`;
-  }
-}
+  }}
 
 async function toggleSite(){
   const newValue = $('#siteSwitch').checked;
   const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1);
   if(error){ showMsg("#siteMsg","فشل تحديث حالة الموقع ❌","error"); return; }
   
-  await supabase.from('admin_logs').insert([{
-    admin_id: 'admin_001',
-    action: 'toggle_site',
-    status: 'success',
-    details: `تم ${newValue ? 'فتح' : 'إغلاق'} الموقع`
+  await supabase.from('security_logs').insert([{
+    timestamp: new Date().toISOString(),
+    type: 'toggle_site',
+    message: `تم ${newValue ? 'فتح' : 'إغلاق'} الموقع`,
+    student_code: 'admin_001',
+    ip: await getIPAddress(),
+    fingerprint: 'admin_panel'
   }]);
   
   updateSiteUI(newValue);
@@ -1493,7 +1469,6 @@ async function loadSiteSettings(){
     $('#guidelinesPreviewContent').textContent = data.usage_guidelines.trim();
   }
 }
-
 window.previewGuidelinesLive = function(){
   const text = $('#guidelinesTextarea').value.trim();
   const preview = $('#guidelinesPreview');
@@ -1542,8 +1517,7 @@ async function loadStudents(){
       
       const d = new Date(s.date);
       const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
-      
-      return `<tr style="animation-delay:${i*0.05}s">
+            return `<tr style="animation-delay:${i*0.05}s">
         <td><span class="row-num">${i+1}</span></td>
         <td class="student-name-cell">${badgeHTML}<span style="color:${s.color || '#e0e0f0'}">${s.name}</span></td>
         <td style="color:${s.color || '#e0e0f0'};text-align:right;padding-right:16px">${s.title}</td>
@@ -1588,11 +1562,12 @@ async function addStudent(){
     
     if(error){ showMsg("#msgAdd","❌ فشل الإضافة: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'add_student',
-      status: 'success',
-      details: `تم إضافة الطالب: ${name}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'add_student',
+      message: `تم إضافة الطالب: ${name}`,
+      student_code: 'admin_001',      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg("#msgAdd","🎉 تم إضافة الطالب بنجاح","success");
@@ -1620,11 +1595,13 @@ async function updateStudent(){
     
     if(error){ showMsg("#msgAdd","❌ فشل التعديل: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'update_student',
-      status: 'success',
-      details: `تم تعديل بيانات الطالب ID: ${selectedID}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'update_student',
+      message: `تم تعديل بيانات الطالب ID: ${selectedID}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg("#msgAdd","✏️ تم التعديل بنجاح","success");
@@ -1638,8 +1615,7 @@ async function updateStudent(){
 
 window.editStudent = function(student){
   selectedID = student.id;
-  $('#studentName').value = student.name || '';
-  $('#reportTitle').value = student.title || '';
+  $('#studentName').value = student.name || '';  $('#reportTitle').value = student.title || '';
   $('#subjectName').value = student.subject || '';
   showMsg("#msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info");
   $('#studentName').scrollIntoView({behavior:"smooth",block:"center"});
@@ -1652,11 +1628,13 @@ async function deleteStudent(id){
     const {error} = await supabase.from("student_reports").delete().eq("id",id);
     if(error){ showMsg("#msgTable","❌ فشل الحذف: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'delete_student',
-      status: 'success',
-      details: `تم حذف الطالب ID: ${id}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'delete_student',
+      message: `تم حذف الطالب ID: ${id}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg("#msgTable","🗑️ تم حذف الطالب بنجاح","success");
@@ -1675,17 +1653,18 @@ async function banStudent(id){
     const {error} = await supabase.from("student_reports").update({banned: true}).eq("id",id);
     if(error){ showMsg("#msgTable","❌ فشل الحظر: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'ban_student',
-      status: 'success',
-      details: `تم حظر الطالب ID: ${id}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'ban_student',
+      message: `تم حظر الطالب ID: ${id}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg("#msgTable","🚫 تم حظر الطالب","success");
     loadStudents();
-  } catch(err) {
-    console.error("Error in banStudent:", err);
+  } catch(err) {    console.error("Error in banStudent:", err);
     showMsg("#msgTable","❌ خطأ: "+err.message,"error");
   }
 }
@@ -1696,11 +1675,13 @@ async function unbanStudent(id){
     const {error} = await supabase.from("student_reports").update({banned: false}).eq("id",id);
     if(error){ showMsg("#msgTable","❌ فشل فك الحظر: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'unban_student',
-      status: 'success',
-      details: `تم فك حظر الطالب ID: ${id}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'unban_student',
+      message: `تم فك حظر الطالب ID: ${id}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg("#msgTable","✅ تم فك حظر الطالب","success");
@@ -1732,8 +1713,7 @@ window.previewBadge = function(){
   const idx = parseInt($('#badgeStudentIndex').value) - 1;
   const badgeChar = $('#badgeTextInput').value.trim() || '⭐';
   const previewBadgeEl = $('#badgePreview');
-  const previewName = $('#badgePreviewName');
-  
+  const previewName = $('#badgePreviewName');  
   selectedBadgeChar = badgeChar;
   
   if(!isNaN(idx) && idx >= 0 && idx < studentsData.length){
@@ -1770,18 +1750,19 @@ async function assignBadge(){
     
     if(error){ showMsg('#msgBadge','❌ فشل منح الشارة: ' + error.message, 'error'); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'assign_badge',
-      status: 'success',
-      details: `تم منح شارة "${badgeChar}" باللون ${selectedBadgeColor} للطالب: ${student.name}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'assign_badge',
+      message: `تم منح شارة "${badgeChar}" باللون ${selectedBadgeColor} للطالب: ${student.name}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg('#msgBadge', `⭐ تم منح شارة "${badgeChar}" للطالب "${student.name}"`, 'success');
     loadStudents();
     previewBadge();
-  } catch(err) {
-    console.error("Error in assignBadge:", err);
+  } catch(err) {    console.error("Error in assignBadge:", err);
     showMsg('#msgBadge', '❌ خطأ: ' + err.message, 'error');
   }
 }
@@ -1823,13 +1804,14 @@ async function sendNotification(){
     const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1);
     if(error){ showMsg("#msgNotif","❌ فشل الإرسال: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'send_notification',
-      status: 'success',
-      details: `تم إرسال إشعار عام: ${msg.slice(0,50)}...`
-    }]);
-    
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'send_notification',
+      message: `تم إرسال إشعار عام: ${msg.slice(0,50)}...`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
+    }]);    
     $('#currentNotifText').textContent = msg;
     $('#currentNotif').style.display = "flex";
     showMsg("#msgNotif","✅ تم إرسال الإشعار للطلاب","success");
@@ -1869,15 +1851,16 @@ async function saveDeadline(){
       
     if(error){ showMsg("#msgDeadline","❌ فشل الحفظ: "+error.message,"error"); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'update_deadline',
-      status: 'success',
-      details: `تم ${active ? 'تعيين' : 'إخفاء'} موعد التسليم: ${dtVal}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'update_deadline',
+      message: `تم ${active ? 'تعيين' : 'إخفاء'} موعد التسليم: ${dtVal}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);  
     
-    showMsg("#msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");
-  } catch(err) {
+    showMsg("#msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success");  } catch(err) {
     console.error("Error in saveDeadline:", err);
     showMsg("#msgDeadline","❌ خطأ: "+err.message,"error");
   }
@@ -1893,11 +1876,13 @@ async function saveGuidelines(){
     const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1);
     if(error){ showMsg('#msgGuidelines','❌ فشل الحفظ: '+error.message,'error'); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'update_guidelines',
-      status: 'success',
-      details: 'تم تحديث متطلبات الاستخدام'
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'update_guidelines',
+      message: 'تم تحديث متطلبات الاستخدام',
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg('#msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success');
@@ -1924,8 +1909,7 @@ async function clearGuidelines(){
     showMsg('#msgGuidelines','🗑️ تم مسح الإرشادات','info');
   } catch(err) {
     console.error("Error in clearGuidelines:", err);
-    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');
-  }
+    showMsg('#msgGuidelines','❌ خطأ: '+err.message,'error');  }
 }
 window.clearGuidelines = clearGuidelines;
 
@@ -1974,12 +1958,13 @@ async function sendStudentAlert(){
     }).eq('id', student.id);
     
     if(error){ showMsg('#msgAlert','❌ فشل الإرسال: ' + error.message, 'error'); return; }
-    
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'send_alert',
-      status: 'success',
-      details: `تم إرسال تحذير ${type} للطالب: ${student.name}`
+        await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'send_alert',
+      message: `تم إرسال تحذير ${type} للطالب: ${student.name}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg('#msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success');
@@ -2022,8 +2007,7 @@ async function manualBan(){
   const reason = $('#banReason').value.trim() || 'حظر يدوي من المشرف';
   if(!target){ showMsg('#securityMsg','⚠️ أدخل البصمة أو اسم المستخدم','error'); return; }
   
-  try {
-    const {error} = await supabase.from('banned_users').insert([{
+  try {    const {error} = await supabase.from('banned_users').insert([{
       target: target,
       reason: reason,
       banned_by: 'admin_001',
@@ -2032,11 +2016,13 @@ async function manualBan(){
     
     if(error){ showMsg('#securityMsg','❌ فشل الحظر: '+error.message,'error'); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'manual_ban',
-      status: 'success',
-      details: `تم حظر: ${target} - ${reason}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'manual_ban',
+      message: `تم حظر: ${target} - ${reason}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg('#securityMsg', `🚫 تم حظر: ${target} - ${reason}`, 'success');
@@ -2058,18 +2044,19 @@ async function manualUnban(){
     const {error} = await supabase.from('banned_users').delete().eq('target', target);
     if(error){ showMsg('#securityMsg','❌ فشل فك الحظر: '+error.message,'error'); return; }
     
-    await supabase.from('admin_logs').insert([{
-      admin_id: 'admin_001',
-      action: 'manual_unban',
-      status: 'success',
-      details: `تم فك حظر: ${target}`
+    await supabase.from('security_logs').insert([{
+      timestamp: new Date().toISOString(),
+      type: 'manual_unban',
+      message: `تم فك حظر: ${target}`,
+      student_code: 'admin_001',
+      ip: await getIPAddress(),
+      fingerprint: 'admin_panel'
     }]);
     
     showMsg('#securityMsg', `✅ تم فك حظر: ${target}`, 'success');
     $('#banTarget').value = '';
     loadBannedList();
-  } catch(err) {
-    console.error("Error in manualUnban:", err);
+  } catch(err) {    console.error("Error in manualUnban:", err);
     showMsg('#securityMsg', '❌ خطأ: ' + err.message, 'error');
   }
 }
@@ -2118,10 +2105,9 @@ window.manualUnbanTarget = async function(target){
   } catch(err) {
     console.error("Error in manualUnbanTarget:", err);
     showMsg('#securityMsg', '❌ خطأ: ' + err.message, 'error');
-  }
-}
+  }}
 
-/* ===== COMMENTS SYSTEM ===== */
+/* ===== COMMENTS SYSTEM - UPDATED ===== */
 async function loadComments(){
   try {
     const {data, error} = await supabase.from('comments').select('*').order('created_at', {ascending: false});
@@ -2132,20 +2118,21 @@ async function loadComments(){
       return;
     }
     
+    // ✅ Updated: Use correct column names (anonymous_name, text)
     list.innerHTML = data.map(c => `
       <div class="comment-item">
-        <div class="comment-avatar">${c.student_name?.charAt(0) || '؟'}</div>
+        <div class="comment-avatar">${c.anonymous_name?.charAt(0) || c.code?.charAt(0) || '؟'}</div>
         <div class="comment-content">
           <div class="comment-header">
-            <span class="comment-author">${c.student_name || 'طالب'}</span>
+            <span class="comment-author">${c.anonymous_name || c.code || 'طالب'}</span>
             <span class="comment-time">${formatDate(c.created_at)}</span>
           </div>
-          <div class="comment-text">${c.comment_text}</div>
+          <div class="comment-text">${c.text}</div>
           <div class="comment-actions">
-            <button class="comment-btn ${c.approved ? 'delete' : ''}" onclick="toggleComment(${c.id}, ${c.approved})">
+            <button class="comment-btn ${c.approved ? 'delete' : ''}" onclick="toggleComment('${c.id}', ${c.approved})">
               ${c.approved ? '🗑️ حذف' : '✅ موافقة'}
             </button>
-            <button class="comment-btn" onclick="replyComment(${c.id})">💬 رد</button>
+            <button class="comment-btn" onclick="replyComment('${c.id}')">💬 رد</button>
           </div>
         </div>
       </div>
@@ -2167,8 +2154,7 @@ window.toggleComment = async function(id, currentlyApproved){
     const {error} = await supabase.from('comments').update({approved: newStatus}).eq('id', id);
     if(error){ showMsg('#msgAlert','❌ فشل التحديث','error'); return; }
     loadComments();
-  } catch(err) {
-    console.error("Error in toggleComment:", err);
+  } catch(err) {    console.error("Error in toggleComment:", err);
     showMsg('#msgAlert', '❌ خطأ: ' + err.message, 'error');
   }
 }
@@ -2217,8 +2203,7 @@ window.testSuggestions = async function(){
 }
 window.useSuggestion = function(suggestion){
   $('#reportTitle').value = suggestion;
-  showMsg('#msgAdd', '✅ تم استخدام الاقتراح', 'success');
-  $('#testSubject').value = '';
+  showMsg('#msgAdd', '✅ تم استخدام الاقتراح', 'success');  $('#testSubject').value = '';
   $('#suggestionResults').innerHTML = '';
 }
 
@@ -2234,11 +2219,13 @@ async function saveSettings(){
   
   try {
     if(newPass){
-      await supabase.from('admin_logs').insert([{
-        admin_id: 'admin_001',
-        action: 'change_password',
-        status: 'success',
-        details: 'تم تغيير كلمة مرور المشرف'
+      await supabase.from('security_logs').insert([{
+        timestamp: new Date().toISOString(),
+        type: 'change_password',
+        message: 'تم تغيير كلمة مرور المشرف',
+        student_code: 'admin_001',
+        ip: await getIPAddress(),
+        fingerprint: 'admin_panel'
       }]);
     }
     
@@ -2265,8 +2252,7 @@ window.exportSettings = async function(){
     const {data} = await supabase.from('site_control').select('*').eq('id',1).single();
     if(!data){ showMsg('#settingsMsg', '❌ فشل التصدير', 'error'); return; }
     
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'onx-taqe-settings.json';
@@ -2280,12 +2266,13 @@ window.exportSettings = async function(){
   }
 }
 
-/* ===== LOGS ===== */
+/* ===== LOGS - UPDATED ===== */
 async function loadLogs(){
   try {
-    const {data, error} = await supabase.from('admin_logs')
+    // ✅ Updated: Use security_logs instead of admin_logs
+    const {data, error} = await supabase.from('security_logs')
       .select('*')
-      .order('created_at', {ascending: false})
+      .order('timestamp', {ascending: false})
       .limit(50);
       
     const table = $('#logsTable');
@@ -2296,17 +2283,17 @@ async function loadLogs(){
     }
     
     table.innerHTML = data.map(log => {
-      const statusColor = log.status === 'success' ? '#00ff88' : log.status === 'failed' ? '#ff6b6b' : '#ff8c00';
-      const actionIcon = log.action === 'login' ? '🔐' : log.action === 'add_student' ? '➕' : log.action === 'delete_student' ? '🗑️' : '📝';
+      const statusColor = log.type === 'login' ? '#00ff88' : log.type === 'login_failed' ? '#ff6b6b' : '#ff8c00';
+      const actionIcon = log.type === 'login' ? '🔐' : log.type === 'login_failed' ? '❌' : '📝';
       
       return `
         <tr>
-          <td class="date-cell">${formatDate(log.created_at)}</td>
-          <td><span style="color:${statusColor}">${actionIcon} ${log.action}</span></td>
-          <td class="code-cell">${log.admin_id}</td>
-          <td>${log.status === 'success' ? '✅ ناجح' : '❌ فشل'}</td>
-          <td style="text-align:right;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${log.details}</td>
-          <td><span style="color:${statusColor}">${log.status}</span></td>
+          <td class="date-cell">${formatDate(log.timestamp)}</td>
+          <td><span style="color:${statusColor}">${actionIcon} ${log.type}</span></td>
+          <td class="code-cell">${log.student_code}</td>
+          <td>${log.type === 'login' ? '✅ ناجح' : '❌ فشل'}</td>
+          <td style="text-align:right;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${log.message}</td>
+          <td><span style="color:${statusColor}">${log.type}</span></td>
         </tr>
       `;
     }).join('');
@@ -2315,19 +2302,18 @@ async function loadLogs(){
   }
 }
 window.loadLogs = loadLogs;
-
 window.filterLogs = function(){ loadLogs(); }
 
 window.exportLogs = async function(){
   try {
-    const {data} = await supabase.from('admin_logs').select('*').order('created_at', {ascending: false});
+    const {data} = await supabase.from('security_logs').select('*').order('timestamp', {ascending: false});
     if(!data){ showMsg('#msgTable', '❌ فشل التصدير', 'error'); return; }
     
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'onx-taqe-logs.json';
+    a.download = 'security-logs.json';
     a.click();
     URL.revokeObjectURL(url);
     
@@ -2342,7 +2328,7 @@ window.clearLogs = async function(){
   if(!confirm('⚠️ مسح كل السجلات؟ لا يمكن التراجع')) return;
   
   try {
-    const {error} = await supabase.from('admin_logs').delete().neq('id', '0');
+    const {error} = await supabase.from('security_logs').delete().neq('id', '0');
     if(error){ showMsg('#msgTable', '❌ فشل المسح: '+error.message, 'error'); return; }
     
     showMsg('#msgTable', '🗑️ تم مسح السجلات', 'success');
@@ -2353,7 +2339,7 @@ window.clearLogs = async function(){
   }
 }
 
-/* ===== REALTIME SUBSCRIPTIONS ===== */
+/* ===== REALTIME SUBSCRIPTIONS - UPDATED ===== */
 function setupRealtime(){
   supabase.channel('admin_students')
     .on('postgres_changes', {event:'*', schema:'public', table:'student_reports'}, () => {
@@ -2364,8 +2350,7 @@ function setupRealtime(){
   
   supabase.channel('admin_site_control')
     .on('postgres_changes', {event:'*', schema:'public', table:'site_control'}, () => {
-      loadSiteStatus();
-      loadSiteSettings();
+      loadSiteStatus();      loadSiteSettings();
     })
     .subscribe();
   
@@ -2375,8 +2360,9 @@ function setupRealtime(){
     })
     .subscribe();
   
+  // ✅ Updated: Use security_logs instead of admin_logs
   supabase.channel('admin_logs_channel')
-    .on('postgres_changes', {event:'INSERT', schema:'public', table:'admin_logs'}, () => {
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'security_logs'}, () => {
       loadLogs();
     })
     .subscribe();
@@ -2389,8 +2375,4 @@ setTimeout(() => {
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" crossorigin="anonymous"></script>
 </body>
-</html>
-
-
-
-
+  </html>
