@@ -1,2317 +1,1446 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>تقارير الطلبة — تصميم احترافي | ONX-TAQE PRO</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم الطلبة | Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0f3460;
+  --secondary: #16213e;
+  --accent: #e94560;
+  --gold: #f5c518;
+  --neon-blue: #00d4ff;
+  --neon-purple: #7b2fff;
+  --glass: rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.15);
+  --text-light: #e0e0f0;
+  --card-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Cairo',sans-serif;
+  background:#050b1a;
+  color:var(--text-light);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+.bg-image {
+  position:fixed; inset:0; z-index:-2;
+  background: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1920&q=80') center center / cover no-repeat;
+  filter:brightness(0.25) saturate(1.5);
+}
+.bg-overlay {
+  position:fixed; inset:0; z-index:-1;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.10) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.10) 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 80%, rgba(233,69,96,0.07) 0%, transparent 60%),
+              linear-gradient(180deg, rgba(5,11,26,0.4) 0%, rgba(5,11,26,0.7) 100%);
+}
+#particles { position:fixed; inset:0; z-index:-1; pointer-events:none; }
+.particle {
+  position:absolute; border-radius:50%;
+  animation: floatUp linear infinite; opacity:0;
+}
+@keyframes floatUp {
+  0%   { transform:translateY(100vh) scale(0); opacity:0; }
+  10%  { opacity:0.6; }
+  90%  { opacity:0.3; }
+  100% { transform:translateY(-10vh) scale(1); opacity:0; }
+}
 
-  <style>
-    /* ===== CSS Variables ===== */
-    :root {
-      --primary: #0f1e3d; --secondary: #1a2a4a; --accent: #e94560;
-      --gold: #f5c518; --neon-blue: #00d4ff; --neon-purple: #7b2fff;
-      --neon-green: #00ff88; --glass: rgba(255,255,255,0.07);
-      --glass-border: rgba(255,255,255,0.15); --text-light: #e0e0f0;
-      --card-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      --transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
-      --card-gradient-start: rgba(255,255,255,.065);
-      --card-gradient-end: rgba(255,255,255,.035);
-      --card-border: rgba(255,255,255,.12);
-      --card-glow: rgba(125,211,252,.15);
-      --card-radial-1: rgba(125,211,252,.12);
-      --card-radial-2: rgba(245,200,66,.10);
-      --bg-color: #050b1a;
-      --bg-gradient: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.10) 0%, transparent 60%),
-                     radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.10) 0%, transparent 60%),
-                     radial-gradient(ellipse at 50% 80%, rgba(233,69,96,0.07) 0%, transparent 60%),
-                     linear-gradient(180deg, rgba(5,11,26,0.4) 0%, rgba(5,11,26,0.7) 100%);
-    }
+/* ===== LOGIN ===== */
+#loginScreen { position:fixed; inset:0; z-index:500; display:flex; align-items:center; justify-content:center; padding:20px; }
+.login-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+  border:1px solid rgba(255,255,255,0.18); backdrop-filter:blur(30px);
+  border-radius:28px; padding:44px 40px 36px; width:100%; max-width:420px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(0,212,255,0.08);
+  position:relative; overflow:hidden;
+  animation: loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes loginCardIn { from{transform:translateY(60px) scale(0.9);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
+.login-card::before { content:''; position:absolute; inset:0; border-radius:28px; background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 55%); pointer-events:none; }
+.login-top { text-align:center; margin-bottom:32px; }
+.login-icon { width:78px; height:78px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:22px; display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); animation:pulse-glow 3s ease-in-out infinite; }
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3);} 50%{box-shadow:0 0 60px rgba(0,212,255,0.9),0 0 120px rgba(123,47,255,0.6);} }
+.login-title { font-size:1.8rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.login-subtitle { color:rgba(255,255,255,0.4); font-size:0.82rem; letter-spacing:2px; text-transform:uppercase; margin-top:5px; }
+.login-line { width:160px; height:2px; margin:14px auto 0; background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent); }
+.login-input-group { position:relative; margin-bottom:16px; }
+.login-input-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:7px; display:block; }
+.login-input { width:100%; padding:14px 16px 14px 50px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); border-radius:14px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.97rem; transition:all 0.3s ease; outline:none; direction:rtl; }
+.login-input::placeholder { color:rgba(255,255,255,0.28); }
+.login-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.07); box-shadow:0 0 0 3px rgba(0,212,255,0.12),0 4px 20px rgba(0,212,255,0.1); }
+.login-input-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:19px; pointer-events:none; }
+.pass-toggle { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px; color:rgba(255,255,255,0.4); transition:color 0.2s; user-select:none; background:none; border:none; }
+.pass-toggle:hover { color:var(--neon-blue); }
+.btn-login { width:100%; padding:15px; border:none; border-radius:14px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#00d4ff,#7b2fff); color:#fff; letter-spacing:0.5px; box-shadow:0 8px 30px rgba(0,212,255,0.4); transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-login::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.18),transparent); opacity:0; transition:opacity 0.3s; }
+.btn-login:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 14px 40px rgba(0,212,255,0.55); }
+.btn-login:hover::before { opacity:1; }
+.btn-login:active { transform:translateY(1px) scale(0.99); }
+.login-error { margin-top:14px; padding:11px 16px; border-radius:12px; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.4); color:#ff6b6b; font-size:0.88rem; font-weight:600; text-align:center; opacity:0; transform:translateY(-8px); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+.login-error.show { opacity:1; transform:translateY(0); }
+.login-loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.25); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.login-note { text-align:center; margin-top:18px; font-size:0.75rem; color:rgba(255,255,255,0.28); display:flex; align-items:center; justify-content:center; gap:6px; }
+#dashboardScreen { display:none; }
+#dashboardScreen.active { display:block; }
+#loginScreen.hidden { display:none !important; }
+@keyframes loginExit { to{transform:scale(1.05);opacity:0} }
+.login-card.exiting { animation:loginExit 0.4s cubic-bezier(0.23,1,0.32,1) forwards; }
 
-    /* ===== LIGHT MODE ===== */
-    html[data-mode="light"]{
-      --bg-color: #f0f2f5;
-      --text-light: #1a1a2e;
-      --glass: rgba(0,0,0,0.05);
-      --glass-border: rgba(0,0,0,0.1);
-      --card-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      --card-gradient-start: rgba(0,0,0,.03);
-      --card-gradient-end: rgba(0,0,0,.01);
-      --card-border: rgba(0,0,0,.08);
-      --bg-gradient: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
-                     radial-gradient(ellipse at 80% 20%, rgba(123,47,255,0.08) 0%, transparent 60%),
-                     linear-gradient(180deg, rgba(240,242,245,0.8) 0%, rgba(240,242,245,0.95) 100%);
-    }
+/* ===== DASHBOARD ===== */
+.dashboard-header { text-align:center; padding:40px 20px 20px; position:relative; animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; }
+@keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
+.header-icon { width:80px; height:80px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:24px; display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); animation:pulse-glow 3s ease-in-out infinite; }
+.header-title { font-size:2.5rem; font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:1px; }
+.header-subtitle { color:rgba(255,255,255,0.5); font-size:0.95rem; margin-top:6px; letter-spacing:2px; text-transform:uppercase; }
+.header-line { width:200px; height:2px; margin:16px auto 0; background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent); }
+.logout-btn { position:fixed; top:20px; left:20px; z-index:100; padding:9px 18px; border:none; border-radius:10px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.35); color:#ff6b6b; backdrop-filter:blur(10px); transition:all 0.3s ease; display:flex; align-items:center; gap:6px; }
+.logout-btn:hover { background:rgba(233,69,96,0.3); transform:translateY(-2px); box-shadow:0 6px 20px rgba(233,69,96,0.3); }
 
-    /* ===== Reset & Base ===== */
-    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-    html,body{height:100%;overscroll-behavior:none}
-    body{
-      font-family:'Cairo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      overflow:hidden; -webkit-user-select:none; -moz-user-select:none;
-      -ms-user-select:none; user-select:none; background:var(--bg-color);
-      color:var(--text-light); transition: background 0.4s ease;
-    }
-    button,input,textarea,select{
-      font-family:inherit; -webkit-user-select:text; -moz-user-select:text;
-      -ms-user-select:text; user-select:text;
-    }
-    :focus{outline:none!important;box-shadow:none!important}
-    ::selection{background:rgba(0,212,255,0.3)}
+/* ===== STATS BAR ===== */
+.stats-bar { display:flex; justify-content:center; gap:20px; padding:10px 20px 20px; animation:fadeIn 1s 0.3s both; flex-wrap:wrap; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.stat-badge { background:var(--glass); border:1px solid var(--glass-border); backdrop-filter:blur(10px); padding:10px 20px; border-radius:50px; display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; transition:all 0.3s ease; }
+.stat-badge:hover { transform:translateY(-2px); border-color:var(--neon-blue); }
+.stat-dot { width:8px; height:8px; border-radius:50%; }
 
-    /* ===== Background Effects ===== */
-    .bg-image {
-      position:fixed; inset:0; z-index:-2;
-      background: url('M.jpg') center center / cover no-repeat;
-      filter:brightness(0.25) saturate(1.5);
-    }
-    html[data-mode="light"] .bg-image{
-      filter:brightness(0.85) saturate(1.2);
-    }
-    .bg-overlay {
-      position:fixed; inset:0; z-index:-1;
-      background: var(--bg-gradient);
-    }
-    #particles { position:fixed; inset:0; z-index:-1; pointer-events:none; }
-    .particle {
-      position:absolute; border-radius:50%;
-      animation: floatUp linear infinite; opacity:0;
-    }
-    @keyframes floatUp {
-      0%   { transform:translateY(100vh) scale(0); opacity:0; }
-      10%  { opacity:0.6; } 90%  { opacity:0.3; }
-      100% { transform:translateY(-10vh) scale(1); opacity:0; }
-    }
+/* ===== GRID ===== */
+.main-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1200px; margin:0 auto; padding:0 24px 40px; }
 
-    /* ===== Loading Screen ===== */
-    #loadingScreen{
-      position:fixed; inset:0; z-index:99999;
-      background:linear-gradient(135deg, #050b1a 0%, #0f1e3d 50%, #1a2a4a 100%);
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
-      animation: fadeOutLoader 0.6s ease forwards; animation-delay: 2.2s; pointer-events: none;
-    }
-    #loadingScreen.active{ pointer-events: all; animation: none; display:flex; }
-    @keyframes fadeOutLoader{ to{ opacity:0; transform:scale(1.02); visibility:hidden; } }
-    
-    .loaderTitle{
-      font-size:28px; color:transparent;
-      background:linear-gradient(90deg, var(--gold), var(--neon-blue), var(--neon-purple), var(--gold));
-      background-size:300% 100%; -webkit-background-clip:text; background-clip:text;
-      animation: gradientMove 2.5s ease infinite, titlePop 0.6s ease;
-      letter-spacing:2px; text-shadow:0 0 30px rgba(245,200,66,.3); white-space:nowrap;
-    }
-    @keyframes gradientMove{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-    @keyframes titlePop{ 0%{transform:scale(0.8);opacity:0} 60%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
-    
-    .loaderBar{
-      width:280px; max-width:80vw; height:6px; border-radius:99px;
-      background:rgba(255,255,255,.08); overflow:hidden; position:relative;
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .loaderBar::after{
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(90deg, transparent, var(--neon-blue), var(--gold), transparent);
-      background-size:200% 100%; animation: barLoad 1.8s ease-in-out infinite; border-radius:99px;
-    }
-    @keyframes barLoad{ 0%{background-position:-200% 0} 50%{background-position:100% 0} 100%{background-position:200% 0} }
-    
-    .loaderDots{ display:flex; gap:8px; margin-top:8px; }
-    .loaderDots span{
-      width:10px; height:10px; border-radius:50%; background:var(--gold);
-      animation: dotBounce 1.4s ease-in-out infinite both;
-    }
-    .loaderDots span:nth-child(2){animation-delay:0.2s;background:var(--neon-blue)}
-    .loaderDots span:nth-child(3){animation-delay:0.4s;background:var(--neon-purple)}
-    @keyframes dotBounce{ 0%,80%,100%{transform:scale(0.6);opacity:0.5} 40%{transform:scale(1.2);opacity:1} }
+/* ===== GLASS CARD ===== */
+.glass-card { background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)); border:1px solid var(--glass-border); backdrop-filter:blur(20px); border-radius:24px; padding:28px; box-shadow:var(--card-shadow); position:relative; overflow:hidden; transform-style:preserve-3d; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1),box-shadow 0.4s ease; animation:cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both; }
+.glass-card:nth-child(1){animation-delay:0.1s}
+.glass-card:nth-child(2){animation-delay:0.2s}
+.glass-card:nth-child(3){animation-delay:0.3s}
+.glass-card:nth-child(4){animation-delay:0.4s}
+.glass-card:nth-child(5){animation-delay:0.5s}
+.glass-card:nth-child(6){animation-delay:0.6s}
+.glass-card:nth-child(7){animation-delay:0.7s}
+.glass-card:nth-child(8){animation-delay:0.8s}
+.glass-card:nth-child(9){animation-delay:0.9s}
+@keyframes cardEntrance { from{transform:translateY(40px) rotateX(10deg);opacity:0} to{transform:translateY(0) rotateX(0deg);opacity:1} }
+.glass-card:hover { transform:translateY(-6px) rotateX(2deg); box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.1); }
+.glass-card::before { content:''; position:absolute; inset:0; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
+.card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(233,69,96,0.15),transparent 70%); pointer-events:none; }
+.card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); pointer-events:none; }
+.card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
+.card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
+.card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
+.card-glow-orange::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,140,0,0.12),transparent 70%); pointer-events:none; }
+.card-glow-teal::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(20,184,166,0.15),transparent 70%); pointer-events:none; }
 
-    /* ===== Entrance Animation ===== */
-    .entrance-overlay { 
-      position:fixed; inset:0; z-index:1000; 
-      background:linear-gradient(135deg,#050b1a,#0f1a2e); 
-      display:flex; flex-direction:column; align-items:center; justify-content:center; 
-      animation:overlayFade 0.8s 1.8s forwards; 
-    }
-    @keyframes overlayFade { to{opacity:0;pointer-events:none;visibility:hidden} }
-    .entrance-logo { 
-      width:100px; height:100px; 
-      background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); 
-      border-radius:28px; display:flex; align-items:center; justify-content:center; 
-      font-size:44px; 
-      box-shadow:0 0 60px rgba(0,212,255,0.6),0 0 120px rgba(123,47,255,0.4); 
-      animation:logoAnim 1.5s cubic-bezier(0.23,1,0.32,1) both; margin-bottom:24px; 
-    }
-    @keyframes logoAnim { 0%{transform:scale(0) rotateY(180deg);opacity:0} 60%{transform:scale(1.1) rotateY(-10deg)} 100%{transform:scale(1) rotateY(0deg);opacity:1} }
-    .entrance-title { 
-      font-size:2rem; font-weight:900; 
-      background:linear-gradient(135deg,#fff,var(--neon-blue)); 
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; 
-      animation:fadeInUp 0.8s 0.5s both; 
-    }
-    .entrance-sub { 
-      color:rgba(255,255,255,0.4); font-size:0.9rem; margin-top:8px; letter-spacing:3px; text-transform:uppercase; 
-      animation:fadeInUp 0.8s 0.7s both; 
-    }
-    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .entrance-progress { 
-      width:200px; height:3px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:32px; overflow:hidden; 
-      animation:fadeInUp 0.8s 0.9s both; 
-    }
-    .entrance-bar { 
-      height:100%; border-radius:3px; 
-      background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple)); 
-      animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both; 
-      box-shadow:0 0 10px rgba(0,212,255,0.8); 
-    }
-    @keyframes progressFill { from{width:0} to{width:100%} }
+/* ===== CARD HEADER ===== */
+.card-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+.card-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.icon-blue   { background:linear-gradient(135deg,#00d4ff22,#00d4ff44); border:1px solid #00d4ff44; }
+.icon-red    { background:linear-gradient(135deg,#e9456022,#e9456044); border:1px solid #e9456044; }
+.icon-purple { background:linear-gradient(135deg,#7b2fff22,#7b2fff44); border:1px solid #7b2fff44; }
+.icon-gold   { background:linear-gradient(135deg,#f5c51822,#f5c51844); border:1px solid #f5c51844; }
+.icon-green  { background:linear-gradient(135deg,#00ff8822,#00ff8844); border:1px solid #00ff8844; }
+.icon-orange { background:linear-gradient(135deg,#ff8c0022,#ff8c0044); border:1px solid #ff8c0044; }
+.icon-teal   { background:linear-gradient(135deg,#14b8a622,#14b8a644); border:1px solid #14b8a644; }
+.card-title { font-size:1.2rem; font-weight:700; color:#fff; }
+.card-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:2px; }
 
-    /* ===== DASHBOARD ===== */
-    .dashboard-header { 
-      text-align:center; padding:25px 20px 10px; position:relative; 
-      animation:slideDown 0.8s cubic-bezier(0.23,1,0.32,1) both; 
-    }
-    @keyframes slideDown { from{transform:translateY(-60px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .header-icon { 
-      width:70px; height:70px; 
-      background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); 
-      border-radius:22px; display:inline-flex; align-items:center; justify-content:center; 
-      font-size:32px; margin-bottom:12px; 
-      box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3); 
-      animation:pulse-glow 3s ease-in-out infinite; 
-    }
-    @keyframes pulse-glow { 0%,100%{box-shadow:0 0 40px rgba(0,212,255,0.5),0 0 80px rgba(123,47,255,0.3);} 50%{box-shadow:0 0 60px rgba(0,212,255,0.9),0 0 120px rgba(123,47,255,0.6);} }
-    .header-title { 
-      font-size:2rem; font-weight:900; 
-      background:linear-gradient(135deg,#fff 0%,var(--neon-blue) 50%,var(--neon-purple) 100%); 
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:1px; 
-    }
-    .header-subtitle { color:rgba(255,255,255,0.5); font-size:0.9rem; margin-top:4px; letter-spacing:2px; text-transform:uppercase; }
-    html[data-mode="light"] .header-subtitle{ color:rgba(0,0,0,0.5); }
-    .header-line { width:180px; height:2px; margin:12px auto 0; background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent); }
+/* ===== INPUTS ===== */
+.input-group { position:relative; margin-bottom:14px; }
+.input-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
+.styled-input { width:100%; padding:13px 16px 13px 46px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem; transition:all 0.3s ease; outline:none; direction:rtl; }
+.styled-input::placeholder { color:rgba(255,255,255,0.3); }
+.styled-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1),0 4px 20px rgba(0,212,255,0.1); }
+.input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
+.styled-input[type="datetime-local"] { color-scheme: dark; padding-left: 14px; }
 
-    /* ===== FANCY RIGHTS ABOVE CLOCK ===== */
-    .fancy-rights-above {
-      text-align:center; margin:8px auto 12px; position:relative;
-      min-height:32px; display:flex; align-items:center; justify-content:center;
-    }
-    .fancy-rights-text {
-      font-family:'Cairo',sans-serif; font-weight:900; font-size:0.95rem;
-      letter-spacing:3px; cursor:default; position:relative;
-      background:linear-gradient(135deg, var(--gold), var(--neon-blue), var(--neon-purple), var(--gold));
-      background-size:400% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-      animation: rightsBlink 2.8s ease-in-out infinite, rightsColorShift 4s linear infinite;
-      text-shadow:0 0 15px rgba(245,200,66,0.4);
-      display:inline-flex; align-items:center; gap:6px;
-    }
-    @keyframes rightsBlink {
-      0%, 48%, 52%, 100% { opacity:1; transform:scale(1); }
-      50% { opacity:0; transform:scale(0.95); }
-    }
-    @keyframes rightsColorShift {
-      0% { filter:hue-rotate(0deg) brightness(1); }
-      25% { filter:hue-rotate(90deg) brightness(1.2); }
-      50% { filter:hue-rotate(180deg) brightness(1); }
-      75% { filter:hue-rotate(270deg) brightness(1.2); }
-      100% { filter:hue-rotate(360deg) brightness(1); }
-    }
-    .rights-sparkle {
-      position:absolute; width:4px; height:4px; border-radius:50%;
-      background:var(--gold); animation: sparkleFly 1.8s ease-out forwards;
-      box-shadow:0 0 8px var(--gold), 0 0 16px var(--neon-blue);
-      pointer-events:none; opacity:0;
-    }
-    @keyframes sparkleFly {
-      0% { transform:translate(0,0) scale(0); opacity:1; }
-      50% { opacity:1; }
-      100% { transform:translate(var(--tx,0), var(--ty,-30px)) scale(1); opacity:0; }
-    }
-    .rights-icon {
-      font-size:1rem; animation: iconPulse 2s ease-in-out infinite;
-    }
-    @keyframes iconPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3) rotate(15deg)} }
+/* Textarea */
+.styled-textarea {
+  width:100%; padding:14px 16px; background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12); border-radius:12px;
+  color:#fff; font-family:'Cairo',sans-serif; font-size:0.95rem;
+  transition:all 0.3s ease; outline:none; direction:rtl;
+  resize:vertical; min-height:120px; line-height:1.8;
+}
+.styled-textarea::placeholder { color:rgba(255,255,255,0.3); }
+.styled-textarea:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1); }
 
-    /* ===== FANCY CLOCK ===== */
-    .fancy-clock {
-      display:flex; align-items:center; justify-content:center; gap:12px;
-      padding:10px 18px; border-radius:16px;
-      background:linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,47,255,0.08));
-      border:1px solid rgba(0,212,255,0.2);
-      margin:15px auto 20px; max-width:420px;
-      box-shadow:0 8px 32px rgba(0,212,255,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
-      animation: clockGlow 3s ease-in-out infinite;
-    }
-    @keyframes clockGlow {
-      0%,100% { box-shadow:0 8px 32px rgba(0,212,255,0.15), inset 0 1px 0 rgba(255,255,255,0.1); }
-      50% { box-shadow:0 12px 48px rgba(0,212,255,0.35), inset 0 1px 0 rgba(255,255,255,0.2); }
-    }
-    .clock-time {
-      font-family:'Cairo',monospace; font-size:1.6rem; font-weight:900;
-      color:var(--neon-blue); letter-spacing:2px; direction:ltr;
-      text-shadow:0 0 20px rgba(0,212,255,0.5);
-    }
-    .clock-period {
-      font-size:0.7rem; color:rgba(255,255,255,0.6); margin-right:4px;
-      background:rgba(0,212,255,0.15); padding:2px 6px; border-radius:6px;
-    }
-    html[data-mode="light"] .clock-period{ color:rgba(0,0,0,0.6); }
-    .clock-date {
-      display:flex; flex-direction:column; align-items:flex-start; gap:2px;
-      padding-right:12px; border-right:1px solid rgba(255,255,255,0.2);
-    }
-    .clock-date .miladi {
-      font-size:0.75rem; color:rgba(255,255,255,0.7);
-    }
-    html[data-mode="light"] .clock-date .miladi{ color:rgba(0,0,0,0.7); }
-    .clock-date .hijri {
-      font-size:0.7rem; color:var(--gold); font-weight:600;
-    }
-    .clock-icon {
-      font-size:1.4rem; animation: tick 1s steps(1) infinite;
-    }
-    @keyframes tick { 50% { transform:scale(1.1); } }
+/* ===== BUTTONS ===== */
+.btn-row { display:flex; gap:12px; margin-top:8px; }
+.btn { flex:1; padding:13px 20px; border:none; border-radius:12px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:700; position:relative; overflow:hidden; transition:all 0.3s cubic-bezier(0.23,1,0.32,1); display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.5px; }
+.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity 0.3s; }
+.btn:hover::before { opacity:1; }
+.btn-primary  { background:linear-gradient(135deg,#00d4ff,#0077ff); color:#fff; box-shadow:0 6px 25px rgba(0,212,255,0.35); }
+.btn-secondary{ background:linear-gradient(135deg,#7b2fff,#c044ff); color:#fff; box-shadow:0 6px 25px rgba(123,47,255,0.35); }
+.btn-danger   { background:linear-gradient(135deg,#e94560,#ff6b6b); color:#fff; box-shadow:0 6px 25px rgba(233,69,96,0.35); }
+.btn-success  { background:linear-gradient(135deg,#00c851,#00ff88); color:#fff; box-shadow:0 6px 25px rgba(0,200,81,0.35); }
+.btn-gold     { background:linear-gradient(135deg,#f5c518,#ff9500); color:#000; box-shadow:0 6px 25px rgba(245,197,24,0.35); }
+.btn-orange   { background:linear-gradient(135deg,#ff8c00,#ff5500); color:#fff; box-shadow:0 6px 25px rgba(255,140,0,0.35); }
+.btn-teal     { background:linear-gradient(135deg,#14b8a6,#0d9488); color:#fff; box-shadow:0 6px 25px rgba(20,184,166,0.35); }
+.btn-primary:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
+.btn-secondary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
+.btn-danger:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
+.btn-success:hover  { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
+.btn-gold:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
+.btn-orange:hover   { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(255,140,0,0.5); }
+.btn-teal:hover     { transform:translateY(-3px) scale(1.02); box-shadow:0 12px 35px rgba(20,184,166,0.5); }
+.btn:active { transform:translateY(1px) scale(0.98); }
 
-    /* ===== STATS BAR ===== */
-    .stats-bar { display:flex; justify-content:center; gap:15px; padding:8px 20px 15px; animation:fadeIn 1s 0.3s both; flex-wrap:wrap; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .stat-badge { 
-      background:var(--glass); 
-      border:1px solid var(--glass-border); 
-      backdrop-filter:blur(10px); 
-      padding:8px 16px; 
-      border-radius:50px; 
-      display:flex; 
-      align-items:center; 
-      gap:6px; 
-      font-size:0.85rem; 
-      font-weight:600; 
-      transition:var(--transition);
-      box-sizing: border-box;
-      white-space: nowrap;
-      justify-content: flex-start;
-      min-width: fit-content;
-      position: relative;
-      line-height: 1.2;
-    }
-    .stat-badge:hover { 
-      transform:translateY(-2px); 
-      border-color:var(--neon-blue);
-      box-shadow: 0 0 0 2px rgba(0,212,255,0.15);
-    }
-    .stat-dot { 
-      width:7px; 
-      height:7px; 
-      border-radius:50%; 
-      flex-shrink: 0;
-      box-shadow:0 0 8px currentColor;
-    }
-    .stat-badge strong,
-    .stat-badge span:not(.stat-dot) {
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-    }
-    .stat-badge:active {
-      animation: badgePulse 0.3s ease;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(245,197,24,0.3);
-    }
-    @keyframes badgePulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
+/* ===== COLOR PALETTE ===== */
+.palette-label { font-size:0.75rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
+.color-palette { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.color-box { width:34px; height:34px; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:all 0.3s cubic-bezier(0.23,1,0.32,1); position:relative; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
+.color-box::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:900; opacity:0; transition:opacity 0.2s; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+.color-box:hover { transform:scale(1.2) translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.color-box.selected { border-color:#fff; box-shadow:0 0 15px rgba(255,255,255,0.5); }
+.color-box.selected::after { opacity:1; }
 
-    /* ===== TABS SYSTEM ===== */
-    .tabs-container { max-width:1200px; margin:0 auto; padding:0 20px 30px; }
-    .tabs-nav { 
-      display:flex; gap:6px; padding:8px; 
-      background:var(--glass); border:1px solid var(--glass-border); 
-      border-radius:14px; backdrop-filter:blur(20px); margin-bottom:20px; 
-      overflow-x:auto; flex-wrap:wrap; 
-    }
-    .tab-btn {
-      padding:10px 16px; border:none; border-radius:10px; cursor:pointer;
-      font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:600;
-      background:transparent; color:rgba(255,255,255,0.6);
-      transition:var(--transition); display:flex; align-items:center; gap:6px;
-      white-space:nowrap;
-    }
-    html[data-mode="light"] .tab-btn{ color:rgba(0,0,0,0.6); }
-    .tab-btn:hover { background:rgba(255,255,255,0.08); color:#fff; }
-    html[data-mode="light"] .tab-btn:hover{ background:rgba(0,0,0,0.08); color:#000; }
-    .tab-btn.active {
-      background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
-      color:#fff; box-shadow:0 4px 20px rgba(0,212,255,0.3);
-    }
-    .tab-btn .badge {
-      background:var(--accent); color:#fff; padding:2px 7px;
-      border-radius:20px; font-size:0.65rem; margin-right:3px;
-    }
-    .tab-content { display:none; animation:tabFadeIn 0.4s ease; }
-    .tab-content.active { display:block; }
-    @keyframes tabFadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+/* ===== ALERT TYPE RADIOS ===== */
+.alert-type-row { display:flex; gap:12px; align-items:stretch; flex-wrap:wrap; margin-bottom:16px; }
+.alert-type-label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 16px; border-radius:12px; transition:all 0.3s ease; flex:1; min-width:130px; }
+.alert-type-label.private-lbl { background:rgba(123,47,255,0.12); border:1px solid rgba(123,47,255,0.3); }
+.alert-type-label.public-lbl  { background:rgba(0,212,255,0.12);  border:1px solid rgba(0,212,255,0.3);  }
+.alert-type-label:hover { transform:translateY(-1px); filter:brightness(1.2); }
+.alert-type-label input { accent-color:#7b2fff; width:16px; height:16px; cursor:pointer; }
+.alert-type-label.public-lbl input { accent-color:#00d4ff; }
+.alert-type-text { color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:700; }
 
-    /* ===== GLASS CARD ===== */
-    .glass-card { 
-      background:linear-gradient(135deg,var(--card-gradient-start),var(--card-gradient-end)); 
-      border:1px solid var(--card-border); backdrop-filter:blur(20px); 
-      border-radius:22px; padding:24px; box-shadow:var(--card-shadow); 
-      position:relative; overflow:hidden; transform-style:preserve-3d; 
-      transition:var(--transition); animation:cardEntrance 0.8s cubic-bezier(0.23,1,0.32,1) both; 
-    }
-    .glass-card:nth-child(1){animation-delay:0.1s} .glass-card:nth-child(2){animation-delay:0.2s}
-    .glass-card:nth-child(3){animation-delay:0.3s} .glass-card:nth-child(4){animation-delay:0.4s}
-    .glass-card:nth-child(5){animation-delay:0.5s} .glass-card:nth-child(6){animation-delay:0.6s}
-    @keyframes cardEntrance { from{transform:translateY(40px) rotateX(10deg);opacity:0} to{transform:translateY(0) rotateX(0deg);opacity:1} }
-    .glass-card:hover { transform:translateY(-5px) rotateX(2deg); box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.1); }
-    .glass-card::before { content:''; position:absolute; inset:0; border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%); pointer-events:none; }
-    
-    .card-glow-red::after   { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(233,69,96,0.15),transparent 70%); pointer-events:none; }
-    .card-glow-blue::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); pointer-events:none; }
-    .card-glow-purple::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,0.15),transparent 70%); pointer-events:none; }
-    .card-glow-gold::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(245,197,24,0.12),transparent 70%); pointer-events:none; }
-    .card-glow-green::after { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(0,200,81,0.12),transparent 70%); pointer-events:none; }
-    .card-glow-orange::after{ content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,140,0,0.12),transparent 70%); pointer-events:none; }
-    .card-glow-teal::after  { content:''; position:absolute; top:-50%; right:-30%; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(20,184,166,0.15),transparent 70%); pointer-events:none; }
+/* ===== TOGGLE SWITCH ===== */
+.toggle-container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+.toggle-info { flex:1; }
+.toggle-title { font-size:1rem; font-weight:700; color:#fff; }
+.toggle-desc  { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:3px; }
+.switch { position:relative; display:inline-block; width:70px; height:36px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:36px; transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+.slider:before { content:''; position:absolute; width:26px; height:26px; border-radius:50%; left:4px; top:4px; background:linear-gradient(135deg,#fff,#ccc); box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:all 0.4s cubic-bezier(0.23,1,0.32,1); }
+input:checked + .slider { background:linear-gradient(135deg,#00c851,#00ff88); border-color:#00ff88; box-shadow:0 0 20px rgba(0,200,81,0.4); }
+input:checked + .slider:before { transform:translateX(34px); background:linear-gradient(135deg,#fff,#e0ffe0); }
+input:not(:checked) + .slider { background:linear-gradient(135deg,#e94560,#ff4040); border-color:#e94560; box-shadow:0 0 20px rgba(233,69,96,0.3); }
 
-    /* ===== CARD HEADER ===== */
-    .card-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
-    .card-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-    .icon-blue   { background:linear-gradient(135deg,#00d4ff22,#00d4ff44); border:1px solid #00d4ff44; }
-    .icon-red    { background:linear-gradient(135deg,#e9456022,#e9456044); border:1px solid #e9456044; }
-    .icon-purple { background:linear-gradient(135deg,#7b2fff22,#7b2fff44); border:1px solid #7b2fff44; }
-    .icon-gold   { background:linear-gradient(135deg,#f5c51822,#f5c51844); border:1px solid #f5c51844; }
-    .icon-green  { background:linear-gradient(135deg,#00ff8822,#00ff8844); border:1px solid #00ff8844; }
-    .icon-orange { background:linear-gradient(135deg,#ff8c0022,#ff8c0044); border:1px solid #ff8c0044; }
-    .icon-teal   { background:linear-gradient(135deg,#14b8a622,#14b8a644); border:1px solid #14b8a644; }
-    .card-title { font-size:1.1rem; font-weight:700; color:#fff; }
-    html[data-mode="light"] .card-title{ color:#1a1a2e; }
-    .card-desc  { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:2px; }
-    html[data-mode="light"] .card-desc{ color:rgba(0,0,0,0.4); }
+/* ===== MSG BOX ===== */
+.msg-box { padding:12px 18px; border-radius:12px; font-weight:600; text-align:center; font-size:0.9rem; transition:all 0.5s cubic-bezier(0.23,1,0.32,1); opacity:0; transform:translateY(-10px); margin-top:16px; border:1px solid rgba(255,255,255,0.1); }
+.msg-box.show { opacity:1; transform:translateY(0); }
+.msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
+.msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
+.msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
 
-    /* ===== INPUTS ===== */
-    .input-group { position:relative; margin-bottom:12px; }
-    .input-label { font-size:0.7rem; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; display:block; }
-    html[data-mode="light"] .input-label{ color:rgba(0,0,0,0.5); }
-    .styled-input { 
-      width:100%; padding:12px 14px 12px 42px; background:rgba(255,255,255,0.06); 
-      border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; 
-      font-family:'Cairo',sans-serif; font-size:0.9rem; transition:var(--transition); outline:none; direction:rtl; 
-    }
-    html[data-mode="light"] .styled-input{ background:rgba(0,0,0,0.05); border-color:rgba(0,0,0,0.12); color:#1a1a2e; }
-    .styled-input::placeholder { color:rgba(255,255,255,0.3); }
-    html[data-mode="light"] .styled-input::placeholder{ color:rgba(0,0,0,0.3); }
-    .styled-input:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1),0 4px 20px rgba(0,212,255,0.1); }
-    .input-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:16px; pointer-events:none; }
-    .styled-input[type="datetime-local"] { color-scheme: dark; padding-left: 12px; }
-    
-    .styled-textarea {
-      width:100%; padding:12px 14px; background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.12); border-radius:10px;
-      color:#fff; font-family:'Cairo',sans-serif; font-size:0.9rem;
-      transition:var(--transition); outline:none; direction:rtl;
-      resize:vertical; min-height:100px; line-height:1.7;
-    }
-    html[data-mode="light"] .styled-textarea{ background:rgba(0,0,0,0.05); border-color:rgba(0,0,0,0.12); color:#1a1a2e; }
-    .styled-textarea::placeholder { color:rgba(255,255,255,0.3); }
-    html[data-mode="light"] .styled-textarea::placeholder{ color:rgba(0,0,0,0.3); }
-    .styled-textarea:focus { border-color:var(--neon-blue); background:rgba(0,212,255,0.06); box-shadow:0 0 0 3px rgba(0,212,255,0.1); }
+/* ===== TABLE CARD ===== */
+.table-card { grid-column:1 / -1; }
+.table-wrapper { overflow-x:auto; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
+table { width:100%; border-collapse:collapse; }
+thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
+thead th { padding:16px 14px; text-align:center; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:all 0.3s ease; animation:rowSlide 0.5s ease both; }
+@keyframes rowSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.005); }
+td { padding:14px; text-align:center; font-size:0.9rem; color:var(--text-light); }
+.student-name-cell { font-weight:700; font-size:1rem; }
+.subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:4px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; color:#00d4ff; }
+.date-cell { color:rgba(255,255,255,0.4); font-size:0.8rem; }
+.row-num { width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; }
+.action-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.btn-sm { padding:7px 14px; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo',sans-serif; font-size:0.8rem; font-weight:700; transition:all 0.3s ease; display:flex; align-items:center; gap:4px; }
+.btn-sm-edit   { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); color:#00d4ff; }
+.btn-sm-delete { background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:#ff6b6b; }
+.btn-sm:hover  { transform:translateY(-2px); filter:brightness(1.3); }
 
-    /* ===== BUTTONS ===== */
-    .btn-row { display:flex; gap:10px; margin-top:6px; flex-wrap:wrap; }
-    .btn { 
-      flex:1; min-width:100px; padding:11px 16px; border:none; border-radius:10px; cursor:pointer; 
-      font-family:'Cairo',sans-serif; font-size:0.9rem; font-weight:700; position:relative; overflow:hidden; 
-      transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:6px; letter-spacing:0.3px; 
-    }
-    .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity 0.3s; }
-    .btn:hover::before { opacity:1; }
-    .btn-primary  { background:linear-gradient(135deg,#00d4ff,#0077ff); color:#fff; box-shadow:0 6px 25px rgba(0,212,255,0.35); }
-    .btn-secondary{ background:linear-gradient(135deg,#7b2fff,#c044ff); color:#fff; box-shadow:0 6px 25px rgba(123,47,255,0.35); }
-    .btn-danger   { background:linear-gradient(135deg,#e94560,#ff6b6b); color:#fff; box-shadow:0 6px 25px rgba(233,69,96,0.35); }
-    .btn-success  { background:linear-gradient(135deg,#00c851,#00ff88); color:#fff; box-shadow:0 6px 25px rgba(0,200,81,0.35); }
-    .btn-gold     { background:linear-gradient(135deg,#f5c518,#ff9500); color:#000; box-shadow:0 6px 25px rgba(245,197,24,0.35); }
-    .btn-outline  { background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.8); }
-    html[data-mode="light"] .btn-outline{ border-color:rgba(0,0,0,0.2); color:rgba(0,0,0,0.8); }
-    .btn-telegram { background:linear-gradient(135deg,#0088cc,#00aff0); color:#fff; box-shadow:0 6px 25px rgba(0,136,204,0.35); }
-    .btn-primary:hover  { transform:translateY(-2px) scale(1.02); box-shadow:0 12px 35px rgba(0,212,255,0.5); }
-    .btn-secondary:hover{ transform:translateY(-2px) scale(1.02); box-shadow:0 12px 35px rgba(123,47,255,0.5); }
-    .btn-danger:hover   { transform:translateY(-2px) scale(1.02); box-shadow:0 12px 35px rgba(233,69,96,0.5); }
-    .btn-success:hover  { transform:translateY(-2px) scale(1.02); box-shadow:0 12px 35px rgba(0,200,81,0.5); }
-    .btn-gold:hover     { transform:translateY(-2px) scale(1.02); box-shadow:0 12px 35px rgba(245,197,24,0.5); }
-    .btn-telegram:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 12px 35px rgba(0,136,204,0.5); }
-    .btn:active { transform:translateY(1px) scale(0.98); }
-    .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+/* Alert badge in table */
+.alert-table-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:3px 10px; border-radius:14px; font-size:0.75rem; font-weight:700;
+  border:1px solid; margin-top:4px;
+  animation: alertGlowSoft 2.5s ease-in-out infinite;
+}
+@keyframes alertGlowSoft { 0%,100%{opacity:0.85;} 50%{opacity:1;filter:brightness(1.2);} }
+.alert-badge-type { font-size:0.65rem; opacity:0.75; }
 
-    /* ===== DEV BUTTON ===== */
-    .dev-btn {
-      position:fixed; bottom:20px; right:20px; z-index:100;
-      padding:12px 20px; border-radius:999px;
-      background:linear-gradient(135deg, #0088cc, #00aff0);
-      border:2px solid rgba(255,255,255,0.3);
-      color:#fff; font-family:'Cairo',sans-serif; font-weight:800; font-size:0.95rem;
-      display:flex; align-items:center; gap:8px; cursor:pointer;
-      box-shadow:0 8px 32px rgba(0,136,204,0.4), 0 0 0 4px rgba(0,136,204,0.1);
-      transition:var(--transition); text-decoration:none;
-      animation: devPulse 2.5s ease-in-out infinite;
-    }
-    @keyframes devPulse {
-      0%,100% { box-shadow:0 8px 32px rgba(0,136,204,0.4), 0 0 0 4px rgba(0,136,204,0.1); }
-      50% { box-shadow:0 12px 48px rgba(0,136,204,0.7), 0 0 0 6px rgba(0,136,204,0.25); }
-    }
-    .dev-btn:hover { transform:translateY(-3px) scale(1.05); }
-    .dev-btn:active { transform:translateY(1px) scale(0.98); }
-    .dev-btn .dev-icon { font-size:1.2rem; animation: devIconFloat 2s ease-in-out infinite; }
-    @keyframes devIconFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
+/* ===== DIVIDER ===== */
+.divider { height:1px; margin:20px 0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
 
-    /* ===== ONX-TAQE RIGHTS ===== */
-    .onx-rights {
-      position:fixed; bottom:20px; left:20px; z-index:100;
-      padding:10px 16px; border-radius:14px;
-      background:linear-gradient(135deg, rgba(245,197,24,0.12), rgba(123,47,255,0.12));
-      border:1px solid rgba(245,197,24,0.3);
-      display:flex; align-items:center; gap:8px;
-      font-family:'Cairo',sans-serif; font-weight:700; font-size:0.85rem;
-      color:var(--gold); cursor:default;
-      box-shadow:0 6px 24px rgba(245,197,24,0.2);
-      animation: rightsGlow 3s ease-in-out infinite;
-    }
-    @keyframes rightsGlow {
-      0%,100% { box-shadow:0 6px 24px rgba(245,197,24,0.2); }
-      50% { box-shadow:0 10px 40px rgba(245,197,24,0.45), 0 0 20px rgba(245,197,24,0.2); }
-    }
-    .onx-rights .onx-icon {
-      font-size:1.1rem; animation: onxSpin 4s linear infinite;
-    }
-    @keyframes onxSpin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
-    .onx-rights .onx-text {
-      background:linear-gradient(135deg, var(--gold), var(--neon-blue), var(--neon-purple));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-      animation: textShimmer 2.5s ease-in-out infinite;
-    }
-    @keyframes textShimmer {
-      0% { filter:brightness(1); } 50% { filter:brightness(1.3); } 100% { filter:brightness(1); }
-    }
+/* ===== SITE STATUS ===== */
+.site-status { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:20px; font-weight:700; font-size:0.85rem; margin-top:12px; }
+.status-open   { background:rgba(0,200,81,0.15); border:1px solid #00c851; color:#00ff88; }
+.status-closed { background:rgba(233,69,96,0.15); border:1px solid #e94560; color:#ff6b6b; }
+.status-dot { width:8px; height:8px; border-radius:50%; animation:pulse-dot 1.5s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
+.dot-open   { background:#00ff88; box-shadow:0 0 8px #00ff88; }
+.dot-closed { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
 
-    /* ===== MSG BOX ===== */
-    .msg-box { padding:10px 16px; border-radius:10px; font-weight:600; text-align:center; font-size:0.85rem; transition:var(--transition); opacity:0; transform:translateY(-8px); margin-top:12px; border:1px solid rgba(255,255,255,0.1); }
-    .msg-box.show { opacity:1; transform:translateY(0); }
-    .msg-box.success { background:rgba(0,200,81,0.15); border-color:#00c851; color:#00ff88; }
-    .msg-box.error   { background:rgba(233,69,96,0.15); border-color:#e94560; color:#ff6b6b; }
-    .msg-box.info    { background:rgba(0,212,255,0.15); border-color:#00d4ff; color:#00d4ff; }
+/* ===== LOADER ===== */
+.loader { display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.2); border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
 
-    /* ===== TABLE ===== */
-    .table-card { grid-column:1 / -1; }
-    .table-wrapper { overflow-x:auto; border-radius:14px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.4); }
-    table { width:100%; border-collapse:collapse; min-width:700px; }
-    thead tr { background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15)); border-bottom:1px solid rgba(255,255,255,0.1); }
-    thead th { padding:14px 12px; text-align:center; font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
-    html[data-mode="light"] thead th{ color:rgba(0,0,0,0.7); }
-    tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:var(--transition); animation:rowSlide 0.5s ease both; }
-    @keyframes rowSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
-    tbody tr:hover { background:rgba(255,255,255,0.05); transform:scale(1.003); }
-    tbody tr.mine { background:linear-gradient(135deg, rgba(245,200,66,.06), rgba(245,200,66,.02)); border-right:2px solid rgba(245,200,66,.45); }
-    td { padding:12px; text-align:center; font-size:0.85rem; color:var(--text-light); }
-    .student-name-cell { font-weight:700; font-size:0.95rem; }
-    .subject-badge { background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:3px 10px; border-radius:18px; font-size:0.75rem; display:inline-block; color:#00d4ff; }
-    .date-cell { color:rgba(255,255,255,0.4); font-size:0.75rem; }
-    html[data-mode="light"] .date-cell{ color:rgba(0,0,0,0.4); }
-    .row-num { width:28px; height:28px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; }
-    .meBadge{font-size:8px;padding:2px 7px;border-radius:999px;border:1px solid rgba(245,200,66,.45);
-      background:rgba(245,200,66,.18);color:rgba(245,200,66,.92);font-weight:700;letter-spacing:1px}
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align:center; padding:40px; color:rgba(255,255,255,0.3); }
+.empty-icon  { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.empty-text  { font-size:1rem; }
 
-    /* ===== TABLE TOOLS ===== */
-    .tableTools{
-      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-      padding:10px; border-bottom:1px solid rgba(255,255,255,0.08); flex-shrink:0;
-    }
-    .search{flex:1;min-width:180px}
-    .counter{
-      display:flex;align-items:center;gap:8px;
-      padding:6px 10px;border-radius:12px;
-      background:rgba(125,211,252,.08);
-      border:1px solid rgba(125,211,252,.18);
-      color:rgba(125,211,252,.92);
-    }
-    .counter b{font-weight:900;font-size:18px;letter-spacing:1px}
-    @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
-    .pop{animation:pop .35s cubic-bezier(.22,1,.36,1)}
+/* ===== CURRENT NOTIF ===== */
+.current-notif { padding:10px 14px; border-radius:12px; background:rgba(245,197,24,0.12); border:1px solid rgba(245,197,24,0.3); color:#f5c518; font-size:0.85rem; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
 
-    .tableContainer{
-      overflow:auto; flex:1; min-height:0;
-      max-height:calc(48px * 7 + 2px);
-      scrollbar-width:thin; scrollbar-color: rgba(255,255,255,.18) transparent;
-    }
-    .tableContainer::-webkit-scrollbar{width:5px;height:5px}
-    .tableContainer::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:8px}
+/* ===== BADGE PREVIEW ===== */
+.badge-preview { display:inline-flex; align-items:center; gap:6px; background:rgba(245,197,24,0.15); border:1px solid rgba(245,197,24,0.3); padding:6px 14px; border-radius:20px; font-size:0.85rem; margin-top:8px; transition:all 0.3s; color:#f5c518; }
 
-    /* ===== ALERT BADGE ===== */
-    @keyframes glow{
-      0%,100%{box-shadow:0 0 10px var(--ac, rgba(255,80,80,.45)), 0 0 18px rgba(0,0,0,.0)}
-      50%{box-shadow:0 0 18px var(--ac, rgba(255,80,80,.8)), 0 0 42px rgba(0,0,0,.0)}
-    }
-    .alert{
-      border-radius:16px; padding:10px 12px;
-      border:1.5px solid var(--ac, #ff4444);
-      color:var(--ac, #ff4444);
-      background:rgba(0,0,0,.18);
-      display:flex;align-items:flex-start;gap:8px;
-      animation:glow 2.5s ease-in-out infinite;
-    }
-    .alert small{opacity:.75;border:1px solid currentColor;padding:2px 7px;border-radius:999px;font-size:9px;white-space:nowrap}
+/* ===== ALERT PREVIEW ===== */
+.alert-preview-box {
+  padding:10px 16px; border-radius:12px; margin-bottom:14px;
+  display:none; align-items:center; gap:10px;
+  font-size:0.9rem; font-weight:700;
+  position:relative; overflow:hidden;
+}
+.alert-preview-box.show { display:flex; }
+.alert-preview-box::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size:200% 100%;
+  animation:shimmerPrev 2s linear infinite;
+}
+@keyframes shimmerPrev { 0%{background-position:200% center} 100%{background-position:-200% center} }
 
-    .miniAlert{
-      display:inline-flex;align-items:center;gap:4px;
-      padding:2px 8px;border-radius:999px;
-      border:1px solid var(--ac,#ff4444);
-      color:var(--ac,#ff4444);
-      background:rgba(255,255,255,.03);
-      position:relative;overflow:hidden;
-      white-space:nowrap; max-width:100%; text-overflow:ellipsis;
-      animation:glow 2.5s ease-in-out infinite; font-size:0.7rem;
-    }
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    .miniAlert::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
-      background-size:200% 100%;animation:shimmer 2.2s linear infinite;opacity:.75}
+/* ===== ✨ USAGE GUIDELINES CARD ===== */
+/* Guidelines Preview in admin */
+#guidelinesPreview {
+  display:none;
+  margin-top:20px;
+}
+#guidelinesPreview.show { display:block; }
+.guidelines-preview-wrap {
+  background: linear-gradient(135deg, rgba(20,184,166,0.10), rgba(20,184,166,0.04));
+  border: 1.5px solid rgba(20,184,166,0.30);
+  border-radius:18px; overflow:hidden;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.3), 0 0 25px rgba(20,184,166,0.07);
+  position:relative;
+}
+.guidelines-preview-wrap::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,transparent,rgba(20,184,166,0.7),rgba(245,197,24,0.5),transparent);
+}
+.guidelines-preview-header {
+  display:flex; align-items:center; gap:12px;
+  padding:16px 20px 12px;
+  border-bottom:1px solid rgba(20,184,166,0.15);
+  background: linear-gradient(135deg,rgba(20,184,166,0.08),transparent);
+}
+.gp-icon {
+  width:42px; height:42px; border-radius:12px;
+  background:linear-gradient(135deg,rgba(20,184,166,0.25),rgba(20,184,166,0.10));
+  border:1px solid rgba(20,184,166,0.35);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+  box-shadow:0 0 18px rgba(20,184,166,0.18);
+  animation:tealPulse 3s ease-in-out infinite;
+}
+@keyframes tealPulse {
+  0%,100%{box-shadow:0 0 15px rgba(20,184,166,0.15);}
+  50%{box-shadow:0 0 28px rgba(20,184,166,0.40);}
+}
+.gp-title-wrap { flex:1; }
+.gp-main-title {
+  font-size:14px; font-weight:800;
+  color:rgba(20,184,166,0.95);
+  letter-spacing:2px;
+  text-shadow:0 0 16px rgba(20,184,166,0.3);
+}
+.gp-sub-title { font-size:11px; color:rgba(255,255,255,0.40); margin-top:2px; }
+.gp-live-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px; border-radius:20px;
+  background:rgba(20,184,166,0.12);
+  border:1px solid rgba(20,184,166,0.28);
+  font-size:10px; font-weight:700;
+  color:rgba(20,184,166,0.90);
+}
+.gp-live-dot { width:6px; height:6px; border-radius:50%; background:#14b8a6; animation:pulse-dot 1.5s ease-in-out infinite; }
+.gp-body {
+  padding:16px 20px 18px;
+  font-size:13.5px; line-height:2;
+  color:rgba(255,255,255,0.85);
+  white-space:pre-wrap;
+  position:relative;
+}
+.gp-body::before {
+  content:'📋'; position:absolute; left:10px; bottom:8px;
+  font-size:55px; opacity:0.04; pointer-events:none;
+}
+.gp-footer {
+  padding:8px 20px 12px;
+  border-top:1px solid rgba(20,184,166,0.10);
+  font-size:11px; color:rgba(255,255,255,0.32);
+  display:flex; align-items:center; gap:6px;
+}
 
-    /* ===== DEADLINE & GUIDELINES ===== */
-    .deadline{
-      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      padding:10px 12px;border-radius:16px;
-      background:rgba(125,211,252,.07);
-      border:1px solid rgba(125,211,252,.18);
-    }
-    .deadline .left{display:flex;align-items:center;gap:8px}
-    .deadline .ico{width:36px;height:36px;border-radius:14px;display:flex;align-items:center;justify-content:center;
-      background:rgba(125,211,252,.10);border:1px solid rgba(125,211,252,.18);font-size:16px}
-    .deadline .meta{display:flex;flex-direction:column;gap:2px}
-    .deadline .meta small{color:rgba(125,211,252,.65);letter-spacing:1px;font-size:9px}
-    .deadline .meta b{color:rgba(125,211,252,.95);font-size:12px}
-    .deadline .count{
-      font-weight:900; color:rgba(245,200,66,.95); direction:ltr;
-      letter-spacing:1px; font-size:14px; text-shadow:0 0 20px rgba(245,200,66,.20);
-    }
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
+::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
 
-    .bigNote{
-      line-height:1.85; color:rgba(255,255,255,.86);
-      white-space:pre-wrap; max-height:90px; overflow:hidden;
-      transition:max-height .4s ease; position:relative; font-size:0.9rem;
-    }
-    html[data-mode="light"] .bigNote{ color:rgba(0,0,0,.86); }
-    .bigNote.expanded{ max-height:2000px; }
-    .bigNote::after{
-      content:''; position:absolute; bottom:0; left:0; right:0; height:35px;
-      background:linear-gradient(to top, rgba(0,0,0,.02), transparent);
-      pointer-events:none; opacity:0; transition:opacity .3s ease;
-    }
-    .bigNote:not(.expanded)::after{ opacity:1; }
-    
-    /* ✅ زر طوي/فتح ينزل للأسفل */
-    .bigNote-toggle{
-      display:inline-flex; align-items:center; gap:5px;
-      margin-top:6px; padding:5px 10px; border-radius:10px;
-      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
-      color:rgba(255,255,255,.75); font-size:10px; cursor:pointer; transition:.2s;
-    }
-    html[data-mode="light"] .bigNote-toggle{ background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.12); color:rgba(0,0,0,.75); }
-    .bigNote-toggle:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
-    html[data-mode="light"] .bigNote-toggle:hover{background:rgba(0,0,0,.08);border-color:rgba(0,0,0,.18)}
-    .bigNote-toggle.expanded{ background:rgba(245,200,66,.08); border-color:rgba(245,200,66,.25); color:var(--gold); }
+/* ===== ENTRANCE ANIMATION ===== */
+.entrance-overlay { position:fixed; inset:0; z-index:1000; background:linear-gradient(135deg,#050b1a,#0f1a2e); display:flex; flex-direction:column; align-items:center; justify-content:center; animation:overlayFade 0.8s 1.8s forwards; }
+@keyframes overlayFade { to{opacity:0;pointer-events:none;visibility:hidden} }
+.entrance-logo { width:100px; height:100px; background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple)); border-radius:28px; display:flex; align-items:center; justify-content:center; font-size:44px; box-shadow:0 0 60px rgba(0,212,255,0.6),0 0 120px rgba(123,47,255,0.4); animation:logoAnim 1.5s cubic-bezier(0.23,1,0.32,1) both; margin-bottom:24px; }
+@keyframes logoAnim { 0%{transform:scale(0) rotateY(180deg);opacity:0} 60%{transform:scale(1.1) rotateY(-10deg)} 100%{transform:scale(1) rotateY(0deg);opacity:1} }
+.entrance-title { font-size:2rem; font-weight:900; background:linear-gradient(135deg,#fff,var(--neon-blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:fadeInUp 0.8s 0.5s both; }
+.entrance-sub { color:rgba(255,255,255,0.4); font-size:0.9rem; margin-top:8px; letter-spacing:3px; text-transform:uppercase; animation:fadeInUp 0.8s 0.7s both; }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.entrance-progress { width:200px; height:3px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:32px; overflow:hidden; animation:fadeInUp 0.8s 0.9s both; }
+.entrance-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple)); animation:progressFill 1.5s 0.3s cubic-bezier(0.23,1,0.32,1) both; box-shadow:0 0 10px rgba(0,212,255,0.8); }
+@keyframes progressFill { from{width:0} to{width:100%} }
 
-    /* ===== INFO BOX ===== */
-    .infoRow{display:flex;flex-direction:column;gap:8px}
-    .kv{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-      padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10)}
-    html[data-mode="light"] .kv{ background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.10); }
-    .kv strong{font-size:10px;color:rgba(255,255,255,.50);min-width:70px}
-    html[data-mode="light"] .kv strong{ color:rgba(0,0,0,.50); }
-    .kv span{font-size:12px;color:rgba(255,255,255,.88)}
-    html[data-mode="light"] .kv span{ color:rgba(0,0,0,.88); }
+/* ===== TOOLTIP ===== */
+[data-tip] { position:relative; }
+[data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#fff; padding:6px 12px; border-radius:8px; font-size:0.75rem; white-space:nowrap; pointer-events:none; z-index:100; border:1px solid rgba(255,255,255,0.1); }
 
-    /* ===== THEME PICKER ===== */
-    .themePicker{ display:grid; grid-template-columns:repeat(2,1fr); gap:6px; margin-top:6px; }
-    .themeOption{
-      display:flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:12px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      cursor:pointer; transition:.2s; user-select:none;
-    }
-    html[data-mode="light"] .themeOption{ background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.10); }
-    .themeOption:hover{ transform:translateY(-2px); background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.18); }
-    html[data-mode="light"] .themeOption:hover{ background:rgba(0,0,0,.07); border-color:rgba(0,0,0,.18); }
-    .themeOption.active{ border-color:var(--gold); background:rgba(245,200,66,.08); box-shadow:0 0 0 2px rgba(245,200,66,.2); }
-    .themeSwatch{ width:20px; height:20px; border-radius:6px; border:1px solid rgba(255,255,255,.2); flex-shrink:0; }
-    .themeName{ font-size:11px; color:rgba(255,255,255,.85); font-weight:600; }
-    html[data-mode="light"] .themeName{ color:rgba(0,0,0,.85); }
-    .themePreview{ display:flex; gap:3px; margin-top:3px; }
-    .themePreview span{ width:10px; height:10px; border-radius:3px; border:1px solid rgba(255,255,255,.15); }
+/* ===== VISITORS TABLE CODE CELL ===== */
+.code-cell { font-family:monospace; font-size:0.75rem; color:rgba(0,212,255,0.7); letter-spacing:1px; }
+.visitor-unregistered { color:rgba(255,255,255,0.3); font-style:italic; font-size:0.85rem; }
 
-    /* ===== MODAL & TOAST ===== */
-    #modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter: blur(10px)}
-    #modal-overlay.active{display:flex}
-    .modal{
-      width:400px;max-width:92%; border-radius:20px;
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border:1px solid rgba(255,255,255,.16); box-shadow:0 25px 65px rgba(0,0,0,.75);
-      padding:22px; text-align:center; backdrop-filter: blur(18px);
-      animation: mi .26s cubic-bezier(.22,1,.36,1);
-    }
-    .mIco{font-size:38px;margin-bottom:8px;display:block}
-    .mT{font-weight:900;color:rgba(245,200,66,.95);font-size:16px;margin-bottom:6px}
-    .mM{color:rgba(255,255,255,.68);font-size:12px;line-height:1.6;margin-bottom:12px;white-space:pre-line}
-    html[data-mode="light"] .mM{ color:rgba(0,0,0,.68); }
-    .mInp{width:100%;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.18);color:#fff;margin-bottom:12px;font-size:0.9rem}
-    html[data-mode="light"] .mInp{ background:rgba(255,255,255,.18); color:#1a1a2e; border-color:rgba(0,0,0,.14); }
-    .mInp:focus{border-color:rgba(125,211,252,.30);box-shadow:0 0 0 3px rgba(125,211,252,.10)}
-    .mBtns{display:flex;gap:8px}
-    .mBtns button{flex:1;padding:10px 12px;border-radius:14px;border:none;cursor:pointer;font-weight:900;font-size:0.9rem}
-    .mCancel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.80)}
-    html[data-mode="light"] .mCancel{ background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); color:rgba(0,0,0,.80); }
-    .mOk{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);color:#fff}
-
-    #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
-      padding:10px 16px;border-radius:999px;display:flex;gap:8px;align-items:center;
-      box-shadow:0 18px 40px rgba(0,0,0,.45);z-index:9000;
-      transition: transform .38s cubic-bezier(.22,1,.36,1);
-      backdrop-filter: blur(18px);
-    }
-    #toast.show{transform:translateX(-50%) translateY(0)}
-    #toast span{color:#fff;font-size:12px}
-    html[data-mode="light"] #toast span{ color:#1a1a2e; }
-
-    /* ===== NOTIFICATION BANNER ===== */
-    #notifBanner{
-      display:none; padding:10px 12px;
-      border-bottom:1px solid rgba(245,200,66,.25);
-      background:linear-gradient(135deg, rgba(245,200,66,.18), rgba(255,255,255,.03));
-      color:rgba(255,255,255,.92); gap:8px; align-items:center;
-      user-select:none; font-size:0.9rem;
-    }
-    html[data-mode="light"] #notifBanner{ color:rgba(0,0,0,.92); }
-    #notifBanner.visible{display:flex}
-    .notifClose{margin-right:auto;cursor:pointer;border-radius:10px;padding:4px 8px;
-      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.70);font-size:14px}
-    html[data-mode="light"] .notifClose{ background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); color:rgba(0,0,0,.70); }
-    .notifClose:hover{background:rgba(255,255,255,.10);color:#fff}
-    html[data-mode="light"] .notifClose:hover{background:rgba(0,0,0,.10);color:#000}
-
-    /* ===== EXPORT BUTTONS ===== */
-    .export-buttons {
-      display:flex; gap:12px; justify-content:center; margin-top:16px; flex-wrap:wrap;
-    }
-    .export-btn {
-      display:flex; flex-direction:column; align-items:center; gap:8px;
-      padding:16px 24px; border-radius:16px; min-width:140px;
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.15); cursor:pointer;
-      transition:var(--transition); text-decoration:none; color:inherit;
-    }
-    html[data-mode="light"] .export-btn{ background:linear-gradient(135deg, rgba(0,0,0,0.06), rgba(0,0,0,0.03)); border-color:rgba(0,0,0,0.15); }
-    .export-btn:hover {
-      transform:translateY(-4px); border-color:var(--neon-blue);
-      box-shadow:0 12px 40px rgba(0,212,255,0.25);
-    }
-    .export-btn.txt { border-color:rgba(125,211,252,0.3); }
-    .export-btn.txt:hover { border-color:#7dd3fc; box-shadow:0 12px 40px rgba(125,211,252,0.3); }
-    
-    .export-icon { font-size:2rem; }
-    .export-label { font-weight:700; font-size:0.95rem; }
-    .export-desc { font-size:0.75rem; color:rgba(255,255,255,0.5); }
-    html[data-mode="light"] .export-desc{ color:rgba(0,0,0,0.5); }
-
-    /* ===== COMMENTS SECTION (جديد) ===== */
-    .comments-section {
-      margin-top: 16px;
-      border-top: 1px solid var(--glass-border);
-      padding-top: 16px;
-    }
-    .comments-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .comments-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--neon-blue);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .comment-count {
-      background: rgba(0, 212, 255, 0.15);
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      color: var(--neon-blue);
-    }
-    .comment-input-area {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .comment-input {
-      flex: 1;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      color: #fff;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.85rem;
-      transition: var(--transition);
-      outline: none;
-    }
-    html[data-mode="light"] .comment-input {
-      background: rgba(0, 0, 0, 0.05);
-      border-color: rgba(0, 0, 0, 0.12);
-      color: #1a1a2e;
-    }
-    .comment-input:focus {
-      border-color: var(--neon-blue);
-      background: rgba(0, 212, 255, 0.06);
-      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
-    }
-    .comment-submit {
-      padding: 10px 16px;
-      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .comment-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
-    }
-    .comments-list {
-      max-height: 300px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .comment-item {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 12px;
-      transition: var(--transition);
-    }
-    html[data-mode="light"] .comment-item {
-      background: rgba(0, 0, 0, 0.04);
-      border-color: rgba(0, 0, 0, 0.08);
-    }
-    .comment-item:hover {
-      border-color: rgba(0, 212, 255, 0.2);
-    }
-    .comment-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .comment-author {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--neon-blue);
-    }
-    .comment-time {
-      font-size: 0.7rem;
-      color: rgba(255, 255, 255, 0.4);
-    }
-    html[data-mode="light"] .comment-time {
-      color: rgba(0, 0, 0, 0.4);
-    }
-    .comment-text {
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-    html[data-mode="light"] .comment-text {
-      color: rgba(0, 0, 0, 0.85);
-    }
-    .comment-replies {
-      margin-top: 10px;
-      padding-right: 12px;
-      border-right: 2px solid rgba(0, 212, 255, 0.2);
-    }
-    .reply-btn {
-      font-size: 0.75rem;
-      color: rgba(0, 212, 255, 0.7);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 6px;
-      transition: var(--transition);
-    }
-    .reply-btn:hover {
-      background: rgba(0, 212, 255, 0.1);
-      color: var(--neon-blue);
-    }
-    .reply-input {
-      width: 100%;
-      padding: 8px 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: #fff;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.8rem;
-      margin-top: 8px;
-      outline: none;
-    }
-    html[data-mode="light"] .reply-input {
-      background: rgba(0, 0, 0, 0.04);
-      border-color: rgba(0, 0, 0, 0.1);
-      color: #1a1a2e;
-    }
-    .reply-input:focus {
-      border-color: var(--neon-blue);
-    }
-
-    /* ===== SOUND TOGGLE ===== */
-    .sound-toggle-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .toggle-info {
-      flex: 1;
-    }
-    .toggle-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    html[data-mode="light"] .toggle-title {
-      color: #1a1a2e;
-    }
-    .toggle-desc {
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.4);
-      margin-top: 2px;
-    }
-    html[data-mode="light"] .toggle-desc {
-      color: rgba(0, 0, 0, 0.4);
-    }
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 32px;
-      flex-shrink: 0;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 32px;
-      transition: var(--transition);
-    }
-    html[data-mode="light"] .slider {
-      background: rgba(0, 0, 0, 0.1);
-      border-color: rgba(0, 0, 0, 0.2);
-    }
-    .slider:before {
-      content: '';
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      left: 4px;
-      top: 4px;
-      background: linear-gradient(135deg, #fff, #ccc);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-      transition: var(--transition);
-    }
-    input:checked + .slider {
-      background: linear-gradient(135deg, #00c851, #00ff88);
-      border-color: #00ff88;
-      box-shadow: 0 0 20px rgba(0, 200, 81, 0.4);
-    }
-    input:checked + .slider:before {
-      transform: translateX(28px);
-      background: linear-gradient(135deg, #fff, #e0ffe0);
-    }
-    input:not(:checked) + .slider {
-      background: linear-gradient(135deg, #e94560, #ff4040);
-      border-color: #e94560;
-      box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
-    }
-
-    /* ===== DARK/LIGHT MODE TOGGLE ===== */
-    .mode-toggle-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .mode-switch {
-      position: relative;
-      display: inline-block;
-      width: 70px;
-      height: 34px;
-      flex-shrink: 0;
-    }
-    .mode-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .mode-slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 34px;
-      transition: var(--transition);
-    }
-    html[data-mode="light"] .mode-slider {
-      background: rgba(0, 0, 0, 0.1);
-      border-color: rgba(0, 0, 0, 0.2);
-    }
-    .mode-slider:before {
-      content: '';
-      position: absolute;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      left: 4px;
-      top: 3px;
-      background: linear-gradient(135deg, #f5c518, #ff9500);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-    }
-    input:checked + .mode-slider {
-      background: linear-gradient(135deg, #0f1e3d, #1a2a4a);
-      border-color: #00d4ff;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-    }
-    input:checked + .mode-slider:before {
-      transform: translateX(36px);
-      background: linear-gradient(135deg, #00d4ff, #0077ff);
-    }
-
-    /* ===== PREVIEW MODAL ===== */
-    #previewModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 10001;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-    }
-    #previewModal.active {
-      display: flex;
-    }
-    .preview-content {
-      width: 500px;
-      max-width: 92%;
-      border-radius: 20px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.06));
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.75);
-      padding: 24px;
-      backdrop-filter: blur(18px);
-      animation: mi 0.26s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .preview-text {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 12px;
-      padding: 16px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.9);
-      white-space: pre-wrap;
-      max-height: 300px;
-      overflow-y: auto;
-      margin: 16px 0;
-      text-align: left;
-      direction: ltr;
-    }
-    html[data-mode="light"] .preview-text {
-      background: rgba(255, 255, 255, 0.3);
-      color: rgba(0, 0, 0, 0.9);
-    }
-    .preview-actions {
-      display: flex;
-      gap: 8px;
-    }
-    .preview-actions button {
-      flex: 1;
-      padding: 12px 16px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 0.9rem;
-      transition: var(--transition);
-    }
-    .preview-cancel {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: rgba(255, 255, 255, 0.80);
-    }
-    html[data-mode="light"] .preview-cancel {
-      background: rgba(0, 0, 0, 0.06);
-      border-color: rgba(0, 0, 0, 0.12);
-      color: rgba(0, 0, 0, 0.80);
-    }
-    .preview-download {
-      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-      color: #fff;
-    }
-    .preview-download:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
-    }
-
-    /* ===== THEME SYSTEM (10 THEMES) ===== */
-    html[data-theme="0"]{ --gold:#f5c842;--neon-blue:#7dd3fc;--neon-purple:#b28dff; --card-gradient-start: rgba(255,255,255,.065); --card-gradient-end: rgba(255,255,255,.035); --card-border: rgba(255,255,255,.12); --card-glow: rgba(245,200,66,.15); --card-radial-1: rgba(125,211,252,.12); --card-radial-2: rgba(245,200,66,.10); }
-    html[data-theme="1"]{ --gold:#a8c0ff;--neon-blue:#6fa8ff;--neon-purple:#3f6fff; --card-gradient-start: rgba(18,25,45,.75); --card-gradient-end: rgba(12,18,35,.55); --card-border: rgba(111,168,255,.28); --card-glow: rgba(63,111,255,.25); --card-radial-1: rgba(111,168,255,.18); --card-radial-2: rgba(168,192,255,.12); }
-    html[data-theme="2"]{ --gold:#d8ff44;--neon-blue:#bff7ff;--neon-purple:#7dfc8e; --card-gradient-start: rgba(20,40,30,.70); --card-gradient-end: rgba(12,28,20,.50); --card-border: rgba(125,252,142,.25); --card-glow: rgba(216,255,68,.20); --card-radial-1: rgba(191,247,255,.15); --card-radial-2: rgba(216,255,68,.12); }
-    html[data-theme="3"]{ --gold:#ff9ec9;--neon-blue:#ffb3d9;--neon-purple:#ff79c6; --card-gradient-start: rgba(45,20,35,.72); --card-gradient-end: rgba(30,12,25,.52); --card-border: rgba(255,121,198,.30); --card-glow: rgba(255,158,201,.22); --card-radial-1: rgba(255,179,217,.16); --card-radial-2: rgba(255,121,198,.14); }
-    html[data-theme="4"]{ --gold:#ff6b6b;--neon-blue:#00d4ff;--neon-purple:#ffe66d; --card-gradient-start: rgba(35,15,40,.78); --card-gradient-end: rgba(22,8,28,.58); --card-border: rgba(0,212,255,.35); --card-glow: rgba(255,107,107,.30); --card-radial-1: rgba(0,212,255,.20); --card-radial-2: rgba(255,230,109,.16); }
-    html[data-theme="5"]{ --gold:#ff9ad9;--neon-blue:#7dd3fc;--neon-purple:#6a5cff; --card-gradient-start: rgba(30,20,45,.74); --card-gradient-end: rgba(18,12,32,.54); --card-border: rgba(106,92,255,.28); --card-glow: rgba(255,154,217,.24); --card-radial-1: rgba(125,211,252,.14); --card-radial-2: rgba(106,92,255,.16); }
-    html[data-theme="6"]{ --gold:#ff9a5c;--neon-blue:#ffcc80;--neon-purple:#ff7043; --card-gradient-start: rgba(45,25,20,.76); --card-gradient-end: rgba(32,16,12,.56); --card-border: rgba(255,154,92,.32); --card-glow: rgba(255,112,67,.28); --card-radial-1: rgba(255,204,128,.18); --card-radial-2: rgba(255,154,92,.14); }
-    html[data-theme="7"]{ --gold:#4dd0e1;--neon-blue:#80deea;--neon-purple:#26c6da; --card-gradient-start: rgba(15,40,45,.75); --card-gradient-end: rgba(10,28,32,.55); --card-border: rgba(77,208,225,.30); --card-glow: rgba(38,198,218,.26); --card-radial-1: rgba(128,222,234,.16); --card-radial-2: rgba(77,208,225,.14); }
-    html[data-theme="8"]{ --gold:#e0e0e0;--neon-blue:#c0c0c0;--neon-purple:#a0a0a0; --card-gradient-start: rgba(35,35,40,.72); --card-gradient-end: rgba(22,22,28,.52); --card-border: rgba(224,224,224,.25); --card-glow: rgba(192,192,192,.20); --card-radial-1: rgba(224,224,224,.12); --card-radial-2: rgba(160,160,160,.10); }
-    html[data-theme="9"]{ --gold:#c9a0ff;--neon-blue:#7eb3ff;--neon-purple:#e08dff; --card-gradient-start: rgba(20,15,35,.80); --card-gradient-end: rgba(12,8,24,.60); --card-border: rgba(201,160,255,.30); --card-glow: rgba(126,179,255,.28); --card-radial-1: rgba(224,141,255,.20); --card-radial-2: rgba(201,160,255,.16); }
-
-    /* ===== SCROLLBAR ===== */
-    ::-webkit-scrollbar { width:5px; height:5px; }
-    ::-webkit-scrollbar-track { background:rgba(255,255,255,0.03); }
-    ::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
-    ::-webkit-scrollbar-thumb:hover { background:rgba(0,212,255,0.6); }
-
-    /* ===== RESPONSIVE ===== */
-    @media(max-width:768px){
-      .tabs-nav { flex-wrap:wrap; }
-      .tab-btn { padding:8px 12px; font-size:0.8rem; }
-      .header-title { font-size:1.5rem; }
-      .glass-card { padding:20px; }
-      .btn-row { flex-direction:column; }
-      .btn { width:100%; }
-      .grid{grid-template-columns:1fr !important}
-      table{min-width:600px}
-      .fancy-clock { flex-direction:column; gap:8px; padding:12px 16px; }
-      .clock-date { padding-right:0; border-right:none; border-top:1px solid rgba(255,255,255,0.2); padding-top:8px; align-items:center; }
-      .onx-rights, .dev-btn { position:static; margin:10px auto; width:fit-content; }
-    }
-    @media(max-width:480px){
-      .stats-bar { gap:10px; }
-      .stat-badge { padding:6px 12px; font-size:0.8rem; }
-      .tabs-nav { padding:6px; }
-      .tab-btn { padding:7px 10px; font-size:0.75rem; }
-      .themePicker{grid-template-columns:1fr}
-      .export-buttons { flex-direction:column; align-items:center; }
-      .export-btn { width:100%; max-width:200px; }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .btn,.tab-btn,.color-box,.themeOption,.glass-card{transition:none}
-      .miniAlert,.alert,.onx-rights,.dev-btn,.fancy-clock{animation:none}
-      .loaderTitle,.loaderBar::after,.loaderDots span{animation:none}
-    }
-  </style>
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .main-grid { grid-template-columns:1fr; padding:0 12px 40px; }
+  .table-card { grid-column:auto; }
+  .header-title { font-size:1.6rem; }
+  .login-card { padding:32px 24px 28px; }
+  .alert-type-row { flex-direction:column; }
+}
+</style>
 </head>
-
 <body>
-  <!-- Entrance Animation -->
-  <div class="entrance-overlay" id="entranceOverlay">
-    <div class="entrance-logo">🎓</div>
-    <div class="entrance-title">تقارير الطلبة</div>
-    <div class="entrance-sub">ONX-TAQE • Student Portal</div>
-    <div class="entrance-progress"><div class="entrance-bar"></div></div>
+
+<!-- Entrance -->
+<div class="entrance-overlay" id="entranceOverlay">
+  <div class="entrance-logo">🎓</div>
+  <div class="entrance-title">لوحة التحكم</div>
+  <div class="entrance-sub">Student Dashboard • Admin Panel</div>
+  <div class="entrance-progress"><div class="entrance-bar"></div></div>
+</div>
+
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+<div id="particles"></div>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div class="login-card" id="loginCard">
+    <div class="login-top">
+      <div class="login-icon">🎓</div>
+      <div class="login-title">تسجيل الدخول</div>
+      <div class="login-subtitle">Admin Panel • لوحة التحكم</div>
+      <div class="login-line"></div>
+    </div>
+    <div class="login-input-group">
+      <label class="login-input-label">اسم المستخدم</label>
+      <span class="login-input-icon">👤</span>
+      <input class="login-input" id="loginUsername" type="text" placeholder="أدخل اسم المستخدم" autocomplete="username">
+    </div>
+    <div class="login-input-group">
+      <label class="login-input-label">كلمة المرور</label>
+      <span class="login-input-icon">🔒</span>
+      <input class="login-input" id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') doLogin()">
+      <button class="pass-toggle" type="button" id="passToggleBtn" onclick="togglePassView()" title="إظهار/إخفاء">👁️</button>
+    </div>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">
+      <span>🚀</span> دخول إلى لوحة التحكم
+    </button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-note"><span>🔐</span><span>محمي بكلمة مرور ديناميكية</span></div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboardScreen">
+  <button class="logout-btn" onclick="doLogout()">🚪 خروج</button>
+
+  <div class="dashboard-header">
+    <div class="header-icon">🎓</div>
+    <h1 class="header-title">لوحة تحكم الطلبة</h1>
+    <p class="header-subtitle">Student Management Dashboard</p>
+    <div class="header-line"></div>
   </div>
 
-  <!-- Loading Screen -->
-  <div id="loadingScreen" class="active">
-    <div class="loaderTitle">عناوين تقارير الطلبة</div>
-    <div class="loaderBar"></div>
-    <div class="loaderDots"><span></span><span></span><span></span></div>
-  </div>
-
-  <!-- Background -->
-  <div class="bg-image" aria-hidden="true"></div>
-  <div class="bg-overlay" aria-hidden="true"></div>
-  <div id="particles"></div>
-
-  <!-- MODAL -->
-  <div id="modal-overlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <span class="mIco" id="modal-icon">✏️</span>
-      <div class="mT" id="modal-title"></div>
-      <div class="mM" id="modal-msg"></div>
-      <input id="modal-input" class="mInp" style="display:none" />
-      <textarea id="modal-textarea" class="mInp" style="display:none;height:100px;resize:none"></textarea>
-      <div class="mBtns" id="modal-btns"></div>
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
+      <span>إجمالي الطلاب: <strong id="statsTotal">0</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
+      <span>الطلاب المميزون: <strong id="statsBadged">0</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#e94560;box-shadow:0 0 8px #e94560"></div>
+      <span>آخر إضافة: <strong id="statsLastReport">—</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
+      <span id="siteStatusBadge">حالة الموقع: <strong>...</strong></span>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-dot" style="background:#ff8c00;box-shadow:0 0 8px #ff8c00"></div>
+      <span>التحذيرات النشطة: <strong id="statsAlerts">0</strong></span>
     </div>
   </div>
 
-  <!-- PREVIEW MODAL (جديد) -->
-  <div id="previewModal" aria-hidden="true">
-    <div class="preview-content">
-      <span class="mIco">👁️</span>
-      <div class="mT">معاينة التقرير</div>
-      <div class="mM">راجع المحتوى قبل التحميل</div>
-      <div class="preview-text" id="previewText"></div>
-      <div class="preview-actions">
-        <button class="preview-cancel" id="previewCancel">❌ إلغاء</button>
-        <button class="preview-download" id="previewDownload">⬇️ تحميل</button>
+  <div class="main-grid">
+
+    <!-- Card 1: Add/Edit Student -->
+    <div class="glass-card card-glow-blue">
+      <div class="card-header">
+        <div class="card-icon icon-blue">✏️</div>
+        <div>
+          <div class="card-title">إضافة / تعديل طالب</div>
+          <div class="card-desc">Add or Edit Student Record</div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast" aria-live="polite">
-    <span id="toast-icon">✅</span>
-    <span id="toast-text"></span>
-  </div>
-
-  <!-- ===== DEV BUTTON ===== -->
-  <a href="https://t.me/ONX44" target="_blank" rel="noopener" class="dev-btn" title="تواصل مع المطور">
-    <span class="dev-icon">🧑‍💻</span>
-    <span>DEV</span>
-  </a>
-
-  <!-- ===== ONX-TAQE RIGHTS ===== -->
-  <div class="onx-rights" title="© جميع الحقوق محفوظة">
-    <span class="onx-icon">✦</span>
-    <span class="onx-text">© ONX-TAQE</span>
-  </div>
-
-  <!-- ===== DASHBOARD ===== -->
-  <div id="dashboardScreen">
-
-    <div class="dashboard-header">
-      <div class="header-icon">📚</div>
-      <h1 class="header-title">لوحة تقارير الطلبة</h1>
-      <p class="header-subtitle">Student Reports • ONX-TAQE PRO</p>
-      <div class="header-line"></div>
+      <div class="input-group">
+        <label class="input-label">اسم الطالب</label>
+        <span class="input-icon">👤</span>
+        <input class="styled-input" id="studentName" placeholder="أدخل اسم الطالب">
+      </div>
+      <div class="input-group">
+        <label class="input-label">عنوان التقرير</label>
+        <span class="input-icon">📋</span>
+        <input class="styled-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
+      </div>
+      <div class="input-group">
+        <label class="input-label">المادة الدراسية</label>
+        <span class="input-icon">📚</span>
+        <input class="styled-input" id="subjectName" placeholder="أدخل المادة الدراسية">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="addStudent()"><span>➕</span> حفظ</button>
+        <button class="btn btn-secondary" onclick="updateStudent()"><span>✏️</span> تعديل</button>
+      </div>
+      <div class="msg-box" id="msgAdd"></div>
     </div>
 
-    <!-- ✅ FANCY RIGHTS ABOVE CLOCK -->
-    <div class="fancy-rights-above" id="fancyRightsAbove">
-      <span class="fancy-rights-text">
-        <span class="rights-icon">✦</span>
-        © ONX-TAQE
-        <span class="rights-icon">✦</span>
-      </span>
+    <!-- Card 2: Site Control -->
+    <div class="glass-card card-glow-red">
+      <div class="card-header">
+        <div class="card-icon icon-red">🌐</div>
+        <div>
+          <div class="card-title">التحكم بحالة الموقع</div>
+          <div class="card-desc">Site Status Control</div>
+        </div>
+      </div>
+      <div class="toggle-container">
+        <div class="toggle-info">
+          <div class="toggle-title">حالة الموقع</div>
+          <div class="toggle-desc">تفعيل أو تعطيل الوصول للموقع</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="siteSwitch">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div id="siteStatusDisplay" class="site-status status-closed" style="margin-top:16px">
+        <div class="status-dot dot-closed" id="statusDot"></div>
+        <span id="statusText">الموقع مغلق</span>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btn-success" style="width:100%" onclick="toggleSite()">
+        <span>⚡</span> تطبيق التغيير
+      </button>
+      <div class="msg-box" id="siteMsg"></div>
     </div>
 
-    <!-- ✅ FANCY CLOCK -->
-    <div class="fancy-clock">
-      <span class="clock-icon">🕐</span>
-      <div style="display:flex;align-items:center;gap:4px">
-        <span class="clock-time" id="clockTime">00:00:00</span>
-        <span class="clock-period" id="clockPeriod">AM</span>
+    <!-- Card 3: Badge -->
+    <div class="glass-card card-glow-gold">
+      <div class="card-header">
+        <div class="card-icon icon-gold">⭐</div>
+        <div>
+          <div class="card-title">تمييز الطالب</div>
+          <div class="card-desc">Add Badge to Student</div>
+        </div>
       </div>
-      <div class="clock-date">
-        <span class="miladi" id="clockMiladi">—</span>
-        <span class="hijri" id="clockHijri">—</span>
+      <div class="input-group">
+        <label class="input-label">رقم الطالب في القائمة</label>
+        <span class="input-icon">🔢</span>
+        <input class="styled-input" id="badgeIndex" type="number" placeholder="مثال: 1" oninput="previewBadge()">
       </div>
+      <div class="input-group">
+        <label class="input-label">الشارة أو الرمز</label>
+        <span class="input-icon">🏅</span>
+        <input class="styled-input" id="badgeSymbol" placeholder="مثال: ⭐ أو 🥇" oninput="previewBadge()">
+      </div>
+      <div class="badge-preview" id="badgePreview" style="display:none">
+        <span id="badgePreviewIcon">⭐</span>
+        <span id="badgePreviewText">معاينة الشارة</span>
+      </div>
+      <button class="btn btn-gold" style="width:100%; margin-top:12px" onclick="setBadge()">
+        <span>✨</span> تمييز الطالب
+      </button>
+      <div class="msg-box" id="msgBadge"></div>
     </div>
 
-    <!-- Stats Bar -->
-    <div class="stats-bar">
-      <div class="stat-badge">
-        <div class="stat-dot" style="background:#00d4ff;box-shadow:0 0 8px #00d4ff"></div>
-        <span>إجمالي: <strong id="statsTotal">0</strong></span>
+    <!-- Card 4: Color -->
+    <div class="glass-card card-glow-purple">
+      <div class="card-header">
+        <div class="card-icon icon-purple">🎨</div>
+        <div>
+          <div class="card-title">تلوين اسم الطالب</div>
+          <div class="card-desc">Assign Color — يظهر في لوحة الطلبة</div>
+        </div>
       </div>
-      <div class="stat-badge">
-        <div class="stat-dot" style="background:#f5c518;box-shadow:0 0 8px #f5c518"></div>
-        <span>متميزون: <strong id="statsBadged">0</strong></span>
+      <div class="input-group">
+        <label class="input-label">رقم الطالب في القائمة</label>
+        <span class="input-icon">🔢</span>
+        <input class="styled-input" id="colorIndex" type="number" placeholder="مثال: 1">
       </div>
-      <div class="stat-badge">
-        <div class="stat-dot" style="background:#e94560;box-shadow:0 0 8px #e94560"></div>
-        <span>آخر: <strong id="statsLastReport">—</strong></span>
+      <span class="palette-label">اختر لون الاسم</span>
+      <div class="color-palette" id="nameColorPalette">
+        <div class="color-box" style="background:linear-gradient(135deg,#ff4040,#cc0000)" onclick="selectColor('red',this)" data-tip="أحمر"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#4080ff,#0040cc)" onclick="selectColor('blue',this)" data-tip="أزرق"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#40cc60,#008040)" onclick="selectColor('green',this)" data-tip="أخضر"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#ffaa00,#cc6600)" onclick="selectColor('orange',this)" data-tip="برتقالي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#aa44ff,#6600cc)" onclick="selectColor('purple',this)" data-tip="بنفسجي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#ff88bb,#cc4488)" onclick="selectColor('pink',this)" data-tip="وردي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#ffee44,#ccaa00)" onclick="selectColor('#f5c518',this)" data-tip="ذهبي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#aa6633,#663300)" onclick="selectColor('brown',this)" data-tip="بني"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#00ddff,#0088aa)" onclick="selectColor('cyan',this)" data-tip="سماوي"></div>
+        <div class="color-box" style="background:linear-gradient(135deg,#888,#444)" onclick="selectColor('gray',this)" data-tip="رمادي"></div>
       </div>
-      <div class="stat-badge">
-        <div class="stat-dot" style="background:#00c851;box-shadow:0 0 8px #00c851"></div>
-        <span id="siteStatusBadge">الحالة: <strong>...</strong></span>
-      </div>
-      <div class="stat-badge">
-        <div class="stat-dot" style="background:#ff8c00;box-shadow:0 0 8px #ff8c00"></div>
-        <span>تنبيهات: <strong id="statsAlerts">0</strong></span>
-      </div>
+      <div id="selectedColorPreview" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:12px"></div>
+      <button class="btn btn-secondary" style="width:100%" onclick="setColor()">
+        <span>🎨</span> تطبيق اللون
+      </button>
+      <div class="msg-box" id="msgColor"></div>
     </div>
 
-    <!-- TABS NAVIGATION -->
-    <div class="tabs-container">
-      <div class="tabs-nav">
-        <button class="tab-btn active" data-tab="register">📝 تسجيل</button>
-        <button class="tab-btn" data-tab="myinfo">👁️ معلوماتي</button>
-        <button class="tab-btn" data-tab="all">📋 العناوين</button>
-        <button class="tab-btn" data-tab="export">⬇️ تصدير</button>
-        <button class="tab-btn" data-tab="comments">💬 تعليقات</button>
-        <button class="tab-btn" data-tab="help">🆘 مساعدة</button>
-        <button class="tab-btn" data-tab="delete">🗑️ حذف</button>
-        <button class="tab-btn" data-tab="themes">🎨 ثيمات</button>
+    <!-- Card 5: Send Notification -->
+    <div class="glass-card card-glow-gold">
+      <div class="card-header">
+        <div class="card-icon icon-gold">📢</div>
+        <div>
+          <div class="card-title">إرسال إشعار / تنبيه</div>
+          <div class="card-desc">Broadcast Message to Students</div>
+        </div>
+      </div>
+      <div id="currentNotif" class="current-notif" style="display:none">
+        <span>📢</span> <span id="currentNotifText"></span>
+      </div>
+      <div class="input-group">
+        <label class="input-label">نص الإشعار</label>
+        <span class="input-icon">📝</span>
+        <input class="styled-input" id="notifInput" placeholder="اكتب الإشعار الذي سيظهر للطلاب...">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="sendNotification()"><span>📤</span> إرسال</button>
+        <button class="btn btn-danger" onclick="clearNotification()"><span>🗑️</span> مسح</button>
+      </div>
+      <div class="msg-box" id="msgNotif"></div>
+    </div>
+
+    <!-- Card 6: Deadline -->
+    <div class="glass-card card-glow-blue">
+      <div class="card-header">
+        <div class="card-icon icon-blue">📅</div>
+        <div>
+          <div class="card-title">تاريخ تسليم التقارير</div>
+          <div class="card-desc">Report Submission Deadline</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">تاريخ ووقت التسليم</label>
+        <input class="styled-input" id="deadlineInput" type="datetime-local">
+      </div>
+      <div class="toggle-container" style="margin:14px 0">
+        <div class="toggle-info">
+          <div class="toggle-title">إظهار التاريخ للطلاب</div>
+          <div class="toggle-desc">تفعيل أو إخفاء تاريخ التسليم</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="deadlineActiveSwitch">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="saveDeadline()">
+        <span>💾</span> حفظ تاريخ التسليم
+      </button>
+      <div class="msg-box" id="msgDeadline"></div>
+    </div>
+
+    <!-- ===== Card 7: إرشادات الاستخدام (NEW) ===== -->
+    <div class="glass-card card-glow-teal" style="grid-column:1/-1">
+      <div class="card-header">
+        <div class="card-icon icon-teal">📋</div>
+        <div>
+          <div class="card-title">إرشادات الاستخدام</div>
+          <div class="card-desc">Usage Guidelines Management — تظهر للطلاب كـ "متطلبات الاستخدام"</div>
+        </div>
       </div>
 
-      <!-- ===== TAB: تسجيل ===== -->
-      <div class="tab-content active" id="tab-register">
-        <div class="glass-card card-glow-blue">
-          <div class="card-header">
-            <div class="card-icon icon-blue">✏️</div>
-            <div>
-              <div class="card-title">تسجيل البيانات</div>
-              <div class="card-desc">أدخل معلومات تقريرك</div>
-            </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        <!-- Left: Write -->
+        <div>
+          <div class="input-group" style="margin-bottom:10px">
+            <label class="input-label">✍️ اكتب الإرشادات والمتطلبات</label>
+            <textarea
+              class="styled-textarea"
+              id="guidelinesTextarea"
+              placeholder="مثال:&#10;• يجب أن يكون عنوان التقرير فريداً&#10;• يُمنع تكرار الموضوعات&#10;• آخر موعد للتسجيل: ...&#10;• للاستفسار تواصل مع المشرف"
+              style="min-height:150px"
+              oninput="previewGuidelinesLive()"
+            ></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-teal" onclick="saveGuidelines()">
+              <span>💾</span> حفظ وإرسال للطلاب
+            </button>
+            <button class="btn btn-danger" onclick="clearGuidelines()">
+              <span>🗑️</span> مسح الإرشادات
+            </button>
+          </div>
+          <div class="msg-box" id="msgGuidelines"></div>
+        </div>
+
+        <!-- Right: Preview -->
+        <div>
+          <div style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">
+            👁️ معاينة — كما ستظهر للطلاب
           </div>
 
-          <!-- DEADLINE -->
-          <div id="deadlinePanel" style="display:none;margin-bottom:12px">
-            <div class="deadline">
-              <div class="left">
-                <div class="ico">⏰</div>
-                <div class="meta">
-                  <small>موعد التسليم</small>
-                  <b id="deadlineDateDisplay">—</b>
+          <!-- Preview box -->
+          <div id="guidelinesPreview">
+            <div class="guidelines-preview-wrap">
+              <div class="guidelines-preview-header">
+                <div class="gp-icon">📋</div>
+                <div class="gp-title-wrap">
+                  <div class="gp-main-title">✦ متطلبات الاستخدام ✦</div>
+                  <div class="gp-sub-title">إرشادات صادرة من الإدارة</div>
+                </div>
+                <div class="gp-live-badge">
+                  <div class="gp-live-dot"></div>
+                  مباشر
                 </div>
               </div>
-              <div class="count" id="deadlineCountdown">جارٍ التحميل…</div>
-            </div>
-          </div>
-
-          <!-- GUIDELINES (✅ زر طوي/فتح) -->
-          <div id="guidelinesPanel" style="display:none;margin-bottom:12px">
-            <div class="glass-card" style="border-radius:16px;padding:16px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <strong style="color:rgba(20,184,166,.95);font-size:12px">📋 متطلبات الاستخدام</strong>
-                <button class="btn btn-outline" id="importantBtn" style="padding:6px 12px;font-size:0.8rem">📌 طوي/فتح</button>
+              <div class="gp-body" id="guidelinesPreviewContent">ستظهر الإرشادات هنا عند الكتابة…</div>
+              <div class="gp-footer">
+                <span>🔒</span>
+                <span>هذه الإرشادات صادرة من الإدارة — يُرجى الالتزام بها</span>
               </div>
-              <div id="guidelinesContent" class="bigNote">جارٍ التحميل…</div>
-              <!-- ✅ الزر ينزل للأسفل -->
-              <button id="guidelinesToggle" class="bigNote-toggle">🔽 عرض التفاصيل</button>
             </div>
           </div>
 
-          <!-- Form -->
-          <div class="input-group">
-            <label class="input-label">الاسم الثنائي <span style="color:var(--neon-blue);font-size:10px">(اسمين على الأقل)</span></label>
-            <span class="input-icon">👤</span>
-            <input class="styled-input" id="studentName" placeholder="مثال: أحمد محمد" autocomplete="name" />
+          <div id="guidelinesPreviewEmpty" style="padding:30px;text-align:center;color:rgba(255,255,255,0.28);font-size:0.85rem">
+            <div style="font-size:36px;margin-bottom:8px;opacity:0.4">📄</div>
+            لا توجد إرشادات محفوظة حالياً
           </div>
-          <div class="input-group">
-            <label class="input-label">المادة الدراسية</label>
-            <span class="input-icon">📚</span>
-            <input class="styled-input" id="subjectName" placeholder="مثال: قواعد بيانات" />
-          </div>
-          <div class="input-group">
-            <label class="input-label">عنوان التقرير <span style="color:var(--neon-blue);font-size:10px">(لازم يكون فريد)</span></label>
-            <span class="input-icon">📋</span>
-            <input class="styled-input" id="reportTitle" placeholder="اكتب عنوان تقريرك هنا" />
-          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Card 8: ⚠️ Student Alert -->
+    <div class="glass-card card-glow-orange" style="grid-column:1/-1">
+      <div class="card-header">
+        <div class="card-icon icon-orange">⚠️</div>
+        <div>
+          <div class="card-title">إرسال تحذير / تنبيه لطالب</div>
+          <div class="card-desc">Send Targeted Alert — يظهر في لوحة بيانات الطالب</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div>
+          <div class="input-group">
+            <label class="input-label">رقم الطالب في القائمة</label>
+            <span class="input-icon">🔢</span>
+            <input class="styled-input" id="alertStudentIndex" type="number" min="1" placeholder="مثال: 1" oninput="previewAlert()">
+          </div>
+          <div class="input-group">
+            <label class="input-label">نص التحذير / التنبيه</label>
+            <span class="input-icon">✍️</span>
+            <input class="styled-input" id="alertStudentText" placeholder="اكتب نص التحذير هنا..." oninput="previewAlert()">
+          </div>
+          <div class="alert-type-row">
+            <label class="alert-type-label private-lbl">
+              <input type="radio" name="alertTypeRadio" value="private" id="alertTypePrivate" checked onchange="previewAlert()">
+              <span class="alert-type-text">🔒 خاص — فقط في معلوماتي</span>
+            </label>
+            <label class="alert-type-label public-lbl">
+              <input type="radio" name="alertTypeRadio" value="public" id="alertTypePublic" onchange="previewAlert()">
+              <span class="alert-type-text">🌐 عام — أمام اسمه للجميع</span>
+            </label>
+          </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="btnSave"><span>💾</span> حفظ البيانات</button>
-            <button class="btn btn-secondary" id="btnChange"><span>✏️</span> تغيير العنوان</button>
-            <button class="btn btn-outline" id="btnShow"><span>👁️</span> معلوماتي</button>
+            <button class="btn btn-orange" onclick="sendStudentAlert()"><span>📤</span> إرسال التحذير</button>
+            <button class="btn btn-danger" onclick="clearStudentAlert()"><span>🗑️</span> حذف التحذير</button>
           </div>
-          <div class="msg-box" id="msg"></div>
+          <div class="msg-box" id="msgAlert"></div>
         </div>
-      </div>
 
-      <!-- ===== TAB: معلوماتي ===== -->
-      <div class="tab-content" id="tab-myinfo">
-        <div class="glass-card card-glow-purple">
-          <div class="card-header">
-            <div class="card-icon icon-purple">👁️</div>
-            <div>
-              <div class="card-title">معلوماتي</div>
-              <div class="card-desc">بياناتك المسجلة والتنبيهات</div>
-            </div>
+        <div>
+          <span class="palette-label">🎨 اختر لون التحذير</span>
+          <div class="color-palette" id="alertColorPalette">
+            <div class="color-box selected" style="background:linear-gradient(135deg,#ff4444,#cc0000)" onclick="selectAlertColor('#ff4444',this)" data-tip="أحمر"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#ffcc00,#ff8800)" onclick="selectAlertColor('#ffcc00',this)" data-tip="أصفر"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#9b59b6,#6c3483)" onclick="selectAlertColor('#9b59b6',this)" data-tip="بنفسجي"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#ff69b4,#cc1477)" onclick="selectAlertColor('#ff69b4',this)" data-tip="وردي"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#00cc66,#007744)" onclick="selectAlertColor('#00cc66',this)" data-tip="أخضر"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#00bcd4,#007b99)" onclick="selectAlertColor('#00bcd4',this)" data-tip="سماوي"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#555,#222)" onclick="selectAlertColor('#444444',this)" data-tip="أسود"></div>
+            <div class="color-box" style="background:linear-gradient(135deg,#eee,#bbb)" onclick="selectAlertColor('#eeeeee',this)" data-tip="أبيض"></div>
           </div>
-
-          <div class="infoRow" id="infoBox" style="display:none"></div>
-
-          <!-- ✅ وضع ليلي/نهاري -->
-          <div class="mode-toggle-container">
-            <div class="toggle-info">
-              <div class="toggle-title">🌙 الوضع الليلي / النهاري</div>
-              <div class="toggle-desc">تبديل بين الوضع الداكن والفاتح</div>
-            </div>
-            <label class="mode-switch">
-              <input type="checkbox" id="modeToggle">
-              <span class="mode-slider"></span>
-            </label>
+          <div class="divider" style="margin:12px 0"></div>
+          <span class="palette-label">معاينة التحذير</span>
+          <div id="alertPreviewBox" class="alert-preview-box">
+            <span>⚠️</span>
+            <span id="alertPreviewText">نص التحذير يظهر هنا</span>
+            <span id="alertPreviewType" class="alert-badge-type"></span>
           </div>
-
-          <!-- ✅ أصوات التأثيرات -->
-          <div class="sound-toggle-container">
-            <div class="toggle-info">
-              <div class="toggle-title">🔊 أصوات التأثيرات</div>
-              <div class="toggle-desc">تشغيل أصوات عند النقر والتحميل</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="soundsToggle" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-            <button class="btn btn-outline" id="btnDownload"><span>⬇️</span> تحميل بياناتي</button>
-            <button class="btn btn-danger" id="btnDelete"><span>🗑️</span> حذف معلوماتي</button>
-            <button class="btn btn-gold" id="btnProblem"><span>🆘</span> أرسل مشكلتك</button>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:8px;line-height:1.6">
+            💡 <strong>خاص:</strong> يظهر فقط في قسم "معلوماتي" للطالب المحدد<br>
+            💡 <strong>عام:</strong> يظهر أمام اسم الطالب في جدول جميع العناوين
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- ===== TAB: العناوين ===== -->
-      <div class="tab-content" id="tab-all">
-        <div class="glass-card table-card">
-          <div class="card-header">
-            <div class="card-icon icon-blue">📋</div>
-            <div>
-              <div class="card-title">عناوين الطلبة</div>
-              <div class="card-desc">قائمة جميع التقارير • بحث + تحديث</div>
-            </div>
-            <button class="btn btn-primary" id="panelRefreshBtn" style="margin-right:auto;padding:6px 12px;font-size:0.8rem">
-              <span class="spin">🔄</span> تحديث
-            </button>
-          </div>
-
-          <div class="tableTools">
-            <input class="styled-input search" id="searchInput" placeholder="🔍 ابحث بالاسم أو العنوان أو المادة..." />
-            <div class="counter" title="عدد الطلبة المسجلين">
-              <span>👥</span>
-              <div style="display:flex;flex-direction:column;line-height:1.1">
-                <b id="counterNum">0</b>
-                <small style="color:rgba(255,255,255,.45);font-size:9px">طالب</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="tableContainer" id="allTitles">
-            <div style="text-align:center;padding:22px;color:rgba(255,255,255,.45)">افتح القائمة لعرض البيانات…</div>
-          </div>
+    <!-- Card 9: Visitors -->
+    <div class="glass-card table-card card-glow-green">
+      <div class="card-header">
+        <div class="card-icon icon-green">👥</div>
+        <div>
+          <div class="card-title">سجل الزوار</div>
+          <div class="card-desc">Visitors Log — مَن زار الموقع</div>
         </div>
+        <button class="btn btn-success" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadVisitors()">
+          <span>🔄</span> تحديث
+        </button>
       </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>كود الجهاز</th>
+              <th>آخر زيارة</th>
+              <th>عدد الزيارات</th>
+            </tr>
+          </thead>
+          <tbody id="visitorsTable">
+            <tr><td colspan="5"><div class="empty-state"><div class="loader"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-      <!-- ===== TAB: تصدير (معاينة قبل التحميل) ===== -->
-      <div class="tab-content" id="tab-export">
-        <div class="glass-card card-glow-gold">
-          <div class="card-header">
-            <div class="card-icon icon-gold">⬇️</div>
-            <div>
-              <div class="card-title">تصدير بياناتي</div>
-              <div class="card-desc">حمّل بياناتك بتصميم فاخر مع حقوقك</div>
-            </div>
-          </div>
-
-          <div style="color:rgba(255,255,255,.7);line-height:1.8;font-size:0.9rem;text-align:center">
-            <p>✨ اختر صيغة التحميل:</p>
-            <p style="color:rgba(255,255,255,.4);font-size:0.85rem;margin-bottom:16px">
-              جميع الملفات تحتوي على حقوق © ONX-TAQE بتصميم مزخرف فاخر
-            </p>
-          </div>
-
-          <!-- ✅ زر TXT فقط مع معاينة -->
-          <div class="export-buttons">
-            <button class="export-btn txt" id="exportTXT" onclick="previewBeforeDownload('txt')">
-              <span class="export-icon">📝</span>
-              <span class="export-label">TXT فاخر</span>
-              <span class="export-desc">معاينة + تحميل</span>
-            </button>
-          </div>
+    <!-- Card 10: Students Table -->
+    <div class="glass-card table-card">
+      <div class="card-header">
+        <div class="card-icon icon-blue">📊</div>
+        <div>
+          <div class="card-title">قائمة الطلبة</div>
+          <div class="card-desc">Students List & Records • يتحدث تلقائياً</div>
         </div>
+        <button class="btn btn-primary" style="margin-right:auto;padding:8px 16px;font-size:0.85rem" onclick="loadStudents()">
+          <span>🔄</span> تحديث
+        </button>
       </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>عنوان التقرير</th>
+              <th>المادة</th>
+              <th>التاريخ</th>
+              <th>التحذير</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTable">
+            <tr><td colspan="7"><div class="empty-state"><div class="loader"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="msg-box" id="msgTable"></div>
+    </div>
 
-      <!-- ===== TAB: تعليقات (جديد) ===== -->
-      <div class="tab-content" id="tab-comments">
-        <div class="glass-card card-glow-teal">
-          <div class="card-header">
-            <div class="card-icon icon-teal">💬</div>
-            <div>
-              <div class="card-title">نقاشات الطلبة</div>
-              <div class="card-desc">تواصل مع زملائك واطرح أسئلتك</div>
-            </div>
-          </div>
+  </div><!-- end main-grid -->
+</div><!-- end dashboardScreen -->
 
-          <div class="comments-section">
-            <div class="comments-header">
-              <div class="comments-title">
-                <span>💭</span> التعليقات
-                <span class="comment-count" id="commentCount">0</span>
-              </div>
-            </div>
+<script>
+/* ===== PARTICLES ===== */
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
+  for(let i=0;i<25;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+      box-shadow:0 0 ${size*3}px currentColor;
+    `;
+    container.appendChild(p);
+  }
+})();
 
-            <div class="comment-input-area">
-              <input class="comment-input" id="commentInput" placeholder="اكتب تعليقك أو سؤالك هنا…" />
-              <button class="comment-submit" id="commentSubmit">إرسال</button>
-            </div>
+function togglePassView(){
+  const inp = document.getElementById('loginPassword');
+  const btn = document.getElementById('passToggleBtn');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
 
-            <div class="comments-list" id="commentsList">
-              <div style="text-align:center;padding:30px;color:rgba(255,255,255,.4)">
-                <div style="font-size:40px;margin-bottom:10px">💬</div>
-                <div>كن أول من يعلق!</div>
-              </div>
-            </div>
-          </div>
+/* ===== Live Guidelines Preview ===== */
+window.previewGuidelinesLive = function(){
+  const text = document.getElementById('guidelinesTextarea').value.trim();
+  const preview = document.getElementById('guidelinesPreview');
+  const empty   = document.getElementById('guidelinesPreviewEmpty');
+  const content = document.getElementById('guidelinesPreviewContent');
+  if(text){
+    preview.classList.add('show');
+    empty.style.display = 'none';
+    content.textContent = text;
+  } else {
+    preview.classList.remove('show');
+    empty.style.display = 'block';
+    content.textContent = 'ستظهر الإرشادات هنا عند الكتابة…';
+  }
+}
+</script>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co"
+const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI"
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+const CREDS_URL = "https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/2f6ecbcb632f4a10716aa8a742c7e5a1263d2479/SS"
+
+/* ===== AUTH ===== */
+function parseCreds(raw) {
+  const um = raw.match(/【S】(.+?)【S】/)
+  const pm = raw.match(/【P】(.+?)【P】/)
+  return { username: um ? um[1].trim() : null, password: pm ? pm[1].trim() : null }
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('loginError')
+  el.textContent = msg
+  el.classList.add('show')
+  setTimeout(() => el.classList.remove('show'), 4000)
+}
+
+function setLoginLoading(v) {
+  const btn = document.getElementById('loginBtn')
+  btn.innerHTML = v ? '<span class="login-loader"></span> جارٍ التحقق...' : '<span>🚀</span> دخول إلى لوحة التحكم'
+  btn.disabled = v
+}
+
+async function doLogin() {
+  const u = document.getElementById('loginUsername').value.trim()
+  const p = document.getElementById('loginPassword').value.trim()
+  if(!u || !p){ showLoginError('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور'); return }
+  setLoginLoading(true)
+  try {
+    const res = await fetch(CREDS_URL + '?t=' + Date.now(), { cache: 'no-store' })
+    if(!res.ok) throw new Error('فشل تحميل بيانات الاعتماد')
+    const raw = await res.text()
+    const creds = parseCreds(raw)
+    if(!creds.username || !creds.password){ showLoginError('❌ تعذّر قراءة بيانات الاعتماد'); return }
+    if(u === creds.username && p === creds.password){
+      const card = document.getElementById('loginCard')
+      card.classList.add('exiting')
+      setTimeout(() => {
+        document.getElementById('loginScreen').classList.add('hidden')
+        const dash = document.getElementById('dashboardScreen')
+        dash.classList.add('active')
+        initDashboard()
+      }, 400)
+    } else {
+      showLoginError('❌ اسم المستخدم أو كلمة المرور غير صحيحة')
+    }
+  } catch(err) {
+    showLoginError('⚠️ خطأ في الاتصال: ' + err.message)
+  } finally {
+    setLoginLoading(false)
+  }
+}
+window.doLogin = doLogin
+
+function doLogout(){
+  document.getElementById('dashboardScreen').classList.remove('active')
+  const ls = document.getElementById('loginScreen')
+  ls.classList.remove('hidden')
+  const card = document.getElementById('loginCard')
+  card.classList.remove('exiting')
+  card.style.animation = 'none'
+  requestAnimationFrame(() => {
+    card.style.animation = ''
+    card.style.animation = 'loginCardIn 0.9s cubic-bezier(0.23,1,0.32,1) both'
+  })
+  document.getElementById('loginUsername').value = ''
+  document.getElementById('loginPassword').value = ''
+}
+window.doLogout = doLogout
+
+/* ===== INIT DASHBOARD ===== */
+function initDashboard() {
+  loadSiteStatus()
+  loadStudents()
+  loadSiteSettings()
+  loadVisitors()
+  loadCurrentGuidelines()
+  setupRealtime()
+}
+
+/* ===== HELPERS ===== */
+const siteSwitch = document.getElementById("siteSwitch")
+
+function showMsg(id, text, type="info") {
+  const el = document.getElementById(id)
+  if(!el) return
+  el.textContent = text
+  el.className = `msg-box ${type} show`
+  setTimeout(() => el.classList.remove('show'), 3500)
+}
+
+/* ===== SITE STATUS ===== */
+async function loadSiteStatus(){
+  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
+  if(error) return
+  siteSwitch.checked = data.site_open
+  updateSiteUI(data.site_open)
+}
+
+function updateSiteUI(isOpen){
+  const display = document.getElementById("siteStatusDisplay")
+  const dot     = document.getElementById("statusDot")
+  const text    = document.getElementById("statusText")
+  const badge   = document.getElementById("siteStatusBadge")
+  if(isOpen){
+    display.className = "site-status status-open"
+    dot.className     = "status-dot dot-open"
+    text.textContent  = "الموقع مفتوح ✅"
+    badge.innerHTML   = `حالة الموقع: <strong style="color:#00ff88">مفتوح</strong>`
+  } else {
+    display.className = "site-status status-closed"
+    dot.className     = "status-dot dot-closed"
+    text.textContent  = "الموقع مغلق ❌"
+    badge.innerHTML   = `حالة الموقع: <strong style="color:#ff6b6b">مغلق</strong>`
+  }
+}
+
+async function toggleSite(){
+  const newValue = siteSwitch.checked
+  const {error} = await supabase.from("site_control").update({site_open:newValue}).eq("id",1)
+  if(error){ showMsg("siteMsg","فشل تحديث حالة الموقع ❌","error"); return }
+  updateSiteUI(newValue)
+  showMsg("siteMsg", newValue ? "✅ تم فتح الموقع" : "❌ تم إغلاق الموقع", newValue ? "success" : "error")
+}
+window.toggleSite = toggleSite
+
+/* ===== LOAD SITE SETTINGS ===== */
+async function loadSiteSettings(){
+  const {data,error} = await supabase.from("site_control").select("*").eq("id",1).single()
+  if(error || !data) return
+  const currentNotif = document.getElementById("currentNotif")
+  const currentNotifText = document.getElementById("currentNotifText")
+  if(data.notification && data.notification.trim()){
+    document.getElementById("notifInput").value = data.notification
+    currentNotif.style.display = "flex"
+    currentNotifText.textContent = data.notification
+  } else {
+    currentNotif.style.display = "none"
+    document.getElementById("notifInput").value = ""
+  }
+  if(data.deadline){
+    const dt = new Date(data.deadline)
+    const localDt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0,16)
+    document.getElementById("deadlineInput").value = localDt
+  }
+  if(data.deadline_active !== undefined){
+    document.getElementById("deadlineActiveSwitch").checked = !!data.deadline_active
+  }
+}
+
+/* ===== LOAD CURRENT GUIDELINES ===== */
+async function loadCurrentGuidelines(){
+  const {data, error} = await supabase.from("site_control").select("usage_guidelines").eq("id",1).single()
+  if(error || !data) return
+  const textarea  = document.getElementById('guidelinesTextarea')
+  const preview   = document.getElementById('guidelinesPreview')
+  const empty     = document.getElementById('guidelinesPreviewEmpty')
+  const content   = document.getElementById('guidelinesPreviewContent')
+  if(data.usage_guidelines && data.usage_guidelines.trim()){
+    textarea.value = data.usage_guidelines.trim()
+    preview.classList.add('show')
+    empty.style.display = 'none'
+    content.textContent = data.usage_guidelines.trim()
+  } else {
+    textarea.value = ''
+    preview.classList.remove('show')
+    empty.style.display = 'block'
+  }
+}
+
+/* ===== SAVE GUIDELINES ===== */
+async function saveGuidelines(){
+  const text = document.getElementById('guidelinesTextarea').value.trim()
+  if(!text){ showMsg('msgGuidelines','⚠️ اكتب الإرشادات أولاً','error'); return }
+  const {error} = await supabase.from("site_control").update({ usage_guidelines: text }).eq("id",1)
+  if(error){ showMsg('msgGuidelines','❌ فشل الحفظ: ' + (error.message||''),'error'); return }
+  showMsg('msgGuidelines','✅ تم حفظ الإرشادات وإرسالها للطلاب فوراً','success')
+  // Update preview
+  const preview = document.getElementById('guidelinesPreview')
+  const empty   = document.getElementById('guidelinesPreviewEmpty')
+  const content = document.getElementById('guidelinesPreviewContent')
+  preview.classList.add('show')
+  empty.style.display = 'none'
+  content.textContent = text
+}
+window.saveGuidelines = saveGuidelines
+
+/* ===== CLEAR GUIDELINES ===== */
+async function clearGuidelines(){
+  if(!confirm('هل أنت متأكد من مسح الإرشادات؟ سيتم إخفاؤها عن الطلاب فوراً')) return
+  const {error} = await supabase.from("site_control").update({ usage_guidelines: null }).eq("id",1)
+  if(error){ showMsg('msgGuidelines','❌ فشل المسح','error'); return }
+  document.getElementById('guidelinesTextarea').value = ''
+  document.getElementById('guidelinesPreview').classList.remove('show')
+  document.getElementById('guidelinesPreviewEmpty').style.display = 'block'
+  document.getElementById('guidelinesPreviewContent').textContent = 'ستظهر الإرشادات هنا عند الكتابة…'
+  showMsg('msgGuidelines','🗑️ تم مسح الإرشادات — لن تظهر للطلاب','info')
+}
+window.clearGuidelines = clearGuidelines
+
+/* ===== SEND NOTIFICATION ===== */
+async function sendNotification(){
+  const msg = document.getElementById("notifInput").value.trim()
+  if(!msg){ showMsg("msgNotif","⚠️ أدخل نص الإشعار","error"); return }
+  const {error} = await supabase.from("site_control").update({notification: msg}).eq("id",1)
+  if(error){ showMsg("msgNotif","❌ فشل الإرسال","error"); return }
+  const currentNotif = document.getElementById("currentNotif")
+  document.getElementById("currentNotifText").textContent = msg
+  currentNotif.style.display = "flex"
+  showMsg("msgNotif","✅ تم إرسال الإشعار للطلاب","success")
+}
+window.sendNotification = sendNotification
+
+/* ===== CLEAR NOTIFICATION ===== */
+async function clearNotification(){
+  const {error} = await supabase.from("site_control").update({notification: ""}).eq("id",1)
+  if(error){ showMsg("msgNotif","❌ فشل المسح","error"); return }
+  document.getElementById("notifInput").value = ""
+  document.getElementById("currentNotif").style.display = "none"
+  showMsg("msgNotif","🗑️ تم مسح الإشعار","info")
+}
+window.clearNotification = clearNotification
+
+/* ===== SAVE DEADLINE ===== */
+async function saveDeadline(){
+  const dtVal = document.getElementById("deadlineInput").value
+  const active = document.getElementById("deadlineActiveSwitch").checked
+  const {error} = await supabase.from("site_control")
+    .update({ deadline: dtVal ? new Date(dtVal).toISOString() : null, deadline_active: active })
+    .eq("id",1)
+  if(error){ showMsg("msgDeadline","❌ فشل الحفظ","error"); return }
+  showMsg("msgDeadline", active ? "✅ تم حفظ التاريخ وإظهاره للطلاب" : "✅ تم الحفظ (التاريخ مخفي)", "success")
+}
+window.saveDeadline = saveDeadline
+
+/* ===== LOAD VISITORS ===== */
+async function loadVisitors(){
+  const {data,error} = await supabase.from("visitors").select("*").order("last_visit",{ascending:false})
+  const table = document.getElementById("visitorsTable")
+  if(error || !data || data.length === 0){
+    table.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👻</div><div class="empty-text">لا يوجد زوار بعد</div></div></td></tr>`
+    return
+  }
+  table.innerHTML = data.map((v,i) => {
+    const name = v.name
+      ? `<span class="student-name-cell">${v.name}</span>`
+      : `<span class="visitor-unregistered">غير مسجل</span>`
+    const d = new Date(v.last_visit)
+    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
+    const shortCode = v.code ? v.code.slice(0,14) + '…' : '-'
+    return `<tr style="animation-delay:${i*0.04}s">
+      <td><span class="row-num">${i+1}</span></td>
+      <td>${name}</td>
+      <td class="code-cell">${shortCode}</td>
+      <td class="date-cell">${dateStr}</td>
+      <td><span class="subject-badge">${v.visit_count || 1}</span></td>
+    </tr>`
+  }).join('')
+}
+window.loadVisitors = loadVisitors
+
+/* ===== STATE ===== */
+let selectedID    = null
+let selectedColor = null
+let selectedAlertColor = '#ff4444'
+
+/* ===== SELECT NAME COLOR ===== */
+window.selectColor = function(color, el){
+  selectedColor = color
+  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
+  el.classList.add('selected')
+  document.getElementById('selectedColorPreview').innerHTML =
+    `<span style="color:${color}">● </span> تم اختيار اللون: <strong style="color:${color}">${color}</strong>`
+}
+
+/* ===== SELECT ALERT COLOR ===== */
+window.selectAlertColor = function(color, el){
+  selectedAlertColor = color
+  document.querySelectorAll('#alertColorPalette .color-box').forEach(b => b.classList.remove('selected'))
+  el.classList.add('selected')
+  previewAlert()
+}
+
+/* ===== PREVIEW ALERT ===== */
+window.previewAlert = function(){
+  const text = document.getElementById('alertStudentText').value.trim()
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
+  const box  = document.getElementById('alertPreviewBox')
+  const ptext= document.getElementById('alertPreviewText')
+  const ptype= document.getElementById('alertPreviewType')
+  if(text){
+    box.style.display = 'flex'
+    box.style.color   = selectedAlertColor
+    box.style.borderLeft = `3px solid ${selectedAlertColor}`
+    box.style.background = `${selectedAlertColor}18`
+    ptext.textContent = text
+    ptype.textContent = type === 'private' ? '🔒 خاص' : '🌐 عام'
+  } else {
+    box.style.display = 'none'
+  }
+}
+
+window.previewBadge = function(){
+  const sym  = document.getElementById("badgeSymbol").value
+  const prev = document.getElementById("badgePreview")
+  const icon = document.getElementById("badgePreviewIcon")
+  if(sym){ prev.style.display='inline-flex'; icon.textContent=sym }
+  else { prev.style.display='none' }
+}
+
+/* ===== ADD STUDENT ===== */
+async function addStudent(){
+  const name    = document.getElementById("studentName").value.trim()
+  const title   = document.getElementById("reportTitle").value.trim()
+  const subject = document.getElementById("subjectName").value.trim()
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
+  const {error} = await supabase.from("student_reports").insert([{name,title,subject,date:new Date().toISOString()}])
+  if(error){ showMsg("msgAdd","❌ فشل الإضافة","error"); return }
+  showMsg("msgAdd","🎉 تم إضافة الطالب بنجاح","success")
+  clearInputs(); await loadStudents()
+}
+
+/* ===== UPDATE STUDENT ===== */
+async function updateStudent(){
+  if(!selectedID){ showMsg("msgAdd","⚠️ اختر طالباً للتعديل أولاً","error"); return }
+  const name    = document.getElementById("studentName").value.trim()
+  const title   = document.getElementById("reportTitle").value.trim()
+  const subject = document.getElementById("subjectName").value.trim()
+  if(!name||!title||!subject){ showMsg("msgAdd","⚠️ يرجى ملء جميع الحقول","error"); return }
+  const {error} = await supabase.from("student_reports").update({name,title,subject,date:new Date().toISOString()}).eq("id",selectedID)
+  if(error){ showMsg("msgAdd","❌ فشل التعديل","error"); return }
+  showMsg("msgAdd","✏️ تم التعديل بنجاح","success")
+  clearInputs(); await loadStudents()
+}
+
+window.editStudent = function(student){
+  selectedID = student.id
+  document.getElementById("studentName").value  = student.name
+  document.getElementById("reportTitle").value  = student.title
+  document.getElementById("subjectName").value  = student.subject
+  showMsg("msgAdd","📝 بيانات الطالب محملة، عدّل ثم اضغط تعديل","info")
+  document.getElementById("studentName").scrollIntoView({behavior:"smooth",block:"center"})
+}
+
+window.deleteStudent = async function(id){
+  if(!confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")) return
+  const {error} = await supabase.from("student_reports").delete().eq("id",id)
+  if(error){ showMsg("msgTable","❌ فشل الحذف","error"); return }
+  showMsg("msgTable","🗑️ تم حذف الطالب بنجاح","success")
+  await loadStudents()
+}
+
+/* ===== LOAD STUDENTS ===== */
+async function loadStudents(){
+  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+  if(error){ console.log(error); return }
+
+  const table  = document.getElementById("studentsTable")
+  const total  = data.length
+  const badged = data.filter(s=>s.badge).length
+  const alerts = data.filter(s=>s.alert_text).length
+
+  document.getElementById("statsTotal").textContent  = total
+  document.getElementById("statsBadged").textContent = badged
+  document.getElementById("statsAlerts").textContent = alerts
+
+  if(total > 0){
+    const sorted = [...data].sort((a,b) => new Date(b.date) - new Date(a.date))
+    document.getElementById("statsLastReport").textContent = sorted[0].name
+  } else {
+    document.getElementById("statsLastReport").textContent = "—"
+  }
+
+  if(total===0){
+    table.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا يوجد طلاب مسجلون بعد</div></div></td></tr>`
+    return
+  }
+
+  table.innerHTML = data.map((s,i) => {
+    const displayName = s.badge ? `${s.badge} ${s.name}` : s.name
+    const nameColor   = s.color || '#e0e0f0'
+    const d = new Date(s.date)
+    const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})
+
+    let alertCell = '<span style="color:rgba(255,255,255,0.25);font-size:0.8rem">—</span>'
+    if(s.alert_text){
+      const typeIcon = s.alert_type === 'public' ? '🌐' : '🔒'
+      alertCell = `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <span class="alert-table-badge" style="color:${s.alert_color||'#ff4444'};border-color:${s.alert_color||'#ff4444'}">
+          ⚠️ ${s.alert_text.slice(0,20)}${s.alert_text.length>20?'…':''}
+        </span>
+        <span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">${typeIcon} ${s.alert_type==='public'?'عام':'خاص'}</span>
+      </div>`
+    }
+
+    return `<tr style="animation-delay:${i*0.05}s">
+      <td><span class="row-num">${i+1}</span></td>
+      <td class="student-name-cell" style="color:${nameColor}">${displayName}</td>
+      <td style="color:${nameColor};text-align:right;padding-right:16px">${s.title}</td>
+      <td><span class="subject-badge" style="color:${nameColor};border-color:${nameColor}44;background:${nameColor}14">${s.subject}</span></td>
+      <td class="date-cell">${dateStr}</td>
+      <td>${alertCell}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-sm btn-sm-edit" onclick='editStudent(${JSON.stringify(s)})'>✏️ تعديل</button>
+          <button class="btn-sm btn-sm-delete" onclick='deleteStudent(${s.id})'>🗑️ حذف</button>
         </div>
-      </div>
+      </td>
+    </tr>`
+  }).join('')
+}
+window.loadStudents = loadStudents
 
-      <!-- ===== TAB: مساعدة ===== -->
-      <div class="tab-content" id="tab-help">
-        <div class="glass-card card-glow-orange">
-          <div class="card-header">
-            <div class="card-icon icon-orange">🆘</div>
-            <div>
-              <div class="card-title">أرسل مشكلتك</div>
-              <div class="card-desc">استفسارك يصل للمشرف مباشرة عبر تيليجرام</div>
-            </div>
-          </div>
+/* ===== SET BADGE ===== */
+async function setBadge(){
+  const idx    = parseInt(document.getElementById("badgeIndex").value)-1
+  const symbol = document.getElementById("badgeSymbol").value.trim()
+  if(isNaN(idx)||!symbol){ showMsg("msgBadge","⚠️ أدخل رقم الطالب والشارة","error"); return }
+  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+  if(error){ showMsg("msgBadge","❌ فشل تحميل البيانات","error"); return }
+  if(idx<0||idx>=data.length){ showMsg("msgBadge","⚠️ رقم الطالب غير صحيح","error"); return }
+  const {error:ue} = await supabase.from("student_reports").update({badge:symbol}).eq("id",data[idx].id)
+  if(ue){ showMsg("msgBadge","❌ فشل التمييز","error"); return }
+  showMsg("msgBadge","🎉 تم تمييز الطالب — سيظهر في لوحة الطلبة فوراً","success")
+  await loadStudents(); clearInputs()
+}
 
-          <div style="color:rgba(255,255,255,.7);line-height:1.8;font-size:0.9rem;margin-bottom:16px">
-            <p>✍️ اكتب مشكلتك أو استفسارك بالتفصيل:</p>
-            <ul style="margin:8px 0 8px 20px;font-size:0.85rem;color:rgba(255,255,255,.5)">
-              <li>• سيتم إرسال رسالتك للمشرف فوراً</li>
-              <li>• ستصلك الإجابة عبر نفس القناة</li>
-              <li>• يمكنك متابعة الحالة في "معلوماتي"</li>
-            </ul>
-          </div>
+/* ===== SET COLOR ===== */
+async function setColor(){
+  const idx = parseInt(document.getElementById("colorIndex").value)-1
+  if(isNaN(idx)){ showMsg("msgColor","⚠️ أدخل رقم الطالب","error"); return }
+  if(!selectedColor){ showMsg("msgColor","⚠️ اختر لوناً أولاً","error"); return }
+  const {data,error} = await supabase.from("student_reports").select("*").order("id",{ascending:true})
+  if(error){ showMsg("msgColor","❌ فشل تحميل البيانات","error"); return }
+  if(idx<0||idx>=data.length){ showMsg("msgColor","⚠️ رقم الطالب غير صحيح","error"); return }
+  const {error:ue} = await supabase.from("student_reports").update({color:selectedColor}).eq("id",data[idx].id)
+  if(ue){ showMsg("msgColor","❌ فشل التلوين","error"); return }
+  showMsg("msgColor","🎨 تم تلوين الاسم والعنوان والمادة — سيظهر فوراً","success")
+  await loadStudents(); clearInputs()
+}
 
-          <button class="btn btn-gold" id="btnProblem2" style="width:100%">
-            <span>📤</span> افتح نافذة إرسال المشكلة
-          </button>
-        </div>
-      </div>
+/* ===== SEND STUDENT ALERT ===== */
+async function sendStudentAlert(){
+  const idx  = parseInt(document.getElementById('alertStudentIndex').value) - 1
+  const text = document.getElementById('alertStudentText').value.trim()
+  const type = document.querySelector('input[name="alertTypeRadio"]:checked')?.value || 'private'
+  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب الصحيح','error'); return }
+  if(!text){ showMsg('msgAlert','⚠️ أدخل نص التحذير','error'); return }
+  if(!selectedAlertColor){ showMsg('msgAlert','⚠️ اختر لوناً للتحذير','error'); return }
+  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
+  if(error){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
+  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود في القائمة','error'); return }
+  const student = data[idx]
+  const {error: ue} = await supabase.from('student_reports').update({
+    alert_text:  text,
+    alert_color: selectedAlertColor,
+    alert_type:  type
+  }).eq('id', student.id)
+  if(ue){ showMsg('msgAlert','❌ فشل الإرسال: ' + (ue.message||''), 'error'); return }
+  showMsg('msgAlert', `✅ تم إرسال التحذير للطالب "${student.name}"`, 'success')
+  await loadStudents()
+}
+window.sendStudentAlert = sendStudentAlert
 
-      <!-- ===== TAB: حذف ===== -->
-      <div class="tab-content" id="tab-delete">
-        <div class="glass-card card-glow-red">
-          <div class="card-header">
-            <div class="card-icon icon-red">🗑️</div>
-            <div>
-              <div class="card-title">حذف معلوماتي</div>
-              <div class="card-desc">إجراء نهائي وغير قابل للتراجع</div>
-            </div>
-          </div>
+/* ===== CLEAR STUDENT ALERT ===== */
+async function clearStudentAlert(){
+  const idx = parseInt(document.getElementById('alertStudentIndex').value) - 1
+  if(isNaN(idx) || idx < 0){ showMsg('msgAlert','⚠️ أدخل رقم الطالب أولاً','error'); return }
+  const {data, error} = await supabase.from('student_reports').select('*').order('id',{ascending:true})
+  if(error || !data){ showMsg('msgAlert','❌ فشل تحميل البيانات','error'); return }
+  if(idx >= data.length){ showMsg('msgAlert','⚠️ رقم الطالب غير موجود','error'); return }
+  const student = data[idx]
+  const {error: ue} = await supabase.from('student_reports').update({
+    alert_text:  null,
+    alert_color: null,
+    alert_type:  null
+  }).eq('id', student.id)
+  if(ue){ showMsg('msgAlert','❌ فشل الحذف','error'); return }
+  showMsg('msgAlert', `🗑️ تم حذف تحذير الطالب "${student.name}"`, 'info')
+  document.getElementById('alertPreviewBox').style.display = 'none'
+  await loadStudents()
+}
+window.clearStudentAlert = clearStudentAlert
 
-          <div style="color:rgba(255,255,255,.7);line-height:1.8;font-size:0.9rem;margin-bottom:16px">
-            <p style="color:var(--danger);font-weight:700">⚠️ تحذير مهم:</p>
-            <ul style="margin:8px 0 8px 20px;font-size:0.85rem;color:rgba(255,255,255,.5)">
-              <li>• سيتم حذف جميع بياناتك نهائياً</li>
-              <li>• لا يمكن استعادة البيانات بعد الحذف</li>
-              <li>• سيُحذف عنوانك من قائمة الطلبة</li>
-            </ul>
-            <p style="margin-top:12px;font-size:0.85rem;color:rgba(255,255,255,.4)">هل أنت متأكد تماماً من رغبتك في الحذف؟</p>
-          </div>
+/* ===== CLEAR INPUTS ===== */
+function clearInputs(){
+  ['studentName','reportTitle','subjectName','badgeIndex','badgeSymbol','colorIndex','notifInput'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = ''
+  })
+  selectedID = null
+  selectedColor = null
+  document.querySelectorAll('#nameColorPalette .color-box').forEach(b => b.classList.remove('selected'))
+  document.getElementById('selectedColorPreview').innerHTML = ''
+  document.getElementById('badgePreview').style.display = 'none'
+}
 
-          <button class="btn btn-danger" id="btnDelete2" style="width:100%">
-            <span>🗑️</span> حذف معلوماتي الآن (نهائي)
-          </button>
-        </div>
-      </div>
+/* ===== REALTIME ===== */
+function setupRealtime(){
+  supabase.channel("students_rt")
+    .on("postgres_changes",{event:"*",schema:"public",table:"student_reports"},()=>{ loadStudents() })
+    .subscribe()
+  supabase.channel("visitors_rt")
+    .on("postgres_changes",{event:"*",schema:"public",table:"visitors"},()=>{ loadVisitors() })
+    .subscribe()
+  supabase.channel("site_control_rt")
+    .on("postgres_changes",{event:"*",schema:"public",table:"site_control"},()=>{
+      loadSiteStatus();
+      loadSiteSettings();
+      loadCurrentGuidelines();
+    })
+    .subscribe()
+}
 
-      <!-- ===== TAB: ثيمات ===== -->
-      <div class="tab-content" id="tab-themes">
-        <div class="glass-card card-glow-teal">
-          <div class="card-header">
-            <div class="card-icon icon-teal">🎨</div>
-            <div>
-              <div class="card-title">اختر ثيمك المفضل</div>
-              <div class="card-desc">10 ثيمات فاخرة • تُطبّق فوراً على الواجهة</div>
-            </div>
-          </div>
-
-          <div class="kv">
-            <strong>الثيم الحالي</strong>
-            <span class="muted" id="currentThemeName">كلاسيكي ذهبي</span>
-          </div>
-
-          <div class="themePicker" id="themePicker">
-            <div class="themeOption" data-theme="0">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#f5c842,#7dd3fc)"></div>
-              <div><div class="themeName">كلاسيكي ذهبي</div><div class="themePreview"><span style="background:#f5c842"></span><span style="background:#7dd3fc"></span><span style="background:#b28dff"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="1">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#1e2a4a,#3f6fff)"></div>
-              <div><div class="themeName">ليلي أزرق</div><div class="themePreview"><span style="background:#a8c0ff"></span><span style="background:#6fa8ff"></span><span style="background:#3f6fff"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="2">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#14281e,#7dfc8e)"></div>
-              <div><div class="themeName">ربيعي أخضر</div><div class="themePreview"><span style="background:#d8ff44"></span><span style="background:#bff7ff"></span><span style="background:#7dfc8e"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="3">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#2d1423,#ff79c6)"></div>
-              <div><div class="themeName">وردي ناعم</div><div class="themePreview"><span style="background:#ff9ec9"></span><span style="background:#ffb3d9"></span><span style="background:#ff79c6"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="4">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#230f28,#ff6b6b)"></div>
-              <div><div class="themeName">نيون ساطع</div><div class="themePreview"><span style="background:#ff6b6b"></span><span style="background:#00d4ff"></span><span style="background:#ffe66d"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="5">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#1e142d,#6a5cff)"></div>
-              <div><div class="themeName">حلمي بنفسجي</div><div class="themePreview"><span style="background:#ff9ad9"></span><span style="background:#7dd3fc"></span><span style="background:#6a5cff"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="6">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#2d1914,#ff7043)"></div>
-              <div><div class="themeName">غروب برتقالي 🔥</div><div class="themePreview"><span style="background:#ff9a5c"></span><span style="background:#ffcc80"></span><span style="background:#ff7043"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="7">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#0f282d,#26c6da)"></div>
-              <div><div class="themeName">محيط أزرق 🌊</div><div class="themePreview"><span style="background:#4dd0e1"></span><span style="background:#80deea"></span><span style="background:#26c6da"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="8">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#232328,#e0e0e0)"></div>
-              <div><div class="themeName">فضي كلاسيك ⚪</div><div class="themePreview"><span style="background:#e0e0e0"></span><span style="background:#c0c0c0"></span><span style="background:#a0a0a0"></span></div></div>
-            </div>
-            <div class="themeOption" data-theme="9">
-              <div class="themeSwatch" style="background:linear-gradient(135deg,#140f23,#e08dff)"></div>
-              <div><div class="themeName">كوني مظلم 🌌</div><div class="themePreview"><span style="background:#c9a0ff"></span><span style="background:#7eb3ff"></span><span style="background:#e08dff"></span></div></div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px;color:rgba(255,255,255,.4);font-size:0.8rem;line-height:1.6">
-            ✨ يتم حفظ اختيارك تلقائياً • يظهر الثيم على جميع الكروت الزجاجية
-          </div>
-        </div>
-      </div>
-
-    </div><!-- end tabs-container -->
-  </div><!-- end dashboardScreen -->
-
-  <!-- Notification Banner -->
-  <div id="notifBanner" role="status" aria-live="polite">
-    <span>📢</span>
-    <span id="notifText" style="font-weight:700">إشعار من الإدارة</span>
-    <button class="notifClose" id="notifCloseBtn" type="button">✕</button>
-  </div>
-
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    /* ===== SUPABASE CONFIG ===== */
-    const SUPABASE_URL = "https://mcwemgjmqwbgxoyiwant.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_qmIUC4Rkb-VGOek8qkVqFg_Sn4x3WjI";
-    const TELEGRAM_BOT_TOKEN = "7769329974:AAHEwfIzPDZ1-KCSAKsxepmNtC35lYXvlMs";
-    const TELEGRAM_CHAT_ID = "910624538";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    /* ===== UI HELPERS ===== */
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => Array.from(document.querySelectorAll(s));
-
-    /* ===== SOUND EFFECTS (جديد) ===== */
-    const sounds = {
-      click: new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'),
-      success: new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'),
-      error: new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'),
-      delete: new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU')
-    };
-
-    function playSound(type){
-      const enabled = localStorage.getItem('sounds_enabled') !== 'false';
-      if(!enabled) return;
-      
-      // Simple beep using Web Audio API (better than empty base64)
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      switch(type){
-        case 'click':
-          oscillator.frequency.value = 800;
-          gainNode.gain.value = 0.1;
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.05);
-          break;
-        case 'success':
-          oscillator.frequency.value = 1200;
-          gainNode.gain.value = 0.15;
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.15);
-          setTimeout(()=>{
-            const osc2 = audioContext.createOscillator();
-            const gain2 = audioContext.createGain();
-            osc2.connect(gain2);
-            gain2.connect(audioContext.destination);
-            osc2.frequency.value = 1600;
-            gain2.gain.value = 0.15;
-            osc2.start();
-            osc2.stop(audioContext.currentTime + 0.15);
-          }, 100);
-          break;
-        case 'error':
-          oscillator.frequency.value = 400;
-          gainNode.gain.value = 0.15;
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.2);
-          break;
-        case 'delete':
-          oscillator.frequency.value = 300;
-          gainNode.gain.value = 0.2;
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 0.3);
-          break;
-      }
-    }
-
-    /* ===== DARK/LIGHT MODE (جديد) ===== */
-    function initMode(){
-      const saved = localStorage.getItem('onx_mode') || 'dark';
-      document.documentElement.setAttribute('data-mode', saved);
-      $('#modeToggle').checked = saved === 'light';
-    }
-
-    $('#modeToggle')?.addEventListener('change', (e)=>{
-      const mode = e.target.checked ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-mode', mode);
-      localStorage.setItem('onx_mode', mode);
-      playSound('click');
-      showToast(`تم التبديل للوضع ${mode === 'light' ? 'النهاري ☀️' : 'الليلي 🌙'}`, 'success');
-    });
-
-    /* ===== SOUNDS TOGGLE (جديد) ===== */
-    function initSounds(){
-      const enabled = localStorage.getItem('sounds_enabled') !== 'false';
-      $('#soundsToggle').checked = enabled;
-    }
-
-    $('#soundsToggle')?.addEventListener('change', (e)=>{
-      localStorage.setItem('sounds_enabled', e.target.checked);
-      playSound('click');
-      showToast(e.target.checked ? 'تم تفعيل الأصوات 🔊' : 'تم كتم الأصوات 🔇', 'info');
-    });
-
-    function showToast(msg, type='success'){
-      const t = $('#toast'), icon = $('#toast-icon'), text = $('#toast-text');
-      icon.textContent = type==='success'?'✅':type==='error'?'❌':'ℹ️';
-      text.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(t._timer);
-      t._timer = setTimeout(()=> t.classList.remove('show'), 2600);
-    }
-
-    function setMsg(text, type='info'){
-      const m = $('#msg'); if(!m) return;
-      m.textContent = text; m.className = 'show '+type;
-      clearTimeout(m._t); m._t = setTimeout(()=>{ m.className=''; }, 4200);
-    }
-
-    function formatDate(ts){
-      if(!ts) return '';
-      const d = new Date(ts);
-      const hh = String(d.getHours()).padStart(2,'0'), mm = String(d.getMinutes()).padStart(2,'0'), ss = String(d.getSeconds()).padStart(2,'0');
-      return `${hh}:${mm}:${ss} (${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()})`;
-    }
-
-    /* ===== FANCY CLOCK ===== */
-    function initFancyClock(){
-      const DAYS_AR = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-      const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-      const HIJRI_MONTHS = ['محرم','صفر','ربيع الأول','ربيع الثاني','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
-      
-      function updateClock(){
-        const now = new Date();
-        let h = now.getHours();
-        const period = h >= 12 ? 'PM' : 'AM';
-        h = h % 12; h = h ? h : 12;
-        const hStr = String(h).padStart(2,'0');
-        const m = String(now.getMinutes()).padStart(2,'0');
-        const s = String(now.getSeconds()).padStart(2,'0');
-        $('#clockTime').textContent = `${hStr}:${m}:${s}`;
-        $('#clockPeriod').textContent = period;
-        
-        const dayName = DAYS_AR[now.getDay()];
-        const day = now.getDate();
-        const month = MONTHS_AR[now.getMonth()];
-        const year = now.getFullYear();
-        $('#clockMiladi').textContent = `${dayName} ${day} ${month} ${year}`;
-        
-        const hijriYear = year - 579;
-        const hijriMonth = HIJRI_MONTHS[now.getMonth()];
-        const hijriDay = Math.floor(day * 0.97) + 1;
-        $('#clockHijri').textContent = `${hijriDay} ${hijriMonth} ${hijriYear}هـ`;
-      }
-      updateClock();
-      setInterval(updateClock, 1000);
-    }
-    initFancyClock();
-
-    /* ===== FANCY RIGHTS ABOVE CLOCK ANIMATION ===== */
-    function initFancyRights(){
-      const container = $('#fancyRightsAbove');
-      const colors = ['#f5c518', '#00d4ff', '#7b2fff', '#e94560', '#00ff88', '#ff9a5c', '#4dd0e1', '#c9a0ff'];
-      
-      setInterval(()=>{
-        for(let i=0; i<5; i++){
-          const sparkle = document.createElement('span');
-          sparkle.className = 'rights-sparkle';
-          const angle = Math.random() * Math.PI * 2;
-          const distance = 20 + Math.random() * 40;
-          sparkle.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
-          sparkle.style.setProperty('--ty', `${Math.sin(angle) * distance - 30}px`);
-          sparkle.style.left = `${45 + Math.random()*10}%`;
-          sparkle.style.top = '50%';
-          sparkle.style.background = colors[Math.floor(Math.random()*colors.length)];
-          container.appendChild(sparkle);
-          setTimeout(()=> sparkle.remove(), 1800);
-        }
-      }, 2800);
-    }
-    initFancyRights();
-
-    /* ===== MODAL ===== */
-    function showModal({ icon='✏️', title='', msg='', inputPlaceholder='', withInput=false, isTextarea=false, confirmText='تأكيد', cancelText='إلغاء' }){
-      return new Promise(resolve=>{
-        $('#modal-icon').textContent = icon; $('#modal-title').textContent = title; $('#modal-msg').textContent = msg;
-        const inp = $('#modal-input'), ta = $('#modal-textarea');
-        inp.style.display='none'; ta.style.display='none';
-        let active = null;
-        if(withInput){ active = isTextarea ? ta : inp; active.style.display='block'; active.placeholder = inputPlaceholder || ''; active.value = ''; setTimeout(()=> active.focus(), 60); }
-        const btns = $('#modal-btns');
-        btns.innerHTML = `<button class="mCancel">${cancelText}</button><button class="mOk">${confirmText}</button>`;
-        const overlay = $('#modal-overlay'); overlay.classList.add('active');
-        btns.querySelector('.mOk').onclick = ()=>{ overlay.classList.remove('active'); resolve(withInput ? (active?.value ?? '') : true); };
-        btns.querySelector('.mCancel').onclick = ()=>{ overlay.classList.remove('active'); resolve(null); };
-      });
-    }
-
-    /* ===== PREVIEW MODAL (جديد) ===== */
-    let pendingDownload = null;
-    
-    function showPreviewModal(content){
-      $('#previewText').textContent = content;
-      $('#previewModal').classList.add('active');
-    }
-
-    $('#previewCancel')?.addEventListener('click', ()=>{
-      $('#previewModal').classList.remove('active');
-      pendingDownload = null;
-      playSound('click');
-    });
-
-    $('#previewDownload')?.addEventListener('click', ()=>{
-      if(pendingDownload){
-        downloadFancy(pendingDownload.format, true);
-        $('#previewModal').classList.remove('active');
-      }
-    });
-
-    /* ===== PARTICLES ===== */
-    (function(){
-      const container = document.getElementById('particles');
-      const colors = ['#00d4ff','#7b2fff','#e94560','#f5c518','#00ff88'];
-      for(let i=0;i<20;i++){
-        const p = document.createElement('div'); p.className = 'particle';
-        const size = Math.random()*3+2;
-        p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;box-shadow:0 0 ${size*3}px currentColor;`;
-        container.appendChild(p);
-      }
-    })();
-
-    /* ===== LOADING SCREEN ===== */
-    function initLoadingScreen(){
-      const loader = $('#loadingScreen');
-      loader.classList.add('active');
-      setTimeout(()=>{
-        loader.classList.remove('active');
-        setTimeout(()=>{ if(!loader.classList.contains('active')) loader.style.display = 'none'; }, 600);
-      }, 2200);
-    }
-
-    /* ===== THEME SYSTEM ===== */
-    const THEMES = [
-      {id:0,name:'كلاسيكي ذهبي'}, {id:1,name:'ليلي أزرق'}, {id:2,name:'ربيعي أخضر'},
-      {id:3,name:'وردي ناعم'}, {id:4,name:'نيون ساطع'}, {id:5,name:'حلمي بنفسجي'},
-      {id:6,name:'غروب برتقالي 🔥'}, {id:7,name:'محيط أزرق 🌊'}, {id:8,name:'فضي كلاسيك ⚪'}, {id:9,name:'كوني مظلم 🌌'}
-    ];
-
-    function applyTheme(n, showToastMsg=true){
-      document.documentElement.setAttribute('data-theme', String(n));
-      localStorage.setItem('onx_theme', String(n));
-      $$('.themeOption').forEach(opt=> opt.classList.toggle('active', parseInt(opt.dataset.theme)===n));
-      if(showToastMsg){
-        const theme = THEMES.find(t=>t.id===n);
-        showToast(`تم تطبيق ثيم "${theme?.name||n}" ✨`, 'success');
-        $('#currentThemeName').textContent = theme?.name || '';
-        playSound('success');
-      }
-    }
-
-    function initTheme(){
-      const saved = localStorage.getItem('onx_theme') || '0';
-      document.documentElement.setAttribute('data-theme', saved);
-      $$('.themeOption').forEach(opt=> opt.classList.toggle('active', parseInt(opt.dataset.theme)===parseInt(saved)));
-      const theme = THEMES.find(t=>t.id===parseInt(saved));
-      if(theme) $('#currentThemeName').textContent = theme.name;
-    }
-    initTheme();
-
-    /* ===== TABS SYSTEM ===== */
-    $$('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        playSound('click');
-        $$('.tab-btn').forEach(b => b.classList.remove('active'));
-        $$('.tab-content').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        $('#tab-' + btn.dataset.tab).classList.add('active');
-        if(btn.dataset.tab === 'all') showAll().catch(()=>{});
-        if(btn.dataset.tab === 'myinfo') showMyInfo().catch(()=>{});
-        if(btn.dataset.tab === 'comments') loadComments().catch(()=>{});
-      });
-    });
-
-    /* ===== DEVICE FINGERPRINT ===== */
-    async function sha256(str){
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-      return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
-    }
-    function canvasFp(){
-      try{
-        const c = document.createElement('canvas'); c.width=260; c.height=80;
-        const x = c.getContext('2d');
-        x.textBaseline='top'; x.font='16px Arial';
-        x.fillStyle='#f5c842'; x.fillRect(10,10,80,30);
-        x.fillStyle='#7dd3fc'; x.fillText('ONX-TAQE|Fingerprint',12,14);
-        x.fillStyle='rgba(255,255,255,0.6)'; x.fillText(navigator.userAgent,12,38);
-        return c.toDataURL();
-      } catch { return 'no-canvas'; }
-    }
-    function webglFp(){
-      try{
-        const c = document.createElement('canvas'), gl = c.getContext('webgl') || c.getContext('experimental-webgl');
-        if(!gl) return 'no-webgl';
-        const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-        return (dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : 'v?') + '|' + (dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'r?');
-      } catch { return 'no-webgl'; }
-    }
-    const DEVICE_CODE_PROMISE = (async ()=>{
-      const parts = [navigator.userAgent, navigator.platform||'', navigator.language||'', Intl.DateTimeFormat().resolvedOptions().timeZone||'', `${screen.width}x${screen.height}x${screen.colorDepth}`, navigator.hardwareConcurrency||'', navigator.deviceMemory||'', canvasFp(), webglFp()].join('||');
-      return (await sha256(parts)).slice(0, 28);
-    })();
-
-    /* ===== SITE STATUS & CONTROL ===== */
-    let countdownInterval = null;
-    function startCountdown(targetDate){
-      const el = $('#deadlineCountdown');
-      function update(){
-        const diff = targetDate - new Date();
-        if(diff <= 0){ el.textContent = '⚠️ انتهى الموعد!'; el.style.color = '#ff5c5c'; clearInterval(countdownInterval); return; }
-        const days = Math.floor(diff / 86400000), hours = Math.floor((diff % 86400000) / 3600000), mins = Math.floor((diff % 3600000) / 60000), secs = Math.floor((diff % 60000) / 1000);
-        let str = ''; if(days>0) str += `${days} يوم `; str += `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-        el.textContent = str; const urgent = diff < 3600000; el.style.color = urgent ? '#ff5c5c' : 'rgba(245,200,66,0.95)';
-      }
-      update(); countdownInterval = setInterval(update, 1000);
-    }
-
-    async function loadSiteControlData(){
-      const { data, error } = await supabase.from('site_control').select('*').eq('id',1).single();
-      if(error || !data) return;
-      const banner = $('#notifBanner'), notifText = $('#notifText');
-      if(data.notification && data.notification.trim()){ notifText.textContent = data.notification.trim(); banner.classList.add('visible'); banner.style.display='flex'; }
-      else { banner.classList.remove('visible'); banner.style.display='none'; }
-      clearInterval(countdownInterval); const dp = $('#deadlinePanel');
-      if(data.deadline && data.deadline_active){
-        const dt = new Date(data.deadline);
-        $('#deadlineDateDisplay').textContent = dt.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit', hour12:true });
-        dp.style.display='block'; startCountdown(dt);
-      } else { dp.style.display='none'; }
-      const gp = $('#guidelinesPanel'), gc = $('#guidelinesContent'), toggleBtn = $('#guidelinesToggle');
-      if(data.usage_guidelines && data.usage_guidelines.trim()){
-        gc.textContent = data.usage_guidelines.trim(); gp.style.display='block';
-        let isCollapsed = false;
-        toggleBtn.onclick = (e)=>{ 
-          e.stopPropagation(); 
-          playSound('click');
-          isCollapsed = !isCollapsed; 
-          gc.classList.toggle('expanded', !isCollapsed); 
-          toggleBtn.innerHTML = '🔽 عرض التفاصيل';
-          toggleBtn.classList.toggle('expanded', isCollapsed);
-        };
-      } else { gp.style.display='none'; }
-      const st = $('#siteStatusBadge');
-      if(!data.site_open){ st.innerHTML = 'الحالة: <strong style="color:#ff6b6b">مغلق</strong>'; }
-      else { st.innerHTML = 'الحالة: <strong style="color:#00ff88">مفتوح</strong>'; }
-    }
-
-    async function checkSiteStatus(){
-      const { data, error } = await supabase.from('site_control').select('site_open').eq('id',1).single();
-      if(error || !data?.site_open){
-        document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#000;color:#fff;font-family:'Cairo',sans-serif;font-size:32px">الموقع مغلق حالياً ❌</div>`;
-        return false;
-      }
-      return true;
-    }
-
-    /* ===== APP STATE ===== */
-    let ALL_CACHE = [], SEARCH_TIMER = 0;
-    
-    function updateStats(){
-      const total = ALL_CACHE.length;
-      const badged = ALL_CACHE.filter(d => d.badge && d.badge.trim()).length;
-      const alerts = ALL_CACHE.filter(d => d.alert_text && d.alert_text.trim()).length;
-      
-      $('#statsTotal').textContent = total;
-      $('#statsBadged').textContent = badged;
-      $('#statsAlerts').textContent = alerts;
-      
-      if(ALL_CACHE.length > 0){
-        const last = ALL_CACHE[ALL_CACHE.length-1];
-        const nameParts = (last.name||'').split(' ');
-        const shortName = nameParts.length >= 2 ? nameParts[0] : (last.name||'—');
-        $('#statsLastReport').textContent = shortName;
-      } else {
-        $('#statsLastReport').textContent = '—';
-      }
-    }
-    
-    function updateCounter(num){
-      const el = $('#counterNum'), old = parseInt(el.textContent) || 0;
-      if(old === num) return; el.textContent = num; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-      setTimeout(()=> el.classList.remove('pop'), 450);
-      updateStats();
-    }
-
-    /* ===== FANCY EXPORT FORMAT ===== */
-    function generateFancyContent(data, format){
-      const name = data.name || 'غير محدد';
-      const subject = data.subject || 'غير محدد';
-      const title = data.title || 'غير محدد';
-      const date = formatDate(data.date) || 'غير محدد';
-      
-      const fancyHeader = `❮𝗢𝗡𝗫_𝗧𝗔𝗤𝗘𝗦𝗧𝗨𝗗𝗘𝗡𝗧❯\n❮𝗥𝗘𝗣𝗢𝗥𝗧❯•.•.•.•.•.•.\n【☞ 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 ☜】\n⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠\n`;
-      const fancyBody = `𝙽𝙰𝙼𝙴 :${name}\n𝙼𝙰𝚃𝙴𝚁𝙸𝙰𝙻:${subject}\n𝚃𝙸𝚃𝙻𝙴 𝚁𝙴𝙿𝙾𝚁𝚃:${title}\n 𝙳𝙰𝚃𝙰:${date}\n`;
-      const fancyFooter = `⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠\n𓆩الهـم صـلِ علـى محـمد وآل مـحمـد𓆪\n📮.Ᏼ𝚈➣@ONX44`;
-      
-      return fancyHeader + fancyBody + fancyFooter;
-    }
-
-    /* ===== PREVIEW BEFORE DOWNLOAD (جديد) ===== */
-    async function previewBeforeDownload(format){
-      const code = await DEVICE_CODE_PROMISE;
-      const { data, error } = await supabase.from('student_reports').select('*').eq('code',code).single();
-      if(error || !data){ 
-        setMsg('⚠️ سجل بياناتك أولاً','error'); 
-        showToast('لا توجد بيانات','error'); 
-        playSound('error');
-        return; 
-      }
-      
-      const content = generateFancyContent(data, format);
-      pendingDownload = { format, data };
-      showPreviewModal(content);
-      playSound('click');
-    }
-    window.previewBeforeDownload = previewBeforeDownload;
-
-    async function downloadFancy(format, skipPreview = false){
-      const code = await DEVICE_CODE_PROMISE;
-      const { data, error } = await supabase.from('student_reports').select('*').eq('code',code).single();
-      if(error || !data){ 
-        setMsg('⚠️ سجل بياناتك أولاً','error'); 
-        showToast('لا توجد بيانات','error'); 
-        playSound('error');
-        return; 
-      }
-      
-      const content = generateFancyContent(data, format);
-      const safeName = (data.name||'student').replace(/[^\u0600-\u06FFa-zA-Z0-9_-]+/g,'_');
-      const filename = `ONX-TAQE_${safeName}_report.txt`;
-      
-      const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      showToast(`تم التحميل بصيغة TXT ✨`, 'success');
-      playSound('success');
-    }
-    window.downloadFancy = downloadFancy;
-
-    /* ===== COMMENTS SYSTEM (جديد) ===== */
-    async function loadComments(){
-      const code = await DEVICE_CODE_PROMISE;
-      const { data, error } = await supabase.from('comments').select('*').order('created_at', { ascending: false }).limit(50);
-      
-      if(error || !data){
-        $('#commentsList').innerHTML = `<div style="text-align:center;padding:30px;color:rgba(255,255,255,.4)"><div style="font-size:40px;margin-bottom:10px">⚠️</div><div>تعذر تحميل التعليقات</div></div>`;
-        return;
-      }
-      
-      $('#commentCount').textContent = data.length;
-      
-      if(data.length === 0){
-        $('#commentsList').innerHTML = `<div style="text-align:center;padding:30px;color:rgba(255,255,255,.4)"><div style="font-size:40px;margin-bottom:10px">💬</div><div>كن أول من يعلق!</div></div>`;
-        return;
-      }
-      
-      let html = '';
-      data.forEach(comment => {
-        const timeAgo = getTimeAgo(comment.created_at);
-        const isMe = comment.code === code;
-        html += `
-          <div class="comment-item" style="${isMe ? 'border-color: rgba(245,197,24,0.3);' : ''}">
-            <div class="comment-header">
-              <span class="comment-author">${isMe ? 'أنت' : comment.anonymous_name || 'طالب'}</span>
-              <span class="comment-time">${timeAgo}</span>
-            </div>
-            <div class="comment-text">${comment.text}</div>
-            <button class="reply-btn" onclick="showReplyInput('${comment.id}')">💭 رد</button>
-            <div id="reply-${comment.id}" style="display:none"></div>
-          </div>
-        `;
-      });
-      
-      $('#commentsList').innerHTML = html;
-    }
-
-    function getTimeAgo(timestamp){
-      const seconds = Math.floor((new Date() - new Date(timestamp)) / 1000);
-      if(seconds < 60) return 'الآن';
-      const minutes = Math.floor(seconds / 60);
-      if(minutes < 60) return `منذ ${minutes} دقيقة`;
-      const hours = Math.floor(minutes / 60);
-      if(hours < 24) return `منذ ${hours} ساعة`;
-      const days = Math.floor(hours / 24);
-      return `منذ ${days} يوم`;
-    }
-
-    async function submitComment(){
-      const input = $('#commentInput');
-      const text = input.value.trim();
-      if(!text){
-        showToast('اكتب تعليقاً أولاً','error');
-        playSound('error');
-        return;
-      }
-      
-      const code = await DEVICE_CODE_PROMISE;
-      const { data: me } = await supabase.from('student_reports').select('name').eq('code',code).single();
-      
-      const { error } = await supabase.from('comments').insert([{
-        text,
-        code,
-        anonymous_name: me?.name ? me.name.split(' ')[0] : 'طالب',
-        created_at: new Date().toISOString()
-      }]);
-      
-      if(error){
-        showToast('فشل إرسال التعليق','error');
-        playSound('error');
-        return;
-      }
-      
-      input.value = '';
-      showToast('تم إرسال التعليق ✨','success');
-      playSound('success');
-      loadComments();
-    }
-
-    window.showReplyInput = function(commentId){
-      const replyDiv = $(`#reply-${commentId}`);
-      if(replyDiv.style.display === 'none'){
-        replyDiv.style.display = 'block';
-        replyDiv.innerHTML = `
-          <input class="reply-input" placeholder="اكتب ردك..." id="replyInput-${commentId}" />
-          <button class="comment-submit" style="margin-top:8px;width:100%" onclick="submitReply('${commentId}')">إرسال الرد</button>
-        `;
-      } else {
-        replyDiv.style.display = 'none';
-      }
-      playSound('click');
-    };
-
-    window.submitReply = async function(commentId){
-      const input = $(`#replyInput-${commentId}`);
-      const text = input.value.trim();
-      if(!text){
-        showToast('اكتب ردك أولاً','error');
-        playSound('error');
-        return;
-      }
-      
-      showToast('تم إرسال الرد (قريباً)','success');
-      playSound('success');
-      input.value = '';
-      $(`#reply-${commentId}`).style.display = 'none';
-    };
-
-    $('#commentSubmit')?.addEventListener('click', ()=>{
-      submitComment();
-    });
-
-    $('#commentInput')?.addEventListener('keypress', (e)=>{
-      if(e.key === 'Enter') submitComment();
-    });
-
-    /* ===== CORE ACTIONS ===== */
-    async function saveData(){
-      playSound('click');
-      const name = $('#studentName').value.trim(), title = $('#reportTitle').value.trim(), subject = $('#subjectName').value.trim(), code = await DEVICE_CODE_PROMISE;
-      if(name.split(/\s+/).length < 2){ setMsg('⚠️ الاسم لازم يكون ثنائي على الأقل','error'); showToast('الاسم ثنائي مطلوب','error'); playSound('error'); return; }
-      if(!name || !title || !subject){ setMsg('⚠️ املا كل الحقول','error'); showToast('املأ جميع الحقول','error'); playSound('error'); return; }
-      const { data:already } = await supabase.from('student_reports').select('id').eq('code',code).limit(1);
-      if(already?.length){ setMsg('⛔ لديك بيانات محفوظة','error'); showToast('لا يمكن التسجيل مرتين','error'); playSound('error'); await showMyInfo(); setActiveTab('myinfo'); return; }
-      const [{ nameUsed }, { titleUsed }] = await Promise.all([supabase.from('student_reports').select('id').eq('name',name).limit(1), supabase.from('student_reports').select('id').eq('title',title).limit(1)]);
-      if((nameUsed?.length)||(titleUsed?.length)){ setMsg('❌ الاسم أو العنوان مستخدم','error'); showToast('مكرر مسبقاً','error'); playSound('error'); return; }
-      const { error } = await supabase.from('student_reports').insert([{ name, title, subject, date:new Date().toISOString(), code }]);
-      if(error){ console.log(error); setMsg('❌ فشل الحفظ','error'); showToast('خطأ في الحفظ','error'); playSound('error'); return; }
-      setMsg('✅ تم التسجيل بنجاح','success'); showToast('تم الحفظ ✨','success'); playSound('success'); await showMyInfo(); await showAll(); setActiveTab('myinfo');
-    }
-
-    async function changeTitle(){
-      playSound('click');
-      const code = await DEVICE_CODE_PROMISE;
-      const { data:me } = await supabase.from('student_reports').select('id').eq('code',code).limit(1);
-      if(!me?.length){ setMsg('⚠️ لا توجد بيانات لك','error'); showToast('سجل أولاً','error'); playSound('error'); return; }
-      const newTitle = await showModal({ icon:'✏️', title:'تغيير العنوان', msg:'اكتب العنوان الجديد (فريد)', withInput:true, inputPlaceholder:'العنوان الجديد...', confirmText:'تغيير', cancelText:'إلغاء' });
-      if(!newTitle) return; const clean = newTitle.trim(); if(!clean){ setMsg('⚠️ العنوان فاضي','error'); playSound('error'); return; }
-      const { titleUsed } = await supabase.from('student_reports').select('id').eq('title',clean).limit(1);
-      if(titleUsed?.length){ setMsg('❌ العنوان مستخدم','error'); playSound('error'); return; }
-      const { error } = await supabase.from('student_reports').update({ title:clean, date:new Date().toISOString() }).eq('code', code);
-      if(error){ setMsg('❌ فشل التحديث','error'); playSound('error'); return; }
-      setMsg('✅ تم التغيير','success'); showToast('تم التحديث ✨','success'); playSound('success'); await showMyInfo(); await showAll(); setActiveTab('myinfo');
-    }
-
-    async function showMyInfo(){
-      const code = await DEVICE_CODE_PROMISE, infoBox = $('#infoBox');
-      const { data, error } = await supabase.from('student_reports').select('*').eq('code',code).single();
-      if(error || !data){ infoBox.style.display='none'; infoBox.innerHTML=''; setMsg('⚠️ لا توجد بيانات لك','error'); return; }
-      const nameColor = data.color || 'rgba(255,255,255,0.92)', badgeStr = data.badge ? `${data.badge} ` : '';
-      let alertHtml = '';
-      if(data.alert_text){
-        const ac = data.alert_color || '#ff4444', typeLabel = data.alert_type === 'public' ? '🌐 عام' : '🔒 خاص';
-        alertHtml = `<div class="alert" style="--ac:${ac}"><div style="font-size:18px">⚠️</div><div style="flex:1;line-height:1.5"><div style="font-weight:700">${data.alert_text}</div><div style="opacity:.7;font-size:10px;margin-top:3px">تنبيه (${typeLabel})</div></div><small>${typeLabel}</small></div>`;
-      }
-      infoBox.style.display='flex'; infoBox.style.flexDirection='column'; infoBox.style.gap='8px';
-      infoBox.innerHTML = `${alertHtml}<div class="kv"><strong>👤 الاسم</strong><span style="color:${nameColor};font-weight:800">${badgeStr}${data.name}</span></div><div class="kv"><strong>📄 العنوان</strong><span style="color:${nameColor}">${data.title}</span></div><div class="kv"><strong>📚 المادة</strong><span style="color:${nameColor}">${data.subject}</span></div><div class="kv"><strong>🕐 آخر تحديث</strong><span class="muted">${formatDate(data.date)}</span></div>`;
-      showToast('تم تحميل بياناتك','success');
-    }
-
-    async function showAll(){
-      const allTitles = $('#allTitles'); allTitles.innerHTML = `<div style="text-align:center;padding:22px;color:rgba(255,255,255,.45)">جارٍ التحميل…</div>`;
-      const { data, error } = await supabase.from('student_reports').select('id,name,title,subject,date,code,badge,color,alert_text,alert_color,alert_type').order('id', { ascending:true });
-      if(error){ allTitles.innerHTML = `<div style="text-align:center;padding:22px;color:#ff5c5c">❌ فشل التحميل</div>`; return; }
-      ALL_CACHE = data || []; 
-      updateCounter(ALL_CACHE.length); 
-      updateStats();
-      renderAllList();
-    }
-
-    function renderAllList(){
-      const allTitles = $('#allTitles'), q = ($('#searchInput')?.value || '').trim().toLowerCase();
-      const filtered = !q ? ALL_CACHE : ALL_CACHE.filter(d => (`${d.name} ${d.title} ${d.subject}`).toLowerCase().includes(q));
-      DEVICE_CODE_PROMISE.then(myCode=>{
-        if(filtered.length === 0){ allTitles.innerHTML = `<div style="text-align:center;padding:30px;color:rgba(255,255,255,.38)"><div style="font-size:30px;margin-bottom:6px">🔍</div><div style="font-size:12px">لا توجد نتائج</div></div>`; return; }
-        let rows = '';
-        filtered.forEach((d,i)=>{
-          const isMe = d.code === myCode, rowClass = isMe ? 'mine' : '', nameColor = d.color || 'rgba(255,255,255,0.92)';
-          const displayName = d.badge ? `${d.badge} ${d.name}` : d.name;
-          const subjectHtml = `<span class="badgeSub" style="color:${nameColor};border-color:${nameColor}33;background:${nameColor}0d">${d.subject}</span>`;
-          let alertHtml = `<span style="color:rgba(255,255,255,.22);font-size:10px">—</span>`;
-          if(d.alert_text && d.alert_type === 'public'){ const ac = d.alert_color || '#ff4444'; alertHtml = `<span class="miniAlert" style="--ac:${ac}">⚠️ <span style="position:relative;z-index:1">${d.alert_text.slice(0,15)}${d.alert_text.length>15?'…':''}</span></span>`; }
-          rows += `<tr class="${rowClass}"><td style="width:45px"><span class="row-num">${i+1}</span></td><td style="width:18%"><div style="display:flex;flex-direction:column;align-items:center;gap:3px"><span style="color:${nameColor};font-weight:700">${displayName}</span>${isMe ? `<span class="meBadge">أنت</span>` : ''}</div></td><td style="text-align:right;padding-right:12px;color:${nameColor};width:32%;font-size:0.9rem">${d.title}</td><td style="width:15%">${subjectHtml}</td><td class="date-cell" style="width:15%">${formatDate(d.date)}</td><td style="width:10%">${alertHtml}</td></tr>`;
-        });
-        allTitles.innerHTML = `<table><thead><tr><th style="width:45px">#</th><th style="width:18%">الاسم</th><th style="width:32%">عنوان التقرير</th><th style="width:15%">المادة</th><th style="width:15%">آخر تحديث</th><th style="width:10%">تنبيه</th></tr></thead><tbody>${rows}</tbody></table>`;
-      });
-    }
-
-    async function deleteMyData(){
-      playSound('click');
-      const code = await DEVICE_CODE_PROMISE;
-      const {  me } = await supabase.from('student_reports').select('id').eq('code',code).limit(1);
-      if(!me?.length){ setMsg('⚠️ لا توجد بيانات','error'); playSound('error'); return; }
-      const confirmed = await showModal({ icon:'🗑️', title:'تأكيد الحذف', msg:'هل أنت متأكد؟\nالإجراء نهائي ولا يمكن التراجع.', withInput:false, confirmText:'حذف', cancelText:'إلغاء' });
-      if(!confirmed) return;
-      const { error } = await supabase.from('student_reports').delete().eq('code', code);
-      if(error){ setMsg('❌ فشل الحذف','error'); playSound('error'); return; }
-      $('#infoBox').style.display='none'; $('#infoBox').innerHTML=''; setMsg('✅ تم الحذف','success'); showToast('تم حذف البيانات','success'); playSound('delete'); await showAll(); setActiveTab('register');
-    }
-
-    async function reportProblem(){
-      playSound('click');
-      const code = await DEVICE_CODE_PROMISE;
-      const { data: me } = await supabase.from('student_reports').select('name').eq('code',code).single();
-      const result = await showModal({ icon:'🆘', title:'أرسل مشكلتك', msg:'اكتب مشكلتك بالتفصيل:\nوسيتم إرسالها للمشرف مباشرة', withInput:true, isTextarea:true, inputPlaceholder:'اكتب مشكلتك هنا…', confirmText:'📤 إرسال', cancelText:'إلغاء' });
-      if(!result || !result.trim()) return;
-      const studentName = me?.name || 'طالب غير مسجل';
-      const msgText = `🆘 <b>مشكلة من طالب — ONX-TAQE</b>\n\n👤 <b>الاسم:</b> ${studentName}\n📝 <b>المشكلة:</b>\n${result.trim()}\n\n🕐 <b>الوقت:</b> ${new Date().toLocaleString('ar-EG')}`;
-      try{
-        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msgText, parse_mode:'HTML' }) });
-        const json = await res.json(); if(json.ok){ setMsg('✅ تم الإرسال للمشرف','success'); showToast('تم الإرسال ✨','success'); playSound('success'); } else { throw new Error(json.description || 'Telegram error'); }
-      }catch(e){ console.error('Telegram:', e); setMsg('❌ فشل الإرسال','error'); showToast('حاول لاحقاً','error'); playSound('error'); }
-    }
-
-    /* ===== BIND UI ===== */
-    $('#btnSave')?.addEventListener('click', (e)=>{e.stopPropagation();saveData();});
-    $('#btnChange')?.addEventListener('click', (e)=>{e.stopPropagation();changeTitle();});
-    $('#btnShow')?.addEventListener('click', (e)=>{e.stopPropagation();setActiveTab('myinfo');showMyInfo().catch(()=>{});});
-    $('#btnDelete')?.addEventListener('click', (e)=>{e.stopPropagation();deleteMyData();});
-    $('#btnDelete2')?.addEventListener('click', (e)=>{e.stopPropagation();deleteMyData();});
-    $('#btnProblem')?.addEventListener('click', (e)=>{e.stopPropagation();reportProblem();});
-    $('#btnProblem2')?.addEventListener('click', (e)=>{e.stopPropagation();reportProblem();});
-    $('#importantBtn')?.addEventListener('click', (e)=>{ e.stopPropagation(); playSound('click'); const gc = $('#guidelinesContent'), toggleBtn = $('#guidelinesToggle'); if(gc && toggleBtn){ const isExpanded = gc.classList.contains('expanded'); gc.classList.toggle('expanded', !isExpanded); toggleBtn.innerHTML = '🔽 عرض التفاصيل'; toggleBtn.classList.toggle('expanded', isExpanded); } });
-    $('#panelRefreshBtn')?.addEventListener('click', (e)=>{e.stopPropagation();showAll(); showToast('تم التحديث ✨','success'); playSound('success');});
-    $('#notifCloseBtn')?.addEventListener('click', (e)=>{e.stopPropagation(); playSound('click'); const b = $('#notifBanner'); b.classList.remove('visible'); b.style.display='none';});
-    $('#searchInput')?.addEventListener('input', (e)=>{ e.stopPropagation(); clearTimeout(SEARCH_TIMER); SEARCH_TIMER = setTimeout(renderAllList, 90); });
-    $$('.themeOption')?.forEach(opt=>{ opt.addEventListener('click', (e)=>{ e.stopPropagation(); applyTheme(parseInt(opt.dataset.theme)); }); });
-
-    function setActiveTab(key){
-      $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab===key));
-      $$('.tab-content').forEach(c => c.classList.toggle('active', c.id===`tab-${key}`));
-    }
-
-    /* ===== REALTIME ===== */
-    function setupRealtime(){
-      supabase.channel('site_ctrl_student').on('postgres_changes', { event:'*', schema:'public', table:'site_control' }, ()=>{ loadSiteControlData(); }).subscribe();
-      supabase.channel('reports_student').on('postgres_changes', { event:'*', schema:'public', table:'student_reports' }, async ()=>{ showMyInfo().catch(()=>{}); const allVisible = $('#tab-all')?.classList.contains('active'); if(allVisible){ const { data, error } = await supabase.from('student_reports').select('id,name,title,subject,date,code,badge,color,alert_text,alert_color,alert_type').order('id', { ascending:true }); if(!error && data){ ALL_CACHE = data; updateCounter(data.length); updateStats(); renderAllList(); } } }).subscribe();
-      supabase.channel('comments_student').on('postgres_changes', { event:'*', schema:'public', table:'comments' }, ()=>{ if($('#tab-comments')?.classList.contains('active')) loadComments(); }).subscribe();
-    }
-
-    /* ===== BOOT ===== */
-    (async function boot(){
-      initLoadingScreen();
-      initMode();
-      initSounds();
-      const open = await checkSiteStatus(); if(!open) return;
-      loadSiteControlData().catch(()=>{}); setupRealtime();
-      setActiveTab('register');
-      setTimeout(()=> showMyInfo().catch(()=>{}), 700);
-      setTimeout(() => { $('#entranceOverlay').style.display = 'none'; }, 2500);
-    })();
-  </script>
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" crossorigin="anonymous"></script>
+/* ===== EXPOSE ===== */
+window.addStudent    = addStudent
+window.updateStudent = updateStudent
+window.setBadge      = setBadge
+window.setColor      = setColor
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
-
-
 
